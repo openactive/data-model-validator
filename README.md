@@ -62,11 +62,11 @@ $ npm test
 
 To add a new rule, you will need to extend the `Rule` class, following these rules:
 
-* Set `this._targetModel` to the name of model you are targeting, or a `*` wildcard.
-* Optionally set `this._targetField` to the name of field you are targeting, or a `*` wildcard. Setting the property to `null` means that the rule will be applied once to the whole model.
+* Set `this._targetModels` to the name of model you are targeting, or a `*` wildcard.
+* Optionally set `this._targetFields` to the name of field you are targeting, or a `*` wildcard. Setting the property to `null` means that the rule will be applied once to the whole model.
 * Set `this._description` to explain what the rule is testing for.
-* If just targeting a model, implement `validateModel`.
-* If targeting specific fields, implment `validateField`.
+* If just targeting models, implement `validateModel`.
+* If targeting specific fields, implement `validateField`.
 * Write a test for your rule.
 * Add the rule to the list in `rules/index`, so that it is processed.
 
@@ -80,8 +80,7 @@ module.exports = class RequiredFieldsRule extends Rule {
     
     constructor(options) {
         super(options);
-        this._targetModel = '*';
-        this._targetField = null;
+        this._targetModels = '*';
         this._description = "Validates that all required fields are present in the JSON data.";
     }
     
