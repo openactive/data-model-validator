@@ -1,0 +1,6 @@
+{
+  "name": "ISO 8601 Duration",
+  "reference": "https://en.wikipedia.org/wiki/ISO_8601",
+  "pattern": "",
+  "validationErrorMessage": "Durations should be expressed as ISO 8601 durations"
+}

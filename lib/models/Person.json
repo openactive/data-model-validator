@@ -1,0 +1,101 @@
+{
+  "type": "Person",
+  "urlType": "person",
+  "sameAs": null,
+  "derivedFrom": "http://schema.org/Person",
+  "hasId": true,
+  "idFormat": "http://schema.org/url",
+  "sampleId": "https://example.com/person/",
+  "requiredFields": [],
+  "requiredOptions": [
+    {
+      "description": [
+        "If the direct permission for personal information to be published is given by the individual, the data publisher should provide either a name or a combination of familyName and givenName."
+      ],
+      "options": [
+        "name",
+        "givenName",
+        "familyName"
+      ]
+    }
+  ],
+  "fields": {
+    "email": {
+      "fieldName": "email",
+      "sameAs": "http://schema.org/givenName",
+      "requiredType": "http://schema.org/Text",
+      "example": "daley.thompson@trackandfield.game",
+      "description": [
+        "An email address for the person","This person must give direct permission for their personal information to be shared as part of the Open Data."
+      ]
+    },
+    "familyName": {
+      "fieldName": "familyName",
+      "sameAs": "http://schema.org/familyName",
+      "requiredType": "http://schema.org/Text",
+      "example": "Thompson",
+      "description": [
+        "The family name of the person","This person must give direct permission for their personal information to be shared as part of the Open Data."
+      ]
+    },
+    "gender": {
+      "fieldName": "gender",
+      "sameAs": "http://schema.org/gender",
+      "requiredType": "http://schema.org/Text",
+      "example": "",
+      "description": [
+        "An gender of the person",
+        "This person must give direct permission for their personal information to be shared as part of the Open Data."
+      ]
+    },
+    "givenName": {
+      "fieldName": "givenName",
+      "sameAs": "http://schema.org/givenName",
+      "requiredType": "http://schema.org/Text",
+      "example": "Daley",
+      "description": [
+        "An given name of the person",
+        "This person must give direct permission for their personal information to be shared as part of the Open Data."
+      ]
+    },
+    "jobTitle": {
+      "fieldName": "jobTitle",
+      "sameAs": "http://schema.org/name",
+      "requiredType": "http://schema.org/Text",
+      "example": "Chief Coach",
+      "description": [
+        "The job title for the person, especially used in the context of a leader.",
+        "This person must give direct permission for their personal information to be shared as part of the Open Data."
+      ]
+    },
+    "name": {
+      "fieldName": "name",
+      "sameAs": "http://schema.org/name",
+      "requiredType": "http://schema.org/Text",
+      "example": "Daley Thompson",
+      "description": [
+        "A full name for the person, where structured data around givenName and familyName is not available.",
+        "This person must give direct permission for their personal information to be shared as part of the Open Data."
+      ]
+    },
+    "telephone": {
+      "fieldName": "telephone",
+      "sameAs": "http://schema.org/name",
+      "requiredType": "http://schema.org/Text",
+      "example": "01 811 8055",
+      "description": [
+        "A contact telephone number for the person.",
+        "This person must give direct permission for their personal information to be shared as part of the Open Data."
+      ]
+    },
+    "url": {
+      "fieldName": "url",
+      "sameAs": "http://schema.org/url",
+      "requiredType": "http://schema.org/url",
+      "example": "http://www.example.com/",
+      "description": [
+        "A URL where more information about the person may be found"
+      ]
+    }
+  }
+}

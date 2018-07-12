@@ -1,0 +1,486 @@
+{
+  "type": "Event",
+  "urlType": "sessions",
+  "sameAs": "https://www.openactive.io/ns/oa.jsonld",
+  "derivedFrom": "http://schema.org/Event",
+  "hasId": true,
+  "idFormat": "http://schema.org/url",
+  "sampleId": "https://example.com/event/",
+  "requiredFields": [
+    "@context",
+    "activity",
+    "location",
+    "name",
+    "url"
+  ],
+  "requiredOptions": [
+    {
+      "description": [
+        "While these properties are marked as optional, a data publisher must provide either a schema:startDate or specify a oa:schedule for an event."
+      ],
+      "options": [
+        "startDate",
+        "schedule"
+      ]
+    }
+  ],
+  "recommendedFields": [
+    "description",
+    "duration",
+    "organizer",
+    "eventStatus"
+  ],
+  "inSpec": [
+    "id",
+    "identifier",
+    "url",
+    "name",
+    "description",
+    "image",
+    "startDate",
+    "endDate",
+    "duration",
+    "location",
+    "organizer",
+    "contributor",
+    "maximumAttendeeCapacity",
+    "remainingAttendeeCapacity",
+    "eventStatus",
+    "subEvent",
+    "superEvent",
+    "schedule",
+    "activity",
+    "category",
+    "ageRange",
+    "genderRestriction",
+    "programme",
+    "attendeeInstructions",
+    "leader",
+    "accessibilitySupport",
+    "accessibilityInformation",
+    "isCoached",
+    "level",
+    "meetingPoint"
+  ],
+  "fields": {
+    "@context": {
+      "fieldName": "@context",
+      "requiredType": "http://schema.org/url",
+      "requiredContent": "https://www.openactive.io/ns/oa.jsonld",
+      "description": "",
+      "example": "https://www.openactive.io/ns/oa.jsonld"
+    },
+    "accessibilityInformation": {
+      "fieldName": "accessibilityInformation",
+      "description": [
+        "Provide additional, specific documentation for participants about how disabilities are, or can be supported at the Event."
+      ],
+      "example": "TODO"
+    },
+    "accessibilitySupport": {
+      "fieldName": "accessibilitySupport",
+      "description": [
+        "Used to specify the types of disabilities or impairments that are supported at an event."
+      ],
+      "example": "TODO"
+    },
+    "activity": {
+      "fieldName": "activity",
+      "model": "#Concept",
+      "alternativeModels": [
+        "ArrayOf#Concept"
+      ],
+      "alternativeTypes": [
+        "http://schema.org/Text",
+        "ArrayOf#http://schema.org/Text"
+      ],
+      "context": "!activity",
+      "description": [
+        "Specifies the physical activity or activities that will take place during an event."
+      ],
+      "example": {
+        "id": "https://example.com/reference/activities#Speedball",
+        "inScheme": "https://example.com/reference/activities",
+        "prefLabel": "Speedball",
+        "type": "Concept"
+      }
+    },
+    "ageRange": {
+      "fieldName": "ageRange",
+      "requiredType": "http://schema.org/Text",
+      "description": [
+        "Indicates that an event is suitable for a specific age range. If only a single age is specified then this is assumed to be a minimum age. Age ranges can be specified as follows: 18-30"
+      ],
+      "example": "16-55"
+    },
+    "attendeeInstructions": {
+      "fieldName": "attendeeInstructions",
+      "requiredType": "http://schema.org/Text",
+      "description": [
+        "Provides additional notes and instructions for event attendees. E.g. more information on how to find the event, what to bring, etc."
+      ],
+      "example": "TODO"
+    },
+    "category": {
+      "fieldName": "category",
+      "model": "#Concept",
+      "context": "!category",
+      "description": [
+        "Provides a set of tags that help categorise and describe an event, e.g. its intensity, purpose, etc."
+      ],
+      "example": {
+        "id": "https://example.com/reference/categories#Top%20Club%20Level",
+        "inScheme": "https://example.com/reference/categories",
+        "prefLabel": "Top Club Level",
+        "type": "Concept"
+      }
+    },
+    "contributor": {
+      "fieldName": "contributor",
+      "model": "#Person",
+      "description": [
+        "A Person who contributes to the facilitation of the Event."
+      ],
+      "example": {}
+    },
+    "description": {
+      "fieldName": "description",
+      "requiredType": "http://schema.org/Text",
+      "example": "An fast paced game that incorporates netball, handball and football.",
+      "description": [
+        "A free text description of the event"
+      ]
+    },
+    "duration": {
+      "fieldName": "duration",
+      "requiredType": "http://schema.org/Text",
+      "standard": "$ISO8601Duration",
+      "description": [
+        "The duration of the event given in [ISO8601] format."
+      ],
+      "example": "PT1H"
+    },
+    "endDate": {
+      "fieldName": "endDate",
+      "requiredType": "http://schema.org/DateTime",
+      "standard": "$ISO8601DateTime",
+      "description": [
+        "The end date and time of the event. Can be specified as a schema:Date or  schema:DateTime",
+        "It is recommended that publishers provide either an schema:endDate or a schema:duration for an event."
+      ],
+      "example": "2018-01-27T12:00:00Z"
+    },
+    "eventStatus": {
+      "fieldName": "eventStatus",
+      "requiredType": "http://schema.org/url",
+      "description": [
+        "The status of an event. Can be used to indicate rescheduled or cancelled events"
+      ],
+      "example": "http://schema.org/EventScheduled"
+    },
+    "eventSchedule": {
+      "fieldName": "eventSchedule",
+      "model": "#Schedule",
+      "description": [
+        "TODO"
+      ],
+      "example": {}
+    },
+    "facility": {
+      "fieldName": "facility",
+      "requiredType": "ArrayOf#Place",
+      "description": [
+        "The facilities contained within a Place (location). This could include tennis courts, swimming pools etc."
+      ],
+      "example": [
+        {
+          "description": "Olympic length pool",
+          "geo": {
+            "latitude": 51.4034423828125,
+            "longitude": -0.2369088977575302,
+            "type": "GeoCoordinates"
+          },
+          "id": "https://example.com/locations/1234ABCD/facilities/123",
+          "identifier": "1234ABCD",
+          "name": "Swimming Pool",
+          "type": "Place"
+        }
+      ]
+    },
+    "genderRestriction": {
+      "fieldName": "genderRestriction",
+      "requiredType": "http://schema.org/url",
+      "description": [
+        "Indicates that an event is restricted to male, female or a mixed audience. If a gender restriction isn't specified then applications should assume that an event is suitable for a mixed audience"
+      ],
+      "example": "http://openactive.io/ns#Female",
+      "options": [
+        "http://openactive.io/ns#Female",
+        "http://openactive.io/ns#Male",
+        "http://openactive.io/ns#None"
+      ]
+    },
+    "image": {
+      "fieldName": "image",
+      "model": "#ImageObject",
+      "description": [
+        "An image or photo that depicts the event, e.g. a photo taken at a previous event."
+      ],
+      "example": {
+        "thumbnail": "http://example.com/static/image/speedball_thumbnail.jpg",
+        "type": "ImageObject",
+        "url": "http://example.com/static/image/speedball_large.jpg"
+      }
+    },
+    "isAccessibleForFree": {
+      "fieldName": "isAccessibleForFree",
+      "requiredType": "http://schema.org/Boolean",
+      "description": [
+        "Whether the Event is accessible without charge."
+      ],
+      "example": true
+    },
+    "isCoached": {
+      "fieldName": "isCoached",
+      "requiredType": "http://schema.org/Boolean",
+      "description": [
+        "A boolean property that indicates whether an Event will be coached. This flag allows an Event to be marked as being coached without having to specify a named individual as a coach. This addresses both privacy concerns and also scenarios where the actual coach may only be decided on the day."
+      ],
+      "example": "true"
+    },
+    "level": {
+      "fieldName": "level",
+      "requiredType": "TODO",
+      "description": [
+        "A general purpose property for specifying the suitability of an event for different participant “levels”. E.g. beginner/intermediate/advanced. Or in the case of martial arts, specific belt requirements. Values should ideally be drawn from a controlled vocabulary."
+      ],
+      "example": "TODO"
+    },
+    "leader": {
+      "fieldName": "leader",
+      "model": "#Person",
+      "description": [
+        "Refers to a person (schema:Person) who will be leading an event. E.g. a coach. This is a more specific role than an organiser or a contributor. The person will need to have given their consent for their personal information to be present in the Open Data."
+      ],
+      "example": {
+        "familyName": "Smith",
+        "givenName": "Nicole",
+        "id": "https://example.com/locations/1234ABCD/leaders/89",
+        "identifier": 89,
+        "type": "Person"
+      }
+    },
+    "location": {
+      "fieldName": "location",
+      "model": "#Place",
+      "alternativeModels": [
+        "#PostalAddress"
+      ],
+      "alternativeTypes": [
+        "http://schema.org/Text"
+      ],
+      "description": [
+        "The location at which the event will take place. Or, in the case of events that may span multiple locations, the initial meeting or starting point.",
+        "It is recommended that locations should be specified as a [Place](/models/place) complete with a fully described geographic location and/or address.\r\n\rIf only an address is available then this should be described as a [PostalAddress](/models/postaladdress).",
+        "Applications may use [schema:Text](http://schema.org/Text) to provide a more general description of a location (\"In Victoria Park, near the lake\"), but this is not recommended: consuming applications will be unable to help users discover opportunities based on their location."
+      ],
+      "example": {
+        "address": {
+          "addressLocality": "New Malden",
+          "addressRegion": "London",
+          "postalCode": "NW5 3DU",
+          "streetAddress": "Raynes Park High School, 46A West Barnes Lane",
+          "type": "PostalAddress"
+        },
+        "description": "Raynes Park High School in London",
+        "geo": {
+          "latitude": 51.4034423828125,
+          "longitude": -0.2369088977575302,
+          "type": "GeoCoordinates"
+        },
+        "id": "https://example.com/locations/1234ABCD",
+        "identifier": "1234ABCD",
+        "name": "Raynes Park High School",
+        "telephone": "01253 473934",
+        "type": "Place"
+      }
+    },
+    "maximumAttendeeCapacity": {
+      "fieldName": "maximumAttendeeCapacity",
+      "requiredType": "http://schema.org/Integer",
+      "description": [
+        "The maximum capacity of the Event."
+      ],
+      "example": 30
+    },
+    "meetingPoint": {
+      "fieldName": "meetingPoint",
+      "requiredType": "TODO",
+      "description": [
+        "Instructions for the attendees of an Event about where they should meet the organizer or leader at the start of the event. Some larger locations may have several possible meeting points, so this property provides additional more specific directions."
+      ],
+      "example": "TODO"
+    },
+    "name": {
+      "fieldName": "name",
+      "requiredType": "http://schema.org/Text",
+      "example": "Speedball",
+      "description": [
+        "The name of the event"
+      ]
+    },
+    "offers": {
+      "fieldName": "offers",
+      "requiredType": "ArrayOf#Offer",
+      "description": [
+        "The available offers for this Event."
+      ],
+      "example": [
+        {
+          "availabilityEnds": "2014-04-29T12:14:35",
+          "availabilityStarts": "2014-04-29T12:14:35",
+          "description": "Winger space for Speedball.",
+          "id": "https://example.com/sessions/9209#/offers/1234",
+          "identifier": 2134,
+          "name": "Speedball winger position",
+          "price": 33,
+          "priceCurrency": "GBP",
+          "type": "Offer"
+        }
+      ]
+    },
+    "organizer": {
+      "fieldName": "organizer",
+      "model": "#Organization",
+      "alternativeModel": [
+        "#Person"
+      ],
+      "description": [
+        "The person or organization ultimately responsible for an event. An organizer might be an  schema:Organization or a schema:Person."
+      ],
+      "example": {
+        "name": "Central Speedball Association",
+        "type": "Organization",
+        "url": "http://www.speedball-world.com"
+      }
+    },
+    "potentialAction": {
+      "fieldName": "potentialAction",
+      "requiredType": "ArrayOf#ReserveAction",
+      "description": [
+        "The possible actions that a user may make. e.g. Book."
+      ],
+      "example": [
+        {
+          "name": "Book",
+          "target": {
+            "encodingType": "application/vnd.openactive.v0.4+json",
+            "httpMethod": "POST",
+            "type": "EntryPoint",
+            "url": "https://example.com/orders"
+          },
+          "type": "ReserveAction"
+        }
+      ]
+    },
+    "programme": {
+      "fieldName": "programme",
+      "model": "#Brand",
+      "description": [
+        "Indicates that an event will be organised according to a specific Programme."
+      ],
+      "example": {
+        "name": "Play Ball!",
+        "description": "Play Ball! is a series of games for people of all abilities.",
+        "url": "http://example.com/play_ball",
+        "logo": "http://example.com/images/play_ball_logo.svg"
+      }
+    },
+    "remainingAttendeeCapacity": {
+      "fieldName": "remainingAttendeeCapacity",
+      "requiredType": "http://schema.org/Integer",
+      "description": [
+        "The number of places that are still available for the Event."
+      ],
+      "example": 20
+    },
+    "sameAs": {
+      "fieldName": "sameAs",
+      "requiredType": "ArrayOf#http://schema.org/url",
+      "description": [
+        "TODO"
+      ],
+      "example": [
+        "http://www.facebook.com/speedball",
+        "https://www.twitter.com/speedball",
+        "http://www.speedball-world.com"
+      ]
+    },
+    "schedule": {
+      "fieldName": "schedule",
+      "model": "#Schedule",
+      "description": [
+        "A schedule defines a repeating time period used to describe a regularly occurring Event.",
+        "**Note: this is a draft Schema.org property. See https://github.com/openactive/modelling-opportunity-data/issues/2 for discussion."
+      ],
+      "example": "TODO"
+    },
+    "startDate": {
+      "fieldName": "startDate",
+      "requiredType": "http://schema.org/DateTime",
+      "standard": "$ISO8601DateTime",
+      "description": [
+        "The start date and time of the event. Can be specified as a schema:Date or schema:DateTime."
+      ],
+      "example": "2018-01-27T12:00:00Z"
+    },
+    "url": {
+      "fieldName": "url",
+      "requiredType": "http://schema.org/url",
+      "description": [
+        "A URL to a web page (or section of a page) that describes the event."
+      ],
+      "example": "https://example.com/event/1234"
+    },
+    "waitingListCount": {
+      "fieldName": "waitingListCount",
+      "requiredType": "http://schema.org/Integer",
+      "description": [
+        "The number of people already in the waiting list for this particular Event."
+      ],
+      "example": 10
+    }
+  },
+  "betaFields": {
+    "anonymousLeaseDuration": {
+      "fieldName": "anonymousLeaseDuration",
+      "requiredType": "http://schema.org/Text",
+      "standard": "$ISO8601Duration",
+      "description": [
+          "TODO"
+      ],
+      "example": "PT15M"
+    }
+  },
+  "description": {
+    "sections": [
+      {
+        "title": "Example heading",
+        "paragraphs": [
+          "This is the first paragraph",
+          "This is the second paragraph"
+        ]
+      }
+    ]
+  },
+  "namedExamples": [
+    {
+      "title": "Describing a session",
+      "description": [
+        "The type property indicates that the JSON is describing an Event rather than one of the other types of resource defined in the data model.",
+        "This is a very basic session description. The following examples illustrate how to provide more detail."
+      ],
+      "example": "event_example_1.json"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "type": "EntryPoint",
+  "sameAs": null,
+  "derivedFrom": "http://schema.org/EntryPoint",
+  "hasId": false,
+  "requiredFields": [
+    "httpMethod",
+    "url"
+  ],
+  "recommendedFields": [
+    "encodingType"
+  ],
+  "fields": {
+    "encodingType": {
+      "fieldName": "encodingType",
+      "sameAs": "http://schema.org/encodingType",
+      "requiredType": "http://schema.org/Text",
+      "requiredContent": "application/vnd.openactive.v0.4+json",
+      "example": "application/vnd.openactive.v0.4+json",
+      "description": [
+        "The supported encoding type for an EntryPoint request"
+      ]
+    },
+    "httpMethod": {
+      "fieldName": "httpMethod",
+      "sameAs": "http://schema.org/httpMethod",
+      "requiredType": "http://schema.org/Text",
+      "example": "POST",
+      "description": [
+        "An HTTP method that specifies the appropriate HTTP method for a request to an HTTP EntryPoint. Values are capitalized strings as used in HTTP."
+      ]
+    },
+    "url": {
+      "fieldName": "url",
+      "sameAs": "http://schema.org/url",
+      "requiredType": "http://schema.org/url",
+      "example": "https://example.com/orders",
+      "description": [
+        "URL of the item"
+      ]
+    }
+
+  }
+}

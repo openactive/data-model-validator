@@ -1,0 +1,36 @@
+{
+  "type": "ReserveAction",
+  "sameAs": null,
+  "derivedFrom": "http://schema.org/ReserveAction",
+  "hasId": false,
+  "requiredFields": [
+    "name",
+    "target"
+  ],
+  "recommendedFields": [],
+  "fields": {
+    "name":{
+      "fieldName": "name",
+      "sameAs": "http://schema.org/name",
+      "requiredType": "http://schema.org/Text",
+      "example": "Book",
+      "description": [
+        "The name of the action"
+      ]
+    },
+    "target":{
+      "fieldName": "target",
+      "model": "#EntryPoint",
+      "example":
+      {
+        "encodingType": "application/vnd.openactive.v0.4+json",
+        "httpMethod": "POST",
+        "type": "EntryPoint",
+        "url": "https://example.com/orders"
+      },
+      "description": [
+        "A definition of the target of the action."
+      ]
+    }
+  }
+}

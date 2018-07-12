@@ -1,0 +1,6 @@
+{
+  "name": "ISO 8601 Datetime",
+  "reference": "https://en.wikipedia.org/wiki/ISO_8601",
+  "pattern": "",
+  "validationErrorMessage": "Dates should be expressed as ISO 8601 format datetimes with a trailing definition of timezone"
+}
