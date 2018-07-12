@@ -13,6 +13,17 @@
   "recommendedFields": [
     "geo"
   ],
+  "inSpec": [
+    "id",
+    "type",
+    "address",
+    "ammenityFeature",
+    "description",
+    "geo",
+    "name",
+    "telephone",
+    "url"
+  ],
   "fields": {
     "address": {
       "fieldName": "address",

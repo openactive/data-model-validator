@@ -8,6 +8,12 @@
     "prefLabel",
     "identifier"
   ],
+  "inSpec": [
+    "type",
+    "inScheme",
+    "prefLabel",
+    "identifier"
+  ],
   "fields": {
     "inScheme": {
       "fieldName": "inScheme",

@@ -8,6 +8,11 @@
     "target"
   ],
   "recommendedFields": [],
+  "inSpec": [
+    "type",
+    "name",
+    "target"
+  ],
   "fields": {
     "name":{
       "fieldName": "name",

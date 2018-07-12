@@ -14,6 +14,17 @@
     "logo",
     "sameAs"
   ],
+  "inSpec": [
+    "id",
+    "type",
+    "name",
+    "url",
+    "email",
+    "image",
+    "logo",
+    "sameAs",
+    "telephone"
+  ],
   "fields": {
     "email": {
       "fieldName": "email",

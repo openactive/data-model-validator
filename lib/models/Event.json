@@ -31,6 +31,8 @@
     "eventStatus"
   ],
   "inSpec": [
+    "@context",
+    "type",
     "id",
     "identifier",
     "url",

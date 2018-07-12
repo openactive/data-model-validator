@@ -19,6 +19,18 @@
       ]
     }
   ],
+  "inSpec": [
+    "id",
+    "type",
+    "email",
+    "familyName",
+    "gender",
+    "givenName",
+    "jobTitle",
+    "name",
+    "telephone",
+    "url"
+  ],
   "fields": {
     "email": {
       "fieldName": "email",

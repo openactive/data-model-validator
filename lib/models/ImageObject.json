@@ -6,6 +6,11 @@
   "requiredFields":[
     "url"
   ],
+  "inSpec": [
+    "type",
+    "thumbnail",
+    "url"
+  ],
   "fields": {
     "thumbnail": {
       "fieldName": "thumbnail",

@@ -4,12 +4,24 @@
   "derivedFrom": "http://pending.schema.org/Schedule",
   "hasId": false,
   "requiredFields": [],
+  "inSpec": [
+    "type",
+    "byDay",
+    "byMonth",
+    "byMonthDay",
+    "eventSchedule",
+    "exceptDate",
+    "repeatCount",
+    "repeatFrequency"
+  ],
   "fields": {
     "byDay": {
       "fieldName": "byDay",
       "requiredType": "http://schema.org/url",
       "example": "http://schema.org/Monday",
-      "description": ["Defines the day of the week upon which the Event takes place"],
+      "description": [
+        "Defines the day of the week upon which the Event takes place"
+      ],
       "options": [
         "http://schema.org/Monday",
         "http://schema.org/Tuesday",

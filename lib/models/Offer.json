@@ -16,6 +16,18 @@
     "acceptedPaymentMethod",
     "eligibleCustomerType"
   ],
+  "inSpec": [
+    "id",
+    "type",
+    "name",
+    "description",
+    "price",
+    "priceCurrency",
+    "availabilityStarts",
+    "availabilityEnds",
+    "acceptedPaymentMethod",
+    "eligibleCustomerType"
+  ],
   "fields": {
     "acceptedPaymentMethod": {
       "fieldName": "acceptedPaymentMethod",

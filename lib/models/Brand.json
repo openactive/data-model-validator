@@ -13,6 +13,14 @@
     "description",
     "logo"
   ],
+  "inSpec": [
+    "id",
+    "type",
+    "name",
+    "url",
+    "description",
+    "logo"
+  ],
   "fields": {
     "name": {
       "fieldName": "name",

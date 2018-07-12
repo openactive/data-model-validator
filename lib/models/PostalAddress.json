@@ -12,6 +12,14 @@
     "addressLocality",
     "addressRegion"
   ],
+  "inSpec": [
+    "type",
+    "addressCountry",
+    "addressLocality",
+    "addressRegion",
+    "postalCode",
+    "streetAddress"
+  ],
   "fields": {
     "addressCountry": {
       "fieldName": "addressCountry",

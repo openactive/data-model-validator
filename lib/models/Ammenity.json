@@ -7,6 +7,11 @@
     "type",
     "value"
   ],
+  "inSpec": [
+    "name",
+    "type",
+    "value"
+  ],
   "fields": {
     "name": {
       "fieldName": "name",

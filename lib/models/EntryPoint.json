@@ -10,6 +10,12 @@
   "recommendedFields": [
     "encodingType"
   ],
+  "inSpec": [
+    "type",
+    "encodingType",
+    "httpMethod",
+    "url"
+  ],
   "fields": {
     "encodingType": {
       "fieldName": "encodingType",
