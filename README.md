@@ -62,13 +62,49 @@ $ npm test
 
 To add a new rule, you will need to extend the `Rule` class, following these rules:
 
-* Set `this._targetModels` to the name of model you are targeting, or a `*` wildcard.
-* Optionally set `this._targetFields` to the name of field you are targeting, or a `*` wildcard. Setting the property to `null` means that the rule will be applied once to the whole model.
+* Set `this._targetModels` to an array of the names of model you are targeting, or a string `'*'` wildcard.
+* Optionally set `this._targetFields` to an object map of the fields you are targeting in each model, or a string `'*''` wildcard. Setting the property to `null` means that the rule will be applied once to the whole model.
 * Set `this._description` to explain what the rule is testing for.
 * If just targeting models, implement `validateModel`.
 * If targeting specific fields, implement `validateField`.
 * Write a test for your rule.
 * Add the rule to the list in `rules/index`, so that it is processed.
+
+#### Rule targeting
+
+There is a lot of flexibility in the way that you can target rules.
+
+To target all models at the top level:
+
+```js
+this._targetModels = '*';
+```
+
+To target all fields in every model:
+
+```js
+this._targetFields = '*';
+```
+
+To target specific models at the top level:
+
+```js
+this._targetModels = ['Event', 'Place'];
+```
+
+To target specific fields in specific models:
+
+```js
+this._targetFields = {
+    'Event': [
+        'startDate',
+        'endDate'
+    ],
+    'Place': [
+        'url'
+    ]
+};
+```
 
 #### Example
 
