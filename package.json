@@ -23,8 +23,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "jasmine-node": "^1.15.0",
-    "jsonpath": "^1.0.0"
+    "jasmine-node": "^1.15.0"
   },
   "scripts": {
     "test": "./node_modules/.bin/jasmine-node lib"
