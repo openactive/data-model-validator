@@ -1,6 +1,0 @@
-{
-  "name": "WGS 84",
-  "reference": "https://en.wikipedia.org/wiki/World_Geodetic_System",
-  "pattern": "^(\\+|-)?(?:90(?:(?:\\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]{1,6})?))$",
-  "validationErrorMessage": "Geo points should be expressed as floating point numbers, -180 to 180 and with at least n places of precision."
-}

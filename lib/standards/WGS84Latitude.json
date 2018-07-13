@@ -1,0 +1,6 @@
+{
+  "name": "WGS 84 Latitude",
+  "reference": "https://en.wikipedia.org/wiki/World_Geodetic_System",
+  "pattern": "^(\\+|-)?(?:90(?:(?:\\.0{1,})?)|(?:[0-9]|[1-8][0-9])(?:(?:\\.[0-9]{1,})?))$",
+  "validationErrorMessage": "Geo latitude points should be expressed as floating point numbers, -90 to 90 and with up to n places of precision."
+}
