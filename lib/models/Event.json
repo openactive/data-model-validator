@@ -156,7 +156,6 @@
     "duration": {
       "fieldName": "duration",
       "requiredType": "http://schema.org/Text",
-      "standard": "$ISO8601Duration",
       "description": [
         "The duration of the event given in [ISO8601] format."
       ],
@@ -165,7 +164,6 @@
     "endDate": {
       "fieldName": "endDate",
       "requiredType": "http://schema.org/DateTime",
-      "standard": "$ISO8601DateTime",
       "description": [
         "The end date and time of the event. Can be specified as a schema:Date or  schema:DateTime",
         "It is recommended that publishers provide either an schema:endDate or a schema:duration for an event."
@@ -430,7 +428,6 @@
     "startDate": {
       "fieldName": "startDate",
       "requiredType": "http://schema.org/DateTime",
-      "standard": "$ISO8601DateTime",
       "description": [
         "The start date and time of the event. Can be specified as a schema:Date or schema:DateTime."
       ],
@@ -456,8 +453,7 @@
   "betaFields": {
     "anonymousLeaseDuration": {
       "fieldName": "anonymousLeaseDuration",
-      "requiredType": "http://schema.org/Text",
-      "standard": "$ISO8601Duration",
+      "requiredType": "http://schema.org/Duration",
       "description": [
           "TODO"
       ],

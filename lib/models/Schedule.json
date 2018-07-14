@@ -80,8 +80,7 @@
       "example": "TODO",
       "description": [
         "Defines the frequency at which Events will occur according to a Schedule. The intervals between events should be defined as a Duration of time."
-      ],
-      "standard": "$ISO8601Duration"
+      ]
     }
   }
 }

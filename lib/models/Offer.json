@@ -44,7 +44,6 @@
       "fieldName": "availabilityEnds",
       "sameAs": "http://schema.org/availabilityEnds",
       "requiredType": "http://schema.org/DateTime",
-      "standard": "$ISO8601DateTime",
       "example": "2014-04-29T12:14:35Z",
       "description": [
         "The end of the availability of the activity included in the offer."
@@ -54,7 +53,6 @@
       "fieldName": "availabilityStarts",
       "sameAs": "http://schema.org/availabilityStarts",
       "requiredType": "http://schema.org/DateTime",
-      "standard": "$ISO8601DateTime",
       "example": "2014-04-29T12:14:35Z",
       "description": [
         "The beginning of the availability of the activity included in the offer."
