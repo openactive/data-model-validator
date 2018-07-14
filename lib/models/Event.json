@@ -155,7 +155,7 @@
     },
     "duration": {
       "fieldName": "duration",
-      "requiredType": "http://schema.org/Text",
+      "requiredType": "http://schema.org/Duration",
       "description": [
         "The duration of the event given in [ISO8601] format."
       ],
@@ -164,6 +164,9 @@
     "endDate": {
       "fieldName": "endDate",
       "requiredType": "http://schema.org/DateTime",
+      "alternativeTypes": [
+        "http://schema.org/Date"
+      ],
       "description": [
         "The end date and time of the event. Can be specified as a schema:Date or  schema:DateTime",
         "It is recommended that publishers provide either an schema:endDate or a schema:duration for an event."
@@ -428,6 +431,9 @@
     "startDate": {
       "fieldName": "startDate",
       "requiredType": "http://schema.org/DateTime",
+      "alternativeTypes": [
+        "http://schema.org/Date"
+      ],
       "description": [
         "The start date and time of the event. Can be specified as a schema:Date or schema:DateTime."
       ],
