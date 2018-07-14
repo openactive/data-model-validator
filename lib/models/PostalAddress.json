@@ -28,8 +28,7 @@
       "example": "GB",
       "description": [
         "The country, expressed as a two-letter ISO 3166-1 alpha-2 country code."
-      ],
-      "standard": "$ISO3166-1-ALPHA2"
+      ]
     },
     "addressLocality": {
       "fieldName": "addressLocality",
