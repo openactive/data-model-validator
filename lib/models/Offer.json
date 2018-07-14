@@ -88,7 +88,6 @@
       "sameAs": "http://schema.org/price",
       "requiredType": "http://schema.org/Text",
       "example": "33.00",
-      "standard": "$OAPRICE",
       "description": [
         "The offer price of the activity.",
         "This price should be specified without currency symbols and as a string representation of a floating point number with two decimal places.",
@@ -99,7 +98,6 @@
       "fieldName": "priceCurrency",
       "sameAs": "http://schema.org/priceCurrency",
       "requiredType": "http://schema.org/Text",
-      "standard": "$ISO4217-3LETTER",
       "example": "GBP",
       "description": [
         "The currency (in 3-letter ISO 4217 format) of the price."
