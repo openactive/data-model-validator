@@ -1,0 +1,88 @@
+{
+  "type": "Organization",
+  "sameAs": null,
+  "derivedFrom": "http://schema.org/Organization",
+  "hasId": true,
+  "idFormat": "http://schema.org/url",
+  "sampleId": "https://example.com/organization/",
+  "requiredFields": [
+    "name",
+    "url"
+  ],
+  "recommendedFields": [
+    "email",
+    "logo",
+    "sameAs"
+  ],
+  "inSpec": [
+    "id",
+    "type",
+    "name",
+    "url",
+    "email",
+    "image",
+    "logo",
+    "sameAs",
+    "telephone"
+  ],
+  "fields": {
+    "email": {
+      "fieldName": "email",
+      "requiredType": "http://schema.org/Text",
+      "example": "help@example.com",
+      "description": [
+        "Email address for reliable, timely contact within the Organization."
+      ]
+    },
+    "image": {
+      "fieldName": "image",
+      "requiredType": "http://schema.org/url",
+      "example": "http://www.speedball-world.com/static/images/action.jpg",
+      "description": [
+        "A representative image for the Organization."
+      ]
+    },
+    "logo": {
+      "fieldName": "logo",
+      "requiredType": "http://schema.org/url",
+      "example": "http://www.speedball-world.com/static/images/logo.jpg",
+      "description": [
+        "A logo for the Organization."
+      ]
+    },
+    "name": {
+      "fieldName": "name",
+      "sameAs": "http://schema.org/name",
+      "requiredType": "http://schema.org/Text",
+      "example": "Central Speedball Association",
+      "description": [
+        "The name of the Organization"
+      ]
+    },
+    "sameAs": {
+      "fieldName": "sameAs",
+      "requiredType": "ArrayOf#http://schema.org/url",
+      "example": "[]",
+      "description": [
+        "An array of URLs for additional online presences for the Organization, such as social media accounts."
+      ]
+    },
+    "telephone": {
+      "fieldName": "telephone",
+      "sameAs": "http://schema.org/name",
+      "requiredType": "http://schema.org/Text",
+      "example": "",
+      "description": [
+        "A telephone number for the Organization."
+      ]
+    },
+    "url": {
+      "fieldName": "url",
+      "requiredType": "http://schema.org/url",
+      "example": "http://www.speedball-world.com",
+      "description": [
+        "A definitive canonical URL for the Organization."
+      ]
+    }
+  }
+}

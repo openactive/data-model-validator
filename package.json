@@ -1,0 +1,34 @@
+{
+  "name": "openactive-data-model-validator",
+  "version": "0.1.0",
+  "description": "A library to allow a developer to validate a JSON document against the OpenActive Modelling Opportunity Specification",
+  "homepage": "http://openactive.io",
+  "author": "Pete Walker <pete@imin.co> (https://github.com/petewalker)",
+  "keywords": [
+    "openactive",
+    "odi",
+    "validator",
+    "json"
+  ],
+  "main": "lib/index.js",
+  "engines": {
+    "node": "8.11.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/openactive/data-model-validator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/openactive/data-model-validator/issues"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "currency-codes": "^1.3.0",
+    "jasmine-node": "^1.15.0",
+    "moment": "^2.22.2",
+    "validator": "^10.4.0"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/jasmine-node lib"
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "type": "Schedule",
+  "sameAs": null,
+  "derivedFrom": "http://pending.schema.org/Schedule",
+  "hasId": false,
+  "requiredFields": [],
+  "inSpec": [
+    "type",
+    "byDay",
+    "byMonth",
+    "byMonthDay",
+    "eventSchedule",
+    "exceptDate",
+    "repeatCount",
+    "repeatFrequency"
+  ],
+  "fields": {
+    "byDay": {
+      "fieldName": "byDay",
+      "requiredType": "http://schema.org/url",
+      "example": "http://schema.org/Monday",
+      "description": [
+        "Defines the day of the week upon which the Event takes place"
+      ],
+      "options": [
+        "http://schema.org/Monday",
+        "http://schema.org/Tuesday",
+        "http://schema.org/Wednesday",
+        "http://schema.org/Thursday",
+        "http://schema.org/Friday",
+        "http://schema.org/Saturday",
+        "http://schema.org/Sunday"
+      ]
+    },
+    "byMonth": {
+      "fieldName": "byMonth",
+      "requiredType": "http://schema.org/Integer",
+      "example": 2,
+      "description": [
+        "Defines the month of the year on which the Event takes place. Specified as an integer between 1 and 12, with 1 representing January."
+      ]
+    },
+    "byMonthDay": {
+      "fieldName": "byMonthDay",
+      "requiredType": "http://schema.org/Integer",
+      "example": 28,
+      "description": [
+        "Defines the day of the month on which the Event takes place. Specified as an integer between 1 and 31"
+      ]
+    },
+    "eventSchedule": {
+      "fieldName": "eventSchedule",
+      "requiredType": "http://schema.org/Duration",
+      "example": "TODO",
+      "description": [
+        "TODO"
+      ]
+    },
+    "exceptDate": {
+      "fieldName": "exceptDate",
+      "requiredType": "http://schema.org/Date",
+      "alternativeTypes": ["http://schema.org/DateTime"],
+      "example": "TODO",
+      "description": [
+        "TODO"
+      ]
+    },
+    "repeatCount": {
+      "fieldName": "repeatCount",
+      "requiredType": "http://schema.org/Integer",
+      "example": 3,
+      "description": [
+        "Defines the number of times a recurring Event will take place."
+      ]
+    },
+    "repeatFrequency": {
+      "fieldName": "repeatFrequency",
+      "requiredType": "http://schema.org/Duration",
+      "alternativeTypes": ["http://schema.org/Text"],
+      "example": "TODO",
+      "description": [
+        "Defines the frequency at which Events will occur according to a Schedule. The intervals between events should be defined as a Duration of time."
+      ]
+    }
+  }
+}
