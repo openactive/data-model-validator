@@ -1,6 +1,0 @@
-{
-  "name": "WGS 84 Longitude",
-  "reference": "https://en.wikipedia.org/wiki/World_Geodetic_System",
-  "pattern": "^(\\+|-)?(?:180(?:(?:\\.0{1,})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\\.[0-9]{1,})?))$",
-  "validationErrorMessage": "Geo longitude points should be expressed as floating point numbers, -180 to 180 and with up to n places of precision."
-}

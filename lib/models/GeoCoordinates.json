@@ -21,8 +21,7 @@
       "example": 51.522338,
       "description": [
         "The latitude of a location. For example 51.522338 (WGS 84)."
-      ],
-      "standard": "$WGS84Latitude"
+      ]
     },
     "longitude": {
       "fieldName": "longitude",
@@ -32,8 +31,7 @@
       "example": -0.083437,
       "description": [
         "The longitude of a location. For example -0.083437 (WGS 84)."
-      ],
-      "standard": "$WGS84Longitude"
+      ]
     }
   }
 }
