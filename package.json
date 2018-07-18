@@ -10,7 +10,7 @@
     "validator",
     "json"
   ],
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "engines": {
     "node": "8.11.3"
   },
@@ -32,6 +32,6 @@
     "jasmine-node": "^1.15.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/jasmine-node lib"
+    "test": "./node_modules/.bin/jasmine-node src"
   }
 }
