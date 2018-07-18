@@ -2,6 +2,9 @@
 
 The OpenActive data model validator library.
 
+[![Build Status](https://travis-ci.org/openactive/data-model-validator.svg?branch=master)](https://travis-ci.org/openactive/data-model-validator)
+[![Known Vulnerabilities](https://snyk.io/test/github/openactive/data-model-validator/badge.svg)](https://snyk.io/test/github/openactive/data-model-validator)
+
 ## Introduction
 
 This library allows developers to validate JSON models to the latest [OpenActive Modelling Opportunity Data](https://www.openactive.io/modelling-opportunity-data/) specification.
