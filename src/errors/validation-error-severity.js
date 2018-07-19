@@ -1,10 +1,10 @@
-'use strict';
 
-let ValidationErrorSeverity = Object.freeze({
-    FAILURE: "failure",
-    WARNING: "warning",
-    NOTICE: "notice",
-    SUGGESTION: "suggestion"
+
+const ValidationErrorSeverity = Object.freeze({
+  FAILURE: 'failure',
+  WARNING: 'warning',
+  NOTICE: 'notice',
+  SUGGESTION: 'suggestion',
 });
 
 module.exports = ValidationErrorSeverity;

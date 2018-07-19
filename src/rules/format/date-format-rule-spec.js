@@ -1,92 +1,92 @@
-'use strict';
+
 
 const DateFormatRule = require('./date-format-rule');
 const Model = require('../../classes/model');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 
-describe('DateFormatRule', function() {
-    const rule = new DateFormatRule();
+describe('DateFormatRule', () => {
+  const rule = new DateFormatRule();
 
-    it('should target fields of any type', function() {
-        let model = new Model({
-            "type": "Event"
-        });
-        let isTargeted = rule.isFieldTargeted(model, 'type');
-        expect(isTargeted).toBe(true);
+  it('should target fields of any type', () => {
+    const model = new Model({
+      type: 'Event',
     });
+    const isTargeted = rule.isFieldTargeted(model, 'type');
+    expect(isTargeted).toBe(true);
+  });
 
-    // ISO8601Date
-    it('should return no error for an valid date', function() {
-        let model = new Model({
-            "type": "Event",
-            "fields": {
-                "date": {
-                    "fieldName": "date",
-                    "requiredType": "http://schema.org/Date"
-                }
-            }
-        });
-        model.hasSpecification = true;
-
-        let values = [
-            "2017-09-06",
-            "20180115"
-        ];
-
-        for (let value of values) {
-            let data = {
-                "date": value
-            };
-            let errors = rule.validate(data, model, null);
-            expect(errors.length).toBe(0);
-        }
+  // ISO8601Date
+  it('should return no error for an valid date', () => {
+    const model = new Model({
+      type: 'Event',
+      fields: {
+        date: {
+          fieldName: 'date',
+          requiredType: 'http://schema.org/Date',
+        },
+      },
     });
-    it('should return an error for an invalid date', function() {
-        let model = new Model({
-            "type": "Event",
-            "fields": {
-                "date": {
-                    "fieldName": "date",
-                    "requiredType": "http://schema.org/Date"
-                }
-            }
-        });
-        model.hasSpecification = true;
+    model.hasSpecification = true;
 
-        let values = [
-            "2017-12-06T09:00:00",
-            "2018-13-17",
-            "ABC",
-            "2017-02-29" // Not a leap year
-        ];
+    const values = [
+      '2017-09-06',
+      '20180115',
+    ];
 
-        for (let value of values) {
-            let data = {
-                "date": value
-            };
-            let errors = rule.validate(data, model, null);
-            expect(errors.length).toBe(1);
-            expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
-            expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
-        }
+    for (const value of values) {
+      const data = {
+        date: value,
+      };
+      const errors = rule.validate(data, model, null);
+      expect(errors.length).toBe(0);
+    }
+  });
+  it('should return an error for an invalid date', () => {
+    const model = new Model({
+      type: 'Event',
+      fields: {
+        date: {
+          fieldName: 'date',
+          requiredType: 'http://schema.org/Date',
+        },
+      },
     });
-    it('should return an error for an invalid date from an unknown Model', function() {
-        let model = new Model({});
+    model.hasSpecification = true;
 
-        let values = [
-            "2018-13-17",
-            "2017-02-29" // Not a leap year
-        ];
+    const values = [
+      '2017-12-06T09:00:00',
+      '2018-13-17',
+      'ABC',
+      '2017-02-29', // Not a leap year
+    ];
 
-        for (let value of values) {
-            let data = {
-                "date": value
-            };
-            let errors = rule.validate(data, model, null);
-            expect(errors.length).toBe(1);
-            expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
-            expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
-        }
-    });
+    for (const value of values) {
+      const data = {
+        date: value,
+      };
+      const errors = rule.validate(data, model, null);
+      expect(errors.length).toBe(1);
+      expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
+  });
+  it('should return an error for an invalid date from an unknown Model', () => {
+    const model = new Model({});
+
+    const values = [
+      '2018-13-17',
+      '2017-02-29', // Not a leap year
+    ];
+
+    for (const value of values) {
+      const data = {
+        date: value,
+      };
+      const errors = rule.validate(data, model, null);
+      expect(errors.length).toBe(1);
+      expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
+  });
 });
