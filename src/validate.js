@@ -139,7 +139,7 @@ function applySubModelRules(rules, data, field, model, parent, path) {
 
     if (data[field] instanceof Array) {
         fieldsToTest = data[field];
-    } else if (typeof(data[field]) === 'object') {
+    } else if (typeof(data[field]) === 'object' && data[field] !== null) {
         fieldsToTest.push(data[field]);
         isSingleObject = true;
     }

@@ -65,6 +65,9 @@ let Field = class {
     detectType(data, inArray = false) {
         let possibleTypes = this.getAllPossibleTypes();
         let returnType;
+        if (data === null) {
+            return 'null';
+        }
         if (typeof(data) === "boolean") {
             return "http://schema.org/Boolean";
         }

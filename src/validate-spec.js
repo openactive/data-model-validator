@@ -163,4 +163,20 @@ describe('validate', function() {
         expect(result[2].severity).toBe(ValidationErrorSeverity.WARNING);
         expect(result[2].path).toBe('$.location');
     });
+
+    it('should not throw if a property of value null is passed', function() {
+        let data = {
+            "type": "Event",
+            "beta:distance": null
+        };
+
+        let result;
+
+        let doValidate = function() {
+            result = validate(data);
+        };
+
+        expect(doValidate).not.toThrow();
+        expect(typeof result).toBe('object');
+    });
 });
