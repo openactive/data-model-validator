@@ -1,58 +1,49 @@
-'use strict';
+
 
 const ValidationErrorMessage = require('./validation-error-message');
 
-let ValidationError = class {
-
-    constructor(data) {
-        if ((typeof(data.message) === 'undefined'
-            || data.message === null)
-            && typeof(data.type) !== 'undefined'
-            && typeof(ValidationErrorMessage[data.type]) !== 'undefined'
-        ) {
-            data.message = ValidationErrorMessage[data.type];
-        }
-        this._data = data;
+const ValidationError = class {
+  constructor(data) {
+    this.data = data;
+    if (
+      (
+        typeof (this.data.message) === 'undefined'
+        || this.data.message === null
+      )
+      && typeof (this.data.type) !== 'undefined'
+      && typeof (ValidationErrorMessage[this.data.type]) !== 'undefined'
+    ) {
+      this.data.message = ValidationErrorMessage[this.data.type];
     }
+  }
 
-    get data() {
-        return {
-            "category": this.category,
-            "type": this.type,
-            "message": this.message,
-            "value": this.value,
-            "severity": this.severity,
-            "path": this.path
-        };
-    }
+  get category() {
+    return this.data.category;
+  }
 
-    get category() {
-        return this._data.category;
-    }
+  get type() {
+    return this.data.type;
+  }
 
-    get type() {
-        return this._data.type;
-    }
+  get message() {
+    return this.data.message;
+  }
 
-    get message() {
-        return this._data.message;
-    }
+  get severity() {
+    return this.data.severity;
+  }
 
-    get severity() {
-        return this._data.severity;
-    }
+  set path(path) {
+    this.data.path = path;
+  }
 
-    set path(path) {
-        this._data.path = path;
-    }
+  get path() {
+    return this.data.path;
+  }
 
-    get path() {
-        return this._data.path;
-    }
-
-    get value() {
-        return this._data.value;
-    }
-}
+  get value() {
+    return this.data.value;
+  }
+};
 
 module.exports = ValidationError;

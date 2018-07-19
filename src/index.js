@@ -2,16 +2,13 @@
  * data-model-validator
  * MIT Licensed
  */
-
-'use strict';
-
-exports = module.exports = createValidator();
+const validate = require('./validate');
 
 function createValidator() {
-
-    let root = {
-        validate: require('./validate')
-    };
-
-    return root;
+  const root = {
+    validate,
+  };
+  return root;
 }
+
+module.exports = createValidator();
