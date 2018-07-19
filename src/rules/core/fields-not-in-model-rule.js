@@ -11,21 +11,21 @@ module.exports = class FieldsNotInModelRule extends Rule {
     this.description = 'Validates that all fields are present in the specification.';
   }
 
-  validateField(data, field, model /* , parent */) {
+  validateField(node, field) {
     // Don't do this check for models that we don't actually have a spec for
-    if (!model.hasSpecification) {
+    if (!node.model.hasSpecification) {
       return [];
     }
     const errors = [];
-    if (model.inSpec.indexOf(field) < 0) {
+    if (node.model.inSpec.indexOf(field) < 0) {
       errors.push(
         new ValidationError(
           {
             category: ValidationErrorCategory.CONFORMANCE,
             type: ValidationErrorType.FIELD_NOT_IN_SPEC,
-            value: data[field],
+            value: node.value[field],
             severity: ValidationErrorSeverity.WARNING,
-            path: field,
+            path: `${node.getPath()}.${field}`,
           },
         ),
       );

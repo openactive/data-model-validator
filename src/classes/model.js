@@ -1,5 +1,3 @@
-
-
 const Field = require('./field');
 
 const Model = class {

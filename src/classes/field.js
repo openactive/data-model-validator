@@ -1,5 +1,3 @@
-
-
 const Field = class {
   constructor(data = {}) {
     this.data = data;

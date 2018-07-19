@@ -13,25 +13,25 @@ module.exports = class DateFormatRule extends Rule {
     this.description = 'Validates that Date fields are in the correct format.';
   }
 
-  validateField(data, field, model /* , parent */) {
+  validateField(node, field) {
     const errors = [];
     let fieldObj;
-    if (model.hasSpecification) {
-      if (typeof (model.fields[field]) === 'undefined') {
+    if (node.model.hasSpecification) {
+      if (typeof (node.model.fields[field]) === 'undefined') {
         return [];
       }
-      fieldObj = new Field(model.fields[field]);
+      fieldObj = new Field(node.model.fields[field]);
     } else {
       fieldObj = new Field();
     }
 
-    const type = fieldObj.detectType(data[field]);
+    const type = fieldObj.detectType(node.value[field]);
     if (type === 'http://schema.org/Date'
         || fieldObj.isOnlyType('http://schema.org/Date')
     ) {
       if (
-        !moment(data[field], 'YYYY-MM-DD', true).isValid()
-        && !moment(data[field], 'YYYYMMDD', true).isValid()
+        !moment(node.value[field], 'YYYY-MM-DD', true).isValid()
+        && !moment(node.value[field], 'YYYYMMDD', true).isValid()
       ) {
         errors.push(
           new ValidationError(
@@ -39,9 +39,9 @@ module.exports = class DateFormatRule extends Rule {
               category: ValidationErrorCategory.CONFORMANCE,
               type: ValidationErrorType.INVALID_FORMAT,
               message: 'Dates should be expressed as ISO 8601 dates',
-              value: data[field],
+              value: node.value[field],
               severity: ValidationErrorSeverity.FAILURE,
-              path: field,
+              path: `${node.getPath()}.${field}`,
             },
           ),
         );

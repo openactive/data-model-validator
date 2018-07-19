@@ -2,6 +2,7 @@
 
 const FieldsCorrectTypeRule = require('./fields-correct-type-rule');
 const Model = require('../../classes/model');
+const ModelNode = require('../../classes/model-node');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 
@@ -33,7 +34,14 @@ describe('FieldsCorrectTypeRule', () => {
       field: true,
     };
 
-    const errors = rule.validate(data, model, null);
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+
+    const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return an error for an invalid boolean type', () => {
@@ -51,7 +59,14 @@ describe('FieldsCorrectTypeRule', () => {
       field: 'true',
     };
 
-    const errors = rule.validate(data, model, null);
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+
+    const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -82,8 +97,14 @@ describe('FieldsCorrectTypeRule', () => {
       field2: 3,
       field3: 3e-5,
     };
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
 
-    const errors = rule.validate(data, model, null);
+    const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return an error for an invalid float type', () => {
@@ -111,7 +132,14 @@ describe('FieldsCorrectTypeRule', () => {
       field3: '3.45',
     };
 
-    const errors = rule.validate(data, model, null);
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+
+    const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(3);
 
     for (const error of errors) {
@@ -146,7 +174,14 @@ describe('FieldsCorrectTypeRule', () => {
       field3: 30e-1,
     };
 
-    const errors = rule.validate(data, model, null);
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+
+    const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return an error for an invalid integer type', () => {
@@ -174,7 +209,14 @@ describe('FieldsCorrectTypeRule', () => {
       field3: 3e-1,
     };
 
-    const errors = rule.validate(data, model, null);
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+
+    const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(3);
 
     for (const error of errors) {
@@ -211,7 +253,13 @@ describe('FieldsCorrectTypeRule', () => {
       const data = {
         field: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -241,7 +289,13 @@ describe('FieldsCorrectTypeRule', () => {
       const data = {
         field: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -269,7 +323,13 @@ describe('FieldsCorrectTypeRule', () => {
       const data = {
         field: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -296,7 +356,13 @@ describe('FieldsCorrectTypeRule', () => {
       const data = {
         field: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -325,7 +391,13 @@ describe('FieldsCorrectTypeRule', () => {
       const data = {
         field: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -353,7 +425,13 @@ describe('FieldsCorrectTypeRule', () => {
       const data = {
         field: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -382,7 +460,13 @@ describe('FieldsCorrectTypeRule', () => {
       const data = {
         field: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -410,7 +494,13 @@ describe('FieldsCorrectTypeRule', () => {
       const data = {
         field: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -442,7 +532,13 @@ describe('FieldsCorrectTypeRule', () => {
       const data = {
         field: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -468,7 +564,13 @@ describe('FieldsCorrectTypeRule', () => {
       const data = {
         field: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -498,7 +600,13 @@ describe('FieldsCorrectTypeRule', () => {
       const data = {
         field: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -532,7 +640,13 @@ describe('FieldsCorrectTypeRule', () => {
       const data = {
         field: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -631,7 +745,13 @@ describe('FieldsCorrectTypeRule', () => {
       ],
     };
 
-    const errors = rule.validate(data, model, null);
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return an error for an invalid array type', () => {
@@ -725,7 +845,13 @@ describe('FieldsCorrectTypeRule', () => {
       ],
     };
 
-    const errors = rule.validate(data, model, null);
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(9);
 
     for (const error of errors) {
@@ -771,7 +897,13 @@ describe('FieldsCorrectTypeRule', () => {
       const data = {
         field: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -812,7 +944,13 @@ describe('FieldsCorrectTypeRule', () => {
       const data = {
         field: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

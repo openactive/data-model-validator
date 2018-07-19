@@ -11,7 +11,7 @@ module.exports = class BetaFieldsRule extends Rule {
     this.description = 'Validates that no beta or extension fields are present in the data.';
   }
 
-  validateField(data, field /* , model, parent */) {
+  validateField(node, field) {
     const errors = [];
     if (field.toLowerCase().substring(0, 5) === 'beta:'
       || field.toLowerCase().substring(0, 4) === 'ext:'
@@ -21,9 +21,9 @@ module.exports = class BetaFieldsRule extends Rule {
           {
             category: ValidationErrorCategory.CONFORMANCE,
             type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
-            value: data[field],
+            value: node.value[field],
             severity: ValidationErrorSeverity.WARNING,
-            path: field,
+            path: `${node.getPath()}.${field}`,
           },
         ),
       );

@@ -1,5 +1,6 @@
 const modelLoader = require('openactive-data-models');
 const Model = require('./classes/model');
+const ModelNode = require('./classes/model-node');
 const Rules = require('./rules');
 const ValidationErrorSeverity = require('./errors/validation-error-severity');
 const ValidationErrorCategory = require('./errors/validation-error-category');
@@ -40,17 +41,12 @@ class ApplyRules {
     };
   }
 
-  static addFullPathToErrors(newErrors, existingErrors, path) {
-    for (const error of newErrors) {
-      error.path = path + (error.path ? `.${error.path}` : '');
-    }
-    return existingErrors.concat(newErrors);
-  }
-
-  static applySubModelRules(rules, data, field, model, parent, path) {
+  static applySubModelRules(rules, nodeToTest, field) {
+    // parent, path
     let errors = [];
     let fieldsToTest = [];
     let isSingleObject = false;
+    const data = nodeToTest.value;
 
     if (data[field] instanceof Array) {
       fieldsToTest = data[field];
@@ -63,23 +59,27 @@ class ApplyRules {
     for (const fieldValue of fieldsToTest) {
       if (typeof fieldValue === 'object') {
         const subModelType = fieldValue.type;
-        let currentFieldPath = `${path}.${field}`;
+        let currentFieldName = `${field}`;
         if (!isSingleObject) {
-          currentFieldPath += `[${index}]`;
+          currentFieldName += `[${index}]`;
         }
 
         const modelResponse = this.loadModel(
           subModelType,
-          currentFieldPath,
+          `${nodeToTest.getPath()}.${currentFieldName}`,
         );
         errors = errors.concat(modelResponse.errors);
 
+        const newNodeToTest = new ModelNode(
+          currentFieldName,
+          fieldValue,
+          nodeToTest,
+          modelResponse.modelObject,
+        );
+
         const subModelErrors = this.applyModelRules(
           rules,
-          fieldValue,
-          modelResponse.modelObject,
-          data,
-          currentFieldPath,
+          newNodeToTest,
         );
         errors = errors.concat(subModelErrors);
       }
@@ -88,16 +88,16 @@ class ApplyRules {
     return errors;
   }
 
-  static applyModelRules(rules, data, model, parent, path) {
+  static applyModelRules(rules, nodeToTest) {
     let errors = [];
     for (const rule of rules) {
       // Apply whole-model rule, and field-specific rules
-      errors = this.addFullPathToErrors(rule.validate(data, model, parent), errors, path);
+      errors = errors.concat(rule.validate(nodeToTest));
     }
-    for (const field in data) {
-      if (Object.prototype.hasOwnProperty.call(data, field)) {
+    for (const field in nodeToTest.value) {
+      if (Object.prototype.hasOwnProperty.call(nodeToTest.value, field)) {
         // If this field is itself a model, apply that model's rules to it
-        errors = errors.concat(this.applySubModelRules(rules, data, field, model, parent, path));
+        errors = errors.concat(this.applySubModelRules(rules, nodeToTest, field));
       }
     }
     return errors;
@@ -172,14 +172,18 @@ function validate(value, model) {
     );
     errors = errors.concat(modelResponse.errors);
 
+    const nodeToTest = new ModelNode(
+      path,
+      valueToTest,
+      null,
+      modelResponse.modelObject,
+    );
+
     // Apply the rules
     errors = errors.concat(
       ApplyRules.applyModelRules(
         ruleObjects,
-        valueToTest,
-        modelResponse.modelObject,
-        null,
-        path,
+        nodeToTest,
       ),
     );
     index += 1;

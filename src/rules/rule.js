@@ -8,14 +8,15 @@ class Rule {
     this.description = 'This is a base rule description that should be overridden.';
   }
 
-  validate(data, model, parent) {
+  validate(nodeToTest) {
     let errors = [];
-    if (this.isModelTargeted(model)) {
-      errors = errors.concat(this.validateModel(data, model, parent));
+    // console.log(nodeToTest);
+    if (this.isModelTargeted(nodeToTest.model)) {
+      errors = errors.concat(this.validateModel(nodeToTest));
     }
-    for (const field in data) {
-      if (this.isFieldTargeted(model, field)) {
-        errors = errors.concat(this.validateField(data, field, model, parent));
+    for (const field in nodeToTest.value) {
+      if (this.isFieldTargeted(nodeToTest.model, field)) {
+        errors = errors.concat(this.validateField(nodeToTest, field));
       }
     }
     return errors;
