@@ -24,10 +24,20 @@ module.exports = class RequiredOptionalFieldsRule extends Rule {
         let found = false;
 
         for (const field of option.options) {
-          if (typeof (node.value[field]) !== 'undefined'
-              && node.value[field] !== null
-          ) {
-            found = true;
+          let testNode = node;
+          let loopBusterIndex = 0;
+          do {
+            if (typeof (testNode.value[field]) !== 'undefined'
+                && testNode.value[field] !== null
+            ) {
+              found = true;
+            } else {
+              // Can we inherit this value?
+              testNode = testNode.getInheritNode(field);
+            }
+            loopBusterIndex += 1;
+          } while (!found && testNode !== null && loopBusterIndex < 50);
+          if (found) {
             break;
           }
         }

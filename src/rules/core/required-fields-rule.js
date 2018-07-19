@@ -18,9 +18,22 @@ module.exports = class RequiredFieldsRule extends Rule {
     }
     const errors = [];
     for (const field of node.model.requiredFields) {
-      if (typeof (node.value[field]) === 'undefined'
-          || node.value[field] === null
-      ) {
+      let testNode = node;
+      let isSet = false;
+      let loopBusterIndex = 0;
+      do {
+        if (typeof (testNode.value[field]) !== 'undefined'
+            && testNode.value[field] !== null
+        ) {
+          isSet = true;
+        } else {
+          // Can we inherit this value?
+          testNode = testNode.getInheritNode(field);
+        }
+        loopBusterIndex += 1;
+      } while (!isSet && testNode !== null && loopBusterIndex < 50);
+
+      if (!isSet) {
         errors.push(
           new ValidationError(
             {
