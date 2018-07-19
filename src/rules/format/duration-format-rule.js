@@ -12,14 +12,14 @@ module.exports = class DurationFormatRule extends Rule {
     this.description = 'Validates that duration fields are in the correct format.';
   }
 
-  validateField(data, field, model /* , parent */) {
+  validateField(node, field) {
     const errors = [];
     let fieldObj;
-    if (model.hasSpecification) {
-      if (typeof (model.fields[field]) === 'undefined') {
+    if (node.model.hasSpecification) {
+      if (typeof (node.model.fields[field]) === 'undefined') {
         return [];
       }
-      fieldObj = new Field(model.fields[field]);
+      fieldObj = new Field(node.model.fields[field]);
     } else {
       fieldObj = new Field();
     }
@@ -44,20 +44,20 @@ module.exports = class DurationFormatRule extends Rule {
       + ')$',
     );
 
-    const type = fieldObj.detectType(data[field]);
+    const type = fieldObj.detectType(node.value[field]);
     if (type === 'http://schema.org/Duration'
         || fieldObj.isOnlyType('http://schema.org/Duration')
     ) {
-      if (!durationRegex.test(data[field])) {
+      if (!durationRegex.test(node.value[field])) {
         errors.push(
           new ValidationError(
             {
               category: ValidationErrorCategory.CONFORMANCE,
               type: ValidationErrorType.INVALID_FORMAT,
               message: 'Durations should be expressed as ISO 8601 durations',
-              value: data[field],
+              value: node.value[field],
               severity: ValidationErrorSeverity.FAILURE,
-              path: field,
+              path: `${node.getPath()}.${field}`,
             },
           ),
         );

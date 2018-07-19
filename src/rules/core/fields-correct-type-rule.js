@@ -12,18 +12,18 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     this.description = 'Validates that all fields are the correct type.';
   }
 
-  validateField(data, field, model/* , parent */) {
+  validateField(node, field) {
     // Don't do this check for models that we don't actually have a spec for
-    if (!model.hasSpecification) {
+    if (!node.model.hasSpecification) {
       return [];
     }
-    if (typeof (model.fields[field]) === 'undefined') {
+    if (typeof (node.model.fields[field]) === 'undefined') {
       return [];
     }
 
     // Get the derived type
-    const fieldObj = new Field(model.fields[field]);
-    const derivedType = fieldObj.detectType(data[field]);
+    const fieldObj = new Field(node.model.fields[field]);
+    const derivedType = fieldObj.detectType(node.value[field]);
 
     const typeChecks = fieldObj.getAllPossibleTypes();
 
@@ -32,7 +32,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       return [];
     }
 
-    const checkPass = fieldObj.detectedTypeIsAllowed(data[field]);
+    const checkPass = fieldObj.detectedTypeIsAllowed(node.value[field]);
     const errors = [];
 
     if (!checkPass) {
@@ -48,9 +48,9 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
             category: ValidationErrorCategory.CONFORMANCE,
             type: ValidationErrorType.INVALID_TYPE,
             message,
-            value: data[field],
+            value: node.value[field],
             severity: ValidationErrorSeverity.FAILURE,
-            path: field,
+            path: `${node.getPath()}.${field}`,
           },
         ),
       );

@@ -12,16 +12,16 @@ module.exports = class DateFormatRule extends Rule {
     this.description = 'Validates that startDate is before the endDate of an Event.';
   }
 
-  validateModel(data /* , model, parent */) {
-    if (typeof (data.startDate) === 'undefined'
-        || typeof (data.endDate) === 'undefined'
+  validateModel(node) {
+    if (typeof (node.value.startDate) === 'undefined'
+        || typeof (node.value.endDate) === 'undefined'
     ) {
       return [];
     }
     const errors = [];
 
-    const startDate = moment(data.startDate, ['YYYY-MM-DD\\THH:mm:ssZZ', 'YYYY-MM-DD', 'YYYYMMDD'], true);
-    const endDate = moment(data.endDate, ['YYYY-MM-DD\\THH:mm:ssZZ', 'YYYY-MM-DD', 'YYYYMMDD'], true);
+    const startDate = moment(node.value.startDate, ['YYYY-MM-DD\\THH:mm:ssZZ', 'YYYY-MM-DD', 'YYYYMMDD'], true);
+    const endDate = moment(node.value.endDate, ['YYYY-MM-DD\\THH:mm:ssZZ', 'YYYY-MM-DD', 'YYYYMMDD'], true);
 
     if (!startDate.isValid() || !endDate.isValid()) {
       return [];
@@ -33,9 +33,9 @@ module.exports = class DateFormatRule extends Rule {
           {
             category: ValidationErrorCategory.DATA_QUALITY,
             type: ValidationErrorType.START_DATE_AFTER_END_DATE,
-            value: data.startDate,
+            value: node.value.startDate,
             severity: ValidationErrorSeverity.WARNING,
-            path: 'startDate',
+            path: `${node.getPath()}.startDate`,
           },
         ),
       );

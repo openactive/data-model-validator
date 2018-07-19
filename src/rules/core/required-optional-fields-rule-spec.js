@@ -2,6 +2,7 @@
 
 const RequiredOptionalFieldsRule = require('./required-optional-fields-rule');
 const Model = require('../../classes/model');
+const ModelNode = require('../../classes/model-node');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 
@@ -36,7 +37,13 @@ describe('RequiredOptionalFieldsRule', () => {
       startDate: '2018-01-27T12:00:00Z',
     };
 
-    const errors = rule.validate(data, model, null);
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
@@ -47,13 +54,19 @@ describe('RequiredOptionalFieldsRule', () => {
       type: 'Event',
     };
 
-    const errors = rule.validate(data, model, null);
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 
     expect(errors[0].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
-    expect(errors[0].path).toBe('[\'startDate\', \'schedule\']');
+    expect(errors[0].path).toBe('$.[\'startDate\', \'schedule\']');
     expect(errors[0].message).toBe(model.requiredOptions[0].description[0]);
   });
 });

@@ -2,6 +2,7 @@
 
 const BetaFieldsRule = require('./beta-fields-rule');
 const Model = require('../../classes/model');
+const ModelNode = require('../../classes/model-node');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 
@@ -48,7 +49,14 @@ describe('BetaFieldsRule', () => {
       },
     };
 
-    const errors = rule.validate(data, model, null);
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+
+    const errors = rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
@@ -62,7 +70,14 @@ describe('BetaFieldsRule', () => {
       'Ext:an_extended_field': 'This field extends the OA spec',
     };
 
-    const errors = rule.validate(data, model, null);
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+
+    const errors = rule.validate(nodeToTest);
 
     expect(errors.length).toBe(3);
 

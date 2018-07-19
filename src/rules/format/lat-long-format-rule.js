@@ -17,12 +17,12 @@ module.exports = class LatLongFormatRule extends Rule {
     };
   }
 
-  validateField(data, field /* , model, parent */) {
+  validateField(node, field) {
     const errors = [];
     if (
-      typeof (data[field]) !== 'number'
-      || (field === 'latitude' && (data[field] < -90 || data[field] > 90))
-      || (field === 'longitude' && (data[field] < -180 || data[field] > 180))
+      typeof (node.value[field]) !== 'number'
+      || (field === 'latitude' && (node.value[field] < -90 || node.value[field] > 90))
+      || (field === 'longitude' && (node.value[field] < -180 || node.value[field] > 180))
     ) {
       errors.push(
         new ValidationError(
@@ -30,9 +30,9 @@ module.exports = class LatLongFormatRule extends Rule {
             category: ValidationErrorCategory.CONFORMANCE,
             type: ValidationErrorType.INVALID_FORMAT,
             message: this.errors[field],
-            value: data[field],
+            value: node.value[field],
             severity: ValidationErrorSeverity.FAILURE,
-            path: field,
+            path: `${node.getPath()}.${field}`,
           },
         ),
       );

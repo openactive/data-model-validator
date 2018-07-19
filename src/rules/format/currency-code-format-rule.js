@@ -13,23 +13,23 @@ module.exports = class CurrencyCodeFormatRule extends Rule {
     this.description = 'Validates that currency code fields are in the correct format.';
   }
 
-  validateField(data, field, model /* , parent */) {
-    if (typeof (model.fields[field]) === 'undefined') {
+  validateField(node, field) {
+    if (typeof (node.model.fields[field]) === 'undefined') {
       return [];
     }
     const errors = [];
-    const fieldObj = new Field(model.fields[field]);
+    const fieldObj = new Field(node.model.fields[field]);
     if (fieldObj.sameAs === 'http://schema.org/priceCurrency') {
-      if (typeof (cc.code(data[field])) === 'undefined') {
+      if (typeof (cc.code(node.value[field])) === 'undefined') {
         errors.push(
           new ValidationError(
             {
               category: ValidationErrorCategory.CONFORMANCE,
               type: ValidationErrorType.INVALID_FORMAT,
               message: 'Currency codes should be expressed as per the assigned 3-letter codes in ISO 4217',
-              value: data[field],
+              value: node.value[field],
               severity: ValidationErrorSeverity.FAILURE,
-              path: field,
+              path: `${node.getPath()}.${field}`,
             },
           ),
         );

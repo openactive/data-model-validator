@@ -13,32 +13,32 @@ module.exports = class DatetimeFormatRule extends Rule {
     this.description = 'Validates that DateTime fields are in the correct format.';
   }
 
-  validateField(data, field, model /* , parent */) {
+  validateField(node, field) {
     const errors = [];
     let fieldObj;
-    if (model.hasSpecification) {
-      if (typeof (model.fields[field]) === 'undefined') {
+    if (node.model.hasSpecification) {
+      if (typeof (node.model.fields[field]) === 'undefined') {
         return [];
       }
-      fieldObj = new Field(model.fields[field]);
+      fieldObj = new Field(node.model.fields[field]);
     } else {
       fieldObj = new Field();
     }
 
-    const type = fieldObj.detectType(data[field]);
+    const type = fieldObj.detectType(node.value[field]);
     if (type === 'http://schema.org/DateTime'
         || fieldObj.isOnlyType('http://schema.org/DateTime')
     ) {
-      if (!moment(data[field], 'YYYY-MM-DD\\THH:mm:ssZZ', true).isValid()) {
+      if (!moment(node.value[field], 'YYYY-MM-DD\\THH:mm:ssZZ', true).isValid()) {
         errors.push(
           new ValidationError(
             {
               category: ValidationErrorCategory.CONFORMANCE,
               type: ValidationErrorType.INVALID_FORMAT,
               message: 'DateTimes should be expressed as ISO 8601 format datetimes with a trailing definition of timezone',
-              value: data[field],
+              value: node.value[field],
               severity: ValidationErrorSeverity.FAILURE,
-              path: field,
+              path: `${node.getPath()}.${field}`,
             },
           ),
         );

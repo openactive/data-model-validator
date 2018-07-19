@@ -2,6 +2,7 @@
 
 const RequiredFieldsRule = require('./required-fields-rule');
 const Model = require('../../classes/model');
+const ModelNode = require('../../classes/model-node');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 
@@ -55,7 +56,13 @@ describe('RequiredFieldsRule', () => {
       },
     };
 
-    const errors = rule.validate(data, model, null);
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
@@ -66,7 +73,13 @@ describe('RequiredFieldsRule', () => {
       type: 'Event',
     };
 
-    const errors = rule.validate(data, model, null);
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
 
     expect(errors.length).toBe(2);
 

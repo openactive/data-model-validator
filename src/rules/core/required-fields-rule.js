@@ -11,15 +11,15 @@ module.exports = class RequiredFieldsRule extends Rule {
     this.description = 'Validates that all required fields are present in the JSON data.';
   }
 
-  validateModel(data, model /* , parent */) {
+  validateModel(node) {
     // Don't do this check for models that we don't actually have a spec for
-    if (!model.hasSpecification) {
+    if (!node.model.hasSpecification) {
       return [];
     }
     const errors = [];
-    for (const field of model.requiredFields) {
-      if (typeof (data[field]) === 'undefined'
-          || data[field] === null
+    for (const field of node.model.requiredFields) {
+      if (typeof (node.value[field]) === 'undefined'
+          || node.value[field] === null
       ) {
         errors.push(
           new ValidationError(
@@ -28,7 +28,7 @@ module.exports = class RequiredFieldsRule extends Rule {
               type: ValidationErrorType.MISSING_REQUIRED_FIELD,
               value: undefined,
               severity: ValidationErrorSeverity.FAILURE,
-              path: field,
+              path: `${node.getPath()}.${field}`,
             },
           ),
         );

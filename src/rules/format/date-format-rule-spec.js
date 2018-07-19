@@ -2,6 +2,7 @@
 
 const DateFormatRule = require('./date-format-rule');
 const Model = require('../../classes/model');
+const ModelNode = require('../../classes/model-node');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 
@@ -38,7 +39,13 @@ describe('DateFormatRule', () => {
       const data = {
         date: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -65,7 +72,13 @@ describe('DateFormatRule', () => {
       const data = {
         date: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -83,7 +96,13 @@ describe('DateFormatRule', () => {
       const data = {
         date: value,
       };
-      const errors = rule.validate(data, model, null);
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

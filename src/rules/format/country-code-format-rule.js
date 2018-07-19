@@ -13,23 +13,23 @@ module.exports = class CountryCodeFormatRule extends Rule {
     this.description = 'Validates that country code fields are in the correct format.';
   }
 
-  validateField(data, field, model /* , parent */) {
-    if (typeof (model.fields[field]) === 'undefined') {
+  validateField(node, field) {
+    if (typeof (node.model.fields[field]) === 'undefined') {
       return [];
     }
     const errors = [];
-    const fieldObj = new Field(model.fields[field]);
+    const fieldObj = new Field(node.model.fields[field]);
     if (fieldObj.sameAs === 'http://schema.org/addressCountry') {
-      if (!validator.isISO31661Alpha2(data[field])) {
+      if (!validator.isISO31661Alpha2(node.value[field])) {
         errors.push(
           new ValidationError(
             {
               category: ValidationErrorCategory.CONFORMANCE,
               type: ValidationErrorType.INVALID_FORMAT,
               message: 'Country codes should be expressed as per the assigned codes in ISO 3166-1 Alpha 2',
-              value: data[field],
+              value: node.value[field],
               severity: ValidationErrorSeverity.FAILURE,
-              path: field,
+              path: `${node.getPath()}.${field}`,
             },
           ),
         );
