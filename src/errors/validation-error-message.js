@@ -16,6 +16,7 @@ const ValidationErrorMessage = {
   [ValidationErrorType.START_DATE_AFTER_END_DATE]: 'Start date is after the end date of the event',
   [ValidationErrorType.DATES_MUST_HAVE_DURATION]: 'A duration must be provided when a start date and end date are set',
   [ValidationErrorType.NO_ZERO_DURATION]: 'Zero durations are not allowed',
+  [ValidationErrorType.CONSUMER_ASSUME_NO_GENDER_RESTRICTION]: 'Data consumers will assume that there is no gender restriction',
 };
 
 module.exports = ValidationErrorMessage;

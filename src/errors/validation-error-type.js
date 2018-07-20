@@ -14,6 +14,7 @@ const ValidationErrorType = {
   START_DATE_AFTER_END_DATE: 'start_date_after_end_date',
   DATES_MUST_HAVE_DURATION: 'dates_must_have_duration',
   NO_ZERO_DURATION: 'no_zero_duration',
+  CONSUMER_ASSUME_NO_GENDER_RESTRICTION: 'consumer_assume_no_gender_restriction',
 };
 
 module.exports = Object.freeze(ValidationErrorType);

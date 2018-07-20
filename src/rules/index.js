@@ -24,6 +24,9 @@ module.exports = [
   require('./data-quality/end-before-start-rule'),
   require('./data-quality/dates-must-have-duration-rule'),
   require('./data-quality/no-zero-duration-rule'),
+
+  // Notes on the data consumer
+  require('./consumer-notes/assume-no-gender-restriction-rule'),
 ];
 
 /* eslint-enable global-require */
