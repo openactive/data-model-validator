@@ -25,7 +25,7 @@
   "dependencies": {
     "currency-codes": "^1.3.0",
     "moment": "^2.22.2",
-    "openactive-data-models": "openactive/data-models",
+    "openactive-data-models": "github:openactive/data-models",
     "validator": "^10.4.0"
   },
   "devDependencies": {

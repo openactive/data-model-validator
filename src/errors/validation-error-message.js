@@ -14,6 +14,7 @@ const ValidationErrorMessage = {
   [ValidationErrorType.FIELD_IS_EMPTY]: 'Field is not allowed to be empty',
   [ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES]: 'This value supplied is not in the allowed values for this field',
   [ValidationErrorType.START_DATE_AFTER_END_DATE]: 'Start date is after the end date of the event',
+  [ValidationErrorType.MIN_VALUE_GREATER_THAN_MAX_VALUE]: 'minValue must not be greater than maxValue',
   [ValidationErrorType.DATES_MUST_HAVE_DURATION]: 'A duration must be provided when a start date and end date are set',
   [ValidationErrorType.NO_ZERO_DURATION]: 'Zero durations are not allowed',
   [ValidationErrorType.CONSUMER_ASSUME_NO_GENDER_RESTRICTION]: 'Data consumers will assume that there is no gender restriction',
