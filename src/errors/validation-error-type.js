@@ -9,6 +9,7 @@ const ValidationErrorType = {
   EXPERIMENTAL_FIELDS_NOT_CHECKED: 'experimental_fields_not_checked',
   INVALID_TYPE: 'invalid_type',
   INVALID_FORMAT: 'invalid_format',
+  FIELD_NOT_IN_DEFINED_VALUES: 'field_not_in_defined_values',
   START_DATE_AFTER_END_DATE: 'start_date_after_end_date',
 };
 
