@@ -9,6 +9,7 @@ module.exports = [
   require('./core/fields-correct-type-rule'),
   require('./core/recommended-fields-rule'),
   require('./core/value-in-options-rule'),
+  require('./core/value-is-required-content-rule'),
 
   // Formatting rules
   require('./format/duration-format-rule'),
