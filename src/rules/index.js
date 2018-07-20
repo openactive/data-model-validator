@@ -7,6 +7,7 @@ module.exports = [
   require('./core/fields-not-in-model-rule'),
   require('./core/fields-correct-type-rule'),
   require('./core/recommended-fields-rule'),
+  require('./core/no-empty-values-rule'),
   require('./core/value-in-options-rule'),
   require('./core/value-is-required-content-rule'),
 
