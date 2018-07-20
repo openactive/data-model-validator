@@ -1,5 +1,3 @@
-
-
 const FieldsNotInModelRule = require('./fields-not-in-model-rule');
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
@@ -88,6 +86,32 @@ describe('FieldsNotInModelRule', () => {
 
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.FIELD_NOT_IN_SPEC);
+      expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
+    }
+  });
+
+  it('should return a warning per field if any beta fields are present', () => {
+    const data = {
+      '@context': 'https://www.openactive.io/ns/oa.jsonld',
+      type: 'Event',
+      'beta:experimental_field': 'This field is experimental',
+      'beta:another_experimental_field': 'This field is also experimental',
+      'Ext:an_extended_field': 'This field extends the OA spec',
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(3);
+
+    for (const error of errors) {
+      expect(error.type).toBe(ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED);
       expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });
