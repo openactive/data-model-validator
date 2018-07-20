@@ -17,11 +17,12 @@ module.exports = class AssumeNoGenderRestrictionRule extends Rule {
       return [];
     }
     const errors = [];
-    if (typeof node.value.genderRestriction === 'undefined'
+    const testValue = node.getValueWithInheritance('genderRestriction');
+    if (typeof testValue === 'undefined'
       || (
         typeof node.model.fields.genderRestriction !== 'undefined'
         && typeof node.model.fields.genderRestriction.options !== 'undefined'
-        && node.model.fields.genderRestriction.options.indexOf(node.value.genderRestriction) < 0
+        && node.model.fields.genderRestriction.options.indexOf(testValue) < 0
       )
     ) {
       errors.push(
@@ -29,7 +30,7 @@ module.exports = class AssumeNoGenderRestrictionRule extends Rule {
           {
             category: ValidationErrorCategory.DATA_QUALITY,
             type: ValidationErrorType.CONSUMER_ASSUME_NO_GENDER_RESTRICTION,
-            value: node.value.genderRestriction,
+            value: testValue,
             severity: ValidationErrorSeverity.NOTICE,
             path: `${node.getPath()}.genderRestriction`,
           },

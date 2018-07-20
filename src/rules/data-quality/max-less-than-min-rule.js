@@ -12,20 +12,22 @@ module.exports = class MaxLessThenMinRule extends Rule {
   }
 
   validateModel(node) {
-    if (typeof (node.value.minValue) === 'undefined'
-        || typeof (node.value.maxValue) === 'undefined'
+    const minValue = node.getValueWithInheritance('minValue');
+    const maxValue = node.getValueWithInheritance('maxValue');
+    if (typeof minValue === 'undefined'
+        || typeof maxValue === 'undefined'
     ) {
       return [];
     }
     const errors = [];
 
-    if (node.value.maxValue < node.value.minValue) {
+    if (maxValue < minValue) {
       errors.push(
         new ValidationError(
           {
             category: ValidationErrorCategory.DATA_QUALITY,
             type: ValidationErrorType.MIN_VALUE_GREATER_THAN_MAX_VALUE,
-            value: node.value.minValue,
+            value: minValue,
             severity: ValidationErrorSeverity.WARNING,
             path: `${node.getPath()}.minValue`,
           },

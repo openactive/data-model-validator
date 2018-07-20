@@ -1,3 +1,5 @@
+const modelLoader = require('openactive-data-models');
+
 const Field = class {
   constructor(data = {}) {
     this.data = data;
@@ -156,7 +158,9 @@ const Field = class {
     const typeChecks = this.getAllPossibleTypes();
     let checkPass = false;
     for (const typeCheck of typeChecks) {
-      if (this.canBeTypeOf(derivedType, typeCheck)) {
+      if (this.canBeTypeOf(derivedType, typeCheck)
+        || this.canBeTypeOf(this.constructor.convertTypeAlias(derivedType), typeCheck)
+      ) {
         checkPass = true;
         break;
       }
@@ -188,7 +192,32 @@ const Field = class {
             && !this.alternativeModels.length;
   }
 
+  static convertTypeAlias(typeName) {
+    let isArray = false;
+    let comparisonName = typeName;
+    if (comparisonName.substr(0, 8) === 'ArrayOf#') {
+      isArray = true;
+      comparisonName = comparisonName.substr(8);
+    }
+    let alias;
+    try {
+      alias = modelLoader.getAlias(comparisonName);
+    } catch (e) {
+      return null;
+    }
+    if (alias === null) {
+      return null;
+    }
+    if (isArray) {
+      alias = `ArrayOf#${alias}`;
+    }
+    return alias;
+  }
+
   canBeTypeOf(testType, actualType) {
+    if (testType === null) {
+      return false;
+    }
     if (testType === actualType) {
       return true;
     }

@@ -36,7 +36,7 @@ describe('RequiredFieldsRule', () => {
       },
       subEvent: {
         fieldName: 'subEvent',
-        model: '#Event',
+        model: 'ArrayOf#Event',
       },
       superEvent: {
         fieldName: 'superEvent',
@@ -126,9 +126,9 @@ describe('RequiredFieldsRule', () => {
       const data = {
         name: 'Test Event',
         type: 'Event',
-        subEvent: {
+        subEvent: [{
           type: 'Event',
-        },
+        }],
       };
 
       // Test the top-level node first
@@ -145,7 +145,7 @@ describe('RequiredFieldsRule', () => {
       // The subEvent should inherit the parent node name, and not error
       const subEventNodeToTest = new ModelNode(
         'subEvent',
-        data.subEvent,
+        data.subEvent[0],
         rootNodeToTest,
         inheritanceModel,
       );
@@ -162,9 +162,9 @@ describe('RequiredFieldsRule', () => {
       const data = {
         name: 'Test Event',
         type: 'Event',
-        subEvent: {
+        subEvent: [{
           type: 'Event',
-        },
+        }],
       };
 
       // Test the top-level node first
@@ -181,7 +181,7 @@ describe('RequiredFieldsRule', () => {
       // The subEvent should inherit the parent node name, and not error
       const subEventNodeToTest = new ModelNode(
         'subEvent',
-        data.subEvent,
+        data.subEvent[0],
         rootNodeToTest,
         inheritanceModel,
       );
@@ -198,9 +198,9 @@ describe('RequiredFieldsRule', () => {
       const data = {
         name: 'Test Event',
         type: 'Event',
-        subEvent: {
+        subEvent: [{
           type: 'Event',
-        },
+        }],
       };
 
       // Test the top-level node first
@@ -217,7 +217,7 @@ describe('RequiredFieldsRule', () => {
       // The subEvent should inherit the parent node name, and not error
       const subEventNodeToTest = new ModelNode(
         'subEvent',
-        data.subEvent,
+        data.subEvent[0],
         rootNodeToTest,
         inheritanceModel,
       );
@@ -234,9 +234,9 @@ describe('RequiredFieldsRule', () => {
       const data = {
         name: 'Test Event',
         type: 'Event',
-        subEvent: {
+        subEvent: [{
           type: 'Event',
-        },
+        }],
       };
 
       // Test the top-level node first
@@ -253,7 +253,7 @@ describe('RequiredFieldsRule', () => {
       // The subEvent should inherit the parent node name, and not error
       const subEventNodeToTest = new ModelNode(
         'subEvent',
-        data.subEvent,
+        data.subEvent[0],
         rootNodeToTest,
         inheritanceModel,
       );
@@ -270,9 +270,9 @@ describe('RequiredFieldsRule', () => {
       const data = {
         name: 'Test Event',
         type: 'Event',
-        subEvent: {
+        subEvent: [{
           type: 'Event',
-        },
+        }],
       };
 
       // Test the top-level node first
@@ -289,7 +289,7 @@ describe('RequiredFieldsRule', () => {
       // The subEvent should inherit the parent node name, and not error
       const subEventNodeToTest = new ModelNode(
         'subEvent',
-        data.subEvent,
+        data.subEvent[0],
         rootNodeToTest,
         inheritanceModel,
       );
