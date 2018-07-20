@@ -13,15 +13,17 @@ module.exports = class DateFormatRule extends Rule {
   }
 
   validateModel(node) {
-    if (typeof (node.value.startDate) === 'undefined'
-        || typeof (node.value.endDate) === 'undefined'
+    const evalStartDate = node.getValueWithInheritance('startDate');
+    const evalEndDate = node.getValueWithInheritance('endDate');
+    if (typeof evalStartDate === 'undefined'
+        || typeof evalEndDate === 'undefined'
     ) {
       return [];
     }
     const errors = [];
 
-    const startDate = moment(node.value.startDate, ['YYYY-MM-DD\\THH:mm:ssZZ', 'YYYY-MM-DD', 'YYYYMMDD'], true);
-    const endDate = moment(node.value.endDate, ['YYYY-MM-DD\\THH:mm:ssZZ', 'YYYY-MM-DD', 'YYYYMMDD'], true);
+    const startDate = moment(evalStartDate, ['YYYY-MM-DD\\THH:mm:ssZZ', 'YYYY-MM-DD', 'YYYYMMDD'], true);
+    const endDate = moment(evalEndDate, ['YYYY-MM-DD\\THH:mm:ssZZ', 'YYYY-MM-DD', 'YYYYMMDD'], true);
 
     if (!startDate.isValid() || !endDate.isValid()) {
       return [];
@@ -33,7 +35,7 @@ module.exports = class DateFormatRule extends Rule {
           {
             category: ValidationErrorCategory.DATA_QUALITY,
             type: ValidationErrorType.START_DATE_AFTER_END_DATE,
-            value: node.value.startDate,
+            value: evalStartDate,
             severity: ValidationErrorSeverity.WARNING,
             path: `${node.getPath()}.startDate`,
           },

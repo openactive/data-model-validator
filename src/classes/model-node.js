@@ -50,6 +50,22 @@ const ModelNode = class {
     return true;
   }
 
+  getValueWithInheritance(field) {
+    let testNode = this;
+    let loopBusterIndex = 0;
+    do {
+      if (typeof (testNode.value[field]) !== 'undefined'
+          && testNode.value[field] !== null
+      ) {
+        return testNode.value[field];
+      }
+      // Can we inherit this value?
+      testNode = testNode.getInheritNode(field);
+      loopBusterIndex += 1;
+    } while (testNode !== null && loopBusterIndex < 50);
+    return undefined;
+  }
+
   getInheritNode(field) {
     // Check for a parentNode first that is the same type as us
     if (

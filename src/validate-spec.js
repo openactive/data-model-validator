@@ -24,6 +24,10 @@ describe('validate', () => {
       type: 'ImageObject',
       url: 'http://www.example.org/logo.png',
     }],
+    subEvent: [{
+      type: 'Event',
+      id: 'http://www.example.org/events/12',
+    }],
     organizer: [{
       type: 'Organization',
       name: 'Example Co',
@@ -34,7 +38,7 @@ describe('validate', () => {
         url: 'http://www.example.org/logo.png',
       }],
     }],
-    contributor: [{
+    leader: [{
       type: 'Organization',
       name: 'Example Co',
       url: 'http://www.example.org',
@@ -78,7 +82,7 @@ describe('validate', () => {
         {
           name: 'Changing Facilities',
           value: true,
-          type: 'LocationFeatureSpecification',
+          type: 'ChangingRooms',
         },
       ],
     },

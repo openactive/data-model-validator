@@ -12,14 +12,16 @@ module.exports = class DatesMustHaveDurationRule extends Rule {
   }
 
   validateModel(node) {
-    if (typeof (node.value.startDate) === 'undefined'
-        || typeof (node.value.endDate) === 'undefined'
+    const startDate = node.getValueWithInheritance('startDate');
+    const endDate = node.getValueWithInheritance('endDate');
+    if (typeof startDate === 'undefined'
+        || typeof endDate === 'undefined'
     ) {
       return [];
     }
     const errors = [];
-
-    if (typeof node.value.duration === 'undefined') {
+    const duration = node.getValueWithInheritance('duration');
+    if (typeof duration === 'undefined') {
       errors.push(
         new ValidationError(
           {
