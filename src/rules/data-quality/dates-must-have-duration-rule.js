@@ -1,15 +1,14 @@
-const moment = require('moment');
 const Rule = require('../rule');
 const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 
-module.exports = class DateFormatRule extends Rule {
+module.exports = class DatesMustHaveDurationRule extends Rule {
   constructor(options) {
     super(options);
     this.targetModels = ['Event', 'Schedule'];
-    this.description = 'Validates that startDate is before the endDate of an Event or Schedule.';
+    this.description = 'Validates that a duration is supplied where both startDate and endDate are given in an Event or Schedule.';
   }
 
   validateModel(node) {
@@ -20,22 +19,15 @@ module.exports = class DateFormatRule extends Rule {
     }
     const errors = [];
 
-    const startDate = moment(node.value.startDate, ['YYYY-MM-DD\\THH:mm:ssZZ', 'YYYY-MM-DD', 'YYYYMMDD'], true);
-    const endDate = moment(node.value.endDate, ['YYYY-MM-DD\\THH:mm:ssZZ', 'YYYY-MM-DD', 'YYYYMMDD'], true);
-
-    if (!startDate.isValid() || !endDate.isValid()) {
-      return [];
-    }
-
-    if (startDate > endDate) {
+    if (typeof node.value.duration === 'undefined') {
       errors.push(
         new ValidationError(
           {
             category: ValidationErrorCategory.DATA_QUALITY,
-            type: ValidationErrorType.START_DATE_AFTER_END_DATE,
-            value: node.value.startDate,
-            severity: ValidationErrorSeverity.WARNING,
-            path: `${node.getPath()}.startDate`,
+            type: ValidationErrorType.DATES_MUST_HAVE_DURATION,
+            value: undefined,
+            severity: ValidationErrorSeverity.FAILURE,
+            path: `${node.getPath()}.duration`,
           },
         ),
       );

@@ -21,6 +21,7 @@ module.exports = [
 
   // Logic rules
   require('./data-quality/end-before-start-rule'),
+  require('./data-quality/dates-must-have-duration-rule'),
 ];
 
 /* eslint-enable global-require */

@@ -13,6 +13,7 @@ const ValidationErrorMessage = {
   [ValidationErrorType.INVALID_FORMAT]: 'Field is not in the correct format',
   [ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES]: 'This value supplied is not in the allowed values for this field',
   [ValidationErrorType.START_DATE_AFTER_END_DATE]: 'Start date is after the end date of the event',
+  [ValidationErrorType.DATES_MUST_HAVE_DURATION]: 'A duration must be provided when a start date and end date are set',
 };
 
 module.exports = ValidationErrorMessage;
