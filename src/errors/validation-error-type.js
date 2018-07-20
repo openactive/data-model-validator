@@ -16,6 +16,7 @@ const ValidationErrorType = {
   DATES_MUST_HAVE_DURATION: 'dates_must_have_duration',
   NO_ZERO_DURATION: 'no_zero_duration',
   CONSUMER_ASSUME_NO_GENDER_RESTRICTION: 'consumer_assume_no_gender_restriction',
+  CONSUMER_ASSUME_AGE_RANGE: 'consumer_assume_age_range',
 };
 
 module.exports = Object.freeze(ValidationErrorType);

@@ -18,6 +18,7 @@ const ValidationErrorMessage = {
   [ValidationErrorType.DATES_MUST_HAVE_DURATION]: 'A duration must be provided when a start date and end date are set',
   [ValidationErrorType.NO_ZERO_DURATION]: 'Zero durations are not allowed',
   [ValidationErrorType.CONSUMER_ASSUME_NO_GENDER_RESTRICTION]: 'Data consumers will assume that there is no gender restriction',
+  [ValidationErrorType.CONSUMER_ASSUME_AGE_RANGE]: 'Data consumers will assume the age range is 18+ if not specified, no minimum age if no minValue is specified, no maximum age if no maxValue is specified and suitable for all if minValue is 0 and no maxValue is specified',
 };
 
 module.exports = ValidationErrorMessage;
