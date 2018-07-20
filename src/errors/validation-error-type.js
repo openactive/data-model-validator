@@ -13,6 +13,7 @@ const ValidationErrorType = {
   FIELD_NOT_IN_DEFINED_VALUES: 'field_not_in_defined_values',
   START_DATE_AFTER_END_DATE: 'start_date_after_end_date',
   DATES_MUST_HAVE_DURATION: 'dates_must_have_duration',
+  NO_ZERO_DURATION: 'no_zero_duration',
 };
 
 module.exports = Object.freeze(ValidationErrorType);
