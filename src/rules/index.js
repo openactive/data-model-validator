@@ -5,7 +5,6 @@ module.exports = [
   require('./core/required-fields-rule'),
   require('./core/required-optional-fields-rule'),
   require('./core/fields-not-in-model-rule'),
-  require('./core/beta-fields-rule'),
   require('./core/fields-correct-type-rule'),
   require('./core/recommended-fields-rule'),
   require('./core/value-in-options-rule'),
