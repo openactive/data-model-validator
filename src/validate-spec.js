@@ -14,7 +14,8 @@ describe('validate', () => {
     startDate: '2017-03-22T20:00:00Z',
     ageRange: {
       type: 'QuantitativeValue',
-      minValue: 0,
+      minValue: 18,
+      maxValue: 60,
     },
     genderRestriction: 'http://openactive.io/ns#None',
     activity: ['Tai Chi'],
