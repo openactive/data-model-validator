@@ -32,6 +32,19 @@ module.exports = class FieldsNotInModelRule extends Rule {
             },
           ),
         );
+      } else if (typeof node.model.commonTypos[field] !== 'undefined') {
+        errors.push(
+          new ValidationError(
+            {
+              category: ValidationErrorCategory.CONFORMANCE,
+              type: ValidationErrorType.FIELD_COULD_BE_TYPO,
+              message: `Field '${field}' should be '${node.model.commonTypos[field]}'`,
+              value: node.value[field],
+              severity: ValidationErrorSeverity.FAILURE,
+              path: `${node.getPath()}.${field}`,
+            },
+          ),
+        );
       } else {
         errors.push(
           new ValidationError(
