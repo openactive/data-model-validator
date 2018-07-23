@@ -29,13 +29,18 @@
     "validator": "^10.4.0"
   },
   "devDependencies": {
-    "eslint": "^5.1.0",
+    "eslint": "^5.2.0",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-plugin-import": "^2.13.0",
-    "jasmine-node": "^1.15.0"
+    "jasmine-node": "^1.15.0",
+    "napa": "^3.0.0"
+  },
+  "napa": {
+    "openactive-activity-list": "openactive/activity-list"
   },
   "scripts": {
     "lint": "eslint \"src/**/*.js\"",
+    "install": "napa",
     "pretest": "npm run lint",
     "test": "jasmine-node src"
   }

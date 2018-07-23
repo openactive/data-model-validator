@@ -5,6 +5,7 @@ const ValidationErrorType = {
   MISSING_REQUIRED_FIELD: 'missing_required_field',
   MISSING_RECOMMENDED_FIELD: 'missing_recommended_field',
   MODEL_NOT_FOUND: 'model_not_found',
+  FILE_NOT_FOUND: 'file_not_found',
   FIELD_NOT_IN_SPEC: 'field_not_in_spec',
   EXPERIMENTAL_FIELDS_NOT_CHECKED: 'experimental_fields_not_checked',
   INVALID_TYPE: 'invalid_type',
@@ -17,6 +18,7 @@ const ValidationErrorType = {
   NO_ZERO_DURATION: 'no_zero_duration',
   CONSUMER_ASSUME_NO_GENDER_RESTRICTION: 'consumer_assume_no_gender_restriction',
   CONSUMER_ASSUME_AGE_RANGE: 'consumer_assume_age_range',
+  ACTIVITY_NOT_IN_ACTIVITY_LIST: 'activity_not_in_activity_list',
 };
 
 module.exports = Object.freeze(ValidationErrorType);
