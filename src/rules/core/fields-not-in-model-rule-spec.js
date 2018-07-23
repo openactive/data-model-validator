@@ -13,6 +13,9 @@ describe('FieldsNotInModelRule', () => {
       'activity',
       'location',
     ],
+    commonTypos: {
+      offer: 'offers',
+    },
   });
   model.hasSpecification = true;
 
@@ -113,6 +116,35 @@ describe('FieldsNotInModelRule', () => {
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED);
       expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
+    }
+  });
+
+  it('should return a failure per field if a field is a typo', () => {
+    const data = {
+      type: 'Event',
+      offer: {
+        type: 'Offer',
+        id: 'http://example.org/offer/1',
+        name: 'Free Offer',
+        price: 0.00,
+        priceCurrency: 'GBP',
+      },
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
+
+    for (const error of errors) {
+      expect(error.type).toBe(ValidationErrorType.FIELD_COULD_BE_TYPO);
+      expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
 });

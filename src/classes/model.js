@@ -22,6 +22,10 @@ const Model = class {
     return this.data.sampleId;
   }
 
+  get commonTypos() {
+    return this.data.commonTypos || {};
+  }
+
   get requiredFields() {
     return this.data.requiredFields || [];
   }
