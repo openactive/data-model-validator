@@ -27,6 +27,7 @@ module.exports = [
   require('./data-quality/max-less-than-min-rule'),
   require('./data-quality/age-range-min-or-max-rule'),
   require('./data-quality/activity-in-activity-list-rule'),
+  require('./data-quality/is-accessible-for-free-rule'),
 
   // Notes on the data consumer
   require('./consumer-notes/assume-no-gender-restriction-rule'),

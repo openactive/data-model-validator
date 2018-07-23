@@ -20,6 +20,7 @@ const ValidationErrorType = {
   CONSUMER_ASSUME_NO_GENDER_RESTRICTION: 'consumer_assume_no_gender_restriction',
   CONSUMER_ASSUME_AGE_RANGE: 'consumer_assume_age_range',
   ACTIVITY_NOT_IN_ACTIVITY_LIST: 'activity_not_in_activity_list',
+  MISSING_IS_ACCESSIBLE_FOR_FREE: 'missing_is_accessible_for_free',
 };
 
 module.exports = Object.freeze(ValidationErrorType);
