@@ -13,6 +13,7 @@ const ValidationErrorMessage = {
   [ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED]: 'The validator does not currently check experimental fields',
   [ValidationErrorType.INVALID_TYPE]: 'Field is an invalid type',
   [ValidationErrorType.INVALID_FORMAT]: 'Field is not in the correct format',
+  [ValidationErrorType.NO_HTML]: 'HTML should be stripped from all data before publishing',
   [ValidationErrorType.FIELD_IS_EMPTY]: 'Field is not allowed to be empty',
   [ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES]: 'This value supplied is not in the allowed values for this field',
   [ValidationErrorType.START_DATE_AFTER_END_DATE]: 'Start date is after the end date of the event',
