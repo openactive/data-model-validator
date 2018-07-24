@@ -24,6 +24,7 @@ const ValidationErrorType = {
   ACTIVITY_NOT_IN_ACTIVITY_LIST: 'activity_not_in_activity_list',
   MISSING_IS_ACCESSIBLE_FOR_FREE: 'missing_is_accessible_for_free',
   ADDRESS_HAS_TRAILING_COMMA: 'address_has_trailing_comma',
+  CONCEPT_ID_AND_IN_SCHEME_TOGETHER: 'concept_id_and_in_scheme_together',
 };
 
 module.exports = Object.freeze(ValidationErrorType);
