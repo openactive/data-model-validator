@@ -19,6 +19,7 @@ const ValidationErrorType = {
   NO_ZERO_DURATION: 'no_zero_duration',
   CONSUMER_ASSUME_NO_GENDER_RESTRICTION: 'consumer_assume_no_gender_restriction',
   CONSUMER_ASSUME_AGE_RANGE: 'consumer_assume_age_range',
+  CONSUMER_ASSUME_EVENT_STATUS: 'consumer_assume_event_status',
   ACTIVITY_NOT_IN_ACTIVITY_LIST: 'activity_not_in_activity_list',
   MISSING_IS_ACCESSIBLE_FOR_FREE: 'missing_is_accessible_for_free',
   ADDRESS_HAS_TRAILING_COMMA: 'address_has_trailing_comma',
