@@ -30,6 +30,7 @@ describe('validate', () => {
       id: 'http://www.example.org/events/12',
     }],
     organizer: [{
+      id: 'http://www.example.org',
       type: 'Organization',
       name: 'Example Co',
       url: 'http://www.example.org',
@@ -40,6 +41,7 @@ describe('validate', () => {
       }],
     }],
     leader: [{
+      id: 'http://www.example.org',
       type: 'Organization',
       name: 'Example Co',
       url: 'http://www.example.org',
