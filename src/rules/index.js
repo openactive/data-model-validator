@@ -30,6 +30,7 @@ module.exports = [
   require('./data-quality/is-accessible-for-free-rule'),
   require('./data-quality/address-trailing-comma-rule'),
   require('./data-quality/no-html-rule'),
+  require('./data-quality/concept-id-in-scheme-rule'),
 
   // Notes on the data consumer
   require('./consumer-notes/assume-no-gender-restriction-rule'),

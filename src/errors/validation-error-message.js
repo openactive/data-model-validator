@@ -26,6 +26,7 @@ const ValidationErrorMessage = {
   [ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST]: 'Activities should use values from the OpenActive activity list',
   [ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE]: 'Activities with a zero price offer should have isAccessibleForFree set to true',
   [ValidationErrorType.ADDRESS_HAS_TRAILING_COMMA]: 'Address fields should not have a trailing comma',
+  [ValidationErrorType.CONCEPT_ID_AND_IN_SCHEME_TOGETHER]: 'If one of \'id\' or \'inScheme\' are set on a Concept, the other should be set too',
 };
 
 module.exports = ValidationErrorMessage;
