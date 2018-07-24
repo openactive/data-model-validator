@@ -21,6 +21,7 @@ const ValidationErrorMessage = {
   [ValidationErrorType.NO_ZERO_DURATION]: 'Zero durations are not allowed',
   [ValidationErrorType.CONSUMER_ASSUME_NO_GENDER_RESTRICTION]: 'Data consumers will assume that there is no gender restriction',
   [ValidationErrorType.CONSUMER_ASSUME_AGE_RANGE]: 'Data consumers will assume the age range is 18+ if not specified, no minimum age if no minValue is specified, no maximum age if no maxValue is specified and suitable for all if minValue is 0 and no maxValue is specified',
+  [ValidationErrorType.CONSUMER_ASSUME_EVENT_STATUS]: 'Data consumers will assume the event status is scheduled if not specified or invalid',
   [ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST]: 'Activities should use values from the OpenActive activity list',
   [ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE]: 'Activities with a zero price offer should have isAccessibleForFree set to true',
   [ValidationErrorType.ADDRESS_HAS_TRAILING_COMMA]: 'Address fields should not have a trailing comma',
