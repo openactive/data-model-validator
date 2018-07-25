@@ -234,7 +234,8 @@ const Field = class {
             && this.constructor.canBeTypeOfMapping[testTypeKey] === actualTypeKey
     ) {
       return true;
-    } else if ((testTypeKey.match(/^{([A-Za-z:]+)(,([A-Za-z:]+))*}$/) || testTypeKey.match(/^[A-Za-z:]+$/)) && actualTypeKey.match(/^[A-Za-z:]+$/)) {
+    }
+    if ((testTypeKey.match(/^{([A-Za-z:]+)(,([A-Za-z:]+))*}$/) || testTypeKey.match(/^[A-Za-z:]+$/)) && actualTypeKey.match(/^[A-Za-z:]+$/)) {
       // If the type is flexible, and we have one or more models, return true
       if (this.constructor.isModelFlexible(actualTypeKey)) {
         return true;

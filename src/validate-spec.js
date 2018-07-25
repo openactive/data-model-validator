@@ -265,7 +265,7 @@ describe('validate', () => {
           value: true,
           type: 'ChangingRooms',
         },
-        "An invalid array element",
+        'An invalid array element',
         {
           name: 'My Place',
           value: true,
