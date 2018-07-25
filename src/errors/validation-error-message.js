@@ -12,6 +12,7 @@ const ValidationErrorMessage = {
   [ValidationErrorType.FIELD_COULD_BE_TYPO]: 'This field is not defined in the specification, but could be a typo',
   [ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED]: 'The validator does not currently check experimental fields',
   [ValidationErrorType.INVALID_TYPE]: 'Field is an invalid type',
+  [ValidationErrorType.INVALID_FLEXIBLE_TYPE]: 'Field is an invalid type',
   [ValidationErrorType.INVALID_FORMAT]: 'Field is not in the correct format',
   [ValidationErrorType.NO_HTML]: 'HTML should be stripped from all data before publishing',
   [ValidationErrorType.FIELD_IS_EMPTY]: 'Field is not allowed to be empty',

@@ -1,4 +1,5 @@
 const Rule = require('../rule');
+const Model = require('../../classes/model');
 const Field = require('../../classes/field');
 const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
@@ -33,9 +34,18 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     }
 
     const checkPass = fieldObj.detectedTypeIsAllowed(node.value[field]);
+    let isFlexible = false;
+
+    if (!checkPass && typeChecks.length === 1) {
+      const favouriteType = typeChecks[0];
+      if (Model.isTypeFlexible(favouriteType)) {
+        isFlexible = true;
+      }
+    }
+
     const errors = [];
 
-    if (!checkPass) {
+    if (!checkPass && !isFlexible) {
       let message;
       if (typeChecks.length === 1) {
         message = `Invalid type, expected '${typeChecks[0]}' but found '${derivedType}'`;

@@ -64,10 +64,31 @@ class ApplyRules {
           currentFieldName += `[${index}]`;
         }
 
-        const modelResponse = this.loadModel(
+        let modelResponse = this.loadModel(
           subModelType,
           `${nodeToTest.getPath()}.${currentFieldName}`,
         );
+
+        if (modelResponse.errors.length) {
+          // Try loading from the parent model type if we can
+          if (
+            typeof nodeToTest.model.fields[field] !== 'undefined'
+            && typeof nodeToTest.model.fields[field].model !== 'undefined'
+          ) {
+            const altSubModelType = nodeToTest.model.fields[field].model.replace(/^(ArrayOf)?#/, '');
+            if (
+              typeof nodeToTest.model.fields[field].requiredType === 'undefined'
+              && typeof nodeToTest.model.fields[field].alternativeTypes === 'undefined'
+              && typeof nodeToTest.model.fields[field].alternativeModels === 'undefined'
+              && Model.isTypeFlexible(altSubModelType)
+            ) {
+              modelResponse = this.loadModel(
+                altSubModelType,
+                `${nodeToTest.getPath()}.${currentFieldName}`,
+              );
+            }
+          }
+        }
         errors = errors.concat(modelResponse.errors);
 
         const newNodeToTest = new ModelNode(

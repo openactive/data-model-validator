@@ -32,7 +32,7 @@
     "eslint": "^5.2.0",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-plugin-import": "^2.13.0",
-    "jasmine-node": "^1.15.0",
+    "jasmine": "^3.1.0",
     "napa": "^3.0.0"
   },
   "napa": {
@@ -43,6 +43,6 @@
     "install": "napa",
     "pretest": "npm run lint",
     "test": "npm run test-no-lint",
-    "test-no-lint": "jasmine-node src"
+    "test-no-lint": "jasmine"
   }
 }

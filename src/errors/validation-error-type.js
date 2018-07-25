@@ -10,6 +10,7 @@ const ValidationErrorType = {
   FIELD_COULD_BE_TYPO: 'field_could_be_typo',
   EXPERIMENTAL_FIELDS_NOT_CHECKED: 'experimental_fields_not_checked',
   INVALID_TYPE: 'invalid_type',
+  INVALID_FLEXIBLE_TYPE: 'invalid_flexible_type',
   INVALID_FORMAT: 'invalid_format',
   NO_HTML: 'no_html',
   FIELD_IS_EMPTY: 'field_is_empty',

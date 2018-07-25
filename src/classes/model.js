@@ -1,3 +1,4 @@
+const modelLoader = require('openactive-data-models');
 const Field = require('./field');
 
 const Model = class {
@@ -20,6 +21,10 @@ const Model = class {
 
   get sampleId() {
     return this.data.sampleId;
+  }
+
+  get hasFlexibleType() {
+    return this.data.hasFlexibleType || false;
   }
 
   get commonTypos() {
@@ -52,6 +57,19 @@ const Model = class {
 
   hasFieldInSpec(field) {
     return this.inSpec.indexOf(field) >= 0;
+  }
+
+  static isTypeFlexible(modelName) {
+    let modelData = null;
+    try {
+      modelData = modelLoader.loadModel(modelName);
+    } catch (e) {
+      modelData = null;
+    }
+    if (!modelData) {
+      return false;
+    }
+    return modelData.hasFlexibleType || false;
   }
 
   getPossibleModelsForField(field) {
