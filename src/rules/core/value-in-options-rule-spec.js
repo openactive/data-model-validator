@@ -65,4 +65,49 @@ describe('ValueInOptionsRule', () => {
     expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
+
+  it('should return a warning if the type field value is not in the options array when the model is flexible', () => {
+    const featureModel = new Model({
+      type: 'LocationFeatureSpecification',
+      hasFlexibleType: true,
+      fields: {
+        type: {
+          fieldName: 'type',
+          requiredType: 'http://schema.org/Text',
+          options: [
+            'LocationFeatureSpecification',
+            'ChangingRooms',
+          ],
+        },
+        value: {
+          fieldName: 'value',
+          requiredType: 'http://schema.org/Boolean',
+        },
+        name: {
+          fieldName: 'name',
+          requiredType: 'http://schema.org/Text',
+        },
+      },
+    });
+    featureModel.hasSpecification = true;
+
+    const data = {
+      type: 'ext:MyLocation',
+      value: true,
+      name: 'My Location',
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      featureModel,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
+
+    expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
+  });
 });

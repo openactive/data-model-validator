@@ -235,7 +235,26 @@ const Field = class {
     ) {
       return true;
     }
+    if ((testTypeKey.match(/^{([A-Za-z:]+)(,([A-Za-z:]+))*}$/) || testTypeKey.match(/^[A-Za-z:]+$/)) && actualTypeKey.match(/^[A-Za-z:]+$/)) {
+      // If the type is flexible, and we have one or more models, return true
+      if (this.constructor.isModelFlexible(actualTypeKey)) {
+        return true;
+      }
+    }
     return false;
+  }
+
+  static isModelFlexible(modelName) {
+    let modelData = null;
+    try {
+      modelData = modelLoader.loadModel(modelName);
+    } catch (e) {
+      modelData = null;
+    }
+    if (!modelData) {
+      return false;
+    }
+    return modelData.hasFlexibleType || false;
   }
 };
 

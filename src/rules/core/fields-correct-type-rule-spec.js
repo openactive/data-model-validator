@@ -1,5 +1,3 @@
-
-
 const FieldsCorrectTypeRule = require('./fields-correct-type-rule');
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
@@ -650,6 +648,47 @@ describe('FieldsCorrectTypeRule', () => {
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
+  });
+  it('should return no error for an invalid flexible model type', () => {
+    const model = new Model({
+      type: 'Place',
+      fields: {
+        amenityFeature: {
+          fieldName: 'amenityFeature',
+          model: '#LocationFeatureSpecification',
+        },
+      },
+    });
+    model.hasSpecification = true;
+
+    const values = [
+      {
+        type: 'Place',
+        amenityFeature: [
+          {
+            type: 'ext:MyLocation',
+            value: true,
+            name: 'My Location',
+          },
+        ],
+      },
+    ];
+
+    spyOn(Model, 'isTypeFlexible').and.returnValue(true);
+
+    for (const value of values) {
+      const data = {
+        field: value,
+      };
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(errors.length).toBe(0);
     }
   });
 

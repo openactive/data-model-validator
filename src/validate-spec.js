@@ -3,93 +3,96 @@ const ValidationErrorSeverity = require('./errors/validation-error-severity');
 const ValidationErrorType = require('./errors/validation-error-type');
 
 describe('validate', () => {
-  const validEvent = {
-    '@context': 'https://www.openactive.io/ns/oa.jsonld',
-    id: 'http://www.example.org/events/1',
-    type: 'Event',
-    name: 'Tai chi Class',
-    description: 'A Tai chi class',
-    duration: 'PT1H',
-    url: 'http://www.example.org/events/1',
-    startDate: '2017-03-22T20:00:00Z',
-    ageRange: {
-      type: 'QuantitativeValue',
-      minValue: 18,
-      maxValue: 60,
-    },
-    genderRestriction: 'http://openactive.io/ns#None',
-    activity: ['Tai Chi'],
-    category: ['Martial Arts'],
-    eventStatus: 'http://schema.org/EventScheduled',
-    image: [{
-      type: 'ImageObject',
-      url: 'http://www.example.org/logo.png',
-    }],
-    subEvent: [{
+  let validEvent;
+  beforeEach(() => {
+    validEvent = {
+      '@context': 'https://www.openactive.io/ns/oa.jsonld',
+      id: 'http://www.example.org/events/1',
       type: 'Event',
-      id: 'http://www.example.org/events/12',
-    }],
-    organizer: [{
-      id: 'http://www.example.org',
-      type: 'Organization',
-      name: 'Example Co',
-      url: 'http://www.example.org',
-      description: 'Example organizer',
-      logo: [{
-        type: 'ImageObject',
-        url: 'http://www.example.org/logo.png',
-      }],
-    }],
-    leader: [{
-      id: 'http://www.example.org',
-      type: 'Organization',
-      name: 'Example Co',
-      url: 'http://www.example.org',
-      description: 'Example contributor',
-      logo: [{
-        type: 'ImageObject',
-        url: 'http://www.example.org/logo.png',
-      }],
-    }],
-    location: {
-      id: 'http://www.example.org/locations/gym',
-      type: 'Place',
-      name: 'ExampleCo Gym',
-      description: 'ExampleCo\'s main gym',
+      name: 'Tai chi Class',
+      description: 'A Tai chi class',
+      duration: 'PT1H',
+      url: 'http://www.example.org/events/1',
+      startDate: '2017-03-22T20:00:00Z',
+      ageRange: {
+        type: 'QuantitativeValue',
+        minValue: 18,
+        maxValue: 60,
+      },
+      genderRestriction: 'http://openactive.io/ns#None',
+      activity: ['Tai Chi'],
+      category: ['Martial Arts'],
+      eventStatus: 'http://schema.org/EventScheduled',
       image: [{
         type: 'ImageObject',
-        url: 'http://www.example.org/gym.png',
+        url: 'http://www.example.org/logo.png',
       }],
-      url: 'http://www.example.org/locations/gym',
-      address: {
-        type: 'PostalAddress',
-        streetAddress: '1 High Street',
-        addressLocality: 'Bristol',
-        addressRegion: 'Bristol',
-        addressCountry: 'GB',
-        postalCode: 'BS1 4SD',
-      },
-      telephone: '0845000000',
-      geo: {
-        latitude: 51.4034423828125,
-        longitude: -0.2369088977575302,
-        type: 'GeoCoordinates',
-      },
-      openingHoursSpecification: [{
-        type: 'OpeningHoursSpecification',
-        opens: '07:00Z',
-        closes: '21:00Z',
-        dayOfWeek: 'http://schema.org/Monday',
+      subEvent: [{
+        type: 'Event',
+        id: 'http://www.example.org/events/12',
       }],
-      amenityFeature: [
-        {
-          name: 'Changing Facilities',
-          value: true,
-          type: 'ChangingRooms',
+      organizer: [{
+        id: 'http://www.example.org',
+        type: 'Organization',
+        name: 'Example Co',
+        url: 'http://www.example.org',
+        description: 'Example organizer',
+        logo: [{
+          type: 'ImageObject',
+          url: 'http://www.example.org/logo.png',
+        }],
+      }],
+      leader: [{
+        id: 'http://www.example.org',
+        type: 'Organization',
+        name: 'Example Co',
+        url: 'http://www.example.org',
+        description: 'Example contributor',
+        logo: [{
+          type: 'ImageObject',
+          url: 'http://www.example.org/logo.png',
+        }],
+      }],
+      location: {
+        id: 'http://www.example.org/locations/gym',
+        type: 'Place',
+        name: 'ExampleCo Gym',
+        description: 'ExampleCo\'s main gym',
+        image: [{
+          type: 'ImageObject',
+          url: 'http://www.example.org/gym.png',
+        }],
+        url: 'http://www.example.org/locations/gym',
+        address: {
+          type: 'PostalAddress',
+          streetAddress: '1 High Street',
+          addressLocality: 'Bristol',
+          addressRegion: 'Bristol',
+          addressCountry: 'GB',
+          postalCode: 'BS1 4SD',
         },
-      ],
-    },
-  };
+        telephone: '0845000000',
+        geo: {
+          latitude: 51.4034423828125,
+          longitude: -0.2369088977575302,
+          type: 'GeoCoordinates',
+        },
+        openingHoursSpecification: [{
+          type: 'OpeningHoursSpecification',
+          opens: '07:00Z',
+          closes: '21:00Z',
+          dayOfWeek: 'http://schema.org/Monday',
+        }],
+        amenityFeature: [
+          {
+            name: 'Changing Facilities',
+            value: true,
+            type: 'ChangingRooms',
+          },
+        ],
+      },
+    };
+  });
 
   it('should return a failure if passed an invalid model', () => {
     const data = {};
@@ -169,6 +172,119 @@ describe('validate', () => {
     expect(result[2].type).toBe(ValidationErrorType.MODEL_NOT_FOUND);
     expect(result[2].severity).toBe(ValidationErrorSeverity.WARNING);
     expect(result[2].path).toBe('$.location');
+  });
+
+  it('should cope with flexible model types', () => {
+    const place = {
+      id: 'http://www.example.org/locations/gym',
+      type: 'Place',
+      name: 'ExampleCo Gym',
+      description: 'ExampleCo\'s main gym',
+      image: [{
+        type: 'ImageObject',
+        url: 'http://www.example.org/gym.png',
+      }],
+      url: 'http://www.example.org/locations/gym',
+      address: {
+        type: 'PostalAddress',
+        streetAddress: '1 High Street',
+        addressLocality: 'Bristol',
+        addressRegion: 'Bristol',
+        addressCountry: 'GB',
+        postalCode: 'BS1 4SD',
+      },
+      telephone: '0845000000',
+      geo: {
+        latitude: 51.4034423828125,
+        longitude: -0.2369088977575302,
+        type: 'GeoCoordinates',
+      },
+      openingHoursSpecification: [{
+        type: 'OpeningHoursSpecification',
+        opens: '07:00Z',
+        closes: '21:00Z',
+        dayOfWeek: 'http://schema.org/Monday',
+      }],
+      amenityFeature: [
+        {
+          name: 'Changing Facilities',
+          value: true,
+          type: 'ChangingRooms',
+        },
+        {
+          name: 'My Place',
+          value: true,
+          type: 'ext:MyPlace',
+        },
+      ],
+    };
+
+    const result = validate(place);
+
+    expect(result.length).toBe(1);
+
+    expect(result[0].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);
+    expect(result[0].severity).toBe(ValidationErrorSeverity.WARNING);
+    expect(result[0].path).toBe('$.amenityFeature[1].type');
+  });
+
+  it('should cope with arrays of flexible model types mixed with invalid elements', () => {
+    const place = {
+      id: 'http://www.example.org/locations/gym',
+      type: 'Place',
+      name: 'ExampleCo Gym',
+      description: 'ExampleCo\'s main gym',
+      image: [{
+        type: 'ImageObject',
+        url: 'http://www.example.org/gym.png',
+      }],
+      url: 'http://www.example.org/locations/gym',
+      address: {
+        type: 'PostalAddress',
+        streetAddress: '1 High Street',
+        addressLocality: 'Bristol',
+        addressRegion: 'Bristol',
+        addressCountry: 'GB',
+        postalCode: 'BS1 4SD',
+      },
+      telephone: '0845000000',
+      geo: {
+        latitude: 51.4034423828125,
+        longitude: -0.2369088977575302,
+        type: 'GeoCoordinates',
+      },
+      openingHoursSpecification: [{
+        type: 'OpeningHoursSpecification',
+        opens: '07:00Z',
+        closes: '21:00Z',
+        dayOfWeek: 'http://schema.org/Monday',
+      }],
+      amenityFeature: [
+        {
+          name: 'Changing Facilities',
+          value: true,
+          type: 'ChangingRooms',
+        },
+        'An invalid array element',
+        {
+          name: 'My Place',
+          value: true,
+          type: 'ext:MyPlace',
+        },
+      ],
+    };
+
+    const result = validate(place);
+
+    expect(result.length).toBe(2);
+
+    expect(result[0].type).toBe(ValidationErrorType.INVALID_TYPE);
+    expect(result[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    expect(result[0].path).toBe('$.amenityFeature');
+
+    expect(result[1].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);
+    expect(result[1].severity).toBe(ValidationErrorSeverity.WARNING);
+    expect(result[1].path).toBe('$.amenityFeature[2].type');
   });
 
   it('should not throw if a property of value null is passed', () => {
