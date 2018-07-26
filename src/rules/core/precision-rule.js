@@ -21,6 +21,9 @@ module.exports = class PrecisionRule extends Rule {
     if (typeof (node.model.fields[field]) === 'undefined') {
       return [];
     }
+    if (typeof (node.value[field]) !== 'number') {
+      return [];
+    }
 
     const errors = [];
 
