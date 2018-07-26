@@ -29,6 +29,7 @@ const ValidationErrorMessage = {
   [ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE]: 'Activities with a zero price offer should have isAccessibleForFree set to true',
   [ValidationErrorType.ADDRESS_HAS_TRAILING_COMMA]: 'Address fields should not have a trailing comma',
   [ValidationErrorType.CONCEPT_ID_AND_IN_SCHEME_TOGETHER]: 'If one of \'id\' or \'inScheme\' are set on a Concept, the other should be set too',
+  [ValidationErrorType.SCHEMA_ORG_FIELDS_NOT_CHECKED]: 'This field is declared in schema.org but this validator is not yet capable of checking whether they have the right format or values. You should refer to the schema.org documentation for additional guidance',
 };
 
 module.exports = ValidationErrorMessage;

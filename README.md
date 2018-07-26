@@ -84,6 +84,46 @@ const options = {
 const result = Validator.validate(model, options);
 ```
 
+#### schemaOrgSpecifications
+
+An array of schema.org specifications in `JSON-LD` format. For example, see https://schema.org/version/latest/schema.jsonld
+
+e.g.
+
+```js
+
+const model = {
+  // ...
+};
+
+const options = {
+  schemaOrgSpecifications: [
+    {
+      '@context': {
+        rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+        rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+        xsd: 'http://www.w3.org/2001/XMLSchema#',
+      },
+      '@graph': [
+        {
+          '@id': 'http://schema.org/CafeOrCoffeeShop',
+          '@type': 'rdfs:Class',
+          'rdfs:comment': 'A cafe or coffee shop.',
+          'rdfs:label': 'CafeOrCoffeeShop',
+          'rdfs:subClassOf': {
+            '@id': 'http://schema.org/FoodEstablishment'
+          },
+        },
+        // ...
+      ],
+      '@id': 'http://schema.org/#3.4',
+    },
+  ],
+};
+
+const result = Validator.validate(model, options);
+```
+
 #### type
 
 The validator will detect the type of the model being validated from the `type` property. You can override this by providing a type option.
