@@ -65,7 +65,7 @@ describe('AssumeNoGenderRestrictionRule', () => {
     expect(errors.length).toBe(1);
 
     expect(errors[0].type).toBe(ValidationErrorType.CONSUMER_ASSUME_NO_GENDER_RESTRICTION);
-    expect(errors[0].severity).toBe(ValidationErrorSeverity.NOTICE);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
   });
 
   it('should return a notice if the genderRestriction field is not valid', () => {
@@ -85,6 +85,6 @@ describe('AssumeNoGenderRestrictionRule', () => {
     expect(errors.length).toBe(1);
 
     expect(errors[0].type).toBe(ValidationErrorType.CONSUMER_ASSUME_NO_GENDER_RESTRICTION);
-    expect(errors[0].severity).toBe(ValidationErrorSeverity.NOTICE);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
   });
 });

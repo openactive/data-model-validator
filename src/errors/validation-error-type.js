@@ -13,6 +13,7 @@ const ValidationErrorType = {
   INVALID_FLEXIBLE_TYPE: 'invalid_flexible_type',
   INVALID_FORMAT: 'invalid_format',
   NO_HTML: 'no_html',
+  INVALID_PRECISION: 'invalid_precision',
   FIELD_IS_EMPTY: 'field_is_empty',
   FIELD_NOT_IN_DEFINED_VALUES: 'field_not_in_defined_values',
   START_DATE_AFTER_END_DATE: 'start_date_after_end_date',

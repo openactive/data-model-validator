@@ -3,7 +3,7 @@
 const ValidationErrorCategory = Object.freeze({
   CONFORMANCE: 'conformance',
   DATA_QUALITY: 'data-quality',
-  RECOMMENDATION: 'recommendation',
+  SUGGESTION: 'suggestion',
   INTERNAL: 'internal', // Internal problem library
 });
 

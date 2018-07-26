@@ -31,7 +31,7 @@ module.exports = class AssumeEventStatusRule extends Rule {
             category: ValidationErrorCategory.DATA_QUALITY,
             type: ValidationErrorType.CONSUMER_ASSUME_EVENT_STATUS,
             value: testValue,
-            severity: ValidationErrorSeverity.NOTICE,
+            severity: ValidationErrorSeverity.SUGGESTION,
             path: `${node.getPath()}.eventStatus`,
           },
         ),
