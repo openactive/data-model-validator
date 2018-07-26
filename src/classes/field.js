@@ -53,6 +53,16 @@ const Field = class {
     return this.data.options;
   }
 
+  canBeArray() {
+    const types = this.getAllPossibleTypes();
+    for (const type of types) {
+      if (type.match(/^ArrayOf#/)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   getPossibleModels() {
     const models = [];
     if (typeof (this.model) !== 'undefined' && this.model !== null) {
