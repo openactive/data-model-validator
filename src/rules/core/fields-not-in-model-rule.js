@@ -1,4 +1,5 @@
 const Rule = require('../rule');
+const GraphHelper = require('../../helpers/graph');
 const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
@@ -46,17 +47,41 @@ module.exports = class FieldsNotInModelRule extends Rule {
           ),
         );
       } else {
-        errors.push(
-          new ValidationError(
-            {
-              category: ValidationErrorCategory.CONFORMANCE,
-              type: ValidationErrorType.FIELD_NOT_IN_SPEC,
-              value: node.value[field],
-              severity: ValidationErrorSeverity.WARNING,
-              path: `${node.getPath()}.${field}`,
-            },
-          ),
-        );
+        // Is this in schema.org?
+        let inSchemaOrg = false;
+        if (typeof node.model.derivedFrom !== 'undefined') {
+          for (const spec of node.options.schemaOrgSpecifications) {
+            if (GraphHelper.isPropertyInClass(spec, field, node.model.derivedFrom)) {
+              inSchemaOrg = true;
+              break;
+            }
+          }
+        }
+        if (inSchemaOrg) {
+          errors.push(
+            new ValidationError(
+              {
+                category: ValidationErrorCategory.CONFORMANCE,
+                type: ValidationErrorType.SCHEMA_ORG_FIELDS_NOT_CHECKED,
+                value: node.value[field],
+                severity: ValidationErrorSeverity.NOTICE,
+                path: `${node.getPath()}.${field}`,
+              },
+            ),
+          );
+        } else {
+          errors.push(
+            new ValidationError(
+              {
+                category: ValidationErrorCategory.CONFORMANCE,
+                type: ValidationErrorType.FIELD_NOT_IN_SPEC,
+                value: node.value[field],
+                severity: ValidationErrorSeverity.WARNING,
+                path: `${node.getPath()}.${field}`,
+              },
+            ),
+          );
+        }
       }
     }
     return errors;

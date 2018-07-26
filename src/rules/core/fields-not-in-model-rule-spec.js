@@ -1,11 +1,13 @@
 const FieldsNotInModelRule = require('./fields-not-in-model-rule');
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
+const OptionsHelper = require('../../helpers/options');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 
 describe('FieldsNotInModelRule', () => {
   const model = new Model({
+    derivedFrom: 'http://schema.org/Event',
     type: 'Event',
     inSpec: [
       '@context',
@@ -18,6 +20,47 @@ describe('FieldsNotInModelRule', () => {
     },
   });
   model.hasSpecification = true;
+
+  const schemaOrgSpec = {
+    '@context': {
+      rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+      rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+      xsd: 'http://www.w3.org/2001/XMLSchema#',
+    },
+    '@graph': [
+      {
+        '@id': 'http://schema.org/Event',
+        '@type': 'rdfs:Class',
+        'http://www.w3.org/2002/07/owl#equivalentClass': {
+          '@id': 'http://purl.org/dc/dcmitype/Event',
+        },
+        'rdfs:comment': 'An event happening at a certain time and location, such as a concert, lecture, or festival. Ticketing information may be added via the <a class="localLink" href="http://schema.org/offers">offers</a> property. Repeated events may be structured as separate Event objects.',
+        'rdfs:label': 'Event',
+        'rdfs:subClassOf': {
+          '@id': 'http://schema.org/Thing',
+        },
+      },
+      {
+        '@id': 'http://schema.org/Thing',
+        '@type': 'rdfs:Class',
+        'rdfs:comment': 'The most generic type of item.',
+        'rdfs:label': 'Thing',
+      },
+      {
+        '@id': 'http://schema.org/alternateName',
+        '@type': 'rdf:Property',
+        'http://schema.org/domainIncludes': {
+          '@id': 'http://schema.org/Thing',
+        },
+        'http://schema.org/rangeIncludes': {
+          '@id': 'http://schema.org/Text',
+        },
+        'rdfs:comment': 'An alias for the item.',
+        'rdfs:label': 'alternateName',
+      },
+    ],
+    '@id': 'http://schema.org/#3.4',
+  };
 
   const rule = new FieldsNotInModelRule();
 
@@ -67,6 +110,34 @@ describe('FieldsNotInModelRule', () => {
     const errors = rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
+  });
+
+  it('should return a warning per field if any fields are not in the spec, but are in schema.org', () => {
+    const data = {
+      '@context': 'https://www.openactive.io/ns/oa.jsonld',
+      type: 'Event',
+      alternateName: 'Alternate Event',
+    };
+
+    const options = new OptionsHelper({
+      schemaOrgSpecifications: [schemaOrgSpec],
+    });
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+      options,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
+
+    for (const error of errors) {
+      expect(error.type).toBe(ValidationErrorType.SCHEMA_ORG_FIELDS_NOT_CHECKED);
+      expect(error.severity).toBe(ValidationErrorSeverity.NOTICE);
+    }
   });
 
   it('should return a failure per field if any fields are not in the spec', () => {

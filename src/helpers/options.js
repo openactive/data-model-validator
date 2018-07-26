@@ -7,6 +7,10 @@ const OptionsHelper = class {
     return this.options.activityLists || [];
   }
 
+  get schemaOrgSpecifications() {
+    return this.options.schemaOrgSpecifications || [];
+  }
+
   get type() {
     return this.options.type;
   }

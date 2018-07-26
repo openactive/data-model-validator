@@ -7,6 +7,10 @@ const Model = class {
     this.hasSpecification = hasSpecification;
   }
 
+  get derivedFrom() {
+    return this.data.derivedFrom;
+  }
+
   get type() {
     return this.data.type;
   }
