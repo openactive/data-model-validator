@@ -18,6 +18,19 @@ describe('ValueInOptionsRule', () => {
           'http://schema.org/EventScheduled',
         ],
       },
+      dayOfWeek: {
+        fieldName: 'dayOfWeek',
+        requiredType: 'ArrayOf#http://schema.org/url',
+        options: [
+          'http://schema.org/Monday',
+          'http://schema.org/Tuesday',
+          'http://schema.org/Wednesday',
+          'http://schema.org/Thursday',
+          'http://schema.org/Friday',
+          'http://schema.org/Saturday',
+          'http://schema.org/Sunday',
+        ],
+      },
     },
   });
   model.hasSpecification = true;
@@ -50,6 +63,43 @@ describe('ValueInOptionsRule', () => {
     const data = {
       type: 'Event',
       eventStatus: 'http://schema.org/EventInvalid',
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
+
+    expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+  });
+
+  it('should return no errors if the field value is in the options array when the value is an array', () => {
+    const data = {
+      type: 'Event',
+      dayOfWeek: ['http://schema.org/Sunday'],
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(0);
+  });
+
+  it('should return a failure if the field value is not in the options array when the value is an array', () => {
+    const data = {
+      type: 'Event',
+      dayOfWeek: ['http://schema.org/Thirdday'],
     };
 
     const nodeToTest = new ModelNode(
