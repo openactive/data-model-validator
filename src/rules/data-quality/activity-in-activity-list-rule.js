@@ -1,4 +1,3 @@
-const fs = require('fs');
 const Rule = require('../rule');
 const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
@@ -17,51 +16,32 @@ module.exports = class ActivityInActivityListRule extends Rule {
       return [];
     }
     const errors = [];
-    let activityList;
-    try {
-      activityList = JSON.parse(
-        fs.readFileSync(
-          require.resolve('openactive-activity-list/activity-list.jsonld'),
-        ),
-      );
-    } catch (e) {
-      errors.push(
-        new ValidationError(
-          {
-            category: ValidationErrorCategory.INTERNAL,
-            type: ValidationErrorType.FILE_NOT_FOUND,
-            message: 'Could not check activities are in activity list - could not find activity list file',
-            value: node.value[field],
-            severity: ValidationErrorSeverity.WARNING,
-            path: `${node.getPath()}.${field}`,
-          },
-        ),
-      );
-      return errors;
-    }
-
     let found = false;
     let index = 0;
     if (node.value[field] instanceof Array) {
       for (const activity of node.value[field]) {
         found = false;
         if (typeof activity === 'string' || typeof activity === 'object') {
-          for (const concept of activityList.concepts) {
-            if (typeof activity === 'string') {
-              if (concept.prefLabel.toLowerCase() === activity.toLowerCase()) {
-                found = true;
-                break;
-              }
-            } else if (typeof activity === 'object') {
-              if (typeof activity.prefLabel !== 'undefined') {
-                if (concept.prefLabel.toLowerCase() === activity.prefLabel.toLowerCase()) {
-                  found = true;
-                  break;
-                }
-              } else if (typeof activity.id !== 'undefined') {
-                if (concept.id === activity.id) {
-                  found = true;
-                  break;
+          for (const activityList of node.options.activityLists) {
+            if (typeof activityList.concepts !== 'undefined') {
+              for (const concept of activityList.concepts) {
+                if (typeof activity === 'string') {
+                  if (concept.prefLabel.toLowerCase() === activity.toLowerCase()) {
+                    found = true;
+                    break;
+                  }
+                } else if (typeof activity === 'object') {
+                  if (typeof activity.prefLabel !== 'undefined') {
+                    if (concept.prefLabel.toLowerCase() === activity.prefLabel.toLowerCase()) {
+                      found = true;
+                      break;
+                    }
+                  } else if (typeof activity.id !== 'undefined') {
+                    if (concept.id === activity.id) {
+                      found = true;
+                      break;
+                    }
+                  }
                 }
               }
             }

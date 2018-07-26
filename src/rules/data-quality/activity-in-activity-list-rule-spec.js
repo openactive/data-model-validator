@@ -1,6 +1,7 @@
 const ActivityInActivityListRule = require('./activity-in-activity-list-rule');
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
+const OptionsHelper = require('../../helpers/options');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 
@@ -18,6 +19,37 @@ describe('ActivityInActivityListRule', () => {
         ],
       },
     },
+  });
+
+  const activityLists = [
+    {
+      '@context': 'https://www.openactive.io/ns/oa.jsonld',
+      '@id': 'http://openactive.io/activity-list/',
+      title: 'OpenActive Activity List',
+      description: 'This document describes the OpenActive standard activity list.',
+      type: 'skos:ConceptScheme',
+      license: 'https://creativecommons.org/licenses/by/4.0/',
+      concepts: [
+        {
+          id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a1',
+          type: 'skos:Concept',
+          prefLabel: 'Flag Football',
+          'skos:definition': 'Flag is the fastest growing format of the game in Great Britain, encompassing schools, colleges, universities and in the community.',
+          brodaer: 'http://openactive.io/activity-list/#9caeb442-2834-4859-b660-9172ed61ee71',
+        },
+        {
+          id: 'http://openactive.io/activity-list/#0a5f732d-e806-4e51-ad40-0a7de0239c8c',
+          type: 'skos:Concept',
+          prefLabel: 'Football',
+          'skos:definition': 'Football is widely considered to be the most popular sport in the world. The beautiful game is England\'s national sport',
+          topConceptOf: 'http://openactive.io/activity-list/',
+        },
+      ],
+    },
+  ];
+
+  const options = new OptionsHelper({
+    activityLists,
   });
 
   it('should target activity field in Event models', () => {
@@ -46,6 +78,7 @@ describe('ActivityInActivityListRule', () => {
         data,
         null,
         model,
+        options,
       );
       const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
@@ -72,6 +105,7 @@ describe('ActivityInActivityListRule', () => {
         data,
         null,
         model,
+        options,
       );
       const errors = rule.validate(nodeToTest);
       expect(errors.length).toBe(1);

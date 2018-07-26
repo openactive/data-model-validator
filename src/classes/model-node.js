@@ -1,9 +1,12 @@
+const OptionsHelper = require('../helpers/options');
+
 const ModelNode = class {
-  constructor(name, value, parentNode, model) {
+  constructor(name, value, parentNode, model, options) {
     this.name = name;
     this.value = value;
     this.parentNode = parentNode;
     this.model = model;
+    this.options = options || new OptionsHelper();
     this.rootNode = parentNode ? (parentNode.rootNode || parentNode) : null;
   }
 

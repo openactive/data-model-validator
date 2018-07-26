@@ -1,9 +1,12 @@
 const validate = require('./validate');
 const ValidationErrorSeverity = require('./errors/validation-error-severity');
 const ValidationErrorType = require('./errors/validation-error-type');
+const OptionsHelper = require('./helpers/options');
 
 describe('validate', () => {
   let validEvent;
+  let options;
+  let activityLists;
   beforeEach(() => {
     validEvent = {
       '@context': 'https://www.openactive.io/ns/oa.jsonld',
@@ -92,12 +95,35 @@ describe('validate', () => {
         ],
       },
     };
+    activityLists = [
+      {
+        '@context': 'https://www.openactive.io/ns/oa.jsonld',
+        '@id': 'http://openactive.io/activity-list/',
+        title: 'OpenActive Activity List',
+        description: 'This document describes the OpenActive standard activity list.',
+        type: 'skos:ConceptScheme',
+        license: 'https://creativecommons.org/licenses/by/4.0/',
+        concepts: [
+          {
+            id: 'http://openactive.io/activity-list/#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
+            type: 'skos:Concept',
+            prefLabel: 'Tai Chi',
+            'skos:definition': 'Tai chi combines deep breathing and relaxation with slow and gentle movements.',
+            broader: 'http://openactive.io/activity-list/#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
+          },
+        ],
+      },
+    ];
+
+    options = new OptionsHelper({
+      activityLists,
+    });
   });
 
   it('should return a failure if passed an invalid model', () => {
     const data = {};
 
-    const result = validate(data, 'InvalidModel');
+    const result = validate(data, new OptionsHelper({ type: 'InvalidModel' }));
 
     expect(result.length).toBe(1);
     expect(result[0].type).toBe(ValidationErrorType.MODEL_NOT_FOUND);
@@ -107,7 +133,7 @@ describe('validate', () => {
   it('should return a warning if an array is passed to validate', () => {
     const data = [];
 
-    const result = validate(data);
+    const result = validate(data, options);
 
     expect(result.length).toBe(1);
     expect(result[0].type).toBe(ValidationErrorType.INVALID_JSON);
@@ -117,7 +143,7 @@ describe('validate', () => {
   it('should return a failure if a non-object is passed to validate', () => {
     const data = 'bad_data';
 
-    const result = validate(data);
+    const result = validate(data, options);
 
     expect(result.length).toBe(1);
     expect(result[0].type).toBe(ValidationErrorType.INVALID_JSON);
@@ -127,7 +153,7 @@ describe('validate', () => {
   it('should return no errors for a valid Event', () => {
     const event = Object.assign({}, validEvent);
 
-    const result = validate(event);
+    const result = validate(event, options);
 
     expect(result.length).toBe(0);
   });
@@ -138,7 +164,7 @@ describe('validate', () => {
 
     delete event.location.address.addressRegion;
 
-    const result = validate(event);
+    const result = validate(event, options);
 
     expect(result.length).toBe(1);
 
@@ -157,7 +183,7 @@ describe('validate', () => {
       },
     };
 
-    const result = validate(data);
+    const result = validate(data, options);
 
     expect(result.length).toBe(3);
 
@@ -219,7 +245,7 @@ describe('validate', () => {
       ],
     };
 
-    const result = validate(place);
+    const result = validate(place, options);
 
     expect(result.length).toBe(1);
 
@@ -274,7 +300,7 @@ describe('validate', () => {
       ],
     };
 
-    const result = validate(place);
+    const result = validate(place, options);
 
     expect(result.length).toBe(2);
 
@@ -296,7 +322,7 @@ describe('validate', () => {
     let result;
 
     const doValidate = () => {
-      result = validate(data);
+      result = validate(data, options);
     };
 
     expect(doValidate).not.toThrow();
