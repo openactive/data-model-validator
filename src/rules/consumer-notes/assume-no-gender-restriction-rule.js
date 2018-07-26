@@ -31,7 +31,7 @@ module.exports = class AssumeNoGenderRestrictionRule extends Rule {
             category: ValidationErrorCategory.DATA_QUALITY,
             type: ValidationErrorType.CONSUMER_ASSUME_NO_GENDER_RESTRICTION,
             value: testValue,
-            severity: ValidationErrorSeverity.NOTICE,
+            severity: ValidationErrorSeverity.SUGGESTION,
             path: `${node.getPath()}.genderRestriction`,
           },
         ),

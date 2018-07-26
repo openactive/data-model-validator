@@ -56,7 +56,7 @@ module.exports = class AssumeAgeRangeRule extends Rule {
             message,
             type: ValidationErrorType.CONSUMER_ASSUME_AGE_RANGE,
             value: testValue,
-            severity: ValidationErrorSeverity.NOTICE,
+            severity: ValidationErrorSeverity.SUGGESTION,
             path: `${node.getPath()}.ageRange`,
           },
         ),

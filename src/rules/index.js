@@ -10,6 +10,7 @@ module.exports = [
   require('./core/no-empty-values-rule'),
   require('./core/value-in-options-rule'),
   require('./core/value-is-required-content-rule'),
+  require('./core/precision-rule'),
 
   // Formatting rules
   require('./format/duration-format-rule'),

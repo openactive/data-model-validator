@@ -57,7 +57,7 @@ describe('AssumeAgeRangeRule', () => {
     const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.CONSUMER_ASSUME_AGE_RANGE);
-    expect(errors[0].severity).toBe(ValidationErrorSeverity.NOTICE);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
   });
   it('should return a notice when a minValue is specified', () => {
     const data = {
@@ -77,7 +77,7 @@ describe('AssumeAgeRangeRule', () => {
     const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.CONSUMER_ASSUME_AGE_RANGE);
-    expect(errors[0].severity).toBe(ValidationErrorSeverity.NOTICE);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
   });
   it('should return a notice when a maxValue is specified', () => {
     const data = {
@@ -97,7 +97,7 @@ describe('AssumeAgeRangeRule', () => {
     const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.CONSUMER_ASSUME_AGE_RANGE);
-    expect(errors[0].severity).toBe(ValidationErrorSeverity.NOTICE);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
   });
   it('should return a notice when a minValue of 0 and no maxValue is set', () => {
     const data = {
@@ -117,6 +117,6 @@ describe('AssumeAgeRangeRule', () => {
     const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.CONSUMER_ASSUME_AGE_RANGE);
-    expect(errors[0].severity).toBe(ValidationErrorSeverity.NOTICE);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
   });
 });

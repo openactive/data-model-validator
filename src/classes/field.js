@@ -45,6 +45,14 @@ const Field = class {
     return this.data.sameAs;
   }
 
+  get minDecimalPlaces() {
+    return this.data.minDecimalPlaces;
+  }
+
+  get maxDecimalPlaces() {
+    return this.data.maxDecimalPlaces;
+  }
+
   get standard() {
     return this.data.standard;
   }

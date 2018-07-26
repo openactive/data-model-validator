@@ -66,7 +66,7 @@ describe('AssumeEventStatusRule', () => {
     expect(errors.length).toBe(1);
 
     expect(errors[0].type).toBe(ValidationErrorType.CONSUMER_ASSUME_EVENT_STATUS);
-    expect(errors[0].severity).toBe(ValidationErrorSeverity.NOTICE);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
   });
 
   it('should return a notice if the eventStatus field is not valid', () => {
@@ -86,6 +86,6 @@ describe('AssumeEventStatusRule', () => {
     expect(errors.length).toBe(1);
 
     expect(errors[0].type).toBe(ValidationErrorType.CONSUMER_ASSUME_EVENT_STATUS);
-    expect(errors[0].severity).toBe(ValidationErrorSeverity.NOTICE);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
   });
 });
