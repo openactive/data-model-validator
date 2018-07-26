@@ -16,30 +16,92 @@ This library allows developers to validate JSON models to the latest [OpenActive
 const Validator = require('openactive-data-model-validator');
 
 const model = {
-    "@context": "https://www.openactive.io/ns/oa.jsonld",
-    "type": "Event",
-    "name": "Tai chi Class",
-    "url": "http://www.example.org/events/1",
-    "startDate": "2017-03-22T20:00:00",
-    "activity": "Tai Chi",
-    "location": {
-        "type": "Place",
-        "name": "ExampleCo Gym",
-        "address": {
-            "type": "PostalAddress",
-            "streetAddress": "1 High Street",
-            "addressLocality": "Bristol",
-            "postalCode": "BS1 4SD"
-        }
+  '@context': 'https://www.openactive.io/ns/oa.jsonld',
+  type: 'Event',
+  name: 'Tai chi Class',
+  url: 'http://www.example.org/events/1',
+  startDate: '2017-03-22T20:00:00',
+  activity: 'Tai Chi',
+  location: {
+    type: 'Place',
+    name: 'ExampleCo Gym',
+    address: {
+      type: 'PostalAddress',
+      streetAddress: '1 High Street',
+      addressLocality: 'Bristol',
+      postalCode: 'BS1 4SD'
     }
+  }
 };
 
 // Check whether the JSON conforms to the Event model
-const result = Validator.validate(model, 'Event');
+const result = Validator.validate(model);
 
 // Returns:
 // [{category: 'conformance', type: 'missing_required_field', message: 'Required field is missing.', value: undefined, severity: 'failure', path: '$.context' }, ... ]
 
+```
+
+### Options
+
+The `validate` method optionally accepts options for validation:
+
+#### activityLists
+
+An array of activity lists in `skos:ConceptScheme` format. For example, see https://www.openactive.io/activity-list/activity-list.jsonld
+
+e.g.
+
+```js
+
+const model = {
+  // ...
+};
+
+const options = {
+  activityLists: [
+    {
+      '@context': 'https://www.openactive.io/ns/oa.jsonld',
+      '@id': 'http://openactive.io/activity-list/',
+      title: 'OpenActive Activity List',
+      description: 'This document describes the OpenActive standard activity list.',
+      type: 'skos:ConceptScheme',
+      license: 'https://creativecommons.org/licenses/by/4.0/',
+      concepts: [
+        {
+          id: 'http://openactive.io/activity-list/#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
+          type: 'skos:Concept',
+          prefLabel: 'Tai Chi',
+          'skos:definition': 'Tai chi combines deep breathing and relaxation with slow and gentle movements.',
+          broader: 'http://openactive.io/activity-list/#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
+        },
+        // ...
+      ],
+    },
+  ]
+};
+
+const result = Validator.validate(model, options);
+```
+
+#### type
+
+The validator will detect the type of the model being validated from the `type` property. You can override this by providing a type option.
+
+e.g.
+
+```js
+
+const model = {
+  type: 'CustomAction'
+  // ...
+};
+
+const options = {
+  type: 'Action'
+};
+
+const result = Validator.validate(model, options);
 ```
 
 ## Development
@@ -117,32 +179,32 @@ const ValidationError = require('../../validation-error');
 
 module.exports = class RequiredFieldsRule extends Rule {
     
-    constructor(options) {
-        super(options);
-        this.targetModels = '*';
-        this.description = "Validates that all required fields are present in the JSON data.";
-    }
+  constructor(options) {
+    super(options);
+    this.targetModels = '*';
+    this.description = 'Validates that all required fields are present in the JSON data.';
+  }
     
-    validateModel(node) {
-        let errors = [];
-        for (let field of node.model.requiredFields) {
-            if (typeof(node.value[field]) === 'undefined'
-                || node.value[field] === null
-            ) {
-                errors.push(
-                    new ValidationError(
-                        {
-                            "category": "conformance",
-                            "type": "missing_required_field",
-                            "value": undefined,
-                            "severity": "failure",
-                            "path": `${node.getPath()}.${field}`
-                        }
-                    )
-                );
+  validateModel(node) {
+    let errors = [];
+    for (let field of node.model.requiredFields) {
+      if (typeof(node.value[field]) === 'undefined'
+        || node.value[field] === null
+      ) {
+        errors.push(
+          new ValidationError(
+            {
+              category: 'conformance',
+              type: 'missing_required_field',
+              value: undefined,
+              severity: 'failure',
+              path: `${node.getPath()}.${field}`
             }
-        }
-        return errors;
+          )
+        );
+      }
     }
+    return errors;
+  }
 }
 ```

@@ -32,15 +32,10 @@
     "eslint": "^5.2.0",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-plugin-import": "^2.13.0",
-    "jasmine": "^3.1.0",
-    "napa": "^3.0.0"
-  },
-  "napa": {
-    "openactive-activity-list": "openactive/activity-list"
+    "jasmine": "^3.1.0"
   },
   "scripts": {
     "lint": "eslint \"src/**/*.js\"",
-    "install": "napa",
     "pretest": "npm run lint",
     "test": "npm run test-no-lint",
     "test-no-lint": "jasmine"

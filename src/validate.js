@@ -1,6 +1,7 @@
 const modelLoader = require('openactive-data-models');
 const Model = require('./classes/model');
 const ModelNode = require('./classes/model-node');
+const OptionsHelper = require('./helpers/options');
 const Rules = require('./rules');
 const ValidationErrorSeverity = require('./errors/validation-error-severity');
 const ValidationErrorCategory = require('./errors/validation-error-category');
@@ -96,6 +97,7 @@ class ApplyRules {
           fieldValue,
           nodeToTest,
           modelResponse.modelObject,
+          nodeToTest.options,
         );
 
         const subModelErrors = this.applyModelRules(
@@ -125,8 +127,11 @@ class ApplyRules {
   }
 }
 
-function validate(value, model) {
+function validate(value, options) {
   let errors = [];
+
+  // Setup the options
+  const optionsObj = new OptionsHelper(options);
 
   // Load the rules
   const ruleObjects = [];
@@ -178,12 +183,12 @@ function validate(value, model) {
     let modelName;
 
     // If no model provided, use the type in the object
-    if (typeof model === 'undefined' || model === null) {
+    if (typeof options.type === 'undefined' || options.type === null) {
       if (typeof value.type !== 'undefined') {
         modelName = value.type;
       }
     } else {
-      modelName = model;
+      modelName = options.type;
     }
 
     // Load the model
@@ -198,6 +203,7 @@ function validate(value, model) {
       valueToTest,
       null,
       modelResponse.modelObject,
+      optionsObj,
     );
 
     // Apply the rules
