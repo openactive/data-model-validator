@@ -130,6 +130,14 @@ describe('validate', () => {
     expect(result[0].severity).toBe(ValidationErrorSeverity.WARNING);
   });
 
+  it('should not throw if no type is passed', () => {
+    const data = {};
+
+    const validateFunc = () => { validate(data); };
+
+    expect(validateFunc).not.toThrow();
+  });
+
   it('should return a warning if an array is passed to validate', () => {
     const data = [];
 

@@ -209,13 +209,13 @@ function validate(value, options) {
     let modelName;
 
     // If no model provided, use the type in the object
-    if (typeof options.type === 'undefined' || options.type === null) {
+    if (typeof optionsObj.type === 'undefined' || optionsObj.type === null) {
       const modelType = PropertyHelper.getObjectField(value, '@type');
       if (typeof modelType !== 'undefined') {
         modelName = modelType;
       }
     } else {
-      modelName = options.type;
+      modelName = optionsObj.type;
     }
 
     let modelResponse;
@@ -245,7 +245,7 @@ function validate(value, options) {
       path,
       valueToTest,
       null,
-      typeof modelResponse === 'undefined' ? null : modelResponse.modelObject,
+      typeof modelResponse === 'undefined' ? new Model() : modelResponse.modelObject,
       optionsObj,
     );
 
