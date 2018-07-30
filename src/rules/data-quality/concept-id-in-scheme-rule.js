@@ -1,4 +1,5 @@
 const Rule = require('../rule');
+const PropertyHelper = require('../../helpers/property');
 const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
@@ -12,10 +13,11 @@ module.exports = class ConceptIdInSchemeRule extends Rule {
   }
 
   validateField(node, field) {
-    const otherField = field === 'id' ? 'inScheme' : 'id';
+    const prop = PropertyHelper.getFullyQualifiedProperty(field);
+    const otherField = prop.alias === 'id' ? 'inScheme' : 'id';
     const errors = [];
 
-    if (typeof node.value[otherField] === 'undefined') {
+    if (!PropertyHelper.objectHasField(node.value, otherField)) {
       errors.push(
         new ValidationError(
           {

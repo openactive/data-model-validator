@@ -1,6 +1,5 @@
 const validator = require('validator');
 const Rule = require('../rule');
-const Field = require('../../classes/field');
 const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
@@ -14,11 +13,11 @@ module.exports = class CountryCodeFormatRule extends Rule {
   }
 
   validateField(node, field) {
-    if (typeof (node.model.fields[field]) === 'undefined') {
+    const fieldObj = node.model.getField(field);
+    if (typeof fieldObj === 'undefined') {
       return [];
     }
     const errors = [];
-    const fieldObj = new Field(node.model.fields[field]);
     if (fieldObj.sameAs === 'http://schema.org/addressCountry') {
       if (!validator.isISO31661Alpha2(node.value[field])) {
         errors.push(

@@ -18,7 +18,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
       return [];
     }
     const errors = [];
-    if (node.model.inSpec.indexOf(field) < 0) {
+    if (!node.model.hasFieldInSpec(field)) {
       if (field.toLowerCase().substring(0, 5) === 'beta:'
         || field.toLowerCase().substring(0, 4) === 'ext:'
       ) {

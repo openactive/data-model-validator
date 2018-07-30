@@ -42,6 +42,22 @@ describe('MaxLessThenMinRule', () => {
     const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
+  it('should return no error when the minValue is lower than the maxValue in a namespaced field', () => {
+    const data = {
+      type: 'QuantitativeValue',
+      'schema:minValue': 1,
+      'schema:maxValue': 10,
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+    expect(errors.length).toBe(0);
+  });
   it('should return no error when the minValue is equal to the maxValue', () => {
     const data = {
       type: 'QuantitativeValue',

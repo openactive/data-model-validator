@@ -1,4 +1,5 @@
 const Rule = require('../rule');
+const PropertyHelper = require('../../helpers/property');
 const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
@@ -16,9 +17,10 @@ module.exports = class IsAccessibleForFreeRule extends Rule {
     if (!node.model.hasSpecification) {
       return [];
     }
+    const isAccessibleForFree = PropertyHelper.getObjectField(node.value, 'isAccessibleForFree');
     if (
-      typeof node.value.isAccessibleForFree !== 'undefined'
-      && node.value.isAccessibleForFree === true
+      typeof isAccessibleForFree !== 'undefined'
+      && isAccessibleForFree === true
     ) {
       return [];
     }
@@ -33,21 +35,25 @@ module.exports = class IsAccessibleForFreeRule extends Rule {
     for (const offer of offersValue) {
       if (
         typeof offer !== 'undefined'
-        && typeof offer.price !== 'undefined'
-        && offer.price === 0
       ) {
-        errors.push(
-          new ValidationError(
-            {
-              category: ValidationErrorCategory.DATA_QUALITY,
-              type: ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE,
-              value: node.value,
-              severity: ValidationErrorSeverity.WARNING,
-              path: `${node.getPath()}`,
-            },
-          ),
-        );
-        break;
+        const offerPrice = PropertyHelper.getObjectField(offer, 'price');
+        if (
+          typeof offerPrice !== 'undefined'
+          && offerPrice === 0
+        ) {
+          errors.push(
+            new ValidationError(
+              {
+                category: ValidationErrorCategory.DATA_QUALITY,
+                type: ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE,
+                value: node.value,
+                severity: ValidationErrorSeverity.WARNING,
+                path: `${node.getPath()}`,
+              },
+            ),
+          );
+          break;
+        }
       }
     }
     return errors;

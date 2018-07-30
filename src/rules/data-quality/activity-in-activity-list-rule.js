@@ -1,4 +1,5 @@
 const Rule = require('../rule');
+const PropertyHelper = require('../../helpers/property');
 const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
@@ -31,13 +32,15 @@ module.exports = class ActivityInActivityListRule extends Rule {
                     break;
                   }
                 } else if (typeof activity === 'object') {
-                  if (typeof activity.prefLabel !== 'undefined') {
-                    if (concept.prefLabel.toLowerCase() === activity.prefLabel.toLowerCase()) {
+                  const prefLabel = PropertyHelper.getObjectField(activity, 'prefLabel');
+                  const id = PropertyHelper.getObjectField(activity, 'id');
+                  if (typeof prefLabel !== 'undefined') {
+                    if (concept.prefLabel.toLowerCase() === prefLabel.toLowerCase()) {
                       found = true;
                       break;
                     }
-                  } else if (typeof activity.id !== 'undefined') {
-                    if (concept.id === activity.id) {
+                  } else if (typeof id !== 'undefined') {
+                    if (concept.id === id) {
                       found = true;
                       break;
                     }

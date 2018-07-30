@@ -1,5 +1,6 @@
 const moment = require('moment');
 const Rule = require('../rule');
+const PropertyHelper = require('../../helpers/property');
 const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
@@ -13,12 +14,11 @@ module.exports = class NoZeroDurationRule extends Rule {
   }
 
   validateModel(node) {
-    if (typeof (node.value.duration) === 'undefined') {
+    if (!PropertyHelper.objectHasField(node.value, 'duration')) {
       return [];
     }
     const errors = [];
-
-    if (moment.duration(node.value.duration).valueOf() === 0) {
+    if (moment.duration(PropertyHelper.getObjectField(node.value, 'duration')).valueOf() === 0) {
       errors.push(
         new ValidationError(
           {

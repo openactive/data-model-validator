@@ -56,7 +56,7 @@ describe('RequiredFieldsRule', () => {
     const data = {
       '@context': 'https://www.openactive.io/ns/oa.jsonld',
       type: 'Event',
-      activity: {
+      'oa:activity': {
         id: 'https://example.com/reference/activities#Speedball',
         inScheme: 'https://example.com/reference/activities',
         prefLabel: 'Speedball',

@@ -80,4 +80,27 @@ describe('AddressTrailingCommaRule', () => {
       expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });
+  it('should return an error when an address has trailing commas in namespaced fields', () => {
+    const data = {
+      type: 'PostalAddress',
+      'schema:streetAddress': '1, Test Road,',
+      'schema:addressLocality': 'Test Locality, ',
+      'schema:addressRegion': 'Testshire,',
+      'schema:addressCountry': 'GB,',
+      'http://schema.org/postalCode': 'TE5 1AB,',
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+    expect(errors.length).toBe(5);
+    for (const error of errors) {
+      expect(error.type).toBe(ValidationErrorType.ADDRESS_HAS_TRAILING_COMMA);
+      expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
+    }
+  });
 });

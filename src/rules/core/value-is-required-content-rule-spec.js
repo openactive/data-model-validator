@@ -27,7 +27,7 @@ describe('ValueIsRequiredContentRule', () => {
   it('should return no errors if the field value matches required content', () => {
     const data = {
       type: 'Event',
-      eventStatus: 'http://schema.org/EventScheduled',
+      'schema:eventStatus': 'http://schema.org/EventScheduled',
     };
 
     const nodeToTest = new ModelNode(

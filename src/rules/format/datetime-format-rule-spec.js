@@ -81,6 +81,39 @@ describe('DatetimeFormatRule', () => {
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
+  it('should return an error for an invalid datetime with a namespace', () => {
+    const model = new Model({
+      type: 'Event',
+      fields: {
+        startDate: {
+          fieldName: 'startDate',
+          requiredType: 'http://schema.org/DateTime',
+        },
+      },
+    });
+    model.hasSpecification = true;
+    const values = [
+      '2017-09-06T09:00:00',
+      '2018-10-17',
+      'ABC',
+    ];
+
+    for (const value of values) {
+      const data = {
+        'schema:startDate': value,
+      };
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(errors.length).toBe(1);
+      expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
+  });
   it('should return an error for an invalid datetime from an unknown Model', () => {
     const model = new Model({});
 

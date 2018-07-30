@@ -1,4 +1,4 @@
-const modelLoader = require('openactive-data-models');
+const PropertyHelper = require('../helpers/property');
 const Field = require('./field');
 
 const Model = class {
@@ -27,8 +27,8 @@ const Model = class {
     return this.data.sampleId;
   }
 
-  get hasFlexibleType() {
-    return this.data.hasFlexibleType || false;
+  get subClassGraph() {
+    return this.data.subClassGraph || [];
   }
 
   get commonTypos() {
@@ -40,7 +40,7 @@ const Model = class {
   }
 
   hasRequiredField(field) {
-    return this.requiredFields.indexOf(field) >= 0;
+    return PropertyHelper.arrayHasField(this.requiredFields, field);
   }
 
   get requiredOptions() {
@@ -52,7 +52,7 @@ const Model = class {
   }
 
   hasRecommendedField(field) {
-    return this.recommendedFields.indexOf(field) >= 0;
+    return PropertyHelper.arrayHasField(this.recommendedFields, field);
   }
 
   get inSpec() {
@@ -60,31 +60,31 @@ const Model = class {
   }
 
   hasFieldInSpec(field) {
-    return this.inSpec.indexOf(field) >= 0;
+    return PropertyHelper.arrayHasField(this.inSpec, field);
   }
 
-  static isTypeFlexible(modelName) {
-    let modelData = null;
-    try {
-      modelData = modelLoader.loadModel(modelName);
-    } catch (e) {
-      modelData = null;
+  getField(field) {
+    const fieldData = PropertyHelper.getObjectField(this.fields, field);
+    if (typeof fieldData === 'undefined') {
+      return undefined;
     }
-    if (!modelData) {
-      return false;
-    }
-    return modelData.hasFlexibleType || false;
+    return new Field(fieldData);
   }
 
   getPossibleModelsForField(field) {
-    if (typeof (this.fields[field]) === 'undefined') {
+    const fieldObj = this.getField(field);
+    if (typeof fieldObj === 'undefined') {
       return [];
     }
-    return (new Field(this.fields[field])).getPossibleModels();
+    return fieldObj.getPossibleModels();
   }
 
   get fields() {
     return this.data.fields || {};
+  }
+
+  hasField(field) {
+    return PropertyHelper.objectHasField(this.fields, field);
   }
 };
 

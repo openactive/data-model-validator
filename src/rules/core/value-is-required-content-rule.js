@@ -17,23 +17,28 @@ module.exports = class ValueIsRequiredContentRule extends Rule {
       return [];
     }
     const errors = [];
-    if (typeof node.value[field] !== 'undefined'
-      && typeof node.model.fields[field] !== 'undefined'
-      && typeof node.model.fields[field].requiredContent !== 'undefined'
-      && node.model.fields[field].requiredContent !== node.value[field]
-    ) {
-      errors.push(
-        new ValidationError(
-          {
-            category: ValidationErrorCategory.CONFORMANCE,
-            message: `Value for this field must be '${node.model.fields[field].requiredContent}'`,
-            type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
-            value: node.value[field],
-            severity: ValidationErrorSeverity.FAILURE,
-            path: `${node.getPath()}.${field}`,
-          },
-        ),
-      );
+    const fieldObj = node.model.getField(field);
+
+    if (typeof fieldObj !== 'undefined') {
+      const fieldValue = fieldObj.getMappedValue(node.value);
+      if (typeof fieldValue !== 'undefined'
+        && fieldObj.fieldName !== 'type'
+        && typeof fieldObj.requiredContent !== 'undefined'
+        && fieldObj.requiredContent !== fieldValue
+      ) {
+        errors.push(
+          new ValidationError(
+            {
+              category: ValidationErrorCategory.CONFORMANCE,
+              message: `Value for this field must be '${fieldObj.requiredContent}'`,
+              type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
+              value: node.value[field],
+              severity: ValidationErrorSeverity.FAILURE,
+              path: `${node.getPath()}.${field}`,
+            },
+          ),
+        );
+      }
     }
     return errors;
   }

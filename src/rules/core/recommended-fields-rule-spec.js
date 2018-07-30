@@ -56,7 +56,7 @@ describe('RecommendedFieldsRule', () => {
       '@context': 'https://www.openactive.io/ns/oa.jsonld',
       type: 'Event',
       name: 'Tai chi Class',
-      description: 'A class about Tai Chi',
+      'schema:description': 'A class about Tai Chi',
     };
 
     const nodeToTest = new ModelNode(

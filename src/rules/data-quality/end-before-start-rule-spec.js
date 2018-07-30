@@ -42,6 +42,22 @@ describe('EndBeforeStartRule', () => {
     const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
+  it('should return no error when the startDate is before the endDate in a namespaced field', () => {
+    const data = {
+      type: 'Event',
+      'schema:startDate': '2017-09-06T09:00:00Z',
+      'schema:endDate': '2018-01-15T09:00:00+01:00',
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+    expect(errors.length).toBe(0);
+  });
   it('should return no error when the startDate is set, but the endDate isn\'t', () => {
     const data = {
       type: 'Event',

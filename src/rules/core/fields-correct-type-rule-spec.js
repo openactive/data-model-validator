@@ -675,8 +675,6 @@ describe('FieldsCorrectTypeRule', () => {
       },
     ];
 
-    spyOn(Model, 'isTypeFlexible').and.returnValue(true);
-
     for (const value of values) {
       const data = {
         field: value,
@@ -710,27 +708,27 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'ArrayOf#http://schema.org/Boolean',
         },
         url_array: {
-          fieldName: 'integer_array',
+          fieldName: 'url_array',
           requiredType: 'ArrayOf#http://schema.org/url',
         },
         date_array: {
-          fieldName: 'float_array',
+          fieldName: 'date_array',
           requiredType: 'ArrayOf#http://schema.org/Date',
         },
         datetime_array: {
-          fieldName: 'boolean_array',
+          fieldName: 'datetime_array',
           requiredType: 'ArrayOf#http://schema.org/DateTime',
         },
         duration_array: {
-          fieldName: 'integer_array',
+          fieldName: 'duration_array',
           requiredType: 'ArrayOf#http://schema.org/Duration',
         },
         text_array: {
-          fieldName: 'float_array',
+          fieldName: 'text_array',
           requiredType: 'ArrayOf#http://schema.org/Text',
         },
         model_array: {
-          fieldName: 'boolean_array',
+          fieldName: 'model_array',
           model: 'ArrayOf#Schedule',
         },
       },

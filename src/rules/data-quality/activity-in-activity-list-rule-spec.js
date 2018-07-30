@@ -65,8 +65,7 @@ describe('ActivityInActivityListRule', () => {
     const activities = [
       'Football',
       {
-        id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a1',
-        prefLabel: 'flag football',
+        'skos:prefLabel': 'flag football',
         type: 'Concept',
       },
     ];

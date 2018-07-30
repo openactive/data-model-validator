@@ -1,6 +1,4 @@
 const Rule = require('../rule');
-const Model = require('../../classes/model');
-const Field = require('../../classes/field');
 const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
@@ -18,13 +16,14 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     if (!node.model.hasSpecification) {
       return [];
     }
-    if (typeof (node.model.fields[field]) === 'undefined') {
+    const fieldObj = node.model.getField(field);
+    if (typeof fieldObj === 'undefined') {
       return [];
     }
 
     // Get the derived type
-    const fieldObj = new Field(node.model.fields[field]);
-    const derivedType = fieldObj.detectType(node.value[field]);
+    const fieldValue = fieldObj.getMappedValue(node.value);
+    const derivedType = fieldObj.detectType(fieldValue);
 
     const typeChecks = fieldObj.getAllPossibleTypes();
 
@@ -33,19 +32,11 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       return [];
     }
 
-    const checkPass = fieldObj.detectedTypeIsAllowed(node.value[field]);
-    let isFlexible = false;
-
-    if (!checkPass && typeChecks.length === 1) {
-      const favouriteType = typeChecks[0];
-      if (Model.isTypeFlexible(favouriteType)) {
-        isFlexible = true;
-      }
-    }
+    const checkPass = fieldObj.detectedTypeIsAllowed(fieldValue);
 
     const errors = [];
 
-    if (!checkPass && !isFlexible) {
+    if (!checkPass) {
       let message;
       if (typeChecks.length === 1) {
         message = `Invalid type, expected '${typeChecks[0]}' but found '${derivedType}'`;
@@ -58,7 +49,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
             category: ValidationErrorCategory.CONFORMANCE,
             type: ValidationErrorType.INVALID_TYPE,
             message,
-            value: node.value[field],
+            value: fieldValue,
             severity: ValidationErrorSeverity.FAILURE,
             path: `${node.getPath()}.${field}`,
           },

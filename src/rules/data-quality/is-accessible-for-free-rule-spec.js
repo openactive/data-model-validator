@@ -57,6 +57,28 @@ describe('IsAccessibleForFreeRule', () => {
     const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
+  it('should return no error when isAccessibleForFree is set to true with a zero offer in a namespaced field', () => {
+    const data = {
+      type: 'Event',
+      'schema:offers': [{
+        type: 'Offer',
+        id: 'http://example.org/offer/1',
+        name: 'Free Offer',
+        price: 0.00,
+        priceCurrency: 'GBP',
+      }],
+      'schema:isAccessibleForFree': true,
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+    expect(errors.length).toBe(0);
+  });
   it('should return no error when isAccessibleForFree is set to false with no zero offer', () => {
     const data = {
       type: 'Event',

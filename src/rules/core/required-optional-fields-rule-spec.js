@@ -84,6 +84,24 @@ describe('RequiredOptionalFieldsRule', () => {
     expect(errors.length).toBe(0);
   });
 
+  it('should return no errors if required optional fields are present with a namespace', () => {
+    const data = {
+      '@context': 'https://www.openactive.io/ns/oa.jsonld',
+      type: 'Event',
+      'schema:startDate': '2018-01-27T12:00:00Z',
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(0);
+  });
+
   it('should return a failure per option group if any required optional fields are missing', () => {
     const data = {
       '@context': 'https://www.openactive.io/ns/oa.jsonld',

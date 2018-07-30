@@ -19,17 +19,21 @@ module.exports = class LatLongFormatRule extends Rule {
 
   validateField(node, field) {
     const errors = [];
+    const fieldObj = node.model.getField(field);
+    if (typeof fieldObj === 'undefined') {
+      return [];
+    }
     if (
       typeof (node.value[field]) !== 'number'
-      || (field === 'latitude' && (node.value[field] < -90 || node.value[field] > 90))
-      || (field === 'longitude' && (node.value[field] < -180 || node.value[field] > 180))
+      || (fieldObj.fieldName === 'latitude' && (node.value[field] < -90 || node.value[field] > 90))
+      || (fieldObj.fieldName === 'longitude' && (node.value[field] < -180 || node.value[field] > 180))
     ) {
       errors.push(
         new ValidationError(
           {
             category: ValidationErrorCategory.CONFORMANCE,
             type: ValidationErrorType.INVALID_FORMAT,
-            message: this.errors[field],
+            message: this.errors[fieldObj.fieldName],
             value: node.value[field],
             severity: ValidationErrorSeverity.FAILURE,
             path: `${node.getPath()}.${field}`,

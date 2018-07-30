@@ -1,4 +1,5 @@
 const Rule = require('../rule');
+const PropertyHelper = require('../../helpers/property');
 const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
@@ -19,8 +20,8 @@ module.exports = class AgeRangeMinOrMaxRule extends Rule {
 
     if (typeof (node.value[field]) !== 'object'
       || (
-        typeof node.value[field].minValue === 'undefined'
-        && typeof node.value[field].maxValue === 'undefined'
+        !PropertyHelper.objectHasField(node.value[field], 'minValue')
+        && !PropertyHelper.objectHasField(node.value[field], 'maxValue')
       )
     ) {
       errors.push(

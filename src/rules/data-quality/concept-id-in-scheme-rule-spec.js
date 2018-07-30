@@ -48,6 +48,22 @@ describe('ConceptIdInSchemeRule', () => {
     const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
+  it('should return no error when both id and inScheme are specified in a namespaced field', () => {
+    const data = {
+      type: 'Concept',
+      id: 'http://example.org/concept/1',
+      'skos:inScheme': 'http://example.org/scheme/2',
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+    expect(errors.length).toBe(0);
+  });
   it('should return no error when neither id or inScheme are specified', () => {
     const data = {
       type: 'Concept',

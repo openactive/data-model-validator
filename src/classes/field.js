@@ -1,4 +1,5 @@
 const modelLoader = require('openactive-data-models');
+const PropertyHelper = require('../helpers/property');
 
 const Field = class {
   constructor(data = {}) {
@@ -59,6 +60,10 @@ const Field = class {
 
   get options() {
     return this.data.options;
+  }
+
+  getMappedValue(data) {
+    return PropertyHelper.getObjectField(data, this.data.fieldName);
   }
 
   canBeArray() {
@@ -160,8 +165,9 @@ const Field = class {
         }
         return returnType;
       }
-      if (typeof (data.type) !== 'undefined') {
-        return `#${data.type}`;
+      const dataType = PropertyHelper.getObjectField(data, '@type');
+      if (typeof dataType !== 'undefined') {
+        return `#${dataType}`;
       }
       return '#Thing';
     }
@@ -176,14 +182,25 @@ const Field = class {
     const typeChecks = this.getAllPossibleTypes();
     let checkPass = false;
     for (const typeCheck of typeChecks) {
-      if (this.canBeTypeOf(derivedType, typeCheck)
-        || this.canBeTypeOf(this.constructor.convertTypeAlias(derivedType), typeCheck)
-      ) {
+      if (this.canBeTypeOf(derivedType, typeCheck)) {
         checkPass = true;
         break;
       }
     }
     return checkPass;
+  }
+
+  static getModelSubClassGraph(modelName) {
+    let modelData = null;
+    try {
+      modelData = modelLoader.loadModel(modelName);
+    } catch (e) {
+      modelData = null;
+    }
+    if (!modelData) {
+      return [];
+    }
+    return modelData.subClassGraph || [];
   }
 
   getAllPossibleTypes() {
@@ -210,28 +227,6 @@ const Field = class {
             && !this.alternativeModels.length;
   }
 
-  static convertTypeAlias(typeName) {
-    let isArray = false;
-    let comparisonName = typeName;
-    if (comparisonName.substr(0, 8) === 'ArrayOf#') {
-      isArray = true;
-      comparisonName = comparisonName.substr(8);
-    }
-    let alias;
-    try {
-      alias = modelLoader.getAlias(comparisonName);
-    } catch (e) {
-      return null;
-    }
-    if (alias === null) {
-      return null;
-    }
-    if (isArray) {
-      alias = `ArrayOf#${alias}`;
-    }
-    return alias;
-  }
-
   canBeTypeOf(testType, actualType) {
     if (testType === null) {
       return false;
@@ -243,7 +238,7 @@ const Field = class {
     let actualTypeKey = actualType;
     if (
       testTypeKey.substr(0, 8) === 'ArrayOf#'
-            && actualTypeKey.substr(0, 8) === 'ArrayOf#'
+      && actualTypeKey.substr(0, 8) === 'ArrayOf#'
     ) {
       testTypeKey = testTypeKey.substr(8);
       actualTypeKey = actualTypeKey.substr(8);
@@ -253,26 +248,41 @@ const Field = class {
     ) {
       return true;
     }
-    if ((testTypeKey.match(/^{([A-Za-z:]+)(,([A-Za-z:]+))*}$/) || testTypeKey.match(/^[A-Za-z:]+$/)) && actualTypeKey.match(/^[A-Za-z:]+$/)) {
-      // If the type is flexible, and we have one or more models, return true
-      if (this.constructor.isModelFlexible(actualTypeKey)) {
+    // Subclasses?
+    if (testTypeKey.match(/^[A-Za-z:]+$/)) {
+      const subClassGraph = this.constructor.getModelSubClassGraph(testTypeKey);
+      if (subClassGraph.length) {
+        const parentTestType = subClassGraph[0].substr(1);
+        if (this.canBeTypeOf(parentTestType, actualTypeKey)) {
+          return true;
+        }
+      }
+    }
+    // Check array types
+    if (testTypeKey.match(/^{([A-Za-z:]+)(?:,([A-Za-z:]+))+}$/) && actualTypeKey.match(/^[A-Za-z:]+$/)) {
+      const r = /(,?([A-Za-z:]+))/g;
+      let match = r.exec(testTypeKey);
+      while (match !== null) {
+        const testMatch = this.canBeTypeOf(match[2], actualTypeKey);
+        if (!testMatch) {
+          return false;
+        }
+        match = r.exec(testTypeKey);
+      }
+      return true;
+    }
+    if (testTypeKey.match(/^[A-Za-z:]+$/) && actualTypeKey.match(/^[A-Za-z:]+$/)) {
+      // If we have 2 models,
+      // and this is being extended by a type we don't know, return true
+      const prop = PropertyHelper.getFullyQualifiedProperty(testTypeKey);
+      if (
+        (typeof prop.prefix === 'undefined' || prop.prefix === null)
+        && (typeof prop.namespace === 'undefined' || prop.namespace === null)
+      ) {
         return true;
       }
     }
     return false;
-  }
-
-  static isModelFlexible(modelName) {
-    let modelData = null;
-    try {
-      modelData = modelLoader.loadModel(modelName);
-    } catch (e) {
-      modelData = null;
-    }
-    if (!modelData) {
-      return false;
-    }
-    return modelData.hasFlexibleType || false;
   }
 };
 
