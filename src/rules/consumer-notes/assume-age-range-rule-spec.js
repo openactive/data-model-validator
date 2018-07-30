@@ -43,6 +43,26 @@ describe('AssumeAgeRangeRule', () => {
     expect(errors.length).toBe(0);
   });
 
+  it('should return no notice when a complete ageRange is specified with namespaces', () => {
+    const data = {
+      type: 'Event',
+      ageRange: {
+        type: 'QuantitativeValue',
+        'schema:minValue': 18,
+        'schema:maxValue': 25,
+      },
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+    expect(errors.length).toBe(0);
+  });
+
   it('should return a notice when no ageRange is specified', () => {
     const data = {
       type: 'Event',

@@ -1,6 +1,5 @@
 const Rule = require('../rule');
 const PrecisionHelper = require('../../helpers/precision');
-const Field = require('../../classes/field');
 const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
@@ -18,7 +17,7 @@ module.exports = class PrecisionRule extends Rule {
     if (!node.model.hasSpecification) {
       return [];
     }
-    if (typeof (node.model.fields[field]) === 'undefined') {
+    if (!node.model.hasField(field)) {
       return [];
     }
     if (typeof (node.value[field]) !== 'number') {
@@ -28,11 +27,12 @@ module.exports = class PrecisionRule extends Rule {
     const errors = [];
 
     // Get the field object
-    const fieldObj = new Field(node.model.fields[field]);
+    const fieldObj = node.model.getField(field);
+    const fieldValue = fieldObj.getMappedValue(node.value);
 
     if (
       typeof fieldObj.minDecimalPlaces !== 'undefined'
-      && PrecisionHelper.getPrecision(node.value[field]) < fieldObj.minDecimalPlaces
+      && PrecisionHelper.getPrecision(fieldValue) < fieldObj.minDecimalPlaces
     ) {
       errors.push(
         new ValidationError(
@@ -40,7 +40,7 @@ module.exports = class PrecisionRule extends Rule {
             category: ValidationErrorCategory.DATA_QUALITY,
             type: ValidationErrorType.INVALID_PRECISION,
             message: `This field should have at least ${fieldObj.minDecimalPlaces} decimal places. Note that this notice will also appear when trailing zeros have been truncated.`,
-            value: node.value[field],
+            value: fieldValue,
             severity: ValidationErrorSeverity.SUGGESTION,
             path: `${node.getPath()}.${field}`,
           },
@@ -48,7 +48,7 @@ module.exports = class PrecisionRule extends Rule {
       );
     }
     if (typeof fieldObj.maxDecimalPlaces !== 'undefined'
-      && PrecisionHelper.getPrecision(node.value[field]) > fieldObj.maxDecimalPlaces
+      && PrecisionHelper.getPrecision(fieldValue) > fieldObj.maxDecimalPlaces
     ) {
       errors.push(
         new ValidationError(
@@ -56,7 +56,7 @@ module.exports = class PrecisionRule extends Rule {
             category: ValidationErrorCategory.DATA_QUALITY,
             type: ValidationErrorType.INVALID_PRECISION,
             message: `This field should not exceed ${fieldObj.maxDecimalPlaces} decimal places.`,
-            value: node.value[field],
+            value: fieldValue,
             severity: ValidationErrorSeverity.WARNING,
             path: `${node.getPath()}.${field}`,
           },

@@ -12,8 +12,8 @@ describe('CurrencyCodeFormatRule', () => {
   const model = new Model({
     type: 'Event',
     fields: {
-      currency: {
-        fieldName: 'currency',
+      priceCurrency: {
+        fieldName: 'priceCurrency',
         requiredType: 'http://schema.org/Text',
         sameAs: 'http://schema.org/priceCurrency',
       },
@@ -35,7 +35,7 @@ describe('CurrencyCodeFormatRule', () => {
 
     for (const value of values) {
       const data = {
-        currency: value,
+        priceCurrency: value,
       };
       const nodeToTest = new ModelNode(
         '$',
@@ -56,7 +56,30 @@ describe('CurrencyCodeFormatRule', () => {
 
     for (const value of values) {
       const data = {
-        currency: value,
+        priceCurrency: value,
+      };
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(errors.length).toBe(1);
+      expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
+  });
+  it('should return an error for an invalid currency code with namespace', () => {
+    const values = [
+      'XAA',
+      'XAB',
+      'GB',
+    ];
+
+    for (const value of values) {
+      const data = {
+        'schema:priceCurrency': value,
       };
       const nodeToTest = new ModelNode(
         '$',

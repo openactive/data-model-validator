@@ -84,6 +84,41 @@ describe('DateFormatRule', () => {
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
+  it('should return an error for an invalid date with a namespace', () => {
+    const model = new Model({
+      type: 'Event',
+      fields: {
+        startDate: {
+          fieldName: 'startDate',
+          requiredType: 'http://schema.org/Date',
+        },
+      },
+    });
+    model.hasSpecification = true;
+
+    const values = [
+      '2017-12-06T09:00:00',
+      '2018-13-17',
+      'ABC',
+      '2017-02-29', // Not a leap year
+    ];
+
+    for (const value of values) {
+      const data = {
+        'schema:startDate': value,
+      };
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(errors.length).toBe(1);
+      expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
+  });
   it('should return an error for an invalid date from an unknown Model', () => {
     const model = new Model({});
 

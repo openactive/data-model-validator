@@ -83,6 +83,41 @@ describe('TimeFormatRule', () => {
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
+  it('should return an error for an invalid time with a namespace', () => {
+    const model = new Model({
+      type: 'Event',
+      fields: {
+        startTime: {
+          fieldName: 'startTime',
+          requiredType: 'http://schema.org/Time',
+        },
+      },
+    });
+    model.hasSpecification = true;
+    const values = [
+      '2017-09-06T09:00:00',
+      '2018-10-17',
+      '09:00:00',
+      '25:00:00Z',
+      'ABC',
+    ];
+
+    for (const value of values) {
+      const data = {
+        'schema:startTime': value,
+      };
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(errors.length).toBe(1);
+      expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
+  });
   it('should return an error for an invalid time from an unknown Model', () => {
     const model = new Model({});
 

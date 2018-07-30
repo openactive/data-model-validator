@@ -158,6 +158,26 @@ describe('validate', () => {
     expect(result.length).toBe(0);
   });
 
+  it('should return no errors for a valid Event with aliased properties', () => {
+    const event = Object.assign(
+      {},
+      validEvent,
+      {
+        '@type': 'Event',
+        'schema:name': validEvent.name,
+        'oa:ageRange': Object.assign({}, validEvent.ageRange),
+      },
+    );
+
+    delete event.type;
+    delete event.name;
+    delete event.ageRange;
+
+    const result = validate(event, options);
+
+    expect(result.length).toBe(0);
+  });
+
   it('should provide a jsonpath to the location of a problem', () => {
     // This event is missing location addressRegion, which is a recommended field
     const event = Object.assign({}, validEvent);
@@ -249,9 +269,9 @@ describe('validate', () => {
 
     expect(result.length).toBe(1);
 
-    expect(result[0].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);
-    expect(result[0].severity).toBe(ValidationErrorSeverity.WARNING);
-    expect(result[0].path).toBe('$.amenityFeature[1].type');
+    expect(result[0].type).toBe(ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED);
+    expect(result[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
+    expect(result[0].path).toBe('$.amenityFeature[1]');
   });
 
   it('should cope with arrays of flexible model types mixed with invalid elements', () => {
@@ -308,9 +328,9 @@ describe('validate', () => {
     expect(result[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     expect(result[0].path).toBe('$.amenityFeature');
 
-    expect(result[1].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);
-    expect(result[1].severity).toBe(ValidationErrorSeverity.WARNING);
-    expect(result[1].path).toBe('$.amenityFeature[2].type');
+    expect(result[1].type).toBe(ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED);
+    expect(result[1].severity).toBe(ValidationErrorSeverity.SUGGESTION);
+    expect(result[1].path).toBe('$.amenityFeature[2]');
   });
 
   it('should not throw if a property of value null is passed', () => {

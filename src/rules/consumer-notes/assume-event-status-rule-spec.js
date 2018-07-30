@@ -50,6 +50,23 @@ describe('AssumeEventStatusRule', () => {
     expect(errors.length).toBe(0);
   });
 
+  it('should return no errors if the eventStatus fields are valid', () => {
+    const data = {
+      type: 'Event',
+      'schema:eventStatus': 'http://schema.org/EventPostponed',
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(0);
+  });
+
   it('should return a notice if the eventStatus field is not set', () => {
     const data = {
       type: 'Event',

@@ -81,6 +81,28 @@ describe('LatLongFormatRule', () => {
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
+  it('should return an error for an invalid latitude with a namespace', () => {
+    const values = [
+      90.000001,
+      -100.0001,
+    ];
+
+    for (const value of values) {
+      const data = {
+        'schema:latitude': value,
+      };
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(errors.length).toBe(1);
+      expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
+  });
 
   // WGS84Latitude
   it('should return no error for an valid longitude', () => {
@@ -114,6 +136,28 @@ describe('LatLongFormatRule', () => {
     for (const value of values) {
       const data = {
         longitude: value,
+      };
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(errors.length).toBe(1);
+      expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
+  });
+  it('should return an error for an invalid longitude with a namespace', () => {
+    const values = [
+      180.000001,
+      -180.0001,
+    ];
+
+    for (const value of values) {
+      const data = {
+        'schema:longitude': value,
       };
       const nodeToTest = new ModelNode(
         '$',

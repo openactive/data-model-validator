@@ -10,10 +10,10 @@ describe('CountryCodeFormatRule', () => {
   const rule = new CountryCodeFormatRule();
 
   const model = new Model({
-    type: 'Event',
+    type: 'PostalAddress',
     fields: {
-      country: {
-        fieldName: 'country',
+      addressCountry: {
+        fieldName: 'addressCountry',
         sameAs: 'http://schema.org/addressCountry',
         requiredType: 'http://schema.org/Text',
       },
@@ -35,7 +35,7 @@ describe('CountryCodeFormatRule', () => {
 
     for (const value of values) {
       const data = {
-        country: value,
+        addressCountry: value,
       };
       const nodeToTest = new ModelNode(
         '$',
@@ -57,7 +57,31 @@ describe('CountryCodeFormatRule', () => {
 
     for (const value of values) {
       const data = {
-        country: value,
+        addressCountry: value,
+      };
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(errors.length).toBe(1);
+      expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
+  });
+  it('should return an error for an invalid country code with namespace', () => {
+    const values = [
+      'BC',
+      'QB',
+      'ZY',
+      'A',
+    ];
+
+    for (const value of values) {
+      const data = {
+        'schema:addressCountry': value,
       };
       const nodeToTest = new ModelNode(
         '$',

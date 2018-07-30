@@ -1,4 +1,4 @@
-
+const PropertyHelper = require('../helpers/property');
 
 class Rule {
   constructor(options) {
@@ -15,7 +15,10 @@ class Rule {
       errors = errors.concat(this.validateModel(nodeToTest));
     }
     for (const field in nodeToTest.value) {
-      if (this.isFieldTargeted(nodeToTest.model, field)) {
+      if (
+        Object.prototype.hasOwnProperty.call(nodeToTest.value, field)
+        && this.isFieldTargeted(nodeToTest.model, field)
+      ) {
         errors = errors.concat(this.validateField(nodeToTest, field));
       }
     }
@@ -33,10 +36,16 @@ class Rule {
   isModelTargeted(model) {
     return (
       this.targetModels === '*'
-      || this.targetModels === model.type
+      || PropertyHelper.stringMatchesField(
+        this.targetModels,
+        model.type,
+      )
       || (
         this.targetModels instanceof Array
-        && this.targetModels.indexOf(model.type) >= 0
+        && PropertyHelper.arrayHasField(
+          this.targetModels,
+          model.type,
+        )
       )
     );
   }
@@ -49,10 +58,16 @@ class Rule {
         && typeof this.targetFields[model.type] !== 'undefined'
         && (
           this.targetFields[model.type] === '*'
-          || this.targetFields[model.type] === field
+          || PropertyHelper.stringMatchesField(
+            this.targetFields[model.type],
+            field,
+          )
           || (
             this.targetFields[model.type] instanceof Array
-            && this.targetFields[model.type].indexOf(field) >= 0
+            && PropertyHelper.arrayHasField(
+              this.targetFields[model.type],
+              field,
+            )
           )
         )
       )

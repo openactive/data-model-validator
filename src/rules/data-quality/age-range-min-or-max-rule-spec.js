@@ -40,6 +40,24 @@ describe('AgeRangeMinOrMaxRule', () => {
     const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
+  it('should return no error when a minValue is specified in a namespaced field', () => {
+    const data = {
+      type: 'Event',
+      ageRange: {
+        type: 'QuantitativeValue',
+        'schema:minValue': 1,
+      },
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+    expect(errors.length).toBe(0);
+  });
   it('should return no error when a maxValue is specified', () => {
     const data = {
       type: 'Event',

@@ -16,10 +16,10 @@ module.exports = class DurationFormatRule extends Rule {
     const errors = [];
     let fieldObj;
     if (node.model.hasSpecification) {
-      if (typeof (node.model.fields[field]) === 'undefined') {
+      fieldObj = node.model.getField(field);
+      if (typeof fieldObj === 'undefined') {
         return [];
       }
-      fieldObj = new Field(node.model.fields[field]);
     } else {
       fieldObj = new Field();
     }

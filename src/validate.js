@@ -2,6 +2,7 @@ const modelLoader = require('openactive-data-models');
 const Model = require('./classes/model');
 const ModelNode = require('./classes/model-node');
 const OptionsHelper = require('./helpers/options');
+const PropertyHelper = require('./helpers/property');
 const Rules = require('./rules');
 const ValidationErrorSeverity = require('./errors/validation-error-severity');
 const ValidationErrorCategory = require('./errors/validation-error-category');
@@ -25,15 +26,33 @@ class ApplyRules {
       modelObject = null;
     }
     if (!modelObject) {
-      errors.push(
-        new ValidationError({
-          category: ValidationErrorCategory.INTERNAL,
-          type: ValidationErrorType.MODEL_NOT_FOUND,
-          value: `#${modelName}`,
-          severity: ValidationErrorSeverity.WARNING,
-          path,
-        }),
-      );
+      const prop = PropertyHelper.getFullyQualifiedProperty(modelName);
+      if (
+        (typeof prop.namespace === 'undefined' || prop.namespace === null)
+        && (typeof prop.prefix === 'undefined' || prop.prefix === null)
+      ) {
+        errors.push(
+          new ValidationError(
+            {
+              category: ValidationErrorCategory.CONFORMANCE,
+              type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
+              value: `#${modelName}`,
+              severity: ValidationErrorSeverity.SUGGESTION,
+              path,
+            },
+          ),
+        );
+      } else {
+        errors.push(
+          new ValidationError({
+            category: ValidationErrorCategory.INTERNAL,
+            type: ValidationErrorType.MODEL_NOT_FOUND,
+            value: `#${modelName}`,
+            severity: ValidationErrorSeverity.WARNING,
+            path,
+          }),
+        );
+      }
       modelObject = new Model();
     }
     return {
@@ -81,12 +100,19 @@ class ApplyRules {
               typeof nodeToTest.model.fields[field].requiredType === 'undefined'
               && typeof nodeToTest.model.fields[field].alternativeTypes === 'undefined'
               && typeof nodeToTest.model.fields[field].alternativeModels === 'undefined'
-              && Model.isTypeFlexible(altSubModelType)
             ) {
-              modelResponse = this.loadModel(
+              const altModelResponse = this.loadModel(
                 altSubModelType,
                 `${nodeToTest.getPath()}.${currentFieldName}`,
               );
+              // Preserve the original error if we had an experimental error
+              if (
+                altModelResponse.errors.length === 0
+                && modelResponse.errors[0].type === ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED
+              ) {
+                altModelResponse.errors.push(modelResponse.errors[0]);
+              }
+              modelResponse = altModelResponse;
             }
           }
         }
@@ -184,25 +210,42 @@ function validate(value, options) {
 
     // If no model provided, use the type in the object
     if (typeof options.type === 'undefined' || options.type === null) {
-      if (typeof value.type !== 'undefined') {
-        modelName = value.type;
+      const modelType = PropertyHelper.getObjectField(value, '@type');
+      if (typeof modelType !== 'undefined') {
+        modelName = modelType;
       }
     } else {
       modelName = options.type;
     }
 
-    // Load the model
-    const modelResponse = ApplyRules.loadModel(
-      modelName,
-      path,
-    );
-    errors = errors.concat(modelResponse.errors);
+    let modelResponse;
+
+    // Do we have a type? No? We should throw an error for data quality
+    if (typeof modelName === 'undefined') {
+      errors.push(
+        new ValidationError({
+          category: ValidationErrorCategory.DATA_QUALITY,
+          message: 'Please add a "type" property to this JSON object.',
+          type: ValidationErrorType.MISSING_REQUIRED_FIELD,
+          value,
+          severity: ValidationErrorSeverity.WARNING,
+          path,
+        }),
+      );
+    } else {
+      // Load the model
+      modelResponse = ApplyRules.loadModel(
+        modelName,
+        path,
+      );
+      errors = errors.concat(modelResponse.errors);
+    }
 
     const nodeToTest = new ModelNode(
       path,
       valueToTest,
       null,
-      modelResponse.modelObject,
+      typeof modelResponse === 'undefined' ? null : modelResponse.modelObject,
       optionsObj,
     );
 

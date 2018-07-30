@@ -1,4 +1,5 @@
 const OptionsHelper = require('../helpers/options');
+const PropertyHelper = require('../helpers/property');
 
 const ModelNode = class {
   constructor(name, value, parentNode, model, options) {
@@ -56,14 +57,17 @@ const ModelNode = class {
   getValueWithInheritance(field) {
     let testNode = this;
     let loopBusterIndex = 0;
+    const prop = PropertyHelper.getFullyQualifiedProperty(field);
+    const mappedField = prop.alias || prop.label;
     do {
-      if (typeof (testNode.value[field]) !== 'undefined'
-          && testNode.value[field] !== null
+      const testValue = PropertyHelper.getObjectField(testNode.value, mappedField);
+      if (typeof testValue !== 'undefined'
+          && testValue !== null
       ) {
-        return testNode.value[field];
+        return testValue;
       }
       // Can we inherit this value?
-      testNode = testNode.getInheritNode(field);
+      testNode = testNode.getInheritNode(mappedField);
       loopBusterIndex += 1;
     } while (testNode !== null && loopBusterIndex < 50);
     return undefined;
