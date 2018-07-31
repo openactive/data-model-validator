@@ -14,21 +14,24 @@ class ApplyRules {
     // Load the model (if it exists)
     // If the model doesn't exist, we can still apply a barebones set of
     // rules on the object.
-    let modelObject;
+    let modelObject = null;
     const errors = [];
-    try {
-      const modelData = modelLoader.loadModel(modelName);
+    if (typeof modelName !== 'undefined') {
+      try {
+        const modelData = modelLoader.loadModel(modelName);
 
-      if (modelData) {
-        modelObject = new Model(modelData, true);
+        if (modelData) {
+          modelObject = new Model(modelData, true);
+        }
+      } catch (e) {
+        modelObject = null;
       }
-    } catch (e) {
-      modelObject = null;
     }
     if (!modelObject) {
       const prop = PropertyHelper.getFullyQualifiedProperty(modelName);
       if (
-        (typeof prop.namespace === 'undefined' || prop.namespace === null)
+        typeof prop !== 'undefined'
+        && (typeof prop.namespace === 'undefined' || prop.namespace === null)
         && (typeof prop.prefix === 'undefined' || prop.prefix === null)
       ) {
         errors.push(
@@ -77,60 +80,77 @@ class ApplyRules {
 
     let index = 0;
     for (const fieldValue of fieldsToTest) {
-      if (typeof fieldValue === 'object') {
-        const subModelType = fieldValue.type;
+      if (typeof fieldValue === 'object' && !(fieldValue instanceof Array)) {
+        const subModelType = PropertyHelper.getObjectField(fieldValue, '@type');
         let currentFieldName = `${field}`;
         if (!isSingleObject) {
           currentFieldName += `[${index}]`;
         }
 
-        let modelResponse = this.loadModel(
-          subModelType,
-          `${nodeToTest.getPath()}.${currentFieldName}`,
-        );
+        // Check if this is a value object
+        if (
+          typeof(subModelType) === 'undefined'
+          && typeof fieldValue['@value'] !== 'undefined'
+        ) {
+          errors.push(
+            new ValidationError({
+              category: ValidationErrorCategory.CONFORMANCE,
+              type: ValidationErrorType.UNSUPPORTED_VALUE,
+              message: 'Whilst value objects are valid JSON-LD, they are not part of the Open Active specification',
+              value: fieldValue,
+              severity: ValidationErrorSeverity.NOTICE,
+              path: `${nodeToTest.getPath()}.${currentFieldName}`,
+            }),
+          );
+        } else {
+          let modelResponse = this.loadModel(
+            subModelType,
+            `${nodeToTest.getPath()}.${currentFieldName}`,
+          );
 
-        if (modelResponse.errors.length) {
-          // Try loading from the parent model type if we can
-          if (
-            typeof nodeToTest.model.fields[field] !== 'undefined'
-            && typeof nodeToTest.model.fields[field].model !== 'undefined'
-          ) {
-            const altSubModelType = nodeToTest.model.fields[field].model.replace(/^(ArrayOf)?#/, '');
+          if (modelResponse.errors.length) {
+            // Try loading from the parent model type if we can
             if (
-              typeof nodeToTest.model.fields[field].requiredType === 'undefined'
-              && typeof nodeToTest.model.fields[field].alternativeTypes === 'undefined'
-              && typeof nodeToTest.model.fields[field].alternativeModels === 'undefined'
+              typeof nodeToTest.model.fields[field] !== 'undefined'
+              && typeof nodeToTest.model.fields[field].model !== 'undefined'
             ) {
-              const altModelResponse = this.loadModel(
-                altSubModelType,
-                `${nodeToTest.getPath()}.${currentFieldName}`,
-              );
-              // Preserve the original error if we had an experimental error
+              const altSubModelType = nodeToTest.model.fields[field].model.replace(/^(ArrayOf)?#/, '');
               if (
-                altModelResponse.errors.length === 0
-                && modelResponse.errors[0].type === ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED
+                typeof nodeToTest.model.fields[field].requiredType === 'undefined'
+                && typeof nodeToTest.model.fields[field].alternativeTypes === 'undefined'
+                && typeof nodeToTest.model.fields[field].alternativeModels === 'undefined'
               ) {
-                altModelResponse.errors.push(modelResponse.errors[0]);
+                const altModelResponse = this.loadModel(
+                  altSubModelType,
+                  `${nodeToTest.getPath()}.${currentFieldName}`,
+                );
+                // Preserve the original error if we had an experimental error
+                if (
+                  altModelResponse.errors.length === 0
+                  && modelResponse.errors[0].type === ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED
+                ) {
+                  altModelResponse.errors.push(modelResponse.errors[0]);
+                }
+                modelResponse = altModelResponse;
               }
-              modelResponse = altModelResponse;
             }
           }
+          errors = errors.concat(modelResponse.errors);
+
+          const newNodeToTest = new ModelNode(
+            currentFieldName,
+            fieldValue,
+            nodeToTest,
+            modelResponse.modelObject,
+            nodeToTest.options,
+          );
+
+          const subModelErrors = this.applyModelRules(
+            rules,
+            newNodeToTest,
+          );
+          errors = errors.concat(subModelErrors);
         }
-        errors = errors.concat(modelResponse.errors);
-
-        const newNodeToTest = new ModelNode(
-          currentFieldName,
-          fieldValue,
-          nodeToTest,
-          modelResponse.modelObject,
-          nodeToTest.options,
-        );
-
-        const subModelErrors = this.applyModelRules(
-          rules,
-          newNodeToTest,
-        );
-        errors = errors.concat(subModelErrors);
       }
       index += 1;
     }

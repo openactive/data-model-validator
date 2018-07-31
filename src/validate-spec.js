@@ -356,4 +356,43 @@ describe('validate', () => {
     expect(doValidate).not.toThrow();
     expect(typeof result).toBe('object');
   });
+
+  it('should return an unsupported warning if nested arrays are passed', () => {
+    const event = Object.assign({}, validEvent);
+
+    event.leader = [event.leader];
+
+    result = validate(event, options);
+
+    expect(result.length).toBe(1);
+
+    expect(result[0].type).toBe(ValidationErrorType.INVALID_TYPE);
+    expect(result[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    expect(result[0].path).toBe('$.leader');
+  });
+
+  it('should not throw if a value object is passed', () => {
+    const event = Object.assign({}, validEvent);
+
+    event.name = {
+      '@value': event.name
+    };
+
+    let result;
+    const doValidate = () => {
+      result = validate(event, options);
+    };
+
+    expect(doValidate).not.toThrow();
+
+    expect(result.length).toBe(2);
+
+    expect(result[0].type).toBe(ValidationErrorType.INVALID_TYPE);
+    expect(result[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    expect(result[0].path).toBe('$.name');
+
+    expect(result[1].type).toBe(ValidationErrorType.UNSUPPORTED_VALUE);
+    expect(result[1].severity).toBe(ValidationErrorSeverity.NOTICE);
+    expect(result[1].path).toBe('$.name');
+  });
 });
