@@ -362,7 +362,7 @@ describe('validate', () => {
 
     event.leader = [event.leader];
 
-    result = validate(event, options);
+    const result = validate(event, options);
 
     expect(result.length).toBe(1);
 
@@ -375,7 +375,7 @@ describe('validate', () => {
     const event = Object.assign({}, validEvent);
 
     event.name = {
-      '@value': event.name
+      '@value': event.name,
     };
 
     let result;

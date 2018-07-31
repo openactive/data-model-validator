@@ -89,7 +89,7 @@ class ApplyRules {
 
         // Check if this is a value object
         if (
-          typeof(subModelType) === 'undefined'
+          typeof subModelType === 'undefined'
           && typeof fieldValue['@value'] !== 'undefined'
         ) {
           errors.push(
