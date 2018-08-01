@@ -1,5 +1,3 @@
-
-
 const RequiredOptionalFieldsRule = require('./required-optional-fields-rule');
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
@@ -121,7 +119,6 @@ describe('RequiredOptionalFieldsRule', () => {
     expect(errors[0].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     expect(errors[0].path).toBe('$.[\'startDate\', \'schedule\']');
-    expect(errors[0].message).toBe(model.requiredOptions[0].description[0]);
   });
 
   describe('with inheritsTo properties', () => {

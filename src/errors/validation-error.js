@@ -33,6 +33,10 @@ const ValidationError = class {
     return this.data.severity;
   }
 
+  get rule() {
+    return this.data.rule;
+  }
+
   set path(path) {
     this.data.path = path;
   }

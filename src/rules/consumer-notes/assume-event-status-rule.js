@@ -1,5 +1,4 @@
 const Rule = require('../rule');
-const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -8,7 +7,18 @@ module.exports = class AssumeEventStatusRule extends Rule {
   constructor(options) {
     super(options);
     this.targetModels = ['Event'];
-    this.description = 'Generates a notice for various ageRange combinations on Event.';
+    this.meta = {
+      name: 'AssumeEventStatusRule',
+      description: 'Generates a notice for how data consumers wil interpret an Event without a valid eventStatus.',
+      tests: {
+        default: {
+          message: 'Data consumers will assume the event status is scheduled if not specified or invalid.',
+          category: ValidationErrorCategory.DATA_QUALITY,
+          severity: ValidationErrorSeverity.SUGGESTION,
+          type: ValidationErrorType.CONSUMER_ASSUME_EVENT_STATUS,
+        },
+      },
+    };
   }
 
   validateModel(node) {
@@ -26,12 +36,10 @@ module.exports = class AssumeEventStatusRule extends Rule {
       )
     ) {
       errors.push(
-        new ValidationError(
+        this.createError(
+          'default',
           {
-            category: ValidationErrorCategory.DATA_QUALITY,
-            type: ValidationErrorType.CONSUMER_ASSUME_EVENT_STATUS,
             value: testValue,
-            severity: ValidationErrorSeverity.SUGGESTION,
             path: `${node.getPath()}.eventStatus`,
           },
         ),

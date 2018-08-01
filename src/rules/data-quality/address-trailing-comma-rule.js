@@ -1,5 +1,4 @@
 const Rule = require('../rule');
-const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -10,7 +9,18 @@ module.exports = class AddressTrailingCommaRule extends Rule {
     this.targetFields = {
       PostalAddress: ['streetAddress', 'addressLocality', 'addressRegion', 'addressCountry', 'postalCode'],
     };
-    this.description = 'Validates that address fields don\'t end with trailing commas.';
+    this.meta = {
+      name: 'AddressTrailingCommaRule',
+      description: 'Validates that address fields don\'t end with trailing commas.',
+      tests: {
+        default: {
+          message: 'Address fields should not have a trailing comma.',
+          category: ValidationErrorCategory.DATA_QUALITY,
+          severity: ValidationErrorSeverity.WARNING,
+          type: ValidationErrorType.ADDRESS_HAS_TRAILING_COMMA,
+        },
+      },
+    };
   }
 
   validateField(node, field) {
@@ -20,12 +30,10 @@ module.exports = class AddressTrailingCommaRule extends Rule {
       && node.value[field].match(/,\s*$/)
     ) {
       errors.push(
-        new ValidationError(
+        this.createError(
+          'default',
           {
-            category: ValidationErrorCategory.DATA_QUALITY,
-            type: ValidationErrorType.ADDRESS_HAS_TRAILING_COMMA,
             value: node.value[field],
-            severity: ValidationErrorSeverity.WARNING,
             path: `${node.getPath()}.${field}`,
           },
         ),

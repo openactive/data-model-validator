@@ -20,8 +20,8 @@ describe('CountryCodeFormatRule', () => {
     },
   });
 
-  it('should target fields of any type', () => {
-    const isTargeted = rule.isFieldTargeted(model, 'type');
+  it('should target the addressCountry field of PostalAddress', () => {
+    const isTargeted = rule.isFieldTargeted(model, 'addressCountry');
     expect(isTargeted).toBe(true);
   });
 
@@ -49,6 +49,7 @@ describe('CountryCodeFormatRule', () => {
   });
   it('should return an error for an invalid country code', () => {
     const values = [
+      'UK',
       'BC',
       'QB',
       'ZY',
@@ -73,6 +74,7 @@ describe('CountryCodeFormatRule', () => {
   });
   it('should return an error for an invalid country code with namespace', () => {
     const values = [
+      'UK',
       'BC',
       'QB',
       'ZY',

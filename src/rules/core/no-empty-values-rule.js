@@ -1,5 +1,4 @@
 const Rule = require('../rule');
-const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -8,7 +7,33 @@ module.exports = class NoEmptyValuesRule extends Rule {
   constructor(options) {
     super(options);
     this.targetFields = '*';
-    this.description = 'Validates that fields are not null, an empty string or an empty array.';
+    this.meta = {
+      name: 'NoEmptyValuesRule',
+      description: 'Validates that fields are not null, an empty string or an empty array.',
+      tests: {
+        notNull: {
+          description: 'Validates that a field is not null.',
+          message: 'Fields must not be null',
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.FIELD_IS_EMPTY,
+        },
+        notEmptyString: {
+          description: 'Validates that a field is not an empty string.',
+          message: 'Fields must not contain empty strings.',
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.FIELD_IS_EMPTY,
+        },
+        notEmptyArray: {
+          description: 'Validates that a field is not an empty array.',
+          message: 'Fields must not contain empty arrays.',
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.FIELD_IS_EMPTY,
+        },
+      },
+    };
   }
 
   validateField(node, field) {
@@ -18,27 +43,20 @@ module.exports = class NoEmptyValuesRule extends Rule {
     }
     const errors = [];
     if (typeof node.value[field] !== 'undefined') {
-      let isError = false;
-      let message = '';
+      let testKey;
       if (node.value[field] === null) {
-        isError = true;
-        message = 'Fields must not be null';
+        testKey = 'notNull';
       } else if (node.value[field] instanceof Array && node.value[field].length === 0) {
-        isError = true;
-        message = 'Fields must not contain empty arrays';
+        testKey = 'notEmptyArray';
       } else if (node.value[field] === '') {
-        isError = true;
-        message = 'Fields must not contain empty strings';
+        testKey = 'notEmptyString';
       }
-      if (isError) {
+      if (testKey) {
         errors.push(
-          new ValidationError(
+          this.createError(
+            testKey,
             {
-              category: ValidationErrorCategory.CONFORMANCE,
-              message,
-              type: ValidationErrorType.FIELD_IS_EMPTY,
               value: node.value[field],
-              severity: ValidationErrorSeverity.FAILURE,
               path: `${node.getPath()}.${field}`,
             },
           ),

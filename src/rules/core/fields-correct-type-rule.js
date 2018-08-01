@@ -1,5 +1,5 @@
+const Handlebars = require('handlebars');
 const Rule = require('../rule');
-const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -8,7 +8,34 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
   constructor(options) {
     super(options);
     this.targetFields = '*';
-    this.description = 'Validates that all fields are the correct type.';
+    this.meta = {
+      name: 'FieldsCorrectTypeRule',
+      description: 'Validates that all fields are the correct type.',
+      tests: {
+        singleType: {
+          description: 'Validates that a field conforms to a single type.',
+          message: 'Invalid type, expected {{expectedType}} but found {{foundType}}.',
+          sampleValues: {
+            expectedType: '"http://schema.org/Text"',
+            foundType: '"http://schema.org/Float"',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.INVALID_TYPE,
+        },
+        multipleTypes: {
+          description: 'Validates that a field conforms one of a list of types.',
+          message: 'Invalid type, expected one of {{expectedTypes}} but found {{foundType}}.',
+          sampleValues: {
+            expectedTypes: '"http://schema.org/Text", "ArrayOf#http://schema.org/Text"',
+            foundType: '"http://schema.org/Float"',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.INVALID_TYPE,
+        },
+      },
+    };
   }
 
   validateField(node, field) {
@@ -37,22 +64,29 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     const errors = [];
 
     if (!checkPass) {
-      let message;
+      let testKey;
+      let messageValues = {};
       if (typeChecks.length === 1) {
-        message = `Invalid type, expected '${typeChecks[0]}' but found '${derivedType}'`;
+        testKey = 'singleType';
+        messageValues = {
+          expectedType: `"${typeChecks[0]}"`,
+          foundType: `"${derivedType}"`,
+        };
       } else {
-        message = `Invalid type, expected one of '${typeChecks.join("', '")}' but found '${derivedType}'`;
+        testKey = 'multipleTypes';
+        messageValues = {
+          expectedTypes: new Handlebars.SafeString(`"${typeChecks.join('", "')}"`),
+          foundType: `"${derivedType}"`,
+        };
       }
       errors.push(
-        new ValidationError(
+        this.createError(
+          testKey,
           {
-            category: ValidationErrorCategory.CONFORMANCE,
-            type: ValidationErrorType.INVALID_TYPE,
-            message,
             value: fieldValue,
-            severity: ValidationErrorSeverity.FAILURE,
             path: `${node.getPath()}.${field}`,
           },
+          messageValues,
         ),
       );
     }

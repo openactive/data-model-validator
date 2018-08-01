@@ -1,5 +1,4 @@
 const Rule = require('../rule');
-const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -8,7 +7,18 @@ module.exports = class MaxLessThenMinRule extends Rule {
   constructor(options) {
     super(options);
     this.targetModels = ['QuantitativeValue'];
-    this.description = 'Validates that minValue is less than or equal to the maxValue of a QuantitativeValue.';
+    this.meta = {
+      name: 'MaxLessThenMinRule',
+      description: 'Validates that minValue is less than or equal to the maxValue of a QuantitativeValue.',
+      tests: {
+        default: {
+          message: 'minValue must not be greater than maxValue.',
+          category: ValidationErrorCategory.DATA_QUALITY,
+          severity: ValidationErrorSeverity.WARNING,
+          type: ValidationErrorType.MIN_VALUE_GREATER_THAN_MAX_VALUE,
+        },
+      },
+    };
   }
 
   validateModel(node) {
@@ -23,12 +33,10 @@ module.exports = class MaxLessThenMinRule extends Rule {
 
     if (maxValue < minValue) {
       errors.push(
-        new ValidationError(
+        this.createError(
+          'default',
           {
-            category: ValidationErrorCategory.DATA_QUALITY,
-            type: ValidationErrorType.MIN_VALUE_GREATER_THAN_MAX_VALUE,
             value: minValue,
-            severity: ValidationErrorSeverity.WARNING,
             path: `${node.getPath()}.minValue`,
           },
         ),

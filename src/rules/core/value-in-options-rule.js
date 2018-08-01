@@ -1,5 +1,5 @@
+const Handlebars = require('handlebars');
 const Rule = require('../rule');
-const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -8,7 +8,22 @@ module.exports = class ValueInOptionsRule extends Rule {
   constructor(options) {
     super(options);
     this.targetFields = '*';
-    this.description = 'Validates that fields contain allowed values.';
+    this.meta = {
+      name: 'ValueInOptionsRule',
+      description: 'Validates that fields contain allowed values.',
+      tests: {
+        default: {
+          message: 'Value "{{value}}" is not in the allowed values for this field. Should be one of {{allowedValues}}.',
+          sampleValues: {
+            value: 'Male',
+            allowedValues: '"http://openactive.io/ns#Female", "http://openactive.io/ns#Male", "http://openactive.io/ns#None"',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
+        },
+      },
+    };
   }
 
   validateField(node, field) {
@@ -37,13 +52,15 @@ module.exports = class ValueInOptionsRule extends Rule {
 
       if (!isInOptions) {
         errors.push(
-          new ValidationError(
+          this.createError(
+            'default',
             {
-              category: ValidationErrorCategory.CONFORMANCE,
-              type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
               value: node.value[field],
-              severity: ValidationErrorSeverity.FAILURE,
               path: `${node.getPath()}.${field}`,
+            },
+            {
+              value: node.value[field],
+              allowedValues: new Handlebars.SafeString(`"${fieldObj.options.join('", "')}"`),
             },
           ),
         );

@@ -1,5 +1,5 @@
+const Handlebars = require('handlebars');
 const Rule = require('../rule');
-const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -8,6 +8,22 @@ module.exports = class RequiredOptionalFieldsRule extends Rule {
   constructor(options) {
     super(options);
     this.targetModels = '*';
+    this.meta = {
+      name: 'RequiredOptionalFieldsRule',
+      description: 'Validates that all optional fields that are part of a required group are present in the JSON data.',
+      tests: {
+        default: {
+          message: 'While these properties are marked as optional, a data publisher must provide one of {{optionalFields}} for an "{{model}}".',
+          sampleValues: {
+            optionalFields: '"startDate", "eventSchedule"',
+            model: 'Event',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.MISSING_REQUIRED_FIELD,
+        },
+      },
+    };
     this.description = 'Validates that all optional fields that are part of a required group are present in the JSON data.';
   }
 
@@ -33,14 +49,15 @@ module.exports = class RequiredOptionalFieldsRule extends Rule {
 
         if (!found) {
           errors.push(
-            new ValidationError(
+            this.createError(
+              'default',
               {
-                category: ValidationErrorCategory.CONFORMANCE,
-                type: ValidationErrorType.MISSING_REQUIRED_FIELD,
-                message: option.description ? option.description.join(' ') : null,
                 value: undefined,
-                severity: ValidationErrorSeverity.FAILURE,
                 path: `${node.getPath()}.['${option.options.join('\', \'')}']`,
+              },
+              {
+                optionalFields: new Handlebars.SafeString(`"${option.options.join('", "')}"`),
+                model: node.model.type,
               },
             ),
           );
