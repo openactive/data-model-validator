@@ -1,15 +1,28 @@
 const moment = require('moment');
 const Rule = require('../rule');
-const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 
-module.exports = class DateFormatRule extends Rule {
+module.exports = class EndBeforeStartRule extends Rule {
   constructor(options) {
     super(options);
     this.targetModels = ['Event', 'Schedule'];
-    this.description = 'Validates that startDate is before the endDate of an Event or Schedule.';
+    this.meta = {
+      name: 'EndBeforeStartRule',
+      description: 'Validates that startDate is before the endDate of an Event or Schedule.',
+      tests: {
+        default: {
+          message: 'Start date should not be after the end date of {{model}}.',
+          sampleValues: {
+            model: 'Event',
+          },
+          category: ValidationErrorCategory.DATA_QUALITY,
+          severity: ValidationErrorSeverity.WARNING,
+          type: ValidationErrorType.START_DATE_AFTER_END_DATE,
+        },
+      },
+    };
   }
 
   validateModel(node) {
@@ -31,13 +44,14 @@ module.exports = class DateFormatRule extends Rule {
 
     if (startDate > endDate) {
       errors.push(
-        new ValidationError(
+        this.createError(
+          'default',
           {
-            category: ValidationErrorCategory.DATA_QUALITY,
-            type: ValidationErrorType.START_DATE_AFTER_END_DATE,
             value: evalStartDate,
-            severity: ValidationErrorSeverity.WARNING,
             path: `${node.getPath()}.startDate`,
+          },
+          {
+            model: node.model.type,
           },
         ),
       );

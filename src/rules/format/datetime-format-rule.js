@@ -1,7 +1,6 @@
 const moment = require('moment');
 const Rule = require('../rule');
 const Field = require('../../classes/field');
-const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -10,7 +9,18 @@ module.exports = class DatetimeFormatRule extends Rule {
   constructor(options) {
     super(options);
     this.targetFields = '*';
-    this.description = 'Validates that DateTime fields are in the correct format.';
+    this.meta = {
+      name: 'DatetimeFormatRule',
+      description: 'Validates that DateTime fields are in the correct format.',
+      tests: {
+        default: {
+          message: 'DateTimes should be expressed as ISO 8601 format datetimes with a trailing definition of timezone. For example, 2018-08-01T10:51:02Z or 2018-08-01T10:51:02+01:00.',
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.INVALID_FORMAT,
+        },
+      },
+    };
   }
 
   validateField(node, field) {
@@ -31,13 +41,10 @@ module.exports = class DatetimeFormatRule extends Rule {
     ) {
       if (!moment(node.value[field], 'YYYY-MM-DD\\THH:mm:ssZZ', true).isValid()) {
         errors.push(
-          new ValidationError(
+          this.createError(
+            'default',
             {
-              category: ValidationErrorCategory.CONFORMANCE,
-              type: ValidationErrorType.INVALID_FORMAT,
-              message: 'DateTimes should be expressed as ISO 8601 format datetimes with a trailing definition of timezone',
               value: node.value[field],
-              severity: ValidationErrorSeverity.FAILURE,
               path: `${node.getPath()}.${field}`,
             },
           ),

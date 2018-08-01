@@ -1,6 +1,5 @@
 const Rule = require('../rule');
 const GraphHelper = require('../../helpers/graph');
-const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -9,7 +8,44 @@ module.exports = class FieldsNotInModelRule extends Rule {
   constructor(options) {
     super(options);
     this.targetFields = '*';
-    this.description = 'Validates that all fields are present in the specification.';
+    this.meta = {
+      name: 'FieldsNotInModelRule',
+      description: 'Validates that all fields are present in the specification.',
+      tests: {
+        noExperimental: {
+          description: 'Raises a warning if experimental fields are detected.',
+          message: 'The validator does not currently check experimental fields.',
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.WARNING,
+          type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
+        },
+        typoHint: {
+          description: 'Detects common typos, and raises a warning informing on how to correct.',
+          message: 'Field "{{typoField}}" is a common typo for "{{actualField}}". Please correct this field to "{{actualField}}".',
+          sampleValues: {
+            typoField: 'offer',
+            actualField: 'offers',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.FIELD_COULD_BE_TYPO,
+        },
+        inSchemaOrg: {
+          description: 'Raises a notice that fields in the schema.org schema that aren\'t in the Open Active specification aren\'t checked by the validator.',
+          message: 'This field is declared in schema.org but this validator is not yet capable of checking whether they have the right format or values. You should refer to the schema.org documentation for additional guidance.',
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.NOTICE,
+          type: ValidationErrorType.SCHEMA_ORG_FIELDS_NOT_CHECKED,
+        },
+        notInSpec: {
+          description: 'Raises a warning for fields that aren\'t in the Open Active specification, and that aren\'t caught by other rules.',
+          message: 'This field is not defined in the Open Active specification.',
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.WARNING,
+          type: ValidationErrorType.FIELD_NOT_IN_SPEC,
+        },
+      },
+    };
   }
 
   validateField(node, field) {
@@ -18,34 +54,19 @@ module.exports = class FieldsNotInModelRule extends Rule {
       return [];
     }
     const errors = [];
+    let testKey = null;
+    let messageValues;
     if (!node.model.hasFieldInSpec(field)) {
       if (field.toLowerCase().substring(0, 5) === 'beta:'
         || field.toLowerCase().substring(0, 4) === 'ext:'
       ) {
-        errors.push(
-          new ValidationError(
-            {
-              category: ValidationErrorCategory.CONFORMANCE,
-              type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
-              value: node.value[field],
-              severity: ValidationErrorSeverity.WARNING,
-              path: `${node.getPath()}.${field}`,
-            },
-          ),
-        );
+        testKey = 'noExperimental';
       } else if (typeof node.model.commonTypos[field] !== 'undefined') {
-        errors.push(
-          new ValidationError(
-            {
-              category: ValidationErrorCategory.CONFORMANCE,
-              type: ValidationErrorType.FIELD_COULD_BE_TYPO,
-              message: `Field '${field}' should be '${node.model.commonTypos[field]}'`,
-              value: node.value[field],
-              severity: ValidationErrorSeverity.FAILURE,
-              path: `${node.getPath()}.${field}`,
-            },
-          ),
-        );
+        testKey = 'typoHint';
+        messageValues = {
+          typoField: field,
+          actualField: node.model.commonTypos[field],
+        };
       } else {
         // Is this in schema.org?
         let inSchemaOrg = false;
@@ -58,30 +79,22 @@ module.exports = class FieldsNotInModelRule extends Rule {
           }
         }
         if (inSchemaOrg) {
-          errors.push(
-            new ValidationError(
-              {
-                category: ValidationErrorCategory.CONFORMANCE,
-                type: ValidationErrorType.SCHEMA_ORG_FIELDS_NOT_CHECKED,
-                value: node.value[field],
-                severity: ValidationErrorSeverity.NOTICE,
-                path: `${node.getPath()}.${field}`,
-              },
-            ),
-          );
+          testKey = 'inSchemaOrg';
         } else {
-          errors.push(
-            new ValidationError(
-              {
-                category: ValidationErrorCategory.CONFORMANCE,
-                type: ValidationErrorType.FIELD_NOT_IN_SPEC,
-                value: node.value[field],
-                severity: ValidationErrorSeverity.WARNING,
-                path: `${node.getPath()}.${field}`,
-              },
-            ),
-          );
+          testKey = 'notInSpec';
         }
+      }
+      if (testKey) {
+        errors.push(
+          this.createError(
+            testKey,
+            {
+              value: node.value[field],
+              path: `${node.getPath()}.${field}`,
+            },
+            messageValues,
+          ),
+        );
       }
     }
     return errors;

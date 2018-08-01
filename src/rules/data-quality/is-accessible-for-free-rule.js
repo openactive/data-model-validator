@@ -1,6 +1,5 @@
 const Rule = require('../rule');
 const PropertyHelper = require('../../helpers/property');
-const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -9,7 +8,18 @@ module.exports = class IsAccessibleForFreeRule extends Rule {
   constructor(options) {
     super(options);
     this.targetModels = ['Event'];
-    this.description = 'Validates that isAccessibleForFree is set to true for events that have a zero-price offer.';
+    this.meta = {
+      name: 'IsAccessibleForFreeRule',
+      description: 'Validates that isAccessibleForFree is set to true for events that have a zero-price offer.',
+      tests: {
+        default: {
+          message: 'Events with at least one zero price offer should have isAccessibleForFree set to true.',
+          category: ValidationErrorCategory.DATA_QUALITY,
+          severity: ValidationErrorSeverity.WARNING,
+          type: ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE,
+        },
+      },
+    };
   }
 
   validateModel(node) {
@@ -42,12 +52,10 @@ module.exports = class IsAccessibleForFreeRule extends Rule {
           && offerPrice === 0
         ) {
           errors.push(
-            new ValidationError(
+            this.createError(
+              'default',
               {
-                category: ValidationErrorCategory.DATA_QUALITY,
-                type: ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE,
                 value: node.value,
-                severity: ValidationErrorSeverity.WARNING,
                 path: `${node.getPath()}`,
               },
             ),

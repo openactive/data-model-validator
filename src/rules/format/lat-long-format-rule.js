@@ -1,5 +1,4 @@
 const Rule = require('../rule');
-const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -10,10 +9,23 @@ module.exports = class LatLongFormatRule extends Rule {
     this.targetFields = {
       GeoCoordinates: ['latitude', 'longitude'],
     };
-    this.description = 'Validates that latitude and longitude fields are in the correct format.';
-    this.errors = {
-      latitude: 'Geo latitude points should be expressed as floating point numbers, -90 to 90.',
-      longitude: 'Geo longitude points should be expressed as floating point numbers, -180 to 180.',
+    this.meta = {
+      name: 'LatLongFormatRule',
+      description: 'Validates that latitude and longitude fields are in the correct format.',
+      tests: {
+        latitude: {
+          message: 'Geo latitude points should be expressed as floating point numbers, -90 to 90.',
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.INVALID_FORMAT,
+        },
+        longitude: {
+          message: 'Geo longitude points should be expressed as floating point numbers, -180 to 180.',
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.INVALID_FORMAT,
+        },
+      },
     };
   }
 
@@ -29,13 +41,10 @@ module.exports = class LatLongFormatRule extends Rule {
       || (fieldObj.fieldName === 'longitude' && (node.value[field] < -180 || node.value[field] > 180))
     ) {
       errors.push(
-        new ValidationError(
+        this.createError(
+          fieldObj.fieldName,
           {
-            category: ValidationErrorCategory.CONFORMANCE,
-            type: ValidationErrorType.INVALID_FORMAT,
-            message: this.errors[fieldObj.fieldName],
             value: node.value[field],
-            severity: ValidationErrorSeverity.FAILURE,
             path: `${node.getPath()}.${field}`,
           },
         ),

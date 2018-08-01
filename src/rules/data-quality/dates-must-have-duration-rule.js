@@ -1,5 +1,4 @@
 const Rule = require('../rule');
-const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -8,7 +7,18 @@ module.exports = class DatesMustHaveDurationRule extends Rule {
   constructor(options) {
     super(options);
     this.targetModels = ['Event', 'Schedule'];
-    this.description = 'Validates that a duration is supplied where both startDate and endDate are given in an Event or Schedule.';
+    this.meta = {
+      name: 'DatesMustHaveDurationRule',
+      description: 'Validates that a duration is supplied where both startDate and endDate are given in an Event or Schedule.',
+      tests: {
+        default: {
+          message: 'A duration must be provided when a start date and end date are set.',
+          category: ValidationErrorCategory.DATA_QUALITY,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.DATES_MUST_HAVE_DURATION,
+        },
+      },
+    };
   }
 
   validateModel(node) {
@@ -23,12 +33,10 @@ module.exports = class DatesMustHaveDurationRule extends Rule {
     const duration = node.getValueWithInheritance('duration');
     if (typeof duration === 'undefined') {
       errors.push(
-        new ValidationError(
+        this.createError(
+          'default',
           {
-            category: ValidationErrorCategory.DATA_QUALITY,
-            type: ValidationErrorType.DATES_MUST_HAVE_DURATION,
             value: undefined,
-            severity: ValidationErrorSeverity.FAILURE,
             path: `${node.getPath()}.duration`,
           },
         ),

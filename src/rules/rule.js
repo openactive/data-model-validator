@@ -1,11 +1,17 @@
+const Handlebars = require('handlebars');
 const PropertyHelper = require('../helpers/property');
+const ValidationError = require('../errors/validation-error');
 
 class Rule {
   constructor(options) {
     this.options = options;
     this.targetModels = [];
     this.targetFields = {};
-    this.description = 'This is a base rule description that should be overridden.';
+    this.meta = {
+      name: 'Rule',
+      description: 'This is a base rule description that should be overridden.',
+      tests: {},
+    };
   }
 
   validate(nodeToTest) {
@@ -25,12 +31,32 @@ class Rule {
     return errors;
   }
 
-  validateModel(/* data, model, parent */) {
+  validateModel(/* node */) {
     throw Error('Model validation rule not implemented');
   }
 
-  validateField(/* data, field, model, parent */) {
+  validateField(/* node, field */) {
     throw Error('Field validation rule not implemented');
+  }
+
+  createError(testKey, extra = {}, messageValues = undefined) {
+    const rule = this.meta.tests[testKey];
+    let { message } = rule;
+    if (typeof messageValues !== 'undefined') {
+      const template = Handlebars.compile(rule.message);
+      message = template(messageValues);
+    }
+    const error = Object.assign(
+      extra,
+      {
+        rule: this.meta.name,
+        category: rule.category,
+        type: rule.type,
+        severity: rule.severity,
+        message,
+      },
+    );
+    return new ValidationError(error);
   }
 
   isModelTargeted(model) {

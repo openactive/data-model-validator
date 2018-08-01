@@ -1,6 +1,5 @@
 const Rule = require('../rule');
 const Field = require('../../classes/field');
-const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -9,7 +8,18 @@ module.exports = class DurationFormatRule extends Rule {
   constructor(options) {
     super(options);
     this.targetFields = '*';
-    this.description = 'Validates that duration fields are in the correct format.';
+    this.meta = {
+      name: 'DurationFormatRule',
+      description: 'Validates that duration fields are in the correct format.',
+      tests: {
+        default: {
+          message: 'Durations should be expressed as ISO 8601 durations. For example, P1D, PT1H or PT1H30M.',
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.INVALID_FORMAT,
+        },
+      },
+    };
   }
 
   validateField(node, field) {
@@ -50,13 +60,10 @@ module.exports = class DurationFormatRule extends Rule {
     ) {
       if (!durationRegex.test(node.value[field])) {
         errors.push(
-          new ValidationError(
+          this.createError(
+            'default',
             {
-              category: ValidationErrorCategory.CONFORMANCE,
-              type: ValidationErrorType.INVALID_FORMAT,
-              message: 'Durations should be expressed as ISO 8601 durations',
               value: node.value[field],
-              severity: ValidationErrorSeverity.FAILURE,
               path: `${node.getPath()}.${field}`,
             },
           ),

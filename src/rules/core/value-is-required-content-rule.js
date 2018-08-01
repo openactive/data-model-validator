@@ -1,5 +1,4 @@
 const Rule = require('../rule');
-const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -8,7 +7,22 @@ module.exports = class ValueIsRequiredContentRule extends Rule {
   constructor(options) {
     super(options);
     this.targetFields = '*';
-    this.description = 'Validates that fields match defined required content.';
+    this.meta = {
+      name: 'ValueIsRequiredContentRule',
+      description: 'Validates that fields match defined required content.',
+      tests: {
+        default: {
+          message: 'Value "{{value}}" is not an allowed value for this field. Should be "{{allowedValue}}".',
+          sampleValues: {
+            value: 'Event',
+            allowedValue: 'Session',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
+        },
+      },
+    };
   }
 
   validateField(node, field) {
@@ -27,14 +41,15 @@ module.exports = class ValueIsRequiredContentRule extends Rule {
         && fieldObj.requiredContent !== fieldValue
       ) {
         errors.push(
-          new ValidationError(
+          this.createError(
+            'default',
             {
-              category: ValidationErrorCategory.CONFORMANCE,
-              message: `Value for this field must be '${fieldObj.requiredContent}'`,
-              type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
               value: node.value[field],
-              severity: ValidationErrorSeverity.FAILURE,
               path: `${node.getPath()}.${field}`,
+            },
+            {
+              value: node.value[field],
+              allowedValue: fieldObj.requiredContent,
             },
           ),
         );

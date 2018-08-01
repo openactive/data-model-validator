@@ -1,5 +1,4 @@
 const Rule = require('../rule');
-const ValidationError = require('../../errors/validation-error');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -8,7 +7,18 @@ module.exports = class NoHtmlRule extends Rule {
   constructor(options) {
     super(options);
     this.targetFields = '*';
-    this.description = 'Validates that a text field doesn\'t contain HTML.';
+    this.meta = {
+      name: 'NoHtmlRule',
+      description: 'Validates that a text field doesn\'t contain HTML.',
+      tests: {
+        default: {
+          message: 'HTML should be stripped from all data before publishing.',
+          category: ValidationErrorCategory.DATA_QUALITY,
+          severity: ValidationErrorSeverity.WARNING,
+          type: ValidationErrorType.NO_HTML,
+        },
+      },
+    };
   }
 
   static isHTML(str) {
@@ -23,12 +33,10 @@ module.exports = class NoHtmlRule extends Rule {
     const errors = [];
     if (this.constructor.isHTML(node.value[field])) {
       errors.push(
-        new ValidationError(
+        this.createError(
+          'default',
           {
-            category: ValidationErrorCategory.DATA_QUALITY,
-            type: ValidationErrorType.NO_HTML,
             value: node.value[field],
-            severity: ValidationErrorSeverity.WARNING,
             path: `${node.getPath()}.${field}`,
           },
         ),
