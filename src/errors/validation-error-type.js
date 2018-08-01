@@ -29,6 +29,7 @@ const ValidationErrorType = {
   ADDRESS_HAS_TRAILING_COMMA: 'address_has_trailing_comma',
   CONCEPT_ID_AND_IN_SCHEME_TOGETHER: 'concept_id_and_in_scheme_together',
   SCHEMA_ORG_FIELDS_NOT_CHECKED: 'schema_org_fields_not_checked',
+  THUMBNAIL_HAS_NO_THUMBNAIL: 'thumbnail_has_no_thumbnail',
 };
 
 module.exports = Object.freeze(ValidationErrorType);

@@ -32,6 +32,7 @@ module.exports = [
   require('./data-quality/address-trailing-comma-rule'),
   require('./data-quality/no-html-rule'),
   require('./data-quality/concept-id-in-scheme-rule'),
+  require('./data-quality/thumbnail-has-no-thumbnail-rule'),
 
   // Notes on the data consumer
   require('./consumer-notes/assume-no-gender-restriction-rule'),
