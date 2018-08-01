@@ -1,4 +1,3 @@
-const Handlebars = require('handlebars');
 const PropertyHelper = require('../helpers/property');
 const ValidationError = require('../errors/validation-error');
 
@@ -39,16 +38,15 @@ class Rule {
     throw Error('Field validation rule not implemented');
   }
 
-  safeString(string) {
-    return new Handlebars.SafeString(string);
-  }
-
   createError(testKey, extra = {}, messageValues = undefined) {
     const rule = this.meta.tests[testKey];
     let { message } = rule;
     if (typeof messageValues !== 'undefined') {
-      const template = Handlebars.compile(rule.message);
-      message = template(messageValues);
+      for (const key in messageValues) {
+        if (Object.prototype.hasOwnProperty.call(messageValues, key)) {
+          message = message.replace(new RegExp(`{{${key}}}`, 'g'), messageValues[key]);
+        }
+      }
     }
     const error = Object.assign(
       extra,

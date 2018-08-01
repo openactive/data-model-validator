@@ -74,7 +74,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       } else {
         testKey = 'multipleTypes';
         messageValues = {
-          expectedTypes: this.safeString(`"${typeChecks.join('", "')}"`),
+          expectedTypes: `"${typeChecks.join('", "')}"`,
           foundType: `"${derivedType}"`,
         };
       }

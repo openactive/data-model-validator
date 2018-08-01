@@ -55,7 +55,7 @@ module.exports = class RequiredOptionalFieldsRule extends Rule {
                 path: `${node.getPath()}.['${option.options.join('\', \'')}']`,
               },
               {
-                optionalFields: this.safeString(`"${option.options.join('", "')}"`),
+                optionalFields: `"${option.options.join('", "')}"`,
                 model: node.model.type,
               },
             ),

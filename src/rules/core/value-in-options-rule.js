@@ -59,7 +59,7 @@ module.exports = class ValueInOptionsRule extends Rule {
             },
             {
               value: node.value[field],
-              allowedValues: this.safeString(`"${fieldObj.options.join('", "')}"`),
+              allowedValues: `"${fieldObj.options.join('", "')}"`,
             },
           ),
         );
