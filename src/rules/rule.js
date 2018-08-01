@@ -39,6 +39,10 @@ class Rule {
     throw Error('Field validation rule not implemented');
   }
 
+  safeString(string) {
+    return new Handlebars.SafeString(string);
+  }
+
   createError(testKey, extra = {}, messageValues = undefined) {
     const rule = this.meta.tests[testKey];
     let { message } = rule;

@@ -1,4 +1,3 @@
-const Handlebars = require('handlebars');
 const Rule = require('../rule');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
@@ -60,7 +59,7 @@ module.exports = class ValueInOptionsRule extends Rule {
             },
             {
               value: node.value[field],
-              allowedValues: new Handlebars.SafeString(`"${fieldObj.options.join('", "')}"`),
+              allowedValues: this.safeString(`"${fieldObj.options.join('", "')}"`),
             },
           ),
         );

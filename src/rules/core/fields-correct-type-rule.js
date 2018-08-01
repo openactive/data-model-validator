@@ -1,4 +1,3 @@
-const Handlebars = require('handlebars');
 const Rule = require('../rule');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
@@ -75,7 +74,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       } else {
         testKey = 'multipleTypes';
         messageValues = {
-          expectedTypes: new Handlebars.SafeString(`"${typeChecks.join('", "')}"`),
+          expectedTypes: this.safeString(`"${typeChecks.join('", "')}"`),
           foundType: `"${derivedType}"`,
         };
       }

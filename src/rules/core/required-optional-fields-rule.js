@@ -1,4 +1,3 @@
-const Handlebars = require('handlebars');
 const Rule = require('../rule');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
@@ -56,7 +55,7 @@ module.exports = class RequiredOptionalFieldsRule extends Rule {
                 path: `${node.getPath()}.['${option.options.join('\', \'')}']`,
               },
               {
-                optionalFields: new Handlebars.SafeString(`"${option.options.join('", "')}"`),
+                optionalFields: this.safeString(`"${option.options.join('", "')}"`),
                 model: node.model.type,
               },
             ),
