@@ -1,5 +1,7 @@
+const { namespaces } = require('openactive-data-models');
 const Rule = require('../rule');
 const GraphHelper = require('../../helpers/graph');
+const PropertyHelper = require('../../helpers/property');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -13,10 +15,10 @@ module.exports = class FieldsNotInModelRule extends Rule {
       description: 'Validates that all fields are present in the specification.',
       tests: {
         noExperimental: {
-          description: 'Raises a warning if experimental fields are detected.',
+          description: 'Raises a notice if experimental fields are detected.',
           message: 'The validator does not currently check experimental fields.',
           category: ValidationErrorCategory.CONFORMANCE,
-          severity: ValidationErrorSeverity.WARNING,
+          severity: ValidationErrorSeverity.NOTICE,
           type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
         },
         typoHint: {
@@ -57,8 +59,12 @@ module.exports = class FieldsNotInModelRule extends Rule {
     let testKey = null;
     let messageValues;
     if (!node.model.hasFieldInSpec(field)) {
-      if (field.toLowerCase().substring(0, 5) === 'beta:'
-        || field.toLowerCase().substring(0, 4) === 'ext:'
+      // Get prop values
+      const prop = PropertyHelper.getFullyQualifiedProperty(field);
+
+      if (
+        prop.alias === null
+        && Object.keys(namespaces).indexOf(prop.prefix) < 0
       ) {
         testKey = 'noExperimental';
       } else if (typeof node.model.commonTypos[field] !== 'undefined') {
