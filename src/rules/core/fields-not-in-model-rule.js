@@ -89,7 +89,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
           this.createError(
             testKey,
             {
-              value: node.value[field],
+              value: node.getValue(field),
               path: node.getPath(field),
             },
             messageValues,

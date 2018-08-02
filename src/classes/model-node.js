@@ -64,13 +64,36 @@ const ModelNode = class {
     return true;
   }
 
+  hasField(field) {
+    return typeof this.value[field] !== 'undefined';
+  }
+
+  hasMappedField(field) {
+    return PropertyHelper.objectHasField(this.value, field);
+  }
+
+  getMappedFieldName(field) {
+    return PropertyHelper.objectMappedFieldName(this.value, field);
+  }
+
+  getValue(field) {
+    if (typeof this.value[field] !== 'undefined') {
+      return this.value[field];
+    }
+    return this.getMappedValue(field);
+  }
+
+  getMappedValue(field) {
+    return PropertyHelper.getObjectField(this.value, field);
+  }
+
   getValueWithInheritance(field) {
     let testNode = this;
     let loopBusterIndex = 0;
     const prop = PropertyHelper.getFullyQualifiedProperty(field);
     const mappedField = prop.alias || prop.label;
     do {
-      const testValue = PropertyHelper.getObjectField(testNode.value, mappedField);
+      const testValue = testNode.getMappedValue(mappedField);
       if (typeof testValue !== 'undefined'
           && testValue !== null
       ) {

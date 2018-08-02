@@ -32,20 +32,21 @@ module.exports = class ValueInOptionsRule extends Rule {
     }
     const errors = [];
     const fieldObj = node.model.getField(field);
+    const fieldValue = node.getValue(field);
 
-    if (typeof node.value[field] !== 'undefined'
+    if (typeof fieldValue !== 'undefined'
       && typeof fieldObj !== 'undefined'
       && typeof fieldObj.options !== 'undefined'
     ) {
       let isInOptions = true;
-      if (node.value[field] instanceof Array && fieldObj.canBeArray()) {
-        for (const value of node.value[field]) {
+      if (fieldValue instanceof Array && fieldObj.canBeArray()) {
+        for (const value of fieldValue) {
           if (fieldObj.options.indexOf(value) < 0) {
             isInOptions = false;
             break;
           }
         }
-      } else if (fieldObj.options.indexOf(node.value[field]) < 0) {
+      } else if (fieldObj.options.indexOf(fieldValue) < 0) {
         isInOptions = false;
       }
 
@@ -54,11 +55,11 @@ module.exports = class ValueInOptionsRule extends Rule {
           this.createError(
             'default',
             {
-              value: node.value[field],
+              value: fieldValue,
               path: node.getPath(field),
             },
             {
-              value: node.value[field],
+              value: fieldValue,
               allowedValues: `"${fieldObj.options.join('", "')}"`,
             },
           ),

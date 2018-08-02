@@ -27,22 +27,23 @@ module.exports = class AgeRangeMinOrMaxRule extends Rule {
   }
 
   validateField(node, field) {
-    if (typeof (node.value[field]) === 'undefined') {
+    const fieldValue = node.getValue(field);
+    if (typeof fieldValue === 'undefined') {
       return [];
     }
     const errors = [];
 
-    if (typeof (node.value[field]) !== 'object'
+    if (typeof fieldValue !== 'object'
       || (
-        !PropertyHelper.objectHasField(node.value[field], 'minValue')
-        && !PropertyHelper.objectHasField(node.value[field], 'maxValue')
+        !PropertyHelper.objectHasField(fieldValue, 'minValue')
+        && !PropertyHelper.objectHasField(fieldValue, 'maxValue')
       )
     ) {
       errors.push(
         this.createError(
           'default',
           {
-            value: node.value[field],
+            value: fieldValue,
             path: node.getPath(field),
           },
           {

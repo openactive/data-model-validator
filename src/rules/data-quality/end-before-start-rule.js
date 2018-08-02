@@ -48,7 +48,7 @@ module.exports = class EndBeforeStartRule extends Rule {
           'default',
           {
             value: evalStartDate,
-            path: node.getPath('startDate'),
+            path: node.getPath(node.getMappedFieldName('startDate') || 'startDate'),
           },
           {
             model: node.model.type,

@@ -26,14 +26,15 @@ module.exports = class ActivityInActivityListRule extends Rule {
   }
 
   validateField(node, field) {
-    if (typeof (node.value[field]) === 'undefined') {
+    const fieldValue = node.getValue(field);
+    if (typeof fieldValue === 'undefined') {
       return [];
     }
     const errors = [];
     let found = false;
     let index = 0;
-    if (node.value[field] instanceof Array) {
-      for (const activity of node.value[field]) {
+    if (fieldValue instanceof Array) {
+      for (const activity of fieldValue) {
         found = false;
         let activityIdentifier;
         if (typeof activity === 'string' || typeof activity === 'object') {

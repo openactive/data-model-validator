@@ -60,6 +60,26 @@ const PropertyHelper = class {
     return false;
   }
 
+  static objectMappedFieldName(data, property) {
+    if (
+      typeof data !== 'object'
+      || data === null
+      || typeof property === 'undefined'
+    ) {
+      return false;
+    }
+    const keyChecks = this.getPropertyKeyChecks(property);
+    for (const key in data) {
+      if (
+        Object.prototype.hasOwnProperty.call(data, key)
+        && keyChecks.indexOf(key) >= 0
+      ) {
+        return key;
+      }
+    }
+    return undefined;
+  }
+
   static getFullyQualifiedProperty(property) {
     if (typeof property === 'undefined') {
       return undefined;

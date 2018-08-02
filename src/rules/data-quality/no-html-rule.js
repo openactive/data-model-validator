@@ -27,16 +27,17 @@ module.exports = class NoHtmlRule extends Rule {
   }
 
   validateField(node, field) {
-    if (typeof (node.value[field]) !== 'string') {
+    const fieldValue = node.getValue(field);
+    if (typeof fieldValue !== 'string') {
       return [];
     }
     const errors = [];
-    if (this.constructor.isHTML(node.value[field])) {
+    if (this.constructor.isHTML(fieldValue)) {
       errors.push(
         this.createError(
           'default',
           {
-            value: node.value[field],
+            value: fieldValue,
             path: node.getPath(field),
           },
         ),

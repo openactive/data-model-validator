@@ -25,15 +25,16 @@ module.exports = class AddressTrailingCommaRule extends Rule {
 
   validateField(node, field) {
     const errors = [];
+    const fieldValue = node.getValue(field);
     if (
-      typeof (node.value[field]) !== 'undefined'
-      && node.value[field].match(/,\s*$/)
+      typeof fieldValue !== 'undefined'
+      && fieldValue.match(/,\s*$/)
     ) {
       errors.push(
         this.createError(
           'default',
           {
-            value: node.value[field],
+            value: fieldValue,
             path: node.getPath(field),
           },
         ),

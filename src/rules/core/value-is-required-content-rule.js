@@ -34,7 +34,7 @@ module.exports = class ValueIsRequiredContentRule extends Rule {
     const fieldObj = node.model.getField(field);
 
     if (typeof fieldObj !== 'undefined') {
-      const fieldValue = fieldObj.getMappedValue(node.value);
+      const fieldValue = node.getMappedValue(field);
       if (typeof fieldValue !== 'undefined'
         && fieldObj.fieldName !== 'type'
         && typeof fieldObj.requiredContent !== 'undefined'
@@ -44,11 +44,11 @@ module.exports = class ValueIsRequiredContentRule extends Rule {
           this.createError(
             'default',
             {
-              value: node.value[field],
+              value: fieldValue,
               path: node.getPath(field),
             },
             {
-              value: node.value[field],
+              value: fieldValue,
               allowedValue: fieldObj.requiredContent,
             },
           ),

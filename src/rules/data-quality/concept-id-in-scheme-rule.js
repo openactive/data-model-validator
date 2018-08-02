@@ -27,12 +27,12 @@ module.exports = class ConceptIdInSchemeRule extends Rule {
     const otherField = prop.alias === 'id' ? 'inScheme' : 'id';
     const errors = [];
 
-    if (!PropertyHelper.objectHasField(node.value, otherField)) {
+    if (!node.hasMappedField(otherField)) {
       errors.push(
         this.createError(
           'default',
           {
-            value: node.value[field],
+            value: node.getValue(field),
             path: node.getPath(field),
           },
           {

@@ -35,16 +35,17 @@ module.exports = class TimeFormatRule extends Rule {
       fieldObj = new Field();
     }
 
-    const type = fieldObj.detectType(node.value[field]);
+    const fieldValue = node.getValue(field);
+    const type = fieldObj.detectType(fieldValue);
     if (type === 'http://schema.org/Time'
         || fieldObj.isOnlyType('http://schema.org/Time')
     ) {
-      if (!moment(node.value[field], ['HH:mm:ssZZ', 'HH:mmZZ'], true).isValid()) {
+      if (!moment(fieldValue, ['HH:mm:ssZZ', 'HH:mmZZ'], true).isValid()) {
         errors.push(
           this.createError(
             'default',
             {
-              value: node.value[field],
+              value: fieldValue,
               path: node.getPath(field),
             },
           ),

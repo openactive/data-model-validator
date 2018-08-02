@@ -37,7 +37,7 @@ module.exports = class MaxLessThenMinRule extends Rule {
           'default',
           {
             value: minValue,
-            path: node.getPath('minValue'),
+            path: node.getPath(node.getMappedFieldName('minValue') || 'minValue'),
           },
         ),
       );

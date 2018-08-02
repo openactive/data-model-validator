@@ -40,7 +40,7 @@ module.exports = class AssumeNoGenderRestrictionRule extends Rule {
           'default',
           {
             value: testValue,
-            path: node.getPath('genderRestriction'),
+            path: node.getPath(node.getMappedFieldName('genderRestriction') || 'genderRestriction'),
           },
         ),
       );

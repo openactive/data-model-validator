@@ -54,16 +54,17 @@ module.exports = class DurationFormatRule extends Rule {
       + ')$',
     );
 
-    const type = fieldObj.detectType(node.value[field]);
+    const fieldValue = node.getValue(field);
+    const type = fieldObj.detectType(fieldValue);
     if (type === 'http://schema.org/Duration'
         || fieldObj.isOnlyType('http://schema.org/Duration')
     ) {
-      if (!durationRegex.test(node.value[field])) {
+      if (!durationRegex.test(fieldValue)) {
         errors.push(
           this.createError(
             'default',
             {
-              value: node.value[field],
+              value: fieldValue,
               path: node.getPath(field),
             },
           ),

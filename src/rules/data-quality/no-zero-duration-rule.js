@@ -1,6 +1,5 @@
 const moment = require('moment');
 const Rule = require('../rule');
-const PropertyHelper = require('../../helpers/property');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -24,17 +23,18 @@ module.exports = class NoZeroDurationRule extends Rule {
   }
 
   validateModel(node) {
-    if (!PropertyHelper.objectHasField(node.value, 'duration')) {
+    if (!node.hasMappedField('duration')) {
       return [];
     }
+    const fieldValue = node.getValue('duration');
     const errors = [];
-    if (moment.duration(PropertyHelper.getObjectField(node.value, 'duration')).valueOf() === 0) {
+    if (moment.duration(fieldValue).valueOf() === 0) {
       errors.push(
         this.createError(
           'default',
           {
-            value: PropertyHelper.getObjectField(node.value, 'duration'),
-            path: node.getPath('duration'),
+            value: fieldValue,
+            path: node.getPath(node.getMappedFieldName('duration')),
           },
         ),
       );

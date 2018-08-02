@@ -1,5 +1,4 @@
 const Rule = require('../rule');
-const PropertyHelper = require('../../helpers/property');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -24,7 +23,7 @@ module.exports = class ThumbnailHasNoThumbnailRule extends Rule {
 
   validateModel(node) {
     if (
-      !PropertyHelper.objectHasField(node.value, 'thumbnail')
+      !node.hasMappedField('thumbnail')
       || node.parentNode === null
       || node.parentNode.model.type !== 'ImageObject'
     ) {
@@ -34,8 +33,8 @@ module.exports = class ThumbnailHasNoThumbnailRule extends Rule {
       this.createError(
         'default',
         {
-          value: PropertyHelper.getObjectField(node.value, 'thumbnail'),
-          path: node.getPath('thumbnail'),
+          value: node.getValue('thumbnail'),
+          path: node.getPath(node.getMappedFieldName('thumbnail')),
         },
       ),
     ];
