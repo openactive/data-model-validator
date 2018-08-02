@@ -42,7 +42,7 @@ module.exports = class CountryCodeFormatRule extends Rule {
           node.value[field].toLowerCase().trim() === 'uk' ? 'ukDetected' : 'default',
           {
             value: node.value[field],
-            path: `${node.getPath()}.${field}`,
+            path: node.getPath(field),
           },
         ),
       );

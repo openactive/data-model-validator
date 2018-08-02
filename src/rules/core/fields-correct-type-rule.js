@@ -83,7 +83,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           testKey,
           {
             value: fieldValue,
-            path: `${node.getPath()}.${field}`,
+            path: node.getPath(field),
           },
           messageValues,
         ),

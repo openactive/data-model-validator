@@ -56,7 +56,7 @@ module.exports = class IsAccessibleForFreeRule extends Rule {
               'default',
               {
                 value: node.value,
-                path: `${node.getPath()}`,
+                path: node.getPath(),
               },
             ),
           );

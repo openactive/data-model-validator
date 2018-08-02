@@ -34,7 +34,7 @@ module.exports = class AddressTrailingCommaRule extends Rule {
           'default',
           {
             value: node.value[field],
-            path: `${node.getPath()}.${field}`,
+            path: node.getPath(field),
           },
         ),
       );

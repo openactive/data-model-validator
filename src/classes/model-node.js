@@ -1,9 +1,11 @@
+const jp = require('jsonpath');
 const OptionsHelper = require('../helpers/options');
 const PropertyHelper = require('../helpers/property');
 
 const ModelNode = class {
-  constructor(name, value, parentNode, model, options) {
+  constructor(name, value, parentNode, model, options, arrayIndex) {
     this.name = name;
+    this.arrayIndex = arrayIndex;
     this.value = value;
     this.parentNode = parentNode;
     this.model = model;
@@ -12,17 +14,25 @@ const ModelNode = class {
   }
 
   get cleanName() {
-    return this.name.replace(/(\[[0-9]+\])+$/, '');
+    return this.name;
   }
 
-  getPath() {
+  getPath(...fields) {
     const path = [];
     let node = this;
     do {
+      if (typeof node.arrayIndex !== 'undefined') {
+        path.unshift(node.arrayIndex);
+      }
       path.unshift(node.name);
       node = node.parentNode;
     } while (node !== null);
-    return path.join('.');
+    for (const field of fields) {
+      if (typeof field !== 'undefined') {
+        path.push(field);
+      }
+    }
+    return jp.stringify(path).replace(/([\][])\1+/g, '$1');
   }
 
   static checkInheritRule(rule, field) {
@@ -110,6 +120,7 @@ const ModelNode = class {
               this.value[modelField.fieldName],
               this,
               this.model,
+              this.options,
             );
           }
         }

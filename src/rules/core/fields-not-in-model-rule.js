@@ -90,7 +90,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
             testKey,
             {
               value: node.value[field],
-              path: `${node.getPath()}.${field}`,
+              path: node.getPath(field),
             },
             messageValues,
           ),

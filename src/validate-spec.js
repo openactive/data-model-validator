@@ -199,6 +199,28 @@ describe('validate', () => {
     expect(result[0].path).toBe('$.location.address.addressRegion');
   });
 
+  it('should provide a jsonpath to the location of a problem with a namespace', () => {
+    const event = Object.assign(
+      {},
+      validEvent,
+      {
+        'https://www.openactive.org/ns#ageRange': {
+          type: 'QuantitativeValue',
+          minValue: 60,
+          maxValue: 18,
+        },
+      },
+    );
+
+    delete event.ageRange;
+
+    const result = validate(event, options);
+
+    expect(result.length).toBe(1);
+
+    expect(result[0].path).toBe('$["https://www.openactive.org/ns#ageRange"].minValue');
+  });
+
   it('should check submodels of a model even if we don\'t know what type it is', () => {
     const data = {
       type: 'UnknownType',

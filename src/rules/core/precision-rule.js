@@ -63,7 +63,7 @@ module.exports = class PrecisionRule extends Rule {
           'belowMinimum',
           {
             value: fieldValue,
-            path: `${node.getPath()}.${field}`,
+            path: node.getPath(field),
           },
           {
             minDecimalPlaces: fieldObj.minDecimalPlaces,
@@ -79,7 +79,7 @@ module.exports = class PrecisionRule extends Rule {
           'aboveMaximum',
           {
             value: fieldValue,
-            path: `${node.getPath()}.${field}`,
+            path: node.getPath(field),
           },
           {
             maxDecimalPlaces: fieldObj.maxDecimalPlaces,

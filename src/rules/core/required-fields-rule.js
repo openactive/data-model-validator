@@ -39,7 +39,7 @@ module.exports = class RequiredFieldsRule extends Rule {
             'default',
             {
               value: testValue,
-              path: `${node.getPath()}.${field}`,
+              path: node.getPath(field),
             },
             {
               field,

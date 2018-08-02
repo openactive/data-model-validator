@@ -37,7 +37,7 @@ module.exports = class DatesMustHaveDurationRule extends Rule {
           'default',
           {
             value: undefined,
-            path: `${node.getPath()}.duration`,
+            path: node.getPath('duration'),
           },
         ),
       );

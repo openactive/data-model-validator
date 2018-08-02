@@ -57,7 +57,7 @@ module.exports = class NoEmptyValuesRule extends Rule {
             testKey,
             {
               value: node.value[field],
-              path: `${node.getPath()}.${field}`,
+              path: node.getPath(field),
             },
           ),
         );

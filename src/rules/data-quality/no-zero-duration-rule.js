@@ -34,7 +34,7 @@ module.exports = class NoZeroDurationRule extends Rule {
           'default',
           {
             value: PropertyHelper.getObjectField(node.value, 'duration'),
-            path: `${node.getPath()}.duration`,
+            path: node.getPath('duration'),
           },
         ),
       );

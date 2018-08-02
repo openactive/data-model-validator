@@ -118,7 +118,7 @@ describe('RequiredOptionalFieldsRule', () => {
 
     expect(errors[0].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
-    expect(errors[0].path).toBe('$.[\'startDate\', \'schedule\']');
+    expect(errors[0].path).toBe('$["startDate","schedule"]');
   });
 
   describe('with inheritsTo properties', () => {
