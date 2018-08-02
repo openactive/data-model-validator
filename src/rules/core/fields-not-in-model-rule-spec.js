@@ -164,7 +164,7 @@ describe('FieldsNotInModelRule', () => {
     }
   });
 
-  it('should return a warning per field if any extension fields are present', () => {
+  it('should return a notice per field if any extension fields are present', () => {
     const data = {
       '@context': 'https://www.openactive.io/ns/oa.jsonld',
       type: 'Event',
@@ -187,7 +187,7 @@ describe('FieldsNotInModelRule', () => {
 
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED);
-      expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(error.severity).toBe(ValidationErrorSeverity.NOTICE);
     }
   });
 
