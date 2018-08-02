@@ -86,7 +86,7 @@ module.exports = class AssumeAgeRangeRule extends Rule {
           noticeKey,
           {
             value: testValue,
-            path: `${node.getPath()}.ageRange`,
+            path: node.getPath('ageRange'),
           },
         ),
       );

@@ -45,7 +45,7 @@ module.exports = class LatLongFormatRule extends Rule {
           fieldObj.fieldName,
           {
             value: node.value[field],
-            path: `${node.getPath()}.${field}`,
+            path: node.getPath(field),
           },
         ),
       );

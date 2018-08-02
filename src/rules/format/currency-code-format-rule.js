@@ -35,7 +35,7 @@ module.exports = class CurrencyCodeFormatRule extends Rule {
             'default',
             {
               value: node.value[field],
-              path: `${node.getPath()}.${field}`,
+              path: node.getPath(field),
             },
           ),
         );

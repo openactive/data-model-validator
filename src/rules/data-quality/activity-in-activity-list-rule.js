@@ -73,7 +73,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
               'default',
               {
                 value: activity,
-                path: `${node.getPath()}.${field}[${index}]`,
+                path: node.getPath(field, index),
               },
               {
                 activity: activityIdentifier,

@@ -45,7 +45,7 @@ module.exports = class ValueIsRequiredContentRule extends Rule {
             'default',
             {
               value: node.value[field],
-              path: `${node.getPath()}.${field}`,
+              path: node.getPath(field),
             },
             {
               value: node.value[field],

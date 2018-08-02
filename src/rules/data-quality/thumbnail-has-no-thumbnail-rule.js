@@ -35,7 +35,7 @@ module.exports = class ThumbnailHasNoThumbnailRule extends Rule {
         'default',
         {
           value: PropertyHelper.getObjectField(node.value, 'thumbnail'),
-          path: `${node.getPath()}.thumbnail`,
+          path: node.getPath('thumbnail'),
         },
       ),
     ];

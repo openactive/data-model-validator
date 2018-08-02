@@ -1,4 +1,5 @@
 const modelLoader = require('openactive-data-models');
+const jp = require('jsonpath');
 const Model = require('./classes/model');
 const ModelNode = require('./classes/model-node');
 const OptionsHelper = require('./helpers/options');
@@ -82,9 +83,10 @@ class ApplyRules {
     for (const fieldValue of fieldsToTest) {
       if (typeof fieldValue === 'object' && !(fieldValue instanceof Array)) {
         const subModelType = PropertyHelper.getObjectField(fieldValue, '@type');
-        let currentFieldName = `${field}`;
+        const currentFieldName = field;
+        let currentFieldIndex;
         if (!isSingleObject) {
-          currentFieldName += `[${index}]`;
+          currentFieldIndex = index;
         }
 
         // Check if this is a value object
@@ -99,13 +101,13 @@ class ApplyRules {
               message: 'Whilst value objects are valid JSON-LD, they are not part of the Open Active specification',
               value: fieldValue,
               severity: ValidationErrorSeverity.NOTICE,
-              path: `${nodeToTest.getPath()}.${currentFieldName}`,
+              path: nodeToTest.getPath(currentFieldName, currentFieldIndex),
             }),
           );
         } else {
           let modelResponse = this.loadModel(
             subModelType,
-            `${nodeToTest.getPath()}.${currentFieldName}`,
+            nodeToTest.getPath(currentFieldName, currentFieldIndex),
           );
 
           if (modelResponse.errors.length) {
@@ -122,7 +124,7 @@ class ApplyRules {
               ) {
                 const altModelResponse = this.loadModel(
                   altSubModelType,
-                  `${nodeToTest.getPath()}.${currentFieldName}`,
+                  nodeToTest.getPath(currentFieldName, currentFieldIndex),
                 );
                 // Preserve the original error if we had an experimental error
                 if (
@@ -143,6 +145,7 @@ class ApplyRules {
             nodeToTest,
             modelResponse.modelObject,
             nodeToTest.options,
+            currentFieldIndex,
           );
 
           const subModelErrors = this.applyModelRules(
@@ -221,10 +224,15 @@ function validate(value, options) {
 
   let index = 0;
   for (const valueToTest of valuesToTest) {
-    let path = '$';
+    const path = '$';
+    const pathArr = [path];
+    let pathIndex;
     if (!isSingleObject) {
-      path += `[${index}]`;
+      pathIndex = index;
+      pathArr.push(pathIndex);
     }
+
+    const compiledPath = jp.stringify(pathArr);
 
     let modelName;
 
@@ -249,14 +257,14 @@ function validate(value, options) {
           type: ValidationErrorType.MISSING_REQUIRED_FIELD,
           value,
           severity: ValidationErrorSeverity.WARNING,
-          path,
+          path: compiledPath,
         }),
       );
     } else {
       // Load the model
       modelResponse = ApplyRules.loadModel(
         modelName,
-        path,
+        compiledPath,
       );
       errors = errors.concat(modelResponse.errors);
     }
@@ -267,6 +275,7 @@ function validate(value, options) {
       null,
       typeof modelResponse === 'undefined' ? new Model() : modelResponse.modelObject,
       optionsObj,
+      pathIndex,
     );
 
     // Apply the rules

@@ -40,7 +40,7 @@ module.exports = class AssumeEventStatusRule extends Rule {
           'default',
           {
             value: testValue,
-            path: `${node.getPath()}.eventStatus`,
+            path: node.getPath('eventStatus'),
           },
         ),
       );
