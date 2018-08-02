@@ -11,6 +11,13 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       name: 'FieldsCorrectTypeRule',
       description: 'Validates that all fields are the correct type.',
       tests: {
+        noValueObjects: {
+          description: 'Raises a notice if a JSON-LD value object is found.',
+          message: 'Whilst value objects are valid JSON-LD, they are not part of the Open Active specification.',
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.NOTICE,
+          type: ValidationErrorType.UNSUPPORTED_VALUE,
+        },
         singleType: {
           description: 'Validates that a field conforms to a single type.',
           message: 'Invalid type, expected {{expectedType}} but found {{foundType}}.',
@@ -47,6 +54,8 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       return [];
     }
 
+    const errors = [];
+
     // Get the derived type
     const fieldValue = fieldObj.getMappedValue(node.value);
     const derivedType = fieldObj.detectType(fieldValue);
@@ -60,12 +69,18 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
 
     const checkPass = fieldObj.detectedTypeIsAllowed(fieldValue);
 
-    const errors = [];
-
     if (!checkPass) {
       let testKey;
       let messageValues = {};
-      if (typeChecks.length === 1) {
+      // Check whether we have a value object
+      if (
+        typeof fieldValue === 'object'
+        && typeof fieldValue.type === 'undefined'
+        && typeof fieldValue['@type'] === 'undefined'
+        && typeof fieldValue['@value'] !== 'undefined'
+      ) {
+        testKey = 'noValueObjects';
+      } else if (typeChecks.length === 1) {
         testKey = 'singleType';
         messageValues = {
           expectedType: `"${typeChecks[0]}"`,

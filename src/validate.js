@@ -89,22 +89,11 @@ class ApplyRules {
           currentFieldIndex = index;
         }
 
-        // Check if this is a value object
+        // Check this is not a value object
         if (
-          typeof subModelType === 'undefined'
-          && typeof fieldValue['@value'] !== 'undefined'
+          typeof subModelType !== 'undefined'
+          || typeof fieldValue['@value'] === 'undefined'
         ) {
-          errors.push(
-            new ValidationError({
-              category: ValidationErrorCategory.CONFORMANCE,
-              type: ValidationErrorType.UNSUPPORTED_VALUE,
-              message: 'Whilst value objects are valid JSON-LD, they are not part of the Open Active specification',
-              value: fieldValue,
-              severity: ValidationErrorSeverity.NOTICE,
-              path: nodeToTest.getPath(currentFieldName, currentFieldIndex),
-            }),
-          );
-        } else {
           let modelResponse = this.loadModel(
             subModelType,
             nodeToTest.getPath(currentFieldName, currentFieldIndex),
