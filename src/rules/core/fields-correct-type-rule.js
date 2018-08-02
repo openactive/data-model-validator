@@ -57,7 +57,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     const errors = [];
 
     // Get the derived type
-    const fieldValue = fieldObj.getMappedValue(node.value);
+    const fieldValue = node.getMappedValue(field);
     const derivedType = fieldObj.detectType(fieldValue);
 
     const typeChecks = fieldObj.getAllPossibleTypes();

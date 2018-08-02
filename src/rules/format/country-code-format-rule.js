@@ -35,13 +35,14 @@ module.exports = class CountryCodeFormatRule extends Rule {
     if (typeof fieldObj === 'undefined') {
       return [];
     }
+    const fieldValue = node.getValue(field);
     const errors = [];
-    if (!validator.isISO31661Alpha2(node.value[field])) {
+    if (!validator.isISO31661Alpha2(fieldValue)) {
       errors.push(
         this.createError(
-          node.value[field].toLowerCase().trim() === 'uk' ? 'ukDetected' : 'default',
+          fieldValue.toLowerCase().trim() === 'uk' ? 'ukDetected' : 'default',
           {
-            value: node.value[field],
+            value: fieldValue,
             path: node.getPath(field),
           },
         ),

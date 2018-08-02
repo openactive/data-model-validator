@@ -35,16 +35,17 @@ module.exports = class DatetimeFormatRule extends Rule {
       fieldObj = new Field();
     }
 
-    const type = fieldObj.detectType(node.value[field]);
+    const fieldValue = node.getValue(field);
+    const type = fieldObj.detectType(fieldValue);
     if (type === 'http://schema.org/DateTime'
         || fieldObj.isOnlyType('http://schema.org/DateTime')
     ) {
-      if (!moment(node.value[field], 'YYYY-MM-DD\\THH:mm:ssZZ', true).isValid()) {
+      if (!moment(fieldValue, 'YYYY-MM-DD\\THH:mm:ssZZ', true).isValid()) {
         errors.push(
           this.createError(
             'default',
             {
-              value: node.value[field],
+              value: fieldValue,
               path: node.getPath(field),
             },
           ),

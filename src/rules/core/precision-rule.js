@@ -44,15 +44,16 @@ module.exports = class PrecisionRule extends Rule {
     if (!node.model.hasField(field)) {
       return [];
     }
-    if (typeof (node.value[field]) !== 'number') {
-      return [];
-    }
 
     const errors = [];
 
     // Get the field object
     const fieldObj = node.model.getField(field);
-    const fieldValue = fieldObj.getMappedValue(node.value);
+    const fieldValue = node.getMappedValue(field);
+
+    if (typeof fieldValue !== 'number') {
+      return [];
+    }
 
     if (
       typeof fieldObj.minDecimalPlaces !== 'undefined'

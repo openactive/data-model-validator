@@ -34,20 +34,20 @@ module.exports = class DateFormatRule extends Rule {
     } else {
       fieldObj = new Field();
     }
-
-    const type = fieldObj.detectType(node.value[field]);
+    const fieldValue = node.getValue(field);
+    const type = fieldObj.detectType(fieldValue);
     if (type === 'http://schema.org/Date'
         || fieldObj.isOnlyType('http://schema.org/Date')
     ) {
       if (
-        !moment(node.value[field], 'YYYY-MM-DD', true).isValid()
-        && !moment(node.value[field], 'YYYYMMDD', true).isValid()
+        !moment(fieldValue, 'YYYY-MM-DD', true).isValid()
+        && !moment(fieldValue, 'YYYYMMDD', true).isValid()
       ) {
         errors.push(
           this.createError(
             'default',
             {
-              value: node.value[field],
+              value: fieldValue,
               path: node.getPath(field),
             },
           ),

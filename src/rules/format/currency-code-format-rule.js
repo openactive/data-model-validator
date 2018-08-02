@@ -29,12 +29,13 @@ module.exports = class CurrencyCodeFormatRule extends Rule {
     }
     const errors = [];
     if (fieldObj.sameAs === 'http://schema.org/priceCurrency') {
-      if (typeof (cc.code(node.value[field])) === 'undefined') {
+      const fieldValue = node.getValue(field);
+      if (typeof (cc.code(fieldValue)) === 'undefined') {
         errors.push(
           this.createError(
             'default',
             {
-              value: node.value[field],
+              value: fieldValue,
               path: node.getPath(field),
             },
           ),

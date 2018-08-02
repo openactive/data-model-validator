@@ -35,16 +35,17 @@ module.exports = class LatLongFormatRule extends Rule {
     if (typeof fieldObj === 'undefined') {
       return [];
     }
+    const fieldValue = node.getValue(field);
     if (
-      typeof (node.value[field]) !== 'number'
-      || (fieldObj.fieldName === 'latitude' && (node.value[field] < -90 || node.value[field] > 90))
-      || (fieldObj.fieldName === 'longitude' && (node.value[field] < -180 || node.value[field] > 180))
+      typeof fieldValue !== 'number'
+      || (fieldObj.fieldName === 'latitude' && (fieldValue < -90 || fieldValue > 90))
+      || (fieldObj.fieldName === 'longitude' && (fieldValue < -180 || fieldValue > 180))
     ) {
       errors.push(
         this.createError(
           fieldObj.fieldName,
           {
-            value: node.value[field],
+            value: fieldValue,
             path: node.getPath(field),
           },
         ),

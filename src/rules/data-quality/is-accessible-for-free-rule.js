@@ -27,7 +27,7 @@ module.exports = class IsAccessibleForFreeRule extends Rule {
     if (!node.model.hasSpecification) {
       return [];
     }
-    const isAccessibleForFree = PropertyHelper.getObjectField(node.value, 'isAccessibleForFree');
+    const isAccessibleForFree = node.getMappedValue('isAccessibleForFree');
     if (
       typeof isAccessibleForFree !== 'undefined'
       && isAccessibleForFree === true
@@ -55,8 +55,8 @@ module.exports = class IsAccessibleForFreeRule extends Rule {
             this.createError(
               'default',
               {
-                value: node.value,
-                path: node.getPath(),
+                value: isAccessibleForFree,
+                path: node.getPath(node.getMappedFieldName('isAccessibleForFree') || 'isAccessibleForFree'),
               },
             ),
           );

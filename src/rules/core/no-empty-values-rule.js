@@ -42,13 +42,14 @@ module.exports = class NoEmptyValuesRule extends Rule {
       return [];
     }
     const errors = [];
-    if (typeof node.value[field] !== 'undefined') {
+    const fieldValue = node.getValue(field);
+    if (typeof fieldValue !== 'undefined') {
       let testKey;
-      if (node.value[field] === null) {
+      if (fieldValue === null) {
         testKey = 'notNull';
-      } else if (node.value[field] instanceof Array && node.value[field].length === 0) {
+      } else if (fieldValue instanceof Array && fieldValue.length === 0) {
         testKey = 'notEmptyArray';
-      } else if (node.value[field] === '') {
+      } else if (fieldValue === '') {
         testKey = 'notEmptyString';
       }
       if (testKey) {
@@ -56,7 +57,7 @@ module.exports = class NoEmptyValuesRule extends Rule {
           this.createError(
             testKey,
             {
-              value: node.value[field],
+              value: fieldValue,
               path: node.getPath(field),
             },
           ),
