@@ -1,5 +1,3 @@
-
-
 const RequiredFieldsRule = require('./required-fields-rule');
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');

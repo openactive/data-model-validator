@@ -55,6 +55,10 @@ module.exports = class FieldsNotInModelRule extends Rule {
     if (!node.model.hasSpecification) {
       return [];
     }
+    // Ignore @context - covered by ContextInRootNodeRule
+    if (field === '@context') {
+      return [];
+    }
     const errors = [];
     let testKey = null;
     let messageValues;

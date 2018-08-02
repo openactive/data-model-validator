@@ -12,6 +12,7 @@ module.exports = [
   require('./core/value-is-required-content-rule'),
   require('./core/precision-rule'),
   require('./core/no-prefix-or-namespace-rule'),
+  require('./core/context-in-root-node-rule'),
 
   // Formatting rules
   require('./format/duration-format-rule'),
