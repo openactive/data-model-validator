@@ -407,14 +407,10 @@ describe('validate', () => {
 
     expect(doValidate).not.toThrow();
 
-    expect(result.length).toBe(2);
+    expect(result.length).toBe(1);
 
-    expect(result[0].type).toBe(ValidationErrorType.INVALID_TYPE);
-    expect(result[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    expect(result[0].type).toBe(ValidationErrorType.UNSUPPORTED_VALUE);
+    expect(result[0].severity).toBe(ValidationErrorSeverity.NOTICE);
     expect(result[0].path).toBe('$.name');
-
-    expect(result[1].type).toBe(ValidationErrorType.UNSUPPORTED_VALUE);
-    expect(result[1].severity).toBe(ValidationErrorSeverity.NOTICE);
-    expect(result[1].path).toBe('$.name');
   });
 });
