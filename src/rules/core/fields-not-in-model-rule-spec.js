@@ -164,13 +164,14 @@ describe('FieldsNotInModelRule', () => {
     }
   });
 
-  it('should return a warning per field if any beta fields are present', () => {
+  it('should return a warning per field if any extension fields are present', () => {
     const data = {
       '@context': 'https://www.openactive.io/ns/oa.jsonld',
       type: 'Event',
       'beta:experimental_field': 'This field is experimental',
       'beta:another_experimental_field': 'This field is also experimental',
       'Ext:an_extended_field': 'This field extends the OA spec',
+      'btf:raceTypes': ['test'],
     };
 
     const nodeToTest = new ModelNode(
@@ -182,7 +183,7 @@ describe('FieldsNotInModelRule', () => {
 
     const errors = rule.validate(nodeToTest);
 
-    expect(errors.length).toBe(3);
+    expect(errors.length).toBe(4);
 
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED);

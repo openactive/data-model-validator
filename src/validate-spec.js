@@ -166,7 +166,7 @@ describe('validate', () => {
     expect(result.length).toBe(0);
   });
 
-  it('should return no errors for a valid Event with aliased properties', () => {
+  it('should only return alias warnings for a valid Event with aliased properties', () => {
     const event = Object.assign(
       {},
       validEvent,
@@ -183,7 +183,12 @@ describe('validate', () => {
 
     const result = validate(event, options);
 
-    expect(result.length).toBe(0);
+    expect(result.length).toBe(3);
+
+    for (const error of result) {
+      expect(error.type).toBe(ValidationErrorType.USE_FIELD_ALIASES);
+      expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
+    }
   });
 
   it('should provide a jsonpath to the location of a problem', () => {
@@ -216,9 +221,10 @@ describe('validate', () => {
 
     const result = validate(event, options);
 
-    expect(result.length).toBe(1);
+    expect(result.length).toBe(2);
 
-    expect(result[0].path).toBe('$["https://www.openactive.org/ns#ageRange"].minValue');
+    expect(result[0].path).toBe('$["https://www.openactive.org/ns#ageRange"]');
+    expect(result[1].path).toBe('$["https://www.openactive.org/ns#ageRange"].minValue');
   });
 
   it('should check submodels of a model even if we don\'t know what type it is', () => {

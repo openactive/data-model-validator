@@ -11,6 +11,7 @@ module.exports = [
   require('./core/value-in-options-rule'),
   require('./core/value-is-required-content-rule'),
   require('./core/precision-rule'),
+  require('./core/no-prefix-or-namespace-rule'),
 
   // Formatting rules
   require('./format/duration-format-rule'),
