@@ -1,5 +1,3 @@
-
-
 const DateFormatRule = require('./date-format-rule');
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');

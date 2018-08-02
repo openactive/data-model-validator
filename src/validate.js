@@ -16,53 +16,20 @@ class ApplyRules {
     // If the model doesn't exist, we can still apply a barebones set of
     // rules on the object.
     let modelObject = null;
-    const errors = [];
     if (typeof modelName !== 'undefined') {
       try {
         const modelData = modelLoader.loadModel(modelName);
-
         if (modelData) {
           modelObject = new Model(modelData, true);
         }
       } catch (e) {
-        modelObject = null;
+        modelObject = new Model();
       }
     }
     if (!modelObject) {
-      const prop = PropertyHelper.getFullyQualifiedProperty(modelName);
-      if (
-        typeof prop !== 'undefined'
-        && (typeof prop.namespace === 'undefined' || prop.namespace === null)
-        && (typeof prop.prefix === 'undefined' || prop.prefix === null)
-      ) {
-        errors.push(
-          new ValidationError(
-            {
-              category: ValidationErrorCategory.CONFORMANCE,
-              type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
-              value: `#${modelName}`,
-              severity: ValidationErrorSeverity.SUGGESTION,
-              path,
-            },
-          ),
-        );
-      } else {
-        errors.push(
-          new ValidationError({
-            category: ValidationErrorCategory.INTERNAL,
-            type: ValidationErrorType.MODEL_NOT_FOUND,
-            value: `#${modelName}`,
-            severity: ValidationErrorSeverity.WARNING,
-            path,
-          }),
-        );
-      }
       modelObject = new Model();
     }
-    return {
-      errors,
-      modelObject,
-    };
+    return modelObject;
   }
 
   static applySubModelRules(rules, nodeToTest, field) {
@@ -94,12 +61,11 @@ class ApplyRules {
           typeof subModelType !== 'undefined'
           || typeof fieldValue['@value'] === 'undefined'
         ) {
-          let modelResponse = this.loadModel(
+          let modelObj = this.loadModel(
             subModelType,
-            nodeToTest.getPath(currentFieldName, currentFieldIndex),
           );
 
-          if (modelResponse.errors.length) {
+          if (!modelObj.hasSpecification) {
             // Try loading from the parent model type if we can
             if (
               typeof nodeToTest.model.fields[field] !== 'undefined'
@@ -111,28 +77,18 @@ class ApplyRules {
                 && typeof nodeToTest.model.fields[field].alternativeTypes === 'undefined'
                 && typeof nodeToTest.model.fields[field].alternativeModels === 'undefined'
               ) {
-                const altModelResponse = this.loadModel(
+                modelObj = this.loadModel(
                   altSubModelType,
-                  nodeToTest.getPath(currentFieldName, currentFieldIndex),
                 );
-                // Preserve the original error if we had an experimental error
-                if (
-                  altModelResponse.errors.length === 0
-                  && modelResponse.errors[0].type === ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED
-                ) {
-                  altModelResponse.errors.push(modelResponse.errors[0]);
-                }
-                modelResponse = altModelResponse;
               }
             }
           }
-          errors = errors.concat(modelResponse.errors);
 
           const newNodeToTest = new ModelNode(
             currentFieldName,
             fieldValue,
             nodeToTest,
-            modelResponse.modelObject,
+            modelObj,
             nodeToTest.options,
             currentFieldIndex,
           );
@@ -171,10 +127,14 @@ function validate(value, options) {
   // Setup the options
   const optionsObj = new OptionsHelper(options);
 
-  // Load the rules
-  const ruleObjects = [];
-  for (let index = 0; index < Rules.length; index += 1) {
-    ruleObjects.push(new Rules[index]());
+  // Load the raw data rules
+  const rawRuleObjects = [];
+  for (let index = 0; index < Rules.raw.length; index += 1) {
+    rawRuleObjects.push(new Rules.raw[index]());
+  }
+
+  for (const rule of rawRuleObjects) {
+    errors = errors.concat(rule.validate(value));
   }
 
   let isSingleObject = false;
@@ -182,33 +142,18 @@ function validate(value, options) {
 
   if (value instanceof Array) {
     valuesToTest = value;
-    // This should throw a warning - we're only expecting
-    // to validate single objects with this library
-    errors.push(
-      new ValidationError({
-        category: ValidationErrorCategory.INTERNAL,
-        message: 'Arrays are not supported for validation. Please only submit single objects for validation.',
-        type: ValidationErrorType.INVALID_JSON,
-        value,
-        severity: ValidationErrorSeverity.WARNING,
-        path: '$',
-      }),
-    );
   } else if (typeof value === 'object') {
     valuesToTest.push(value);
     isSingleObject = true;
-  } else {
-    // This should throw a failure - we can only evaluate objects
-    errors.push(
-      new ValidationError({
-        category: ValidationErrorCategory.INTERNAL,
-        message: 'Only objects are supported for validation. Please only submit single objects for validation.',
-        type: ValidationErrorType.INVALID_JSON,
-        value,
-        severity: ValidationErrorSeverity.FAILURE,
-        path: '$',
-      }),
-    );
+  }
+
+  // Load the core rules
+  const coreRuleObjects = [];
+
+  if (valuesToTest.length) {
+    for (let index = 0; index < Rules.core.length; index += 1) {
+      coreRuleObjects.push(new Rules.core[index]());
+    }
   }
 
   let index = 0;
@@ -235,34 +180,16 @@ function validate(value, options) {
       modelName = optionsObj.type;
     }
 
-    let modelResponse;
-
-    // Do we have a type? No? We should throw an error for data quality
-    if (typeof modelName === 'undefined') {
-      errors.push(
-        new ValidationError({
-          category: ValidationErrorCategory.DATA_QUALITY,
-          message: 'Please add a "type" property to this JSON object.',
-          type: ValidationErrorType.MISSING_REQUIRED_FIELD,
-          value,
-          severity: ValidationErrorSeverity.WARNING,
-          path: compiledPath,
-        }),
-      );
-    } else {
-      // Load the model
-      modelResponse = ApplyRules.loadModel(
-        modelName,
-        compiledPath,
-      );
-      errors = errors.concat(modelResponse.errors);
-    }
+    // Load the model
+    const modelObj = ApplyRules.loadModel(
+      modelName,
+    );
 
     const nodeToTest = new ModelNode(
       path,
       valueToTest,
       null,
-      typeof modelResponse === 'undefined' ? new Model() : modelResponse.modelObject,
+      modelObj,
       optionsObj,
       pathIndex,
     );
@@ -270,7 +197,7 @@ function validate(value, options) {
     // Apply the rules
     errors = errors.concat(
       ApplyRules.applyModelRules(
-        ruleObjects,
+        coreRuleObjects,
         nodeToTest,
       ),
     );

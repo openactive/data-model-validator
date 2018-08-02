@@ -127,7 +127,7 @@ describe('validate', () => {
     const result = validate(data, new OptionsHelper({ type: 'InvalidModel' }));
 
     expect(result.length).toBe(2);
-    expect(result[0].type).toBe(ValidationErrorType.MODEL_NOT_FOUND);
+    expect(result[0].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
     expect(result[0].severity).toBe(ValidationErrorSeverity.WARNING);
 
     expect(result[1].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
@@ -136,6 +136,8 @@ describe('validate', () => {
 
   it('should not throw if no type is passed', () => {
     const data = {};
+
+    validate(data);
 
     const validateFunc = () => { validate(data); };
 
@@ -247,8 +249,8 @@ describe('validate', () => {
 
     expect(result.length).toBe(4);
 
-    expect(result[0].type).toBe(ValidationErrorType.MODEL_NOT_FOUND);
-    expect(result[0].severity).toBe(ValidationErrorSeverity.WARNING);
+    expect(result[0].type).toBe(ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED);
+    expect(result[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
     expect(result[0].path).toBe('$');
 
     expect(result[1].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
@@ -259,8 +261,8 @@ describe('validate', () => {
     expect(result[2].severity).toBe(ValidationErrorSeverity.FAILURE);
     expect(result[2].path).toBe('$.geo.longitude');
 
-    expect(result[3].type).toBe(ValidationErrorType.MODEL_NOT_FOUND);
-    expect(result[3].severity).toBe(ValidationErrorSeverity.WARNING);
+    expect(result[3].type).toBe(ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED);
+    expect(result[3].severity).toBe(ValidationErrorSeverity.SUGGESTION);
     expect(result[3].path).toBe('$.location');
   });
 

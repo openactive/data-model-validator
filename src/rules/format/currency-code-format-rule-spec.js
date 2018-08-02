@@ -1,5 +1,3 @@
-
-
 const CurrencyCodeFormatRule = require('./currency-code-format-rule');
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');

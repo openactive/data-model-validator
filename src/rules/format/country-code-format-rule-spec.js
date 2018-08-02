@@ -1,5 +1,3 @@
-
-
 const CountryCodeFormatRule = require('./country-code-format-rule');
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
