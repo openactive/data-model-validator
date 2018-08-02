@@ -1,5 +1,3 @@
-
-
 const RecommendedFieldsRule = require('./recommended-fields-rule');
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');

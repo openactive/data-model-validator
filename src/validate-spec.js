@@ -1,3 +1,4 @@
+const { namespaces } = require('openactive-data-models');
 const validate = require('./validate');
 const ValidationErrorSeverity = require('./errors/validation-error-severity');
 const ValidationErrorType = require('./errors/validation-error-type');
@@ -9,7 +10,7 @@ describe('validate', () => {
   let activityLists;
   beforeEach(() => {
     validEvent = {
-      '@context': 'https://www.openactive.io/ns/oa.jsonld',
+      '@context': namespaces.oa,
       id: 'http://www.example.org/events/1',
       type: 'Event',
       name: 'Tai chi Class',
@@ -125,9 +126,12 @@ describe('validate', () => {
 
     const result = validate(data, new OptionsHelper({ type: 'InvalidModel' }));
 
-    expect(result.length).toBe(1);
+    expect(result.length).toBe(2);
     expect(result[0].type).toBe(ValidationErrorType.MODEL_NOT_FOUND);
     expect(result[0].severity).toBe(ValidationErrorSeverity.WARNING);
+
+    expect(result[1].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
+    expect(result[1].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 
   it('should not throw if no type is passed', () => {
@@ -241,7 +245,7 @@ describe('validate', () => {
 
     const result = validate(data, options);
 
-    expect(result.length).toBe(3);
+    expect(result.length).toBe(4);
 
     expect(result[0].type).toBe(ValidationErrorType.MODEL_NOT_FOUND);
     expect(result[0].severity).toBe(ValidationErrorSeverity.WARNING);
@@ -249,15 +253,20 @@ describe('validate', () => {
 
     expect(result[1].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
     expect(result[1].severity).toBe(ValidationErrorSeverity.FAILURE);
-    expect(result[1].path).toBe('$.geo.longitude');
+    expect(result[1].path).toBe('$["@context"]');
 
-    expect(result[2].type).toBe(ValidationErrorType.MODEL_NOT_FOUND);
-    expect(result[2].severity).toBe(ValidationErrorSeverity.WARNING);
-    expect(result[2].path).toBe('$.location');
+    expect(result[2].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
+    expect(result[2].severity).toBe(ValidationErrorSeverity.FAILURE);
+    expect(result[2].path).toBe('$.geo.longitude');
+
+    expect(result[3].type).toBe(ValidationErrorType.MODEL_NOT_FOUND);
+    expect(result[3].severity).toBe(ValidationErrorSeverity.WARNING);
+    expect(result[3].path).toBe('$.location');
   });
 
   it('should cope with flexible model types', () => {
     const place = {
+      '@context': namespaces.oa,
       id: 'http://www.example.org/locations/gym',
       type: 'Place',
       name: 'ExampleCo Gym',
@@ -312,6 +321,7 @@ describe('validate', () => {
 
   it('should cope with arrays of flexible model types mixed with invalid elements', () => {
     const place = {
+      '@context': namespaces.oa,
       id: 'http://www.example.org/locations/gym',
       type: 'Place',
       name: 'ExampleCo Gym',
@@ -371,6 +381,7 @@ describe('validate', () => {
 
   it('should not throw if a property of value null is passed', () => {
     const data = {
+      '@context': namespaces.oa,
       type: 'Event',
       'beta:distance': null,
     };
