@@ -7,6 +7,10 @@ const OptionsHelper = class {
     return this.options.activityLists || [];
   }
 
+  get rpdeItemLimit() {
+    return this.options.rpdeItemLimit;
+  }
+
   get schemaOrgSpecifications() {
     return this.options.schemaOrgSpecifications || [];
   }

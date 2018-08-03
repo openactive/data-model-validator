@@ -84,6 +84,24 @@ const options = {
 const result = Validator.validate(model, options);
 ```
 
+#### rpdeItemLimit
+
+A limit of the number of RPDE `"updated"` data items to validate. It is helpful to limit the number of items validated for performance reasons.
+
+e.g.
+
+```js
+const feed = {
+  // ...
+};
+
+const options = {
+  rpdeItemLimit: 10
+};
+
+const result = Validator.validate(feed, options);
+```
+
 #### schemaOrgSpecifications
 
 An array of schema.org specifications in `JSON-LD` format. For example, see https://schema.org/version/latest/schema.jsonld

@@ -23,6 +23,10 @@ const Model = class {
     return this.data.idFormat;
   }
 
+  get isJsonLd() {
+    return typeof this.data.isJsonLd === 'undefined' ? true : this.data.isJsonLd;
+  }
+
   get sampleId() {
     return this.data.sampleId;
   }

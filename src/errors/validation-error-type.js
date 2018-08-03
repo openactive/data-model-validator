@@ -31,6 +31,7 @@ const ValidationErrorType = {
   SCHEMA_ORG_FIELDS_NOT_CHECKED: 'schema_org_fields_not_checked',
   THUMBNAIL_HAS_NO_THUMBNAIL: 'thumbnail_has_no_thumbnail',
   USE_FIELD_ALIASES: 'use_field_aliases',
+  FOUND_RPDE_FEED: 'found_rpde_feed',
 };
 
 module.exports = Object.freeze(ValidationErrorType);

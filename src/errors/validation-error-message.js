@@ -31,6 +31,7 @@ const ValidationErrorMessage = {
   [ValidationErrorType.SCHEMA_ORG_FIELDS_NOT_CHECKED]: 'This field is declared in schema.org but this validator is not yet capable of checking whether they have the right format or values. You should refer to the schema.org documentation for additional guidance',
   [ValidationErrorType.THUMBNAIL_HAS_NO_THUMBNAIL]: 'The thumbnail of an ImageObject cannot have its own thumbnail.',
   [ValidationErrorType.USE_FIELD_ALIASES]: 'Fields with aliases defined in @context should be submitted with their alias name.',
+  [ValidationErrorType.FOUND_RPDE_FEED]: 'The JSON you have submitted appears to be an RPDE feed.',
 };
 
 module.exports = ValidationErrorMessage;
