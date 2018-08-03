@@ -3,6 +3,7 @@
 module.exports = {
   raw: [
     require('./raw/valid-input-rule'),
+    require('./raw/rpde-feed-rule'),
   ],
   core: [
     // Core rules

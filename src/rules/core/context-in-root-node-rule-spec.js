@@ -1,4 +1,4 @@
-const { namespaces } = require('openactive-data-models');
+const { contextUrl } = require('openactive-data-models');
 const ContextInRootNodeRule = require('./context-in-root-node-rule');
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
@@ -28,11 +28,11 @@ describe('ContextInRootNodeRule', () => {
   it('should return no errors if the correct context is in the root node', () => {
     const dataItems = [
       {
-        '@context': namespaces.oa,
+        '@context': contextUrl,
         type: 'Event',
       },
       {
-        '@context': [namespaces.oa],
+        '@context': [contextUrl],
         type: 'Event',
       },
     ];
@@ -99,7 +99,7 @@ describe('ContextInRootNodeRule', () => {
 
   it('should return a error if the context is present and this isn\'t the root node', () => {
     const data = {
-      '@context': namespaces.oa,
+      '@context': contextUrl,
       type: 'Event',
     };
 
@@ -136,7 +136,7 @@ describe('ContextInRootNodeRule', () => {
         type: 'Event',
       },
       {
-        '@context': ['https://example.org/ns', namespaces.oa],
+        '@context': ['https://example.org/ns', contextUrl],
         type: 'Event',
       },
     ];
@@ -161,7 +161,7 @@ describe('ContextInRootNodeRule', () => {
 
   it('should return no error if the context is present, but contains non-url fields if the model declares its own type', () => {
     const data = {
-      '@context': [namespaces.oa, {}],
+      '@context': [contextUrl, {}],
       type: 'Event',
     };
 
@@ -190,7 +190,7 @@ describe('ContextInRootNodeRule', () => {
 
   it('should return an error if the context is present, but contains non-url fields', () => {
     const data = {
-      '@context': [namespaces.oa, {}],
+      '@context': [contextUrl, {}],
       type: 'Event',
     };
 

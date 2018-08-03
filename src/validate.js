@@ -1,17 +1,13 @@
 const modelLoader = require('openactive-data-models');
-const jp = require('jsonpath');
 const Model = require('./classes/model');
 const ModelNode = require('./classes/model-node');
+const RawHelper = require('./helpers/raw');
 const OptionsHelper = require('./helpers/options');
 const PropertyHelper = require('./helpers/property');
 const Rules = require('./rules');
-const ValidationErrorSeverity = require('./errors/validation-error-severity');
-const ValidationErrorCategory = require('./errors/validation-error-category');
-const ValidationErrorType = require('./errors/validation-error-type');
-const ValidationError = require('./errors/validation-error');
 
 class ApplyRules {
-  static loadModel(modelName, path) {
+  static loadModel(modelName) {
     // Load the model (if it exists)
     // If the model doesn't exist, we can still apply a barebones set of
     // rules on the object.
@@ -58,13 +54,11 @@ class ApplyRules {
 
         // Check this is not a value object
         if (
-          typeof subModelType !== 'undefined'
-          || typeof fieldValue['@value'] === 'undefined'
+          typeof fieldValue['@value'] === 'undefined'
         ) {
           let modelObj = this.loadModel(
             subModelType,
           );
-
           if (!modelObj.hasSpecification) {
             // Try loading from the parent model type if we can
             if (
@@ -123,6 +117,7 @@ class ApplyRules {
 
 function validate(value, options) {
   let errors = [];
+  let valueCopy = value;
 
   // Setup the options
   const optionsObj = new OptionsHelper(options);
@@ -130,20 +125,24 @@ function validate(value, options) {
   // Load the raw data rules
   const rawRuleObjects = [];
   for (let index = 0; index < Rules.raw.length; index += 1) {
-    rawRuleObjects.push(new Rules.raw[index]());
+    rawRuleObjects.push(new Rules.raw[index](optionsObj));
   }
 
   for (const rule of rawRuleObjects) {
-    errors = errors.concat(rule.validate(value));
+    const response = rule.validate(valueCopy);
+    errors = errors.concat(response.errors);
+    if (typeof response.data !== 'undefined') {
+      valueCopy = response.data;
+    }
   }
 
   let isSingleObject = false;
   let valuesToTest = [];
 
-  if (value instanceof Array) {
-    valuesToTest = value;
-  } else if (typeof value === 'object') {
-    valuesToTest.push(value);
+  if (valueCopy instanceof Array) {
+    valuesToTest = valueCopy;
+  } else if (typeof valueCopy === 'object') {
+    valuesToTest.push(valueCopy);
     isSingleObject = true;
   }
 
@@ -152,7 +151,7 @@ function validate(value, options) {
 
   if (valuesToTest.length) {
     for (let index = 0; index < Rules.core.length; index += 1) {
-      coreRuleObjects.push(new Rules.core[index]());
+      coreRuleObjects.push(new Rules.core[index](optionsObj));
     }
   }
 
@@ -166,15 +165,15 @@ function validate(value, options) {
       pathArr.push(pathIndex);
     }
 
-    const compiledPath = jp.stringify(pathArr);
-
     let modelName;
 
     // If no model provided, use the type in the object
     if (typeof optionsObj.type === 'undefined' || optionsObj.type === null) {
-      const modelType = PropertyHelper.getObjectField(value, '@type');
+      const modelType = PropertyHelper.getObjectField(valueToTest, '@type');
       if (typeof modelType !== 'undefined') {
         modelName = modelType;
+      } else if (RawHelper.isRpdeFeed(value)) {
+        modelName = 'FeedPage';
       }
     } else {
       modelName = optionsObj.type;
@@ -207,4 +206,11 @@ function validate(value, options) {
   return errors.map(x => x.data);
 }
 
-module.exports = validate;
+function isRpdeFeed(data) {
+  return RawHelper.isRpdeFeed(data);
+}
+
+module.exports = {
+  validate,
+  isRpdeFeed,
+};

@@ -1,4 +1,4 @@
-const { namespaces } = require('openactive-data-models');
+const { contextUrl } = require('openactive-data-models');
 const Rule = require('../rule');
 const Field = require('../../classes/field');
 const ValidationErrorType = require('../../errors/validation-error-type');
@@ -15,21 +15,21 @@ module.exports = class ContextInRootNodeRule extends Rule {
       tests: {
         noContext: {
           description: 'Raises a failure if the @context is missing from the root node.',
-          message: `The @context field is required in the root node of your data. It should contain the Open Active context (${namespaces.oa}) as a string or the first element in an array.`,
+          message: `The @context field is required in the root node of your data. It should contain the Open Active context (${contextUrl}) as a string or the first element in an array.`,
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.MISSING_REQUIRED_FIELD,
         },
         hasContext: {
           description: 'Raises a failure if the @context is present in a non-root node.',
-          message: `The @context field is required to only be in the root node of your data. It should contain the Open Active context (${namespaces.oa}) as a string or the first element in an array.`,
+          message: `The @context field is required to only be in the root node of your data. It should contain the Open Active context (${contextUrl}) as a string or the first element in an array.`,
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_SPEC,
         },
         oaNotInRightPlace: {
-          description: `Validates that the @context contains the Open Active context (${namespaces.oa}) as a string or the first element in an array.`,
-          message: `The @context should contain the Open Active context (${namespaces.oa}) as a string or the first element in an array.`,
+          description: `Validates that the @context contains the Open Active context (${contextUrl}) as a string or the first element in an array.`,
+          message: `The @context should contain the Open Active context (${contextUrl}) as a string or the first element in an array.`,
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
@@ -46,6 +46,9 @@ module.exports = class ContextInRootNodeRule extends Rule {
   }
 
   validateModel(node) {
+    if (!node.model.isJsonLd) {
+      return [];
+    }
     const errors = [];
     const fieldObj = node.model.getField('@context');
     const fieldValue = node.getValue('@context');
@@ -53,7 +56,7 @@ module.exports = class ContextInRootNodeRule extends Rule {
     let testKey;
 
     // Is this the root node?
-    if (node.parentNode === null) {
+    if (node.parentNode === null || !node.parentNode.model.isJsonLd) {
       const backupField = new Field({
         requiredType: 'http://schema.org/url',
         alternativeTypes: [
@@ -71,12 +74,12 @@ module.exports = class ContextInRootNodeRule extends Rule {
       } else if (
         (
           typeof fieldValue === 'string'
-          && fieldValue !== namespaces.oa
+          && fieldValue !== contextUrl
         )
         || (
           typeof fieldValue === 'object'
           && fieldValue instanceof Array
-          && fieldValue[0] !== namespaces.oa
+          && fieldValue[0] !== contextUrl
         )
       ) {
         testKey = 'oaNotInRightPlace';

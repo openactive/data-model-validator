@@ -16,7 +16,7 @@ const RawRule = class extends Rule {
   isFieldTargeted() {
     return false;
   }
-}
+};
 
 
 module.exports = RawRule;

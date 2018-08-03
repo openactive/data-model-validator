@@ -1,5 +1,5 @@
-const { namespaces } = require('openactive-data-models');
-const validate = require('./validate');
+const { contextUrl } = require('openactive-data-models');
+const { validate } = require('./validate');
 const ValidationErrorSeverity = require('./errors/validation-error-severity');
 const ValidationErrorType = require('./errors/validation-error-type');
 const OptionsHelper = require('./helpers/options');
@@ -10,7 +10,7 @@ describe('validate', () => {
   let activityLists;
   beforeEach(() => {
     validEvent = {
-      '@context': namespaces.oa,
+      '@context': contextUrl,
       id: 'http://www.example.org/events/1',
       type: 'Event',
       name: 'Tai chi Class',
@@ -268,7 +268,7 @@ describe('validate', () => {
 
   it('should cope with flexible model types', () => {
     const place = {
-      '@context': namespaces.oa,
+      '@context': contextUrl,
       id: 'http://www.example.org/locations/gym',
       type: 'Place',
       name: 'ExampleCo Gym',
@@ -323,7 +323,7 @@ describe('validate', () => {
 
   it('should cope with arrays of flexible model types mixed with invalid elements', () => {
     const place = {
-      '@context': namespaces.oa,
+      '@context': contextUrl,
       id: 'http://www.example.org/locations/gym',
       type: 'Place',
       name: 'ExampleCo Gym',
@@ -383,7 +383,7 @@ describe('validate', () => {
 
   it('should not throw if a property of value null is passed', () => {
     const data = {
-      '@context': namespaces.oa,
+      '@context': contextUrl,
       type: 'Event',
       'beta:distance': null,
     };
@@ -431,5 +431,27 @@ describe('validate', () => {
     expect(result[0].type).toBe(ValidationErrorType.UNSUPPORTED_VALUE);
     expect(result[0].severity).toBe(ValidationErrorSeverity.NOTICE);
     expect(result[0].path).toBe('$.name');
+  });
+
+  it('should recognise an RPDE feed', () => {
+    const feed = {
+      items: [
+        {
+          id: 'ABCDEF09001015',
+          kind: 'session',
+          state: 'updated',
+          data: validEvent,
+          modified: 1533177378657,
+        },
+      ],
+      next: 'https://example.org/api/feed/?afterId=ABCDEF09001015&afterTimestamp=1533206202992&limit=500',
+      license: 'https://creativecommons.org/licenses/by/4.0/',
+    };
+
+    const result = validate(feed, options);
+
+    expect(result.length).toBe(1);
+    expect(result[0].type).toBe(ValidationErrorType.FOUND_RPDE_FEED);
+    expect(result[0].severity).toBe(ValidationErrorSeverity.NOTICE);
   });
 });

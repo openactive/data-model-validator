@@ -21,8 +21,8 @@ module.exports = class ValidModelTypeRule extends Rule {
         noTypeWithHint: {
           message: 'Objects in "{{field}}" must be of type "{{typeHint}}". Please add "type": "{{typeHint}}" to this object to allow for further validation.',
           sampleValues: {
-            field: "activity",
-            typeHint: "Concept",
+            field: 'activity',
+            typeHint: 'Concept',
           },
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.WARNING,
@@ -31,18 +31,21 @@ module.exports = class ValidModelTypeRule extends Rule {
         noExperimental: {
           message: 'Type "{{type}}" is not recognised by the validator, and cannot be checked for validity.',
           sampleValues: {
-            type: "CreativeWork"
+            type: 'CreativeWork',
           },
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.SUGGESTION,
           type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
-        }
+        },
       },
     };
   }
 
   validateModel(node) {
-    // Don't do this check for models that we have a spec for
+    // Don't do this check for models that aren't JSON-LD
+    if (!node.model.isJsonLd) {
+      return [];
+    }
     const errors = [];
 
     const fieldValue = node.getValue('type');

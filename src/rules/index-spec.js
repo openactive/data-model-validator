@@ -12,7 +12,6 @@ describe('All Rules', () => {
         }
       }
     }
-
   });
   it('should have a description', () => {
     for (const key in Rules) {

@@ -27,7 +27,7 @@
     "jsonpath": "^1.0.0",
     "moment": "^2.22.2",
     "openactive-data-models": "github:openactive/data-models",
-    "validator": "^10.4.0"
+    "validator": "^10.5.0"
   },
   "devDependencies": {
     "eslint": "^5.2.0",

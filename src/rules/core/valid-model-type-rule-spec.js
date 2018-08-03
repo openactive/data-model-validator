@@ -98,7 +98,7 @@ describe('ValidModelTypeRule', () => {
 
   it('should return a tip if the type is present, but we don\'t recognise the model', () => {
     const data = {
-      type: 'OutsideSpec'
+      type: 'OutsideSpec',
     };
 
     const nodeToTest = new ModelNode(

@@ -8,6 +8,17 @@
     "max-len": "off",
     "no-await-in-loop": 0,
     "no-restricted-syntax": 0,
-    "class-methods-use-this": ["error", { "exceptMethods": ["validateModel", "validateField"] }]
+    "class-methods-use-this": [
+      "error",
+      {
+        "exceptMethods": [
+          "isFieldTargeted",
+          "isModelTargeted",
+          "validateRaw",
+          "validateModel",
+          "validateField"
+        ]
+      }
+    ]
   }
 }

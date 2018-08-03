@@ -1,9 +1,10 @@
 const PropertyHelper = require('../helpers/property');
+const OptionsHelper = require('../helpers/options');
 const ValidationError = require('../errors/validation-error');
 
 class Rule {
   constructor(options) {
-    this.options = options;
+    this.options = options || new OptionsHelper();
     this.targetModels = [];
     this.targetFields = {};
     this.meta = {

@@ -52,6 +52,8 @@ module.exports = class ValidInputRule extends RawRule {
       );
     }
 
-    return errors;
+    return {
+      errors,
+    };
   }
 };
