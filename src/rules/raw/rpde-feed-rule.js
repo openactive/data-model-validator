@@ -4,11 +4,11 @@ const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 
-module.exports = class ValidInputRule extends RawRule {
+module.exports = class RpdeFeedRule extends RawRule {
   constructor(options) {
     super(options);
     this.meta = {
-      name: 'ValidInputRule',
+      name: 'RpdeFeedRule',
       description: 'Adds notices if the JSON submission is detected to be an RPDE feed.',
       tests: {
         isRpdeFeed: {

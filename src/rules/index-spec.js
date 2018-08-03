@@ -1,7 +1,8 @@
 const Rules = require('./index');
 
 describe('All Rules', () => {
-  it('should have a name that matches their constructor', () => {
+  it('should have a unique name that matches their constructor', () => {
+    const uniqueNames = [];
     for (const key in Rules) {
       if (Object.prototype.hasOwnProperty.call(Rules, key)) {
         for (let index = 0; index < Rules[key].length; index += 1) {
@@ -9,6 +10,8 @@ describe('All Rules', () => {
 
           expect(ruleObject.meta.name).not.toBe('Rule');
           expect(ruleObject.meta.name).toBe(Rules[key][index].prototype.constructor.name);
+          expect(uniqueNames.indexOf(ruleObject.meta.name)).toBe(-1);
+          uniqueNames.push(ruleObject.meta.name);
         }
       }
     }

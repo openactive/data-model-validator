@@ -11,12 +11,14 @@ module.exports = class ValidInputRule extends RawRule {
       description: 'Validates that the JSON submission is in the correct format for the library.',
       tests: {
         noArray: {
+          description: 'Generates a warning if the JSON submission is an array.',
           message: 'Arrays are not supported for validation. Please only submit single objects for validation.',
           category: ValidationErrorCategory.INTERNAL,
           severity: ValidationErrorSeverity.WARNING,
           type: ValidationErrorType.INVALID_JSON,
         },
         noInvalid: {
+          description: 'Generates an error if the submission is not a valid JSON object.',
           message: 'Only objects are supported for validation. Please only submit single objects for validation.',
           category: ValidationErrorCategory.INTERNAL,
           severity: ValidationErrorSeverity.FAILURE,
