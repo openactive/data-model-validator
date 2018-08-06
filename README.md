@@ -9,13 +9,23 @@ The OpenActive data model validator library.
 
 This library allows developers to validate JSON models to the latest [OpenActive Modelling Opportunity Data](https://www.openactive.io/modelling-opportunity-data/) specification.
 
-## Example
+## Using in your application
+
+This library can be used in your own application, perhaps as part of your CI pipeline.
+
+### Install
+
+```shell
+$ npm install openactive-data-model-validator
+```
+
+### Usage
 
 ```js
 
-const Validator = require('openactive-data-model-validator');
+const { validate } = require('openactive-data-model-validator');
 
-const model = {
+const data = {
   '@context': 'https://www.openactive.io/ns/oa.jsonld',
   type: 'Event',
   name: 'Tai chi Class',
@@ -35,7 +45,7 @@ const model = {
 };
 
 // Check whether the JSON conforms to the Event model
-const result = Validator.validate(model);
+const result = validate(data);
 
 // Returns:
 // [{category: 'conformance', type: 'missing_required_field', message: 'Required field is missing.', value: undefined, severity: 'failure', path: '$.context' }, ... ]
@@ -54,7 +64,9 @@ e.g.
 
 ```js
 
-const model = {
+const { validate } = require('openactive-data-model-validator');
+
+const data = {
   // ...
 };
 
@@ -81,7 +93,7 @@ const options = {
   ]
 };
 
-const result = Validator.validate(model, options);
+const result = validate(data, options);
 ```
 
 #### rpdeItemLimit
@@ -91,6 +103,8 @@ A limit of the number of RPDE `"updated"` data items to validate. It is helpful 
 e.g.
 
 ```js
+const { validate } = require('openactive-data-model-validator');
+
 const feed = {
   // ...
 };
@@ -99,7 +113,7 @@ const options = {
   rpdeItemLimit: 10
 };
 
-const result = Validator.validate(feed, options);
+const result = validate(feed, options);
 ```
 
 #### schemaOrgSpecifications
@@ -109,8 +123,9 @@ An array of schema.org specifications in `JSON-LD` format. For example, see http
 e.g.
 
 ```js
+const { validate } = require('openactive-data-model-validator');
 
-const model = {
+const data = {
   // ...
 };
 
@@ -139,7 +154,7 @@ const options = {
   ],
 };
 
-const result = Validator.validate(model, options);
+const result = validate(data, options);
 ```
 
 #### type
@@ -149,6 +164,7 @@ The validator will detect the type of the model being validated from the `type` 
 e.g.
 
 ```js
+const { validate } = require('openactive-data-model-validator');
 
 const model = {
   type: 'CustomAction'
@@ -159,7 +175,7 @@ const options = {
   type: 'Action'
 };
 
-const result = Validator.validate(model, options);
+const result = validate(model, options);
 ```
 
 ## Development
@@ -173,96 +189,20 @@ $ npm install
 ```
 ### Running tests
 
-This project uses [Jasmine 1.3](https://jasmine.github.io/) for its tests via [jasmine-node](https://github.com/mhevery/jasmine-node). All spec files are located alongside the files that they target.
+This project uses [Jasmine](https://jasmine.github.io/) for its tests. All spec files are located alongside the files that they target.
 
-To run tests, run:
+To run tests locally, run:
 
 ```shell
 $ npm test
 ```
 
-### Adding rules
+The test run will also include a run of [eslint](https://eslint.org/). To run the tests without these, use:
 
-To add a new rule, you will need to extend the `Rule` class, following these rules:
-
-* Set `this.targetModels` to an array of the names of model you are targeting, or a string `'*'` wildcard.
-* Optionally set `this.targetFields` to an object map of the fields you are targeting in each model, or a string `'*''` wildcard. Setting the property to `null` means that the rule will be applied once to the whole model.
-* Set `this.description` to explain what the rule is testing for.
-* If just targeting models, implement `validateModel`.
-* If targeting specific fields, implement `validateField`.
-* Write a test for your rule.
-* Add the rule to the list in `rules/index`, so that it is processed.
-
-#### Rule targeting
-
-There is a lot of flexibility in the way that you can target rules.
-
-To target all models at the top level:
-
-```js
-this.targetModels = '*';
+```shell
+$ npm run test-no-lint
 ```
 
-To target all fields in every model:
+### Contributing
 
-```js
-this.targetFields = '*';
-```
-
-To target specific models at the top level:
-
-```js
-this.targetModels = ['Event', 'Place'];
-```
-
-To target specific fields in specific models:
-
-```js
-this.targetFields = {
-    'Event': [
-        'startDate',
-        'endDate'
-    ],
-    'Place': [
-        'url'
-    ]
-};
-```
-
-#### Example
-
-```js
-const Rule = require('../rule');
-const ValidationError = require('../../validation-error');
-
-module.exports = class RequiredFieldsRule extends Rule {
-    
-  constructor(options) {
-    super(options);
-    this.targetModels = '*';
-    this.description = 'Validates that all required fields are present in the JSON data.';
-  }
-    
-  validateModel(node) {
-    let errors = [];
-    for (let field of node.model.requiredFields) {
-      if (typeof(node.value[field]) === 'undefined'
-        || node.value[field] === null
-      ) {
-        errors.push(
-          new ValidationError(
-            {
-              category: 'conformance',
-              type: 'missing_required_field',
-              value: undefined,
-              severity: 'failure',
-              path: `${node.getPath()}.${field}`
-            }
-          )
-        );
-      }
-    }
-    return errors;
-  }
-}
-```
+Read the [Contributing Guide](./CONTRIBUTING.md) for information on how to write your own rules.
