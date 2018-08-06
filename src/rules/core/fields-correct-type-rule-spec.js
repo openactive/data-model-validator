@@ -993,7 +993,33 @@ describe('FieldsCorrectTypeRule', () => {
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
+  it('should not throw if it encounters null', () => {
+    const model = new Model({
+      type: 'Event',
+      fields: {
+        field: {
+          fieldName: 'field',
+          requiredType: 'http://schema.org/Boolean',
+        },
+      },
+    });
+    model.hasSpecification = true;
+    const data = {
+      field: null,
+    };
 
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+
+    const errors = rule.validate(nodeToTest);
+    expect(errors.length).toBe(1);
+    expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+  });
 
   it('should return a notice if it encounters a value object', () => {
     const model = new Model({

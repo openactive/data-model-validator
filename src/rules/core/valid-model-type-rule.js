@@ -57,14 +57,16 @@ module.exports = class ValidModelTypeRule extends Rule {
       // Do we have a parent node?
       if (node.parentNode !== null) {
         const fieldObj = node.parentNode.model.getField(node.name);
-        const types = fieldObj.getAllPossibleTypes();
-        const uniqueTypes = [...new Set(types.map(x => x.replace(/^ArrayOf/, '')))];
-        if (uniqueTypes.length === 1 && uniqueTypes[0].match(/^#/)) {
-          testKey = 'noTypeWithHint';
-          messageValues = {
-            field: node.name,
-            typeHint: uniqueTypes[0].substr(1),
-          };
+        if (typeof fieldObj === 'object' && fieldObj !== null) {
+          const types = fieldObj.getAllPossibleTypes();
+          const uniqueTypes = [...new Set(types.map(x => x.replace(/^ArrayOf/, '')))];
+          if (uniqueTypes.length === 1 && uniqueTypes[0].match(/^#/)) {
+            testKey = 'noTypeWithHint';
+            messageValues = {
+              field: node.name,
+              typeHint: uniqueTypes[0].substr(1),
+            };
+          }
         }
       }
     } else {

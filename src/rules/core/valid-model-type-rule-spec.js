@@ -96,6 +96,38 @@ describe('ValidModelTypeRule', () => {
     }
   });
 
+  it('should not throw if the type is missing from the model and has a parent', () => {
+    const data = {
+      value: 25,
+      unitCode: 'SMI',
+    };
+    model.hasSpecification = true;
+
+    const parentNode = new ModelNode(
+      '$',
+      {
+        type: 'Event',
+      },
+      null,
+      model,
+    );
+
+    const nodeToTest = new ModelNode(
+      'distance',
+      data,
+      parentNode,
+      new Model(),
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
+
+    for (const error of errors) {
+      expect(error.type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
+      expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
+    }
+  });
+
   it('should return a tip if the type is present, but we don\'t recognise the model', () => {
     const data = {
       type: 'OutsideSpec',

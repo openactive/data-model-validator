@@ -75,6 +75,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       // Check whether we have a value object
       if (
         typeof fieldValue === 'object'
+        && fieldValue !== null
         && typeof fieldValue.type === 'undefined'
         && typeof fieldValue['@type'] === 'undefined'
         && typeof fieldValue['@value'] !== 'undefined'

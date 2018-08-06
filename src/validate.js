@@ -141,7 +141,7 @@ function validate(value, options) {
 
   if (valueCopy instanceof Array) {
     valuesToTest = valueCopy;
-  } else if (typeof valueCopy === 'object') {
+  } else if (typeof valueCopy === 'object' && valueCopy !== null) {
     valuesToTest.push(valueCopy);
     isSingleObject = true;
   }
