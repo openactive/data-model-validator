@@ -44,7 +44,7 @@ class ApplyRules {
 
     let index = 0;
     for (const fieldValue of fieldsToTest) {
-      if (typeof fieldValue === 'object' && !(fieldValue instanceof Array)) {
+      if (typeof fieldValue === 'object' && fieldValue !== null && !(fieldValue instanceof Array)) {
         const subModelType = PropertyHelper.getObjectField(fieldValue, '@type');
         const currentFieldName = field;
         let currentFieldIndex;

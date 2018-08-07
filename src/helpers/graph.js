@@ -19,6 +19,7 @@ const GraphHelper = class {
           classes.push(classId);
           if (
             typeof item['rdfs:subClassOf'] === 'object'
+            && item['rdfs:subClassOf'] !== null
             && typeof item['rdfs:subClassOf']['@id'] === 'string'
           ) {
             classes = classes.concat(this.getClassGraph(spec, item['rdfs:subClassOf']['@id']));

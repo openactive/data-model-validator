@@ -127,7 +127,7 @@ const ModelNode = class {
           return this.parentNode;
         }
       }
-    } else if (typeof this.model.fields === 'object') {
+    } else if (typeof this.model.fields === 'object' && this.model.fields !== null) {
       for (const fieldKey in this.model.fields) {
         if (Object.prototype.hasOwnProperty.call(this.model.fields, fieldKey)) {
           const modelField = this.model.fields[fieldKey];

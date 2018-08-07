@@ -27,6 +27,7 @@ const PropertyHelper = class {
     if (
       typeof data !== 'object'
       || !(data instanceof Array)
+      || data === null
       || typeof property === 'undefined'
     ) {
       return false;

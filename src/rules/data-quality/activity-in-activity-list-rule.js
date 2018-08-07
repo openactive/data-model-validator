@@ -47,7 +47,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
                     found = true;
                     break;
                   }
-                } else if (typeof activity === 'object') {
+                } else if (typeof activity === 'object' && activity !== null) {
                   const prefLabel = PropertyHelper.getObjectField(activity, 'prefLabel');
                   const id = PropertyHelper.getObjectField(activity, 'id');
                   if (typeof prefLabel !== 'undefined') {

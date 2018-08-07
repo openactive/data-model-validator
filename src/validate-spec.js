@@ -398,6 +398,23 @@ describe('validate', () => {
     expect(typeof result).toBe('object');
   });
 
+  it('should not throw if a property of value null is passed', () => {
+    const data = {
+      '@context': contextUrl,
+      type: 'Event',
+      category: [null, null],
+    };
+
+    let result;
+
+    const doValidate = () => {
+      result = validate(data, options);
+    };
+
+    expect(doValidate).not.toThrow();
+    expect(typeof result).toBe('object');
+  });
+
   it('should return an unsupported warning if nested arrays are passed', () => {
     const event = Object.assign({}, validEvent);
 
