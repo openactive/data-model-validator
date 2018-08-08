@@ -3,11 +3,12 @@ const { validate } = require('./validate');
 const ValidationErrorSeverity = require('./errors/validation-error-severity');
 const ValidationErrorType = require('./errors/validation-error-type');
 const OptionsHelper = require('./helpers/options');
+const JsonLoaderHelper = require('./helpers/json-loader');
 
 describe('validate', () => {
   let validEvent;
   let options;
-  let activityLists;
+  let activityList;
   beforeEach(() => {
     validEvent = {
       '@context': contextUrl,
@@ -24,8 +25,22 @@ describe('validate', () => {
         maxValue: 60,
       },
       genderRestriction: 'http://openactive.io/ns#None',
-      activity: ['Tai Chi'],
-      category: ['Martial Arts'],
+      activity: [
+        {
+          id: 'http://openactive.io/activity-list/#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
+          prefLabel: 'Tai Chi',
+          type: 'Concept',
+          inScheme: 'https://www.openactive.io/activity-list/activity-list.jsonld',
+        },
+      ],
+      category: [
+        {
+          id: 'http://openactive.io/activity-list/#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
+          prefLabel: 'Holistic Classes',
+          type: 'Concept',
+          inScheme: 'https://www.openactive.io/activity-list/activity-list.jsonld',
+        },
+      ],
       eventStatus: 'http://schema.org/EventScheduled',
       image: [{
         type: 'ImageObject',
@@ -96,28 +111,36 @@ describe('validate', () => {
         ],
       },
     };
-    activityLists = [
-      {
-        '@context': 'https://www.openactive.io/ns/oa.jsonld',
-        '@id': 'http://openactive.io/activity-list/',
-        title: 'OpenActive Activity List',
-        description: 'This document describes the OpenActive standard activity list.',
-        type: 'skos:ConceptScheme',
-        license: 'https://creativecommons.org/licenses/by/4.0/',
-        concepts: [
-          {
-            id: 'http://openactive.io/activity-list/#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
-            type: 'skos:Concept',
-            prefLabel: 'Tai Chi',
-            'skos:definition': 'Tai chi combines deep breathing and relaxation with slow and gentle movements.',
-            broader: 'http://openactive.io/activity-list/#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
-          },
-        ],
-      },
-    ];
+    activityList = {
+      '@context': 'https://www.openactive.io/ns/oa.jsonld',
+      '@id': 'http://openactive.io/activity-list/',
+      title: 'OpenActive Activity List',
+      description: 'This document describes the OpenActive standard activity list.',
+      type: 'skos:ConceptScheme',
+      license: 'https://creativecommons.org/licenses/by/4.0/',
+      concepts: [
+        {
+          id: 'http://openactive.io/activity-list/#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
+          type: 'skos:Concept',
+          prefLabel: 'Tai Chi',
+          'skos:definition': 'Tai chi combines deep breathing and relaxation with slow and gentle movements.',
+          broader: 'http://openactive.io/activity-list/#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
+        },
+      ],
+    };
+
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+      errorCode: JsonLoaderHelper.ERROR_NONE,
+      statusCode: 200,
+      data: activityList,
+      url,
+      exception: null,
+      contentType: 'application/json',
+      fetchTime: (new Date()).valueOf(),
+    }));
 
     options = new OptionsHelper({
-      activityLists,
+      loadRemoteJson: true,
     });
   });
 

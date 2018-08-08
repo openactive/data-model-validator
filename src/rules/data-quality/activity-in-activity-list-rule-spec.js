@@ -22,35 +22,33 @@ describe('ActivityInActivityListRule', () => {
     },
   });
 
-  const activityLists = [
-    {
-      '@context': 'https://www.openactive.io/ns/oa.jsonld',
-      '@id': 'http://openactive.io/activity-list/',
-      title: 'OpenActive Activity List',
-      description: 'This document describes the OpenActive standard activity list.',
-      type: 'skos:ConceptScheme',
-      license: 'https://creativecommons.org/licenses/by/4.0/',
-      concepts: [
-        {
-          id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a1',
-          type: 'skos:Concept',
-          prefLabel: 'Flag Football',
-          'skos:definition': 'Flag is the fastest growing format of the game in Great Britain, encompassing schools, colleges, universities and in the community.',
-          brodaer: 'http://openactive.io/activity-list/#9caeb442-2834-4859-b660-9172ed61ee71',
-        },
-        {
-          id: 'http://openactive.io/activity-list/#0a5f732d-e806-4e51-ad40-0a7de0239c8c',
-          type: 'skos:Concept',
-          prefLabel: 'Football',
-          'skos:definition': 'Football is widely considered to be the most popular sport in the world. The beautiful game is England\'s national sport',
-          topConceptOf: 'http://openactive.io/activity-list/',
-        },
-      ],
-    },
-  ];
+  const activityList = {
+    '@context': 'https://www.openactive.io/ns/oa.jsonld',
+    '@id': 'http://openactive.io/activity-list/',
+    title: 'OpenActive Activity List',
+    description: 'This document describes the OpenActive standard activity list.',
+    type: 'skos:ConceptScheme',
+    license: 'https://creativecommons.org/licenses/by/4.0/',
+    concepts: [
+      {
+        id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a1',
+        type: 'skos:Concept',
+        prefLabel: 'Flag Football',
+        'skos:definition': 'Flag is the fastest growing format of the game in Great Britain, encompassing schools, colleges, universities and in the community.',
+        brodaer: 'http://openactive.io/activity-list/#9caeb442-2834-4859-b660-9172ed61ee71',
+      },
+      {
+        id: 'http://openactive.io/activity-list/#0a5f732d-e806-4e51-ad40-0a7de0239c8c',
+        type: 'skos:Concept',
+        prefLabel: 'Football',
+        'skos:definition': 'Football is widely considered to be the most popular sport in the world. The beautiful game is England\'s national sport',
+        topConceptOf: 'http://openactive.io/activity-list/',
+      },
+    ],
+  };
 
   const options = new OptionsHelper({
-    activityLists,
+    loadRemoteJson: true,
   });
 
   it('should target activity field in Event models', () => {
@@ -63,8 +61,21 @@ describe('ActivityInActivityListRule', () => {
       type: 'Event',
     };
 
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+      errorCode: JsonLoaderHelper.ERROR_NONE,
+      statusCode: 200,
+      data: activityList,
+      url,
+      exception: null,
+      contentType: 'application/json',
+      fetchTime: (new Date()).valueOf(),
+    }));
+
     const activities = [
-      'Football',
+      {
+        'skos:prefLabel': 'Football',
+        type: 'Concept',
+      },
       {
         'skos:prefLabel': 'flag football',
         type: 'Concept',
@@ -89,8 +100,22 @@ describe('ActivityInActivityListRule', () => {
       type: 'Event',
     };
 
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+      errorCode: JsonLoaderHelper.ERROR_NONE,
+      statusCode: 200,
+      data: activityList,
+      url,
+      exception: null,
+      contentType: 'application/json',
+      fetchTime: (new Date()).valueOf(),
+    }));
+
     const activities = [
-      'Secret Football',
+      {
+        id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
+        prefLabel: 'Secret Football',
+        type: 'Concept',
+      },
       {
         id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
         prefLabel: 'Not Real Football',
@@ -127,11 +152,6 @@ describe('ActivityInActivityListRule', () => {
       },
     ];
 
-    const fileOptions = new OptionsHelper({
-      activityLists,
-      loadRemoteJson: true,
-    });
-
     spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
       errorCode: JsonLoaderHelper.ERROR_NO_REMOTE,
       statusCode: 404,
@@ -149,7 +169,7 @@ describe('ActivityInActivityListRule', () => {
         data,
         null,
         model,
-        fileOptions,
+        options,
       );
       const errors = rule.validate(nodeToTest);
       expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
@@ -174,11 +194,6 @@ describe('ActivityInActivityListRule', () => {
       },
     ];
 
-    const fileOptions = new OptionsHelper({
-      activityLists,
-      loadRemoteJson: true,
-    });
-
     spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
       errorCode: JsonLoaderHelper.ERROR_NO_REMOTE,
       statusCode: 200,
@@ -196,7 +211,7 @@ describe('ActivityInActivityListRule', () => {
         data,
         null,
         model,
-        fileOptions,
+        options,
       );
       const errors = rule.validate(nodeToTest);
       expect(JsonLoaderHelper.getFile).toHaveBeenCalled();

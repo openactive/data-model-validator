@@ -56,46 +56,6 @@ const result = validate(data);
 
 The `validate` method optionally accepts options for validation:
 
-#### activityLists
-
-An array of activity lists in `skos:ConceptScheme` format. For example, see https://www.openactive.io/activity-list/activity-list.jsonld
-
-e.g.
-
-```js
-
-const { validate } = require('openactive-data-model-validator');
-
-const data = {
-  // ...
-};
-
-const options = {
-  activityLists: [
-    {
-      '@context': 'https://www.openactive.io/ns/oa.jsonld',
-      '@id': 'http://openactive.io/activity-list/',
-      title: 'OpenActive Activity List',
-      description: 'This document describes the OpenActive standard activity list.',
-      type: 'skos:ConceptScheme',
-      license: 'https://creativecommons.org/licenses/by/4.0/',
-      concepts: [
-        {
-          id: 'http://openactive.io/activity-list/#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
-          type: 'skos:Concept',
-          prefLabel: 'Tai Chi',
-          'skos:definition': 'Tai chi combines deep breathing and relaxation with slow and gentle movements.',
-          broader: 'http://openactive.io/activity-list/#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
-        },
-        // ...
-      ],
-    },
-  ]
-};
-
-const result = validate(data, options);
-```
-
 #### loadRemoteJson
 
 **Default:** `false`

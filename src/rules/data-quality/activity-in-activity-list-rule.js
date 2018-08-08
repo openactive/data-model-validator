@@ -53,18 +53,26 @@ module.exports = class ActivityInActivityListRule extends Rule {
     const errors = [];
     let found = false;
     let index = 0;
+    const listMap = {
+      'http://openactive.io/activity-list/': 'https://www.openactive.io/activity-list/activity-list.jsonld',
+    };
     if (fieldValue instanceof Array) {
       for (const activity of fieldValue) {
-        found = false;
-        let activityIdentifier;
-        if (typeof activity === 'string' || typeof activity === 'object') {
-          const activityLists = node.options.activityLists.slice();
+        if (typeof activity === 'object' && activity !== null) {
+          found = false;
+          let activityIdentifier;
+
+          const activityLists = [];
+          let listUrls = Object.values(listMap);
           if (
-            typeof activity === 'object'
-            && activity !== null
-            && typeof activity.inScheme !== 'undefined'
+            typeof activity.inScheme !== 'undefined'
+            && listUrls.indexOf(activity.inScheme) < 0
+            && typeof listMap[activity.inScheme] === 'undefined'
           ) {
-            const jsonResponse = JsonLoaderHelper.getFile(activity.inScheme, node.options);
+            listUrls = [activity.inScheme];
+          }
+          for (const listUrl of listUrls) {
+            const jsonResponse = JsonLoaderHelper.getFile(listUrl, node.options);
             if (
               jsonResponse.errorCode === JsonLoaderHelper.ERROR_NONE
               && typeof jsonResponse.data === 'object'
@@ -103,53 +111,45 @@ module.exports = class ActivityInActivityListRule extends Rule {
           for (const activityList of activityLists) {
             if (typeof activityList.concepts !== 'undefined') {
               for (const concept of activityList.concepts) {
-                if (typeof activity === 'string') {
-                  activityIdentifier = activity;
-                  if (concept.prefLabel.toLowerCase() === activity.toLowerCase()) {
+                const prefLabel = PropertyHelper.getObjectField(activity, 'prefLabel');
+                const notation = PropertyHelper.getObjectField(activity, 'notation');
+                const id = PropertyHelper.getObjectField(activity, 'id');
+                if (typeof prefLabel !== 'undefined') {
+                  activityIdentifier = prefLabel;
+                  if (concept.prefLabel.toLowerCase() === prefLabel.toLowerCase()) {
                     found = true;
                     break;
                   }
-                } else if (typeof activity === 'object' && activity !== null) {
-                  const prefLabel = PropertyHelper.getObjectField(activity, 'prefLabel');
-                  const notation = PropertyHelper.getObjectField(activity, 'notation');
-                  const id = PropertyHelper.getObjectField(activity, 'id');
-                  if (typeof prefLabel !== 'undefined') {
-                    activityIdentifier = prefLabel;
-                    if (concept.prefLabel.toLowerCase() === prefLabel.toLowerCase()) {
-                      found = true;
-                      break;
-                    }
-                  } else if (typeof id !== 'undefined') {
-                    activityIdentifier = id;
-                    if (concept.id === id) {
-                      found = true;
-                      break;
-                    }
-                  } else if (typeof notation !== 'undefined') {
-                    activityIdentifier = notation;
-                    if (concept.notation === notation) {
-                      found = true;
-                      break;
-                    }
+                } else if (typeof id !== 'undefined') {
+                  activityIdentifier = id;
+                  if (concept.id === id) {
+                    found = true;
+                    break;
+                  }
+                } else if (typeof notation !== 'undefined') {
+                  activityIdentifier = notation;
+                  if (concept.notation === notation) {
+                    found = true;
+                    break;
                   }
                 }
               }
             }
           }
-        }
-        if (!found) {
-          errors.push(
-            this.createError(
-              'default',
-              {
-                value: activity,
-                path: node.getPath(field, index),
-              },
-              {
-                activity: activityIdentifier,
-              },
-            ),
-          );
+          if (!found) {
+            errors.push(
+              this.createError(
+                'default',
+                {
+                  value: activity,
+                  path: node.getPath(field, index),
+                },
+                {
+                  activity: activityIdentifier,
+                },
+              ),
+            );
+          }
         }
         index += 1;
       }

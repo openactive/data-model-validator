@@ -3,10 +3,6 @@ const OptionsHelper = class {
     this.options = options || {};
   }
 
-  get activityLists() {
-    return this.options.activityLists || [];
-  }
-
   get loadRemoteJson() {
     return this.options.loadRemoteJson || false;
   }
