@@ -96,6 +96,75 @@ const options = {
 const result = validate(data, options);
 ```
 
+#### loadRemoteJson
+
+**Default:** `false`
+
+Whether to load remote JSON documents. For example, remote `@context` definitions or activity list definitions.
+
+e.g.
+
+```js
+const { validate } = require('openactive-data-model-validator');
+
+const data = {
+  // ...
+};
+
+const options = {
+  loadRemoteJson: true
+};
+
+const result = validate(data, options);
+```
+
+#### remoteJsonCachePath
+
+**Default:** `null`
+
+Used in conjunction with `loadRemoteJson`. If set, allows the JSON loader to cache requests.
+
+e.g.
+
+```js
+const { validate } = require('openactive-data-model-validator');
+
+const data = {
+  // ...
+};
+
+const options = {
+  loadRemoteJson: true,
+  remoteJsonCachePath: '/tmp'
+};
+
+const result = validate(data, options);
+```
+
+#### remoteJsonCacheTimeToLive
+
+**Default:** `3600`
+
+Used in conjunction with `loadRemoteJson` and `remoteJsonCachePath`. It sets the number of seconds that the JSON loader should cache requests for.
+
+e.g.
+
+```js
+const { validate } = require('openactive-data-model-validator');
+
+const data = {
+  // ...
+};
+
+const options = {
+  loadRemoteJson: true,
+  remoteJsonCachePath: '/tmp',
+  remoteJsonCacheTimeToLive: 3600
+};
+
+const result = validate(data, options);
+```
+
 #### rpdeItemLimit
 
 A limit of the number of RPDE `"updated"` data items to validate. It is helpful to limit the number of items validated for performance reasons.

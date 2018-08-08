@@ -4,6 +4,7 @@ const ModelNode = require('../../classes/model-node');
 const OptionsHelper = require('../../helpers/options');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
+const JsonLoaderHelper = require('../../helpers/json-loader');
 
 describe('ActivityInActivityListRule', () => {
   const rule = new ActivityInActivityListRule();
@@ -110,6 +111,100 @@ describe('ActivityInActivityListRule', () => {
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
+    }
+  });
+  it('should return an error when an activity list URL does not exist', () => {
+    const data = {
+      type: 'Event',
+    };
+
+    const activities = [
+      {
+        id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
+        prefLabel: 'Not Real Football',
+        type: 'Concept',
+        inScheme: 'http://example.org/bad-list.jsonld',
+      },
+    ];
+
+    const fileOptions = new OptionsHelper({
+      activityLists,
+      loadRemoteJson: true,
+    });
+
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+      errorCode: JsonLoaderHelper.ERROR_NO_REMOTE,
+      statusCode: 404,
+      data: null,
+      url,
+      exception: null,
+      contentType: null,
+      fetchTime: (new Date()).valueOf(),
+    }));
+
+    for (const activity of activities) {
+      data.activity = [activity];
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+        fileOptions,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
+      expect(errors.length).toBe(2);
+      expect(errors[0].type).toBe(ValidationErrorType.FILE_NOT_FOUND);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+      expect(errors[1].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
+      expect(errors[1].severity).toBe(ValidationErrorSeverity.WARNING);
+    }
+  });
+  it('should return an error when an activity list URL contains invalid JSON', () => {
+    const data = {
+      type: 'Event',
+    };
+
+    const activities = [
+      {
+        id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
+        prefLabel: 'Not Real Football',
+        type: 'Concept',
+        inScheme: 'http://example.org/bad-list.jsonld',
+      },
+    ];
+
+    const fileOptions = new OptionsHelper({
+      activityLists,
+      loadRemoteJson: true,
+    });
+
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+      errorCode: JsonLoaderHelper.ERROR_NO_REMOTE,
+      statusCode: 200,
+      data: null,
+      url,
+      exception: null,
+      contentType: 'text/html',
+      fetchTime: (new Date()).valueOf(),
+    }));
+
+    for (const activity of activities) {
+      data.activity = [activity];
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+        fileOptions,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
+      expect(errors.length).toBe(2);
+      expect(errors[0].type).toBe(ValidationErrorType.FILE_NOT_FOUND);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+      expect(errors[1].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
+      expect(errors[1].severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });
 });
