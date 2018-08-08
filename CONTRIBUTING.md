@@ -160,15 +160,15 @@ this.meta = {
       type: ValidationErrorType.FIELD_COULD_BE_TYPO,
     },
     inSchemaOrg: {
-      description: 'Raises a notice that fields in the schema.org schema that aren\'t in the Open Active specification aren\'t checked by the validator.',
+      description: 'Raises a notice that fields in the schema.org schema that aren\'t in the OpenActive specification aren\'t checked by the validator.',
       message: 'This field is declared in schema.org but this validator is not yet capable of checking whether they have the right format or values. You should refer to the schema.org documentation for additional guidance.',
       category: ValidationErrorCategory.CONFORMANCE,
       severity: ValidationErrorSeverity.NOTICE,
       type: ValidationErrorType.SCHEMA_ORG_FIELDS_NOT_CHECKED,
     },
     notInSpec: {
-      description: 'Raises a warning for fields that aren\'t in the Open Active specification, and that aren\'t caught by other rules.',
-      message: 'This field is not defined in the Open Active specification.',
+      description: 'Raises a warning for fields that aren\'t in the OpenActive specification, and that aren\'t caught by other rules.',
+      message: 'This field is not defined in the OpenActive specification.',
       category: ValidationErrorCategory.CONFORMANCE,
       severity: ValidationErrorSeverity.WARNING,
       type: ValidationErrorType.FIELD_NOT_IN_SPEC,
