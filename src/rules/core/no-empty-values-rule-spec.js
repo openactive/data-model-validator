@@ -11,7 +11,7 @@ describe('NoEmptyValuesRule', () => {
       '@context',
       'type',
     ],
-  });
+  }, 'latest');
   model.hasSpecification = true;
 
   const rule = new NoEmptyValuesRule();

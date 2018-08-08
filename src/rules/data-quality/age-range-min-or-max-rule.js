@@ -35,8 +35,8 @@ module.exports = class AgeRangeMinOrMaxRule extends Rule {
 
     if (typeof fieldValue !== 'object'
       || (
-        !PropertyHelper.objectHasField(fieldValue, 'minValue')
-        && !PropertyHelper.objectHasField(fieldValue, 'maxValue')
+        !PropertyHelper.objectHasField(fieldValue, 'minValue', node.options.version)
+        && !PropertyHelper.objectHasField(fieldValue, 'maxValue', node.options.version)
       )
     ) {
       errors.push(

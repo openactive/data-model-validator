@@ -46,7 +46,7 @@ module.exports = class IsAccessibleForFreeRule extends Rule {
       if (
         typeof offer !== 'undefined'
       ) {
-        const offerPrice = PropertyHelper.getObjectField(offer, 'price');
+        const offerPrice = PropertyHelper.getObjectField(offer, 'price', node.options.version);
         if (
           typeof offerPrice !== 'undefined'
           && offerPrice === 0

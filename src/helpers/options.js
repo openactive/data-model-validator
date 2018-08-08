@@ -26,6 +26,10 @@ const OptionsHelper = class {
   get type() {
     return this.options.type;
   }
+
+  get version() {
+    return this.options.version || 'latest';
+  }
 };
 
 module.exports = OptionsHelper;

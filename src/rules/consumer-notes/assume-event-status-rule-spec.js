@@ -23,7 +23,7 @@ describe('AssumeEventStatusRule', () => {
         ],
       },
     },
-  });
+  }, 'latest');
   model.hasSpecification = true;
 
   const rule = new AssumeEventStatusRule();

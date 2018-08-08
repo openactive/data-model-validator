@@ -15,7 +15,7 @@ describe('NoHtmlRule', () => {
         requiredType: 'http://schema.org/Text',
       },
     },
-  });
+  }, 'latest');
 
   it('should target all models and fields', () => {
     const isTargeted = rule.isFieldTargeted(model, 'description');

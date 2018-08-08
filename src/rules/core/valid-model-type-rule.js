@@ -70,7 +70,7 @@ module.exports = class ValidModelTypeRule extends Rule {
         }
       }
     } else {
-      const prop = PropertyHelper.getFullyQualifiedProperty(fieldValue);
+      const prop = PropertyHelper.getFullyQualifiedProperty(fieldValue, node.options.version);
       if (
         (
           typeof prop !== 'undefined'

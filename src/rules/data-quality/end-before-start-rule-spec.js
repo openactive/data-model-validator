@@ -19,7 +19,7 @@ describe('EndBeforeStartRule', () => {
         requiredType: 'http://schema.org/DateTime',
       },
     },
-  });
+  }, 'latest');
 
   it('should target Event models', () => {
     const isTargeted = rule.isModelTargeted(model);

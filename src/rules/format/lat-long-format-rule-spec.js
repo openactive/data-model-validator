@@ -21,7 +21,7 @@ describe('LatLongFormatRule', () => {
         requiredType: 'http://schema.org/Float',
       },
     },
-  });
+  }, 'latest');
 
   it('should target lat / long fields of GeoCoordinates', () => {
     let isTargeted = rule.isFieldTargeted(model, 'latitude');

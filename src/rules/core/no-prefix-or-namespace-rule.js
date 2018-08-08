@@ -58,7 +58,7 @@ module.exports = class NoPrefixOrNamespaceRule extends Rule {
     let messageValues;
 
     // Get prop values
-    const prop = PropertyHelper.getFullyQualifiedProperty(field);
+    const prop = PropertyHelper.getFullyQualifiedProperty(field, node.options.version);
 
     if (
       prop.alias !== null

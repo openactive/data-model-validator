@@ -1,4 +1,4 @@
-const { contextUrl } = require('openactive-data-models');
+const DataModelHelper = require('../../helpers/data-model');
 const ContextInRootNodeRule = require('./context-in-root-node-rule');
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
@@ -8,6 +8,7 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 describe('ContextInRootNodeRule', () => {
   let model;
   let rule;
+  let metaData;
 
   beforeEach(() => {
     model = new Model({
@@ -15,8 +16,8 @@ describe('ContextInRootNodeRule', () => {
       inSpec: [
         '@context',
       ],
-    });
-
+    }, 'latest');
+    metaData = DataModelHelper.getMetaData('latest');
     rule = new ContextInRootNodeRule();
   });
 
@@ -28,11 +29,11 @@ describe('ContextInRootNodeRule', () => {
   it('should return no errors if the correct context is in the root node', () => {
     const dataItems = [
       {
-        '@context': contextUrl,
+        '@context': metaData.contextUrl,
         type: 'Event',
       },
       {
-        '@context': [contextUrl],
+        '@context': [metaData.contextUrl],
         type: 'Event',
       },
     ];
@@ -99,7 +100,7 @@ describe('ContextInRootNodeRule', () => {
 
   it('should return a error if the context is present and this isn\'t the root node', () => {
     const data = {
-      '@context': contextUrl,
+      '@context': metaData.contextUrl,
       type: 'Event',
     };
 
@@ -136,7 +137,7 @@ describe('ContextInRootNodeRule', () => {
         type: 'Event',
       },
       {
-        '@context': ['https://example.org/ns', contextUrl],
+        '@context': ['https://example.org/ns', metaData.contextUrl],
         type: 'Event',
       },
     ];
@@ -161,7 +162,7 @@ describe('ContextInRootNodeRule', () => {
 
   it('should return no error if the context is present, but contains non-url fields if the model declares its own type', () => {
     const data = {
-      '@context': [contextUrl, {}],
+      '@context': [metaData.contextUrl, {}],
       type: 'Event',
     };
 
@@ -190,7 +191,7 @@ describe('ContextInRootNodeRule', () => {
 
   it('should return an error if the context is present, but contains non-url fields', () => {
     const data = {
-      '@context': [contextUrl, {}],
+      '@context': [metaData.contextUrl, {}],
       type: 'Event',
     };
 

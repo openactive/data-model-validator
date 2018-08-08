@@ -19,7 +19,7 @@ describe('MaxLessThenMinRule', () => {
         requiredType: 'http://schema.org/Integer',
       },
     },
-  });
+  }, 'latest');
 
   it('should target QuantitativeValue models', () => {
     const isTargeted = rule.isModelTargeted(model);

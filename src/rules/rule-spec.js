@@ -9,7 +9,7 @@ describe('Rule', () => {
       'activity',
       'location',
     ],
-  });
+  }, 'latest');
   const rule = new Rule();
 
   it('should not target any models', () => {

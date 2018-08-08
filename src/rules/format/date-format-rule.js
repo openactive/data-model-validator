@@ -32,7 +32,7 @@ module.exports = class DateFormatRule extends Rule {
         return [];
       }
     } else {
-      fieldObj = new Field();
+      fieldObj = new Field({}, node.options.version);
     }
     const fieldValue = node.getValue(field);
     const type = fieldObj.detectType(fieldValue);

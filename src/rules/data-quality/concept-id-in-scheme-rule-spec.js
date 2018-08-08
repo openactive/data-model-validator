@@ -19,7 +19,7 @@ describe('ConceptIdInSchemeRule', () => {
         requiredType: 'http://schema.org/url',
       },
     },
-  });
+  }, 'latest');
 
   it('should target id and inScheme in Concept model', () => {
     let isTargeted = rule.isFieldTargeted(model, 'id');

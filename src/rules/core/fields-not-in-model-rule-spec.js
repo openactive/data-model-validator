@@ -18,7 +18,7 @@ describe('FieldsNotInModelRule', () => {
     commonTypos: {
       offer: 'offers',
     },
-  });
+  }, 'latest');
   model.hasSpecification = true;
 
   const schemaOrgSpec = {

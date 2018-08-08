@@ -10,7 +10,7 @@ describe('TimeFormatRule', () => {
   it('should target fields of any type', () => {
     const model = new Model({
       type: 'Event',
-    });
+    }, 'latest');
     const isTargeted = rule.isFieldTargeted(model, 'type');
     expect(isTargeted).toBe(true);
   });
@@ -25,7 +25,7 @@ describe('TimeFormatRule', () => {
           requiredType: 'http://schema.org/Time',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const values = [
       '09:00:00Z',
@@ -55,7 +55,7 @@ describe('TimeFormatRule', () => {
           requiredType: 'http://schema.org/Time',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const values = [
       '2017-09-06T09:00:00',
@@ -90,7 +90,7 @@ describe('TimeFormatRule', () => {
           requiredType: 'http://schema.org/Time',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const values = [
       '2017-09-06T09:00:00',
@@ -117,7 +117,7 @@ describe('TimeFormatRule', () => {
     }
   });
   it('should return an error for an invalid time from an unknown Model', () => {
-    const model = new Model({});
+    const model = new Model({}, 'latest');
 
     const values = [
       '09:00',

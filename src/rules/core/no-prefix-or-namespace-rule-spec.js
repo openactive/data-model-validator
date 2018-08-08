@@ -16,7 +16,7 @@ describe('NoPrefixOrNamespaceRule', () => {
       'name',
       'ageRange',
     ],
-  });
+  }, 'latest');
   model.hasSpecification = true;
 
   const rule = new NoPrefixOrNamespaceRule();
