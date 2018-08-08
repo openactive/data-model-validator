@@ -1,3 +1,4 @@
+const DataModelHelper = require('../../helpers/data-model');
 const Rule = require('../rule');
 const PropertyHelper = require('../../helpers/property');
 const JsonLoaderHelper = require('../../helpers/json-loader');
@@ -53,9 +54,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
     const errors = [];
     let found = false;
     let index = 0;
-    const listMap = {
-      'http://openactive.io/activity-list/': 'https://www.openactive.io/activity-list/activity-list.jsonld',
-    };
+    const metaData = DataModelHelper.getMetaData(node.options.version);
     if (fieldValue instanceof Array) {
       for (const activity of fieldValue) {
         if (typeof activity === 'object' && activity !== null) {
@@ -63,11 +62,11 @@ module.exports = class ActivityInActivityListRule extends Rule {
           let activityIdentifier;
 
           const activityLists = [];
-          let listUrls = Object.values(listMap);
+          let listUrls = Object.values(metaData.defaultActivityLists);
           if (
             typeof activity.inScheme !== 'undefined'
             && listUrls.indexOf(activity.inScheme) < 0
-            && typeof listMap[activity.inScheme] === 'undefined'
+            && typeof metaData.defaultActivityLists[activity.inScheme] === 'undefined'
           ) {
             listUrls = [activity.inScheme];
           }
@@ -111,9 +110,9 @@ module.exports = class ActivityInActivityListRule extends Rule {
           for (const activityList of activityLists) {
             if (typeof activityList.concepts !== 'undefined') {
               for (const concept of activityList.concepts) {
-                const prefLabel = PropertyHelper.getObjectField(activity, 'prefLabel');
-                const notation = PropertyHelper.getObjectField(activity, 'notation');
-                const id = PropertyHelper.getObjectField(activity, 'id');
+                const prefLabel = PropertyHelper.getObjectField(activity, 'prefLabel', node.options.version);
+                const notation = PropertyHelper.getObjectField(activity, 'notation', node.options.version);
+                const id = PropertyHelper.getObjectField(activity, 'id', node.options.version);
                 if (typeof prefLabel !== 'undefined') {
                   activityIdentifier = prefLabel;
                   if (concept.prefLabel.toLowerCase() === prefLabel.toLowerCase()) {

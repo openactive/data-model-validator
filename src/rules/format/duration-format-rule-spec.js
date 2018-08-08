@@ -10,7 +10,7 @@ describe('DurationFormatRule', () => {
   it('should target fields of any type', () => {
     const model = new Model({
       type: 'Event',
-    });
+    }, 'latest');
     const isTargeted = rule.isFieldTargeted(model, 'type');
     expect(isTargeted).toBe(true);
   });
@@ -25,7 +25,7 @@ describe('DurationFormatRule', () => {
           requiredType: 'http://schema.org/Duration',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const values = [
       'P0Y',
@@ -58,7 +58,7 @@ describe('DurationFormatRule', () => {
           requiredType: 'http://schema.org/Duration',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const values = [
       'P',
@@ -91,7 +91,7 @@ describe('DurationFormatRule', () => {
           requiredType: 'http://schema.org/Duration',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const values = [
       'P',
@@ -116,7 +116,7 @@ describe('DurationFormatRule', () => {
     }
   });
   it('should return an error for an invalid duration from an unknown Model', () => {
-    const model = new Model({});
+    const model = new Model({}, 'latest');
 
     const values = [
       'P7H',

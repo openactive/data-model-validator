@@ -31,7 +31,7 @@ module.exports = class DurationFormatRule extends Rule {
         return [];
       }
     } else {
-      fieldObj = new Field();
+      fieldObj = new Field({}, node.options.version);
     }
 
     // See https://en.wikipedia.org/wiki/ISO_8601

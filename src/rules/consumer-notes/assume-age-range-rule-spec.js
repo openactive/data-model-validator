@@ -15,7 +15,7 @@ describe('AssumeAgeRangeRule', () => {
         model: '#QuantitativeValue',
       },
     },
-  });
+  }, 'latest');
   model.hasSpecification = true;
 
   it('should target Event models', () => {

@@ -23,7 +23,7 @@ module.exports = class ConceptIdInSchemeRule extends Rule {
   }
 
   validateField(node, field) {
-    const prop = PropertyHelper.getFullyQualifiedProperty(field);
+    const prop = PropertyHelper.getFullyQualifiedProperty(field, node.options.version);
     const otherField = prop.alias === 'id' ? 'inScheme' : 'id';
     const errors = [];
 

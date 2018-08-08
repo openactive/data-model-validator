@@ -26,7 +26,7 @@ describe('IsAccessibleForFreeRule', () => {
         },
       },
     },
-  });
+  }, 'latest');
   model.hasSpecification = true;
 
   it('should target Event models', () => {

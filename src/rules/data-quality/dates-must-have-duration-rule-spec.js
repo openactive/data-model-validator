@@ -23,7 +23,7 @@ describe('DatesMustHaveDurationRule', () => {
         requiredType: 'http://schema.org/Duration',
       },
     },
-  });
+  }, 'latest');
 
   it('should target Event models', () => {
     const isTargeted = rule.isModelTargeted(model);

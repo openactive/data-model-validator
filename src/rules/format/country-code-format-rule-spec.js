@@ -16,7 +16,7 @@ describe('CountryCodeFormatRule', () => {
         requiredType: 'http://schema.org/Text',
       },
     },
-  });
+  }, 'latest');
 
   it('should target the addressCountry field of PostalAddress', () => {
     const isTargeted = rule.isFieldTargeted(model, 'addressCountry');

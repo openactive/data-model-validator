@@ -1,7 +1,7 @@
-const { contextUrl } = require('openactive-data-models');
 const { validate } = require('./validate');
 const ValidationErrorSeverity = require('./errors/validation-error-severity');
 const ValidationErrorType = require('./errors/validation-error-type');
+const DataModelHelper = require('./helpers/data-model');
 const OptionsHelper = require('./helpers/options');
 const JsonLoaderHelper = require('./helpers/json-loader');
 
@@ -9,9 +9,11 @@ describe('validate', () => {
   let validEvent;
   let options;
   let activityList;
+  let metaData;
   beforeEach(() => {
+    metaData = DataModelHelper.getMetaData('latest');
     validEvent = {
-      '@context': contextUrl,
+      '@context': metaData.contextUrl,
       id: 'http://www.example.org/events/1',
       type: 'Event',
       name: 'Tai chi Class',
@@ -141,6 +143,7 @@ describe('validate', () => {
 
     options = new OptionsHelper({
       loadRemoteJson: true,
+      version: 'latest',
     });
   });
 
@@ -291,7 +294,7 @@ describe('validate', () => {
 
   it('should cope with flexible model types', () => {
     const place = {
-      '@context': contextUrl,
+      '@context': metaData.contextUrl,
       id: 'http://www.example.org/locations/gym',
       type: 'Place',
       name: 'ExampleCo Gym',
@@ -346,7 +349,7 @@ describe('validate', () => {
 
   it('should cope with arrays of flexible model types mixed with invalid elements', () => {
     const place = {
-      '@context': contextUrl,
+      '@context': metaData.contextUrl,
       id: 'http://www.example.org/locations/gym',
       type: 'Place',
       name: 'ExampleCo Gym',
@@ -406,7 +409,7 @@ describe('validate', () => {
 
   it('should not throw if a property of value null is passed', () => {
     const data = {
-      '@context': contextUrl,
+      '@context': metaData.contextUrl,
       type: 'Event',
       'beta:distance': null,
     };
@@ -423,7 +426,7 @@ describe('validate', () => {
 
   it('should not throw if a property of value null is passed', () => {
     const data = {
-      '@context': contextUrl,
+      '@context': metaData.contextUrl,
       type: 'Event',
       category: [null, null],
     };

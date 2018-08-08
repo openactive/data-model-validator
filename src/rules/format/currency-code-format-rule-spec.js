@@ -16,7 +16,7 @@ describe('CurrencyCodeFormatRule', () => {
         sameAs: 'http://schema.org/priceCurrency',
       },
     },
-  });
+  }, 'latest');
 
   it('should target fields of any type', () => {
     const isTargeted = rule.isFieldTargeted(model, 'type');

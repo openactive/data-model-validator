@@ -68,12 +68,14 @@ class Rule {
       || PropertyHelper.stringMatchesField(
         this.targetModels,
         model.type,
+        model.version,
       )
       || (
         this.targetModels instanceof Array
         && PropertyHelper.arrayHasField(
           this.targetModels,
           model.type,
+          model.version,
         )
       )
     );
@@ -90,12 +92,14 @@ class Rule {
           || PropertyHelper.stringMatchesField(
             this.targetFields[model.type],
             field,
+            model.version,
           )
           || (
             this.targetFields[model.type] instanceof Array
             && PropertyHelper.arrayHasField(
               this.targetFields[model.type],
               field,
+              model.version,
             )
           )
         )

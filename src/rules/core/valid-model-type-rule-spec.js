@@ -19,7 +19,7 @@ describe('ValidModelTypeRule', () => {
           ],
         },
       },
-    });
+    }, 'latest');
 
     rule = new ValidModelTypeRule();
   });

@@ -207,6 +207,27 @@ const options = {
 const result = validate(model, options);
 ```
 
+#### version
+
+The version of the specification to validate against. If not provided, this will validate against the latest specification.
+
+e.g.
+
+```js
+const { validate } = require('openactive-data-model-validator');
+
+const model = {
+  type: 'CustomAction'
+  // ...
+};
+
+const options = {
+  version: '2.0'
+};
+
+const result = validate(model, options);
+```
+
 ## Development
 
 ### Getting started

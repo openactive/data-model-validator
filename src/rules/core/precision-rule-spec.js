@@ -23,7 +23,7 @@ describe('PrecisionRule', () => {
         requiredType: 'http://schema.org/Float',
       },
     },
-  });
+  }, 'latest');
   model.hasSpecification = true;
 
   it('should target any field', () => {

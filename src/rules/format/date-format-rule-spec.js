@@ -10,7 +10,7 @@ describe('DateFormatRule', () => {
   it('should target fields of any type', () => {
     const model = new Model({
       type: 'Event',
-    });
+    }, 'latest');
     const isTargeted = rule.isFieldTargeted(model, 'type');
     expect(isTargeted).toBe(true);
   });
@@ -25,7 +25,7 @@ describe('DateFormatRule', () => {
           requiredType: 'http://schema.org/Date',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
 
     const values = [
@@ -56,7 +56,7 @@ describe('DateFormatRule', () => {
           requiredType: 'http://schema.org/Date',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
 
     const values = [
@@ -91,7 +91,7 @@ describe('DateFormatRule', () => {
           requiredType: 'http://schema.org/Date',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
 
     const values = [
@@ -118,7 +118,7 @@ describe('DateFormatRule', () => {
     }
   });
   it('should return an error for an invalid date from an unknown Model', () => {
-    const model = new Model({});
+    const model = new Model({}, 'latest');
 
     const values = [
       '2018-13-17',

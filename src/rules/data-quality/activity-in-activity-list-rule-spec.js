@@ -20,7 +20,7 @@ describe('ActivityInActivityListRule', () => {
         ],
       },
     },
-  });
+  }, 'latest');
 
   const activityList = {
     '@context': 'https://www.openactive.io/ns/oa.jsonld',

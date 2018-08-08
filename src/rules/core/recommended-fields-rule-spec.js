@@ -11,7 +11,7 @@ describe('RecommendedFieldsRule', () => {
       'description',
       'name',
     ],
-  });
+  }, 'latest');
   model.hasSpecification = true;
 
   const baseInheritanceModel = {
@@ -94,7 +94,7 @@ describe('RecommendedFieldsRule', () => {
     it('should respect recommended fields when inheritsTo is *', () => {
       const modelObj = loadInheritanceModel();
       modelObj.fields.subEvent.inheritsTo = '*';
-      const inheritanceModel = new Model(modelObj);
+      const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
@@ -130,7 +130,7 @@ describe('RecommendedFieldsRule', () => {
       modelObj.fields.subEvent.inheritsTo = {
         include: ['name'],
       };
-      const inheritanceModel = new Model(modelObj);
+      const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
@@ -166,7 +166,7 @@ describe('RecommendedFieldsRule', () => {
       modelObj.fields.subEvent.inheritsTo = {
         include: ['id'],
       };
-      const inheritanceModel = new Model(modelObj);
+      const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
@@ -202,7 +202,7 @@ describe('RecommendedFieldsRule', () => {
       modelObj.fields.subEvent.inheritsTo = {
         exclude: ['name'],
       };
-      const inheritanceModel = new Model(modelObj);
+      const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
@@ -238,7 +238,7 @@ describe('RecommendedFieldsRule', () => {
       modelObj.fields.subEvent.inheritsTo = {
         exclude: ['id'],
       };
-      const inheritanceModel = new Model(modelObj);
+      const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
@@ -275,7 +275,7 @@ describe('RecommendedFieldsRule', () => {
     it('should respect recommended fields when inheritsFrom is *', () => {
       const modelObj = loadInheritanceModel();
       modelObj.fields.superEvent.inheritsFrom = '*';
-      const inheritanceModel = new Model(modelObj);
+      const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
         type: 'Event',
@@ -311,7 +311,7 @@ describe('RecommendedFieldsRule', () => {
       modelObj.fields.superEvent.inheritsFrom = {
         include: ['name'],
       };
-      const inheritanceModel = new Model(modelObj);
+      const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
         type: 'Event',
@@ -347,7 +347,7 @@ describe('RecommendedFieldsRule', () => {
       modelObj.fields.superEvent.inheritsFrom = {
         include: ['id'],
       };
-      const inheritanceModel = new Model(modelObj);
+      const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
         type: 'Event',
@@ -383,7 +383,7 @@ describe('RecommendedFieldsRule', () => {
       modelObj.fields.superEvent.inheritsFrom = {
         exclude: ['name'],
       };
-      const inheritanceModel = new Model(modelObj);
+      const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
         type: 'Event',
@@ -419,7 +419,7 @@ describe('RecommendedFieldsRule', () => {
       modelObj.fields.superEvent.inheritsFrom = {
         exclude: ['id'],
       };
-      const inheritanceModel = new Model(modelObj);
+      const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
         type: 'Event',

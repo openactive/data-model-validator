@@ -1,9 +1,10 @@
-const modelLoader = require('openactive-data-models');
+const DataModelHelper = require('../helpers/data-model');
 const PropertyHelper = require('../helpers/property');
 
 const Field = class {
-  constructor(data = {}) {
+  constructor(data = {}, version) {
     this.data = data;
+    this.version = version;
   }
 
   get fieldName() {
@@ -63,7 +64,7 @@ const Field = class {
   }
 
   getMappedValue(data) {
-    return PropertyHelper.getObjectField(data, this.data.fieldName);
+    return PropertyHelper.getObjectField(data, this.data.fieldName, this.version);
   }
 
   canBeArray() {
@@ -105,14 +106,14 @@ const Field = class {
       // just cast as Float
       if (
         inArray
-                && possibleTypes.indexOf(`ArrayOf#${returnType}`) < 0
-                && possibleTypes.indexOf('ArrayOf#http://schema.org/Float') >= 0
+        && possibleTypes.indexOf(`ArrayOf#${returnType}`) < 0
+        && possibleTypes.indexOf('ArrayOf#http://schema.org/Float') >= 0
       ) {
         returnType = 'http://schema.org/Float';
       } else if (
         !inArray
-                && possibleTypes.indexOf(returnType) < 0
-                && possibleTypes.indexOf('http://schema.org/Float') >= 0
+        && possibleTypes.indexOf(returnType) < 0
+        && possibleTypes.indexOf('http://schema.org/Float') >= 0
       ) {
         returnType = 'http://schema.org/Float';
       }
@@ -135,14 +136,14 @@ const Field = class {
       // just cast as Text
       if (
         inArray
-                && possibleTypes.indexOf(`ArrayOf#${returnType}`) < 0
-                && possibleTypes.indexOf('ArrayOf#http://schema.org/Text') >= 0
+        && possibleTypes.indexOf(`ArrayOf#${returnType}`) < 0
+        && possibleTypes.indexOf('ArrayOf#http://schema.org/Text') >= 0
       ) {
         returnType = 'http://schema.org/Text';
       } else if (
         !inArray
-                && possibleTypes.indexOf(returnType) < 0
-                && possibleTypes.indexOf('http://schema.org/Text') >= 0
+        && possibleTypes.indexOf(returnType) < 0
+        && possibleTypes.indexOf('http://schema.org/Text') >= 0
       ) {
         returnType = 'http://schema.org/Text';
       }
@@ -165,7 +166,7 @@ const Field = class {
         }
         return returnType;
       }
-      const dataType = PropertyHelper.getObjectField(data, '@type');
+      const dataType = PropertyHelper.getObjectField(data, '@type', this.version);
       if (typeof dataType !== 'undefined') {
         return `#${dataType}`;
       }
@@ -190,10 +191,10 @@ const Field = class {
     return checkPass;
   }
 
-  static getModelSubClassGraph(modelName) {
+  getModelSubClassGraph(modelName) {
     let modelData = null;
     try {
-      modelData = modelLoader.loadModel(modelName);
+      modelData = DataModelHelper.loadModel(modelName, this.version);
     } catch (e) {
       modelData = null;
     }
@@ -243,14 +244,15 @@ const Field = class {
       testTypeKey = testTypeKey.substr(8);
       actualTypeKey = actualTypeKey.substr(8);
     }
-    if (typeof (this.constructor.canBeTypeOfMapping[testTypeKey]) !== 'undefined'
-            && this.constructor.canBeTypeOfMapping[testTypeKey] === actualTypeKey
+    if (
+      typeof (this.constructor.canBeTypeOfMapping[testTypeKey]) !== 'undefined'
+      && this.constructor.canBeTypeOfMapping[testTypeKey] === actualTypeKey
     ) {
       return true;
     }
     // Subclasses?
     if (testTypeKey.match(/^[A-Za-z:]+$/)) {
-      const subClassGraph = this.constructor.getModelSubClassGraph(testTypeKey);
+      const subClassGraph = this.getModelSubClassGraph(testTypeKey);
       if (subClassGraph.length) {
         const parentTestType = subClassGraph[0].substr(1);
         if (this.canBeTypeOf(parentTestType, actualTypeKey)) {
@@ -274,7 +276,7 @@ const Field = class {
     if (testTypeKey.match(/^[A-Za-z:]+$/) && actualTypeKey.match(/^[A-Za-z:]+$/)) {
       // If we have 2 models,
       // and this is being extended by a type we don't know, return true
-      const prop = PropertyHelper.getFullyQualifiedProperty(testTypeKey);
+      const prop = PropertyHelper.getFullyQualifiedProperty(testTypeKey, this.version);
       if (
         (typeof prop.prefix === 'undefined' || prop.prefix === null)
         && (typeof prop.namespace === 'undefined' || prop.namespace === null)

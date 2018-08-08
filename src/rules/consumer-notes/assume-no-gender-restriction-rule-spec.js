@@ -22,7 +22,7 @@ describe('AssumeNoGenderRestrictionRule', () => {
         ],
       },
     },
-  });
+  }, 'latest');
   model.hasSpecification = true;
 
   const rule = new AssumeNoGenderRestrictionRule();

@@ -31,7 +31,7 @@ describe('AddressTrailingCommaRule', () => {
         requiredType: 'http://schema.org/Text',
       },
     },
-  });
+  }, 'latest');
 
   it('should target PostalAddress fields', () => {
     const isTargeted = rule.isFieldTargeted(model, 'streetAddress');

@@ -1,4 +1,4 @@
-const { namespaces } = require('openactive-data-models');
+const DataModelHelper = require('../../helpers/data-model');
 const Rule = require('../rule');
 const GraphHelper = require('../../helpers/graph');
 const PropertyHelper = require('../../helpers/property');
@@ -65,10 +65,11 @@ module.exports = class FieldsNotInModelRule extends Rule {
     if (!node.model.hasFieldInSpec(field)) {
       // Get prop values
       const prop = PropertyHelper.getFullyQualifiedProperty(field);
+      const metaData = DataModelHelper.getMetaData(this.options.version);
 
       if (
         prop.alias === null
-        && Object.keys(namespaces).indexOf(prop.prefix) < 0
+        && Object.keys(metaData.namespaces).indexOf(prop.prefix) < 0
       ) {
         testKey = 'noExperimental';
       } else if (typeof node.model.commonTypos[field] !== 'undefined') {

@@ -10,7 +10,7 @@ describe('FieldsCorrectTypeRule', () => {
   it('should target fields of any type', () => {
     const model = new Model({
       type: 'Event',
-    });
+    }, 'latest');
     const isTargeted = rule.isFieldTargeted(model, 'type');
     expect(isTargeted).toBe(true);
   });
@@ -26,7 +26,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/Boolean',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const data = {
       field: true,
@@ -51,7 +51,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/Boolean',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const data = {
       field: 'true',
@@ -88,7 +88,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/Float',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const data = {
       field: 3.45,
@@ -122,7 +122,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/Float',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const data = {
       field: 'true',
@@ -164,7 +164,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/Integer',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const data = {
       field: 3,
@@ -199,7 +199,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/Integer',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const data = {
       field: '3',
@@ -233,7 +233,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/url',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const values = [
       'http://example.com',
@@ -270,7 +270,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/url',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
 
     const values = [
@@ -310,7 +310,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/Date',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const values = [
       '20170512',
@@ -340,7 +340,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/Date',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
 
     const values = [
@@ -377,7 +377,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/DateTime',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const values = [
       '2017-05-12T09:00:00Z',
@@ -408,7 +408,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/DateTime',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
 
     const values = [
@@ -446,7 +446,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/Duration',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
 
     const values = [
@@ -477,7 +477,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/Duration',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
 
     const values = [
@@ -515,7 +515,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/Text',
         },
       },
-    });
+    }, 'latest', 'latest');
     model.hasSpecification = true;
 
     const values = [
@@ -549,7 +549,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/Text',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
 
     const values = [
@@ -585,7 +585,7 @@ describe('FieldsCorrectTypeRule', () => {
           model: '#Schedule',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
 
     const values = [
@@ -617,7 +617,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/Text',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
 
     const values = [
@@ -659,7 +659,7 @@ describe('FieldsCorrectTypeRule', () => {
           model: '#LocationFeatureSpecification',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
 
     const values = [
@@ -732,7 +732,7 @@ describe('FieldsCorrectTypeRule', () => {
           model: 'ArrayOf#Schedule',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
 
     const data = {
@@ -832,7 +832,7 @@ describe('FieldsCorrectTypeRule', () => {
           model: 'ArrayOf#Schedule',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
 
     const data = {
@@ -914,7 +914,7 @@ describe('FieldsCorrectTypeRule', () => {
           ],
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
 
     const values = [
@@ -960,7 +960,7 @@ describe('FieldsCorrectTypeRule', () => {
           ],
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
 
     const values = [
@@ -1002,7 +1002,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/Boolean',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const data = {
       field: null,
@@ -1030,7 +1030,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'http://schema.org/Boolean',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const data = {
       field: {

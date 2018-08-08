@@ -15,7 +15,7 @@ describe('ThumbnailHasNoThumbnailRule', () => {
         model: 'ArrayOf#ImageObject',
       },
     },
-  });
+  }, 'latest');
 
   it('should target ImageObject models', () => {
     const isTargeted = rule.isModelTargeted(model);

@@ -10,7 +10,7 @@ describe('DatetimeFormatRule', () => {
   it('should target fields of any type', () => {
     const model = new Model({
       type: 'Event',
-    });
+    }, 'latest');
     const isTargeted = rule.isFieldTargeted(model, 'type');
     expect(isTargeted).toBe(true);
   });
@@ -25,7 +25,7 @@ describe('DatetimeFormatRule', () => {
           requiredType: 'http://schema.org/DateTime',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const values = [
       '2017-09-06T09:00:00Z',
@@ -55,7 +55,7 @@ describe('DatetimeFormatRule', () => {
           requiredType: 'http://schema.org/DateTime',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const values = [
       '2017-09-06T09:00:00',
@@ -88,7 +88,7 @@ describe('DatetimeFormatRule', () => {
           requiredType: 'http://schema.org/DateTime',
         },
       },
-    });
+    }, 'latest');
     model.hasSpecification = true;
     const values = [
       '2017-09-06T09:00:00',
@@ -113,7 +113,7 @@ describe('DatetimeFormatRule', () => {
     }
   });
   it('should return an error for an invalid datetime from an unknown Model', () => {
-    const model = new Model({});
+    const model = new Model({}, 'latest');
 
     const values = [
       '2017-09-06T09:00:00',

@@ -32,7 +32,7 @@ describe('ValueInOptionsRule', () => {
         ],
       },
     },
-  });
+  }, 'latest');
   model.hasSpecification = true;
 
   const rule = new ValueInOptionsRule();

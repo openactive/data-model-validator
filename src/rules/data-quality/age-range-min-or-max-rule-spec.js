@@ -15,7 +15,7 @@ describe('AgeRangeMinOrMaxRule', () => {
         model: '#QuantitativeValue',
       },
     },
-  });
+  }, 'latest');
 
   it('should target ageRange in Event models', () => {
     const isTargeted = rule.isFieldTargeted(model, 'ageRange');

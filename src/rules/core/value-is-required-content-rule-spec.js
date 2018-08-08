@@ -14,7 +14,7 @@ describe('ValueIsRequiredContentRule', () => {
         requiredContent: 'http://schema.org/EventScheduled',
       },
     },
-  });
+  }, 'latest');
   model.hasSpecification = true;
 
   const rule = new ValueIsRequiredContentRule();

@@ -69,11 +69,11 @@ const ModelNode = class {
   }
 
   hasMappedField(field) {
-    return PropertyHelper.objectHasField(this.value, field);
+    return PropertyHelper.objectHasField(this.value, field, this.options.version);
   }
 
   getMappedFieldName(field) {
-    return PropertyHelper.objectMappedFieldName(this.value, field);
+    return PropertyHelper.objectMappedFieldName(this.value, field, this.options.version);
   }
 
   getValue(field) {
@@ -84,13 +84,13 @@ const ModelNode = class {
   }
 
   getMappedValue(field) {
-    return PropertyHelper.getObjectField(this.value, field);
+    return PropertyHelper.getObjectField(this.value, field, this.options.version);
   }
 
   getValueWithInheritance(field) {
     let testNode = this;
     let loopBusterIndex = 0;
-    const prop = PropertyHelper.getFullyQualifiedProperty(field);
+    const prop = PropertyHelper.getFullyQualifiedProperty(field, this.options.version);
     const mappedField = prop.alias || prop.label;
     do {
       const testValue = testNode.getMappedValue(mappedField);

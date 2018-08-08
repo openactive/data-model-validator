@@ -1,4 +1,4 @@
-const modelLoader = require('openactive-data-models');
+const DataModelHelper = require('./helpers/data-model');
 const Model = require('./classes/model');
 const ModelNode = require('./classes/model-node');
 const RawHelper = require('./helpers/raw');
@@ -7,23 +7,23 @@ const PropertyHelper = require('./helpers/property');
 const Rules = require('./rules');
 
 class ApplyRules {
-  static loadModel(modelName) {
+  static loadModel(modelName, version) {
     // Load the model (if it exists)
     // If the model doesn't exist, we can still apply a barebones set of
     // rules on the object.
     let modelObject = null;
     if (typeof modelName !== 'undefined') {
       try {
-        const modelData = modelLoader.loadModel(modelName);
+        const modelData = DataModelHelper.loadModel(modelName, version);
         if (modelData) {
-          modelObject = new Model(modelData, true);
+          modelObject = new Model(modelData, version, true);
         }
       } catch (e) {
-        modelObject = new Model();
+        modelObject = new Model({}, version);
       }
     }
     if (!modelObject) {
-      modelObject = new Model();
+      modelObject = new Model({}, version);
     }
     return modelObject;
   }
@@ -45,7 +45,7 @@ class ApplyRules {
     let index = 0;
     for (const fieldValue of fieldsToTest) {
       if (typeof fieldValue === 'object' && fieldValue !== null && !(fieldValue instanceof Array)) {
-        const subModelType = PropertyHelper.getObjectField(fieldValue, '@type');
+        const subModelType = PropertyHelper.getObjectField(fieldValue, '@type', nodeToTest.options.version);
         const currentFieldName = field;
         let currentFieldIndex;
         if (!isSingleObject) {
@@ -58,6 +58,7 @@ class ApplyRules {
         ) {
           let modelObj = this.loadModel(
             subModelType,
+            nodeToTest.options.version,
           );
           if (!modelObj.hasSpecification) {
             // Try loading from the parent model type if we can
@@ -73,6 +74,7 @@ class ApplyRules {
               ) {
                 modelObj = this.loadModel(
                   altSubModelType,
+                  nodeToTest.options.version,
                 );
               }
             }
@@ -169,7 +171,7 @@ function validate(value, options) {
 
     // If no model provided, use the type in the object
     if (typeof optionsObj.type === 'undefined' || optionsObj.type === null) {
-      const modelType = PropertyHelper.getObjectField(valueToTest, '@type');
+      const modelType = PropertyHelper.getObjectField(valueToTest, '@type', optionsObj.version);
       if (typeof modelType !== 'undefined') {
         modelName = modelType;
       } else if (RawHelper.isRpdeFeed(value)) {
@@ -182,6 +184,7 @@ function validate(value, options) {
     // Load the model
     const modelObj = ApplyRules.loadModel(
       modelName,
+      optionsObj.version,
     );
 
     const nodeToTest = new ModelNode(

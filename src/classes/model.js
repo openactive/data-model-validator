@@ -2,8 +2,9 @@ const PropertyHelper = require('../helpers/property');
 const Field = require('./field');
 
 const Model = class {
-  constructor(data = {}, hasSpecification = false) {
+  constructor(data = {}, version = null, hasSpecification = false) {
     this.data = data;
+    this.version = version;
     this.hasSpecification = hasSpecification;
   }
 
@@ -44,7 +45,7 @@ const Model = class {
   }
 
   hasRequiredField(field) {
-    return PropertyHelper.arrayHasField(this.requiredFields, field);
+    return PropertyHelper.arrayHasField(this.requiredFields, field, this.version);
   }
 
   get requiredOptions() {
@@ -56,7 +57,7 @@ const Model = class {
   }
 
   hasRecommendedField(field) {
-    return PropertyHelper.arrayHasField(this.recommendedFields, field);
+    return PropertyHelper.arrayHasField(this.recommendedFields, field, this.version);
   }
 
   get inSpec() {
@@ -64,15 +65,15 @@ const Model = class {
   }
 
   hasFieldInSpec(field) {
-    return PropertyHelper.arrayHasField(this.inSpec, field);
+    return PropertyHelper.arrayHasField(this.inSpec, field, this.version);
   }
 
   getField(field) {
-    const fieldData = PropertyHelper.getObjectField(this.fields, field);
+    const fieldData = PropertyHelper.getObjectField(this.fields, field, this.version);
     if (typeof fieldData === 'undefined') {
       return undefined;
     }
-    return new Field(fieldData);
+    return new Field(fieldData, this.version);
   }
 
   getPossibleModelsForField(field) {
@@ -88,7 +89,7 @@ const Model = class {
   }
 
   hasField(field) {
-    return PropertyHelper.objectHasField(this.fields, field);
+    return PropertyHelper.objectHasField(this.fields, field, this.version);
   }
 };
 

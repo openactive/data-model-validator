@@ -1,4 +1,4 @@
-const { contextUrl } = require('openactive-data-models');
+const DataModelHelper = require('../../helpers/data-model');
 const Rule = require('../rule');
 const Field = require('../../classes/field');
 const ValidationErrorType = require('../../errors/validation-error-type');
@@ -8,6 +8,7 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 module.exports = class ContextInRootNodeRule extends Rule {
   constructor(options) {
     super(options);
+    const metaData = DataModelHelper.getMetaData(this.options.version);
     this.targetModels = '*';
     this.meta = {
       name: 'ContextInRootNodeRule',
@@ -15,21 +16,21 @@ module.exports = class ContextInRootNodeRule extends Rule {
       tests: {
         noContext: {
           description: 'Raises a failure if the @context is missing from the root node.',
-          message: `The @context field is required in the root node of your data. It should contain the Open Active context (${contextUrl}) as a string or the first element in an array.`,
+          message: `The @context field is required in the root node of your data. It should contain the Open Active context (${metaData.contextUrl}) as a string or the first element in an array.`,
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.MISSING_REQUIRED_FIELD,
         },
         hasContext: {
           description: 'Raises a failure if the @context is present in a non-root node.',
-          message: `The @context field is required to only be in the root node of your data. It should contain the Open Active context (${contextUrl}) as a string or the first element in an array.`,
+          message: `The @context field is required to only be in the root node of your data. It should contain the Open Active context (${metaData.contextUrl}) as a string or the first element in an array.`,
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_SPEC,
         },
         oaNotInRightPlace: {
-          description: `Validates that the @context contains the Open Active context (${contextUrl}) as a string or the first element in an array.`,
-          message: `The @context should contain the Open Active context (${contextUrl}) as a string or the first element in an array.`,
+          description: `Validates that the @context contains the Open Active context (${metaData.contextUrl}) as a string or the first element in an array.`,
+          message: `The @context should contain the Open Active context (${metaData.contextUrl}) as a string or the first element in an array.`,
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
@@ -52,6 +53,7 @@ module.exports = class ContextInRootNodeRule extends Rule {
     const errors = [];
     const fieldObj = node.model.getField('@context');
     const fieldValue = node.getValue('@context');
+    const metaData = DataModelHelper.getMetaData(this.options.version);
 
     let testKey;
 
@@ -62,7 +64,7 @@ module.exports = class ContextInRootNodeRule extends Rule {
         alternativeTypes: [
           'ArrayOf#http://schema.org/url',
         ],
-      });
+      }, node.options.version);
 
       if (typeof fieldValue === 'undefined') {
         testKey = 'noContext';
@@ -74,12 +76,12 @@ module.exports = class ContextInRootNodeRule extends Rule {
       } else if (
         (
           typeof fieldValue === 'string'
-          && fieldValue !== contextUrl
+          && fieldValue !== metaData.contextUrl
         )
         || (
           typeof fieldValue === 'object'
           && fieldValue instanceof Array
-          && fieldValue[0] !== contextUrl
+          && fieldValue[0] !== metaData.contextUrl
         )
       ) {
         testKey = 'oaNotInRightPlace';

@@ -1,8 +1,8 @@
-const modelLoader = require('openactive-data-models');
+const DataModelHelper = require('./data-model');
 
 const PropertyHelper = class {
-  static getObjectField(data, property) {
-    const keyChecks = this.getPropertyKeyChecks(property);
+  static getObjectField(data, property, version) {
+    const keyChecks = this.getPropertyKeyChecks(property, version);
     let returnValue;
     for (const key in data) {
       if (
@@ -15,15 +15,15 @@ const PropertyHelper = class {
     return returnValue;
   }
 
-  static stringMatchesField(data, property) {
+  static stringMatchesField(data, property, version) {
     if (typeof data !== 'string' || typeof property === 'undefined') {
       return false;
     }
-    const keyChecks = this.getPropertyKeyChecks(property);
+    const keyChecks = this.getPropertyKeyChecks(property, version);
     return keyChecks.indexOf(data) >= 0;
   }
 
-  static arrayHasField(data, property) {
+  static arrayHasField(data, property, version) {
     if (
       typeof data !== 'object'
       || !(data instanceof Array)
@@ -32,7 +32,7 @@ const PropertyHelper = class {
     ) {
       return false;
     }
-    const keyChecks = this.getPropertyKeyChecks(property);
+    const keyChecks = this.getPropertyKeyChecks(property, version);
     for (const key of data) {
       if (keyChecks.indexOf(key) >= 0) {
         return true;
@@ -41,7 +41,7 @@ const PropertyHelper = class {
     return false;
   }
 
-  static objectHasField(data, property) {
+  static objectHasField(data, property, version) {
     if (
       typeof data !== 'object'
       || data === null
@@ -49,7 +49,7 @@ const PropertyHelper = class {
     ) {
       return false;
     }
-    const keyChecks = this.getPropertyKeyChecks(property);
+    const keyChecks = this.getPropertyKeyChecks(property, version);
     for (const key in data) {
       if (
         Object.prototype.hasOwnProperty.call(data, key)
@@ -61,7 +61,7 @@ const PropertyHelper = class {
     return false;
   }
 
-  static objectMappedFieldName(data, property) {
+  static objectMappedFieldName(data, property, version) {
     if (
       typeof data !== 'object'
       || data === null
@@ -69,7 +69,7 @@ const PropertyHelper = class {
     ) {
       return false;
     }
-    const keyChecks = this.getPropertyKeyChecks(property);
+    const keyChecks = this.getPropertyKeyChecks(property, version);
     for (const key in data) {
       if (
         Object.prototype.hasOwnProperty.call(data, key)
@@ -81,7 +81,7 @@ const PropertyHelper = class {
     return undefined;
   }
 
-  static getFullyQualifiedProperty(property) {
+  static getFullyQualifiedProperty(property, version) {
     if (typeof property === 'undefined') {
       return undefined;
     }
@@ -91,16 +91,16 @@ const PropertyHelper = class {
     if (typeof this.propertyCache[property] !== 'undefined') {
       return this.propertyCache[property];
     }
-    const prop = modelLoader.getFullyQualifiedProperty(property);
+    const prop = DataModelHelper.getFullyQualifiedProperty(property, version);
     this.propertyCache[property] = prop;
     return prop;
   }
 
-  static getPropertyKeyChecks(property) {
+  static getPropertyKeyChecks(property, version) {
     if (typeof property === 'undefined') {
       return [];
     }
-    const prop = this.getFullyQualifiedProperty(property);
+    const prop = this.getFullyQualifiedProperty(property, version);
     if (typeof prop === 'undefined' || prop === null) {
       return [];
     }
