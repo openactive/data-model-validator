@@ -130,7 +130,7 @@ describe('ContextInRootNodeRule', () => {
     }
   });
 
-  it('should return an error if the context is present, but does not have Open Active namespace as the first element', () => {
+  it('should return an error if the context is present, but does not have OpenActive namespace as the first element', () => {
     const dataItems = [
       {
         '@context': 'https://example.org/ns',

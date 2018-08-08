@@ -13,7 +13,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       tests: {
         noValueObjects: {
           description: 'Raises a notice if a JSON-LD value object is found.',
-          message: 'Whilst value objects are valid JSON-LD, they are not part of the Open Active specification.',
+          message: 'Whilst value objects are valid JSON-LD, they are not part of the OpenActive specification.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.NOTICE,
           type: ValidationErrorType.UNSUPPORTED_VALUE,
