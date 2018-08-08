@@ -23,7 +23,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "crypto": "^1.0.1",
     "currency-codes": "^1.4.0",
     "jsonpath": "^1.0.0",
     "moment": "^2.22.2",
