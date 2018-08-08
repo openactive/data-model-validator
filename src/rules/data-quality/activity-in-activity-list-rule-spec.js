@@ -4,6 +4,7 @@ const ModelNode = require('../../classes/model-node');
 const OptionsHelper = require('../../helpers/options');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
+const JsonLoaderHelper = require('../../helpers/json-loader');
 
 describe('ActivityInActivityListRule', () => {
   const rule = new ActivityInActivityListRule();
@@ -21,35 +22,33 @@ describe('ActivityInActivityListRule', () => {
     },
   });
 
-  const activityLists = [
-    {
-      '@context': 'https://www.openactive.io/ns/oa.jsonld',
-      '@id': 'http://openactive.io/activity-list/',
-      title: 'OpenActive Activity List',
-      description: 'This document describes the OpenActive standard activity list.',
-      type: 'skos:ConceptScheme',
-      license: 'https://creativecommons.org/licenses/by/4.0/',
-      concepts: [
-        {
-          id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a1',
-          type: 'skos:Concept',
-          prefLabel: 'Flag Football',
-          'skos:definition': 'Flag is the fastest growing format of the game in Great Britain, encompassing schools, colleges, universities and in the community.',
-          brodaer: 'http://openactive.io/activity-list/#9caeb442-2834-4859-b660-9172ed61ee71',
-        },
-        {
-          id: 'http://openactive.io/activity-list/#0a5f732d-e806-4e51-ad40-0a7de0239c8c',
-          type: 'skos:Concept',
-          prefLabel: 'Football',
-          'skos:definition': 'Football is widely considered to be the most popular sport in the world. The beautiful game is England\'s national sport',
-          topConceptOf: 'http://openactive.io/activity-list/',
-        },
-      ],
-    },
-  ];
+  const activityList = {
+    '@context': 'https://www.openactive.io/ns/oa.jsonld',
+    '@id': 'http://openactive.io/activity-list/',
+    title: 'OpenActive Activity List',
+    description: 'This document describes the OpenActive standard activity list.',
+    type: 'skos:ConceptScheme',
+    license: 'https://creativecommons.org/licenses/by/4.0/',
+    concepts: [
+      {
+        id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a1',
+        type: 'skos:Concept',
+        prefLabel: 'Flag Football',
+        'skos:definition': 'Flag is the fastest growing format of the game in Great Britain, encompassing schools, colleges, universities and in the community.',
+        brodaer: 'http://openactive.io/activity-list/#9caeb442-2834-4859-b660-9172ed61ee71',
+      },
+      {
+        id: 'http://openactive.io/activity-list/#0a5f732d-e806-4e51-ad40-0a7de0239c8c',
+        type: 'skos:Concept',
+        prefLabel: 'Football',
+        'skos:definition': 'Football is widely considered to be the most popular sport in the world. The beautiful game is England\'s national sport',
+        topConceptOf: 'http://openactive.io/activity-list/',
+      },
+    ],
+  };
 
   const options = new OptionsHelper({
-    activityLists,
+    loadRemoteJson: true,
   });
 
   it('should target activity field in Event models', () => {
@@ -62,8 +61,21 @@ describe('ActivityInActivityListRule', () => {
       type: 'Event',
     };
 
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+      errorCode: JsonLoaderHelper.ERROR_NONE,
+      statusCode: 200,
+      data: activityList,
+      url,
+      exception: null,
+      contentType: 'application/json',
+      fetchTime: (new Date()).valueOf(),
+    }));
+
     const activities = [
-      'Football',
+      {
+        'skos:prefLabel': 'Football',
+        type: 'Concept',
+      },
       {
         'skos:prefLabel': 'flag football',
         type: 'Concept',
@@ -88,8 +100,22 @@ describe('ActivityInActivityListRule', () => {
       type: 'Event',
     };
 
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+      errorCode: JsonLoaderHelper.ERROR_NONE,
+      statusCode: 200,
+      data: activityList,
+      url,
+      exception: null,
+      contentType: 'application/json',
+      fetchTime: (new Date()).valueOf(),
+    }));
+
     const activities = [
-      'Secret Football',
+      {
+        id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
+        prefLabel: 'Secret Football',
+        type: 'Concept',
+      },
       {
         id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
         prefLabel: 'Not Real Football',
@@ -110,6 +136,90 @@ describe('ActivityInActivityListRule', () => {
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
+    }
+  });
+  it('should return an error when an activity list URL does not exist', () => {
+    const data = {
+      type: 'Event',
+    };
+
+    const activities = [
+      {
+        id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
+        prefLabel: 'Not Real Football',
+        type: 'Concept',
+        inScheme: 'http://example.org/bad-list.jsonld',
+      },
+    ];
+
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+      errorCode: JsonLoaderHelper.ERROR_NO_REMOTE,
+      statusCode: 404,
+      data: null,
+      url,
+      exception: null,
+      contentType: null,
+      fetchTime: (new Date()).valueOf(),
+    }));
+
+    for (const activity of activities) {
+      data.activity = [activity];
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+        options,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
+      expect(errors.length).toBe(2);
+      expect(errors[0].type).toBe(ValidationErrorType.FILE_NOT_FOUND);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+      expect(errors[1].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
+      expect(errors[1].severity).toBe(ValidationErrorSeverity.WARNING);
+    }
+  });
+  it('should return an error when an activity list URL contains invalid JSON', () => {
+    const data = {
+      type: 'Event',
+    };
+
+    const activities = [
+      {
+        id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
+        prefLabel: 'Not Real Football',
+        type: 'Concept',
+        inScheme: 'http://example.org/bad-list.jsonld',
+      },
+    ];
+
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+      errorCode: JsonLoaderHelper.ERROR_NO_REMOTE,
+      statusCode: 200,
+      data: null,
+      url,
+      exception: null,
+      contentType: 'text/html',
+      fetchTime: (new Date()).valueOf(),
+    }));
+
+    for (const activity of activities) {
+      data.activity = [activity];
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+        options,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
+      expect(errors.length).toBe(2);
+      expect(errors[0].type).toBe(ValidationErrorType.FILE_NOT_FOUND);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+      expect(errors[1].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
+      expect(errors[1].severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });
 });

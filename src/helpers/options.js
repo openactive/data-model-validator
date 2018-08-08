@@ -3,8 +3,16 @@ const OptionsHelper = class {
     this.options = options || {};
   }
 
-  get activityLists() {
-    return this.options.activityLists || [];
+  get loadRemoteJson() {
+    return this.options.loadRemoteJson || false;
+  }
+
+  get remoteJsonCachePath() {
+    return this.options.remoteJsonCachePath;
+  }
+
+  get remoteJsonCacheTimeToLive() {
+    return this.options.remoteJsonCacheTimeToLive || 3600;
   }
 
   get rpdeItemLimit() {

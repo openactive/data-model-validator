@@ -56,14 +56,15 @@ const result = validate(data);
 
 The `validate` method optionally accepts options for validation:
 
-#### activityLists
+#### loadRemoteJson
 
-An array of activity lists in `skos:ConceptScheme` format. For example, see https://www.openactive.io/activity-list/activity-list.jsonld
+**Default:** `false`
+
+Whether to load remote JSON documents. For example, remote `@context` definitions or activity list definitions.
 
 e.g.
 
 ```js
-
 const { validate } = require('openactive-data-model-validator');
 
 const data = {
@@ -71,26 +72,54 @@ const data = {
 };
 
 const options = {
-  activityLists: [
-    {
-      '@context': 'https://www.openactive.io/ns/oa.jsonld',
-      '@id': 'http://openactive.io/activity-list/',
-      title: 'OpenActive Activity List',
-      description: 'This document describes the OpenActive standard activity list.',
-      type: 'skos:ConceptScheme',
-      license: 'https://creativecommons.org/licenses/by/4.0/',
-      concepts: [
-        {
-          id: 'http://openactive.io/activity-list/#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
-          type: 'skos:Concept',
-          prefLabel: 'Tai Chi',
-          'skos:definition': 'Tai chi combines deep breathing and relaxation with slow and gentle movements.',
-          broader: 'http://openactive.io/activity-list/#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
-        },
-        // ...
-      ],
-    },
-  ]
+  loadRemoteJson: true
+};
+
+const result = validate(data, options);
+```
+
+#### remoteJsonCachePath
+
+**Default:** `null`
+
+Used in conjunction with `loadRemoteJson`. If set, allows the JSON loader to cache requests.
+
+e.g.
+
+```js
+const { validate } = require('openactive-data-model-validator');
+
+const data = {
+  // ...
+};
+
+const options = {
+  loadRemoteJson: true,
+  remoteJsonCachePath: '/tmp'
+};
+
+const result = validate(data, options);
+```
+
+#### remoteJsonCacheTimeToLive
+
+**Default:** `3600`
+
+Used in conjunction with `loadRemoteJson` and `remoteJsonCachePath`. It sets the number of seconds that the JSON loader should cache requests for.
+
+e.g.
+
+```js
+const { validate } = require('openactive-data-model-validator');
+
+const data = {
+  // ...
+};
+
+const options = {
+  loadRemoteJson: true,
+  remoteJsonCachePath: '/tmp',
+  remoteJsonCacheTimeToLive: 3600
 };
 
 const result = validate(data, options);
