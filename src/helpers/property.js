@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const DataModelHelper = require('./data-model');
 
 const PropertyHelper = class {
@@ -81,18 +82,27 @@ const PropertyHelper = class {
     return undefined;
   }
 
-  static getFullyQualifiedProperty(property, version) {
+  static getFullyQualifiedProperty(property, version, contexts = []) {
     if (typeof property === 'undefined') {
       return undefined;
     }
     if (typeof this.propertyCache === 'undefined') {
       this.propertyCache = {};
     }
-    if (typeof this.propertyCache[property] !== 'undefined') {
-      return this.propertyCache[property];
+    if (typeof this.propertyCache[version] === 'undefined') {
+      this.propertyCache[version] = {};
     }
-    const prop = DataModelHelper.getFullyQualifiedProperty(property, version);
-    this.propertyCache[property] = prop;
+    const hash = crypto.createHash('sha256');
+    hash.update(JSON.stringify(contexts));
+    const hashKey = hash.digest('hex');
+    if (typeof this.propertyCache[version][hashKey] === 'undefined') {
+      this.propertyCache[version][hashKey] = {};
+    }
+    if (typeof this.propertyCache[version][hashKey][property] !== 'undefined') {
+      return this.propertyCache[version][hashKey][property];
+    }
+    const prop = DataModelHelper.getFullyQualifiedProperty(property, version, contexts);
+    this.propertyCache[version][hashKey][property] = prop;
     return prop;
   }
 
@@ -130,6 +140,10 @@ const PropertyHelper = class {
       }
     }
     return keyChecks;
+  }
+
+  static clearCache() {
+    this.propertyCache = {};
   }
 };
 
