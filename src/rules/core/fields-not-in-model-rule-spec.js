@@ -2,6 +2,7 @@ const FieldsNotInModelRule = require('./fields-not-in-model-rule');
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
 const OptionsHelper = require('../../helpers/options');
+const JsonLoaderHelper = require('../../helpers/json-loader');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 
@@ -106,6 +107,189 @@ describe('FieldsNotInModelRule', () => {
       data,
       null,
       model,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(0);
+  });
+
+  it('should return no errors if a field is in a custom context', () => {
+    const data = {
+      '@context': [
+        'https://www.openactive.io/ns/oa.jsonld',
+        'http://example.org/ext/1.0/schema.jsonld',
+      ],
+      type: 'Event',
+      'ext:myCustomProperty': 'foo',
+    };
+
+    const customContext = {
+      '@context': {
+        label: 'http://www.w3.org/2000/01/rdf-schema#label',
+        xsd: 'http://www.w3.org/2001/XMLSchema#',
+        ext: 'http://example.org/jsonld#',
+        id: '@id',
+      },
+      'ext:myCustomProperty': {
+        id: 'ext:myCustomProperty',
+        label: 'This is the label',
+      },
+      'ext:myNumericProperty': {
+        id: 'ext:myNumericProperty',
+        label: 'This is a property with a number value',
+        '@type': 'xsd:integer',
+      },
+      'ext:myURLProperty': {
+        id: 'ext:myURLProperty',
+        label: 'This is a property with a URI value',
+        '@type': '@id',
+      },
+    };
+
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+      errorCode: JsonLoaderHelper.ERROR_NONE,
+      statusCode: 200,
+      data: customContext,
+      url,
+      exception: null,
+      contentType: 'application/json',
+      fetchTime: (new Date()).valueOf(),
+    }));
+
+    const options = new OptionsHelper({
+      loadRemoteJson: true,
+    });
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+      options,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(0);
+  });
+
+  it('should return an error if a field is not in a custom context', () => {
+    const data = {
+      '@context': [
+        'https://www.openactive.io/ns/oa.jsonld',
+        'http://example.org/ext/1.0/schema.jsonld',
+      ],
+      type: 'Event',
+      'ext:myInvalidCustomProperty': 'foo',
+    };
+
+    const customContext = {
+      '@context': {
+        label: 'http://www.w3.org/2000/01/rdf-schema#label',
+        xsd: 'http://www.w3.org/2001/XMLSchema#',
+        ext: 'http://example.org/jsonld#',
+        id: '@id',
+      },
+      'ext:myCustomProperty': {
+        id: 'ext:myCustomProperty',
+        label: 'This is the label',
+      },
+      'ext:myNumericProperty': {
+        id: 'ext:myNumericProperty',
+        label: 'This is a property with a number value',
+        '@type': 'xsd:integer',
+      },
+      'ext:myURLProperty': {
+        id: 'ext:myURLProperty',
+        label: 'This is a property with a URI value',
+        '@type': '@id',
+      },
+    };
+
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+      errorCode: JsonLoaderHelper.ERROR_NONE,
+      statusCode: 200,
+      data: customContext,
+      url,
+      exception: null,
+      contentType: 'application/json',
+      fetchTime: (new Date()).valueOf(),
+    }));
+
+    const options = new OptionsHelper({
+      loadRemoteJson: true,
+    });
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+      options,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
+
+    for (const error of errors) {
+      expect(error.type).toBe(ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED);
+      expect(error.severity).toBe(ValidationErrorSeverity.NOTICE);
+    }
+  });
+
+  it('should return no errors if a field is in a custom context with a graph', () => {
+    const data = {
+      '@context': [
+        'https://www.openactive.io/ns/oa.jsonld',
+        'http://example.org/ext/1.0/schema.jsonld',
+      ],
+      type: 'Event',
+      'ext:customName': 'Custom Event',
+    };
+
+    const customContext = {
+      '@context': {
+        ext: 'http://example.org/ext#',
+        rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+        rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+        xsd: 'http://www.w3.org/2001/XMLSchema#',
+      },
+      '@graph': [
+        {
+          '@id': 'http://example.org/ext#customName',
+          '@type': 'rdf:Property',
+          'http://schema.org/domainIncludes': {
+            '@id': 'http://schema.org/Thing',
+          },
+          'http://schema.org/rangeIncludes': {
+            '@id': 'http://schema.org/Text',
+          },
+          'rdfs:comment': 'A custom property.',
+          'rdfs:label': 'customName',
+        },
+      ],
+      '@id': 'http://example.org/ext#1.0',
+    };
+
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+      errorCode: JsonLoaderHelper.ERROR_NONE,
+      statusCode: 200,
+      data: customContext,
+      url,
+      exception: null,
+      contentType: 'application/json',
+      fetchTime: (new Date()).valueOf(),
+    }));
+
+    const options = new OptionsHelper({
+      loadRemoteJson: true,
+    });
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+      options,
     );
     const errors = rule.validate(nodeToTest);
 

@@ -176,7 +176,7 @@ describe('ContextInRootNodeRule', () => {
           requiredType: 'ArrayOf#http://schema.org/url',
         },
       },
-    });
+    }, 'latest');
 
     const nodeToTest = new ModelNode(
       '$',
