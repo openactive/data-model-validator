@@ -2,7 +2,7 @@ const {
   getFullyQualifiedProperty,
   getMetaData,
   loadModel,
-} = require('openactive-data-models');
+} = require('@openactive/data-models');
 
 const DataModelHelper = class {
   static getFullyQualifiedProperty(value, version, contexts = []) {

@@ -1,5 +1,5 @@
 {
-  "name": "openactive-data-model-validator",
+  "name": "@openactive/data-model-validator",
   "version": "0.1.0",
   "description": "A library to allow a developer to validate a JSON document against the OpenActive Modelling Opportunity Specification",
   "homepage": "http://openactive.io",
@@ -23,17 +23,17 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@openactive/data-models": "github:openactive/data-models",
     "currency-codes": "^1.4.0",
     "jsonpath": "^1.0.0",
     "moment": "^2.22.2",
-    "openactive-data-models": "github:openactive/data-models",
     "sync-request": "^6.0.0",
     "validator": "^10.5.0"
   },
   "devDependencies": {
     "eslint": "^5.3.0",
-    "eslint-config-airbnb": "^17.0.0",
-    "eslint-plugin-import": "^2.13.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "jasmine": "^3.2.0"
   },
   "scripts": {
