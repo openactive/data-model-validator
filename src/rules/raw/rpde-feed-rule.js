@@ -13,14 +13,14 @@ module.exports = class RpdeFeedRule extends RawRule {
       tests: {
         isRpdeFeed: {
           description: 'Adds a notice if the JSON submission is detected to be an RPDE feed.',
-          message: 'The JSON you have submitted appears to be an RPDE feed. Please note that validation on RPDE feeds is limited to checking whether required fields are present, and that the data in each item is a valid data model.',
+          message: 'The JSON you have submitted appears to be an RPDE feed. Please note that validation on RPDE feeds within the model validator is limited to checking whether required fields are present, and that the data in each item is a valid data model.',
           category: ValidationErrorCategory.INTERNAL,
           severity: ValidationErrorSeverity.NOTICE,
           type: ValidationErrorType.FOUND_RPDE_FEED,
         },
         isRpdeFeedWithLimit: {
           description: 'Adds a notice if the JSON submission is detected to be an RPDE feed, and there is a limit to the number of items that should be validated.',
-          message: 'The JSON you have submitted appears to be an RPDE feed. For performance reasons, the validator has only checked the first {{limit}} items in this feed. Please note that validation on RPDE feeds is limited to checking whether required fields are present, and that the data in each item is a valid data model.',
+          message: 'The JSON you have submitted appears to be an RPDE feed. For performance reasons, the validator has only checked the first {{limit}} items in this feed. Please note that validation on RPDE feeds within the model validator is limited to checking whether required fields are present, and that the data in each item is a valid data model.',
           sampleValues: {
             limit: 10,
           },
