@@ -18,8 +18,9 @@ module.exports = {
     require('./core/value-is-required-content-rule'),
     require('./core/precision-rule'),
     require('./core/no-prefix-or-namespace-rule'),
-    require('./core/context-in-root-node-rule'),
     require('./core/session-series-schedule-type-rule'),
+    require('./core/context-in-root-node-rule'),
+    require('./core/scheduled-session-must-be-subevent-rule'),
 
     // Formatting rules
     require('./format/duration-format-rule'),
