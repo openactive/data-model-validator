@@ -25,7 +25,7 @@ describe('JsonLoaderHelper', () => {
 
     expect(RequestHelper.get).toHaveBeenCalledWith(
       'https://openactive.io/activity-list',
-      { accept: 'application/ld+json' }
+      { accept: 'application/ld+json' },
     );
     expect(
       response.errorCode,
