@@ -23,7 +23,7 @@ describe('NoEmptyValuesRule', () => {
 
   it('should return no errors if all fields are non-empty', () => {
     const data = {
-      '@context': 'https://www.openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/ns/oa.jsonld',
       type: 'Event',
       field_value: 'Not empty',
       field_value_array: ['Not empty'],
@@ -42,7 +42,7 @@ describe('NoEmptyValuesRule', () => {
 
   it('should return a failure per field if any fields are null, empty strings or empty arrays', () => {
     const data = {
-      '@context': 'https://www.openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/ns/oa.jsonld',
       type: 'Event',
       invalid_field: '',
       another_invalid_field: null,

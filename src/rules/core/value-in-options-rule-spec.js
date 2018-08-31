@@ -10,25 +10,25 @@ describe('ValueInOptionsRule', () => {
     fields: {
       eventStatus: {
         fieldName: 'eventStatus',
-        requiredType: 'http://schema.org/url',
+        requiredType: 'https://schema.org/url',
         options: [
-          'http://schema.org/EventCancelled',
-          'http://schema.org/EventPostponed',
-          'http://schema.org/EventRescheduled',
-          'http://schema.org/EventScheduled',
+          'https://schema.org/EventCancelled',
+          'https://schema.org/EventPostponed',
+          'https://schema.org/EventRescheduled',
+          'https://schema.org/EventScheduled',
         ],
       },
       dayOfWeek: {
         fieldName: 'dayOfWeek',
-        requiredType: 'ArrayOf#http://schema.org/url',
+        requiredType: 'ArrayOf#https://schema.org/url',
         options: [
-          'http://schema.org/Monday',
-          'http://schema.org/Tuesday',
-          'http://schema.org/Wednesday',
-          'http://schema.org/Thursday',
-          'http://schema.org/Friday',
-          'http://schema.org/Saturday',
-          'http://schema.org/Sunday',
+          'https://schema.org/Monday',
+          'https://schema.org/Tuesday',
+          'https://schema.org/Wednesday',
+          'https://schema.org/Thursday',
+          'https://schema.org/Friday',
+          'https://schema.org/Saturday',
+          'https://schema.org/Sunday',
         ],
       },
     },
@@ -45,7 +45,7 @@ describe('ValueInOptionsRule', () => {
   it('should return no errors if the field value is in the options array', () => {
     const data = {
       type: 'Event',
-      eventStatus: 'http://schema.org/EventScheduled',
+      eventStatus: 'https://schema.org/EventScheduled',
     };
 
     const nodeToTest = new ModelNode(
@@ -62,7 +62,7 @@ describe('ValueInOptionsRule', () => {
   it('should return a failure if the field value is not in the options array', () => {
     const data = {
       type: 'Event',
-      eventStatus: 'http://schema.org/EventInvalid',
+      eventStatus: 'https://schema.org/EventInvalid',
     };
 
     const nodeToTest = new ModelNode(
@@ -82,7 +82,7 @@ describe('ValueInOptionsRule', () => {
   it('should return no errors if the field value is in the options array when the value is an array', () => {
     const data = {
       type: 'Event',
-      dayOfWeek: ['http://schema.org/Sunday'],
+      dayOfWeek: ['https://schema.org/Sunday'],
     };
 
     const nodeToTest = new ModelNode(
@@ -99,7 +99,7 @@ describe('ValueInOptionsRule', () => {
   it('should return a failure if the field value is not in the options array when the value is an array', () => {
     const data = {
       type: 'Event',
-      dayOfWeek: ['http://schema.org/Thirdday'],
+      dayOfWeek: ['https://schema.org/Thirdday'],
     };
 
     const nodeToTest = new ModelNode(

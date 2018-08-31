@@ -36,8 +36,8 @@ module.exports = class DateFormatRule extends Rule {
     }
     const fieldValue = node.getValue(field);
     const type = fieldObj.detectType(fieldValue);
-    if (type === 'http://schema.org/Date'
-        || fieldObj.isOnlyType('http://schema.org/Date')
+    if (type === 'https://schema.org/Date'
+        || fieldObj.isOnlyType('https://schema.org/Date')
     ) {
       if (
         !moment(fieldValue, 'YYYY-MM-DD', true).isValid()

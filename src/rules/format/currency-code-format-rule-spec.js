@@ -12,8 +12,8 @@ describe('CurrencyCodeFormatRule', () => {
     fields: {
       priceCurrency: {
         fieldName: 'priceCurrency',
-        requiredType: 'http://schema.org/Text',
-        sameAs: 'http://schema.org/priceCurrency',
+        requiredType: 'https://schema.org/Text',
+        sameAs: 'https://schema.org/priceCurrency',
       },
     },
   }, 'latest');

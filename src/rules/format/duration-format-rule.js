@@ -56,8 +56,8 @@ module.exports = class DurationFormatRule extends Rule {
 
     const fieldValue = node.getValue(field);
     const type = fieldObj.detectType(fieldValue);
-    if (type === 'http://schema.org/Duration'
-        || fieldObj.isOnlyType('http://schema.org/Duration')
+    if (type === 'https://schema.org/Duration'
+        || fieldObj.isOnlyType('https://schema.org/Duration')
     ) {
       if (!durationRegex.test(fieldValue)) {
         errors.push(

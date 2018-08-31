@@ -10,8 +10,8 @@ describe('ValueIsRequiredContentRule', () => {
     fields: {
       eventStatus: {
         fieldName: 'eventStatus',
-        requiredType: 'http://schema.org/url',
-        requiredContent: 'http://schema.org/EventScheduled',
+        requiredType: 'https://schema.org/url',
+        requiredContent: 'https://schema.org/EventScheduled',
       },
     },
   }, 'latest');
@@ -27,7 +27,7 @@ describe('ValueIsRequiredContentRule', () => {
   it('should return no errors if the field value matches required content', () => {
     const data = {
       type: 'Event',
-      'schema:eventStatus': 'http://schema.org/EventScheduled',
+      'schema:eventStatus': 'https://schema.org/EventScheduled',
     };
 
     const nodeToTest = new ModelNode(
@@ -44,7 +44,7 @@ describe('ValueIsRequiredContentRule', () => {
   it('should return a failure if the field value does not match required content', () => {
     const data = {
       type: 'Event',
-      eventStatus: 'http://schema.org/EventInvalid',
+      eventStatus: 'https://schema.org/EventInvalid',
     };
 
     const nodeToTest = new ModelNode(

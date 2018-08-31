@@ -26,24 +26,24 @@ describe('validate', () => {
         minValue: 18,
         maxValue: 60,
       },
-      genderRestriction: 'http://openactive.io/ns#None',
+      genderRestriction: 'https://openactive.io/None',
       activity: [
         {
-          id: 'http://openactive.io/activity-list/#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
+          id: 'https://openactive.io/activity-list/#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
           prefLabel: 'Tai Chi',
           type: 'Concept',
-          inScheme: 'https://www.openactive.io/activity-list/activity-list.jsonld',
+          inScheme: 'https://openactive.io/activity-list/activity-list.jsonld',
         },
       ],
       category: [
         {
-          id: 'http://openactive.io/activity-list/#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
+          id: 'https://openactive.io/activity-list/#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
           prefLabel: 'Holistic Classes',
           type: 'Concept',
-          inScheme: 'https://www.openactive.io/activity-list/activity-list.jsonld',
+          inScheme: 'https://openactive.io/activity-list/activity-list.jsonld',
         },
       ],
-      eventStatus: 'http://schema.org/EventScheduled',
+      eventStatus: 'https://schema.org/EventScheduled',
       image: [{
         type: 'ImageObject',
         url: 'http://www.example.org/logo.png',
@@ -51,6 +51,7 @@ describe('validate', () => {
       subEvent: [{
         type: 'Event',
         id: 'http://www.example.org/events/12',
+        url: 'http://www.example.org/events/12',
       }],
       organizer: [{
         id: 'http://www.example.org',
@@ -58,22 +59,20 @@ describe('validate', () => {
         name: 'Example Co',
         url: 'http://www.example.org',
         description: 'Example organizer',
-        logo: [{
+        telephone: '01234567890',
+        logo: {
           type: 'ImageObject',
           url: 'http://www.example.org/logo.png',
-        }],
+        },
       }],
       leader: [{
-        id: 'http://www.example.org',
-        type: 'Organization',
-        name: 'Example Co',
-        url: 'http://www.example.org',
-        description: 'Example contributor',
-        logo: [{
-          type: 'ImageObject',
-          url: 'http://www.example.org/logo.png',
-        }],
+        id: 'http://www.example.org/person/1',
+        type: 'Person',
+        name: 'Joe Bloggs',
       }],
+      level: [
+        'Beginner',
+      ],
       location: {
         id: 'http://www.example.org/locations/gym',
         type: 'Place',
@@ -102,31 +101,31 @@ describe('validate', () => {
           type: 'OpeningHoursSpecification',
           opens: '07:00Z',
           closes: '21:00Z',
-          dayOfWeek: 'http://schema.org/Monday',
+          dayOfWeek: 'https://schema.org/Monday',
         }],
         amenityFeature: [
           {
             name: 'Changing Facilities',
             value: true,
-            type: 'ChangingRooms',
+            type: 'ChangingFacilities',
           },
         ],
       },
     };
     activityList = {
-      '@context': 'https://www.openactive.io/ns/oa.jsonld',
-      '@id': 'http://openactive.io/activity-list/',
+      '@context': 'https://openactive.io/ns/oa.jsonld',
+      '@id': 'https://openactive.io/activity-list/',
       title: 'OpenActive Activity List',
       description: 'This document describes the OpenActive standard activity list.',
       type: 'skos:ConceptScheme',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       concepts: [
         {
-          id: 'http://openactive.io/activity-list/#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
+          id: 'https://openactive.io/activity-list/#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
           type: 'skos:Concept',
           prefLabel: 'Tai Chi',
           'skos:definition': 'Tai chi combines deep breathing and relaxation with slow and gentle movements.',
-          broader: 'http://openactive.io/activity-list/#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
+          broader: 'https://openactive.io/activity-list/#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
         },
       ],
     };
@@ -241,7 +240,7 @@ describe('validate', () => {
       {},
       validEvent,
       {
-        'https://www.openactive.org/ns#ageRange': {
+        'https://openactive.io/ageRange': {
           type: 'QuantitativeValue',
           minValue: 60,
           maxValue: 18,
@@ -255,8 +254,8 @@ describe('validate', () => {
 
     expect(result.length).toBe(2);
 
-    expect(result[0].path).toBe('$["https://www.openactive.org/ns#ageRange"]');
-    expect(result[1].path).toBe('$["https://www.openactive.org/ns#ageRange"].minValue');
+    expect(result[0].path).toBe('$["https://openactive.io/ageRange"]');
+    expect(result[1].path).toBe('$["https://openactive.io/ageRange"].minValue');
   });
 
   it('should check submodels of a model even if we don\'t know what type it is', () => {
@@ -322,13 +321,13 @@ describe('validate', () => {
         type: 'OpeningHoursSpecification',
         opens: '07:00Z',
         closes: '21:00Z',
-        dayOfWeek: 'http://schema.org/Monday',
+        dayOfWeek: 'https://schema.org/Monday',
       }],
       amenityFeature: [
         {
           name: 'Changing Facilities',
           value: true,
-          type: 'ChangingRooms',
+          type: 'ChangingFacilities',
         },
         {
           name: 'My Place',
@@ -377,7 +376,7 @@ describe('validate', () => {
         type: 'OpeningHoursSpecification',
         opens: '07:00Z',
         closes: '21:00Z',
-        dayOfWeek: 'http://schema.org/Monday',
+        dayOfWeek: 'https://schema.org/Monday',
       }],
       amenityFeature: [
         {

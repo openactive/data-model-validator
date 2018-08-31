@@ -12,23 +12,23 @@ describe('AddressTrailingCommaRule', () => {
     fields: {
       addressCountry: {
         fieldName: 'addressCountry',
-        requiredType: 'http://schema.org/Text',
+        requiredType: 'https://schema.org/Text',
       },
       addressLocality: {
         fieldName: 'addressLocality',
-        requiredType: 'http://schema.org/Text',
+        requiredType: 'https://schema.org/Text',
       },
       addressRegion: {
         fieldName: 'addressRegion',
-        requiredType: 'http://schema.org/Text',
+        requiredType: 'https://schema.org/Text',
       },
       postalCode: {
         fieldName: 'postalCode',
-        requiredType: 'http://schema.org/Text',
+        requiredType: 'https://schema.org/Text',
       },
       streetAddress: {
         fieldName: 'streetAddress',
-        requiredType: 'http://schema.org/Text',
+        requiredType: 'https://schema.org/Text',
       },
     },
   }, 'latest');
@@ -87,7 +87,7 @@ describe('AddressTrailingCommaRule', () => {
       'schema:addressLocality': 'Test Locality, ',
       'schema:addressRegion': 'Testshire,',
       'schema:addressCountry': 'GB,',
-      'http://schema.org/postalCode': 'TE5 1AB,',
+      'https://schema.org/postalCode': 'TE5 1AB,',
     };
 
     const nodeToTest = new ModelNode(

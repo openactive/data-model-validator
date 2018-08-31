@@ -14,12 +14,12 @@ describe('AssumeEventStatusRule', () => {
     fields: {
       eventStatus: {
         fieldName: 'eventStatus',
-        requiredType: 'http://schema.org/url',
+        requiredType: 'https://schema.org/url',
         options: [
-          'http://schema.org/EventCancelled',
-          'http://schema.org/EventPostponed',
-          'http://schema.org/EventRescheduled',
-          'http://schema.org/EventScheduled',
+          'https://schema.org/EventCancelled',
+          'https://schema.org/EventPostponed',
+          'https://schema.org/EventRescheduled',
+          'https://schema.org/EventScheduled',
         ],
       },
     },
@@ -36,7 +36,7 @@ describe('AssumeEventStatusRule', () => {
   it('should return no errors if the eventStatus fields are valid', () => {
     const data = {
       type: 'Event',
-      eventStatus: 'http://schema.org/EventPostponed',
+      eventStatus: 'https://schema.org/EventPostponed',
     };
 
     const nodeToTest = new ModelNode(
@@ -53,7 +53,7 @@ describe('AssumeEventStatusRule', () => {
   it('should return no errors if the eventStatus fields are valid', () => {
     const data = {
       type: 'Event',
-      'schema:eventStatus': 'http://schema.org/EventPostponed',
+      'schema:eventStatus': 'https://schema.org/EventPostponed',
     };
 
     const nodeToTest = new ModelNode(
@@ -89,7 +89,7 @@ describe('AssumeEventStatusRule', () => {
   it('should return a notice if the eventStatus field is not valid', () => {
     const data = {
       type: 'Event',
-      eventStatus: 'http://openactive.io/ns#EventStatus',
+      eventStatus: 'https://openactive.io/EventStatus',
     };
 
     const nodeToTest = new ModelNode(

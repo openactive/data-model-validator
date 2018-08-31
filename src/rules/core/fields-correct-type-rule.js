@@ -22,8 +22,8 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           description: 'Validates that a field conforms to a single type.',
           message: 'Invalid type, expected {{expectedType}} but found {{foundType}}.',
           sampleValues: {
-            expectedType: '"http://schema.org/Text"',
-            foundType: '"http://schema.org/Float"',
+            expectedType: '"https://schema.org/Text"',
+            foundType: '"https://schema.org/Float"',
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -33,8 +33,8 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           description: 'Validates that a field conforms one of a list of types.',
           message: 'Invalid type, expected one of {{expectedTypes}} but found {{foundType}}.',
           sampleValues: {
-            expectedTypes: '"http://schema.org/Text", "ArrayOf#http://schema.org/Text"',
-            foundType: '"http://schema.org/Float"',
+            expectedTypes: '"https://schema.org/Text", "ArrayOf#https://schema.org/Text"',
+            foundType: '"https://schema.org/Float"',
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,

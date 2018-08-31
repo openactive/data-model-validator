@@ -37,8 +37,8 @@ module.exports = class TimeFormatRule extends Rule {
 
     const fieldValue = node.getValue(field);
     const type = fieldObj.detectType(fieldValue);
-    if (type === 'http://schema.org/Time'
-        || fieldObj.isOnlyType('http://schema.org/Time')
+    if (type === 'https://schema.org/Time'
+        || fieldObj.isOnlyType('https://schema.org/Time')
     ) {
       if (!moment(fieldValue, ['HH:mm:ssZZ', 'HH:mmZZ'], true).isValid()) {
         errors.push(

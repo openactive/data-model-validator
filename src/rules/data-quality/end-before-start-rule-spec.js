@@ -12,11 +12,11 @@ describe('EndBeforeStartRule', () => {
     fields: {
       startDate: {
         fieldName: 'startDate',
-        requiredType: 'http://schema.org/DateTime',
+        requiredType: 'https://schema.org/DateTime',
       },
       endDate: {
         fieldName: 'endDate',
-        requiredType: 'http://schema.org/DateTime',
+        requiredType: 'https://schema.org/DateTime',
       },
     },
   }, 'latest');

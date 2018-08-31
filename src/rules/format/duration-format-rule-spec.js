@@ -22,7 +22,7 @@ describe('DurationFormatRule', () => {
       fields: {
         duration: {
           fieldName: 'duration',
-          requiredType: 'http://schema.org/Duration',
+          requiredType: 'https://schema.org/Duration',
         },
       },
     }, 'latest');
@@ -55,7 +55,7 @@ describe('DurationFormatRule', () => {
       fields: {
         duration: {
           fieldName: 'duration',
-          requiredType: 'http://schema.org/Duration',
+          requiredType: 'https://schema.org/Duration',
         },
       },
     }, 'latest');
@@ -88,7 +88,7 @@ describe('DurationFormatRule', () => {
       fields: {
         duration: {
           fieldName: 'duration',
-          requiredType: 'http://schema.org/Duration',
+          requiredType: 'https://schema.org/Duration',
         },
       },
     }, 'latest');

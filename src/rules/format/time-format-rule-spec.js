@@ -22,7 +22,7 @@ describe('TimeFormatRule', () => {
       fields: {
         time: {
           fieldName: 'time',
-          requiredType: 'http://schema.org/Time',
+          requiredType: 'https://schema.org/Time',
         },
       },
     }, 'latest');
@@ -52,7 +52,7 @@ describe('TimeFormatRule', () => {
       fields: {
         time: {
           fieldName: 'time',
-          requiredType: 'http://schema.org/Time',
+          requiredType: 'https://schema.org/Time',
         },
       },
     }, 'latest');
@@ -87,7 +87,7 @@ describe('TimeFormatRule', () => {
       fields: {
         startTime: {
           fieldName: 'startTime',
-          requiredType: 'http://schema.org/Time',
+          requiredType: 'https://schema.org/Time',
         },
       },
     }, 'latest');

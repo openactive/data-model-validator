@@ -12,15 +12,15 @@ describe('DatesMustHaveDurationRule', () => {
     fields: {
       startDate: {
         fieldName: 'startDate',
-        requiredType: 'http://schema.org/DateTime',
+        requiredType: 'https://schema.org/DateTime',
       },
       endDate: {
         fieldName: 'endDate',
-        requiredType: 'http://schema.org/DateTime',
+        requiredType: 'https://schema.org/DateTime',
       },
       duration: {
         fieldName: 'endDate',
-        requiredType: 'http://schema.org/Duration',
+        requiredType: 'https://schema.org/Duration',
       },
     },
   }, 'latest');

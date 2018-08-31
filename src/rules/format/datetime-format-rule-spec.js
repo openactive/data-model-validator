@@ -22,7 +22,7 @@ describe('DatetimeFormatRule', () => {
       fields: {
         datetime: {
           fieldName: 'datetime',
-          requiredType: 'http://schema.org/DateTime',
+          requiredType: 'https://schema.org/DateTime',
         },
       },
     }, 'latest');
@@ -52,7 +52,7 @@ describe('DatetimeFormatRule', () => {
       fields: {
         datetime: {
           fieldName: 'datetime',
-          requiredType: 'http://schema.org/DateTime',
+          requiredType: 'https://schema.org/DateTime',
         },
       },
     }, 'latest');
@@ -85,7 +85,7 @@ describe('DatetimeFormatRule', () => {
       fields: {
         startDate: {
           fieldName: 'startDate',
-          requiredType: 'http://schema.org/DateTime',
+          requiredType: 'https://schema.org/DateTime',
         },
       },
     }, 'latest');

@@ -16,33 +16,33 @@ describe('ActivityInActivityListRule', () => {
         fieldName: 'activity',
         model: 'ArrayOf#Concept',
         alternativeTypes: [
-          'ArrayOf#http://schema.org/Text',
+          'ArrayOf#https://schema.org/Text',
         ],
       },
     },
   }, 'latest');
 
   const activityList = {
-    '@context': 'https://www.openactive.io/ns/oa.jsonld',
-    '@id': 'http://openactive.io/activity-list/',
+    '@context': 'https://openactive.io/ns/oa.jsonld',
+    '@id': 'https://openactive.io/activity-list/',
     title: 'OpenActive Activity List',
     description: 'This document describes the OpenActive standard activity list.',
     type: 'skos:ConceptScheme',
     license: 'https://creativecommons.org/licenses/by/4.0/',
     concepts: [
       {
-        id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a1',
+        id: 'https://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a1',
         type: 'skos:Concept',
         prefLabel: 'Flag Football',
         'skos:definition': 'Flag is the fastest growing format of the game in Great Britain, encompassing schools, colleges, universities and in the community.',
-        brodaer: 'http://openactive.io/activity-list/#9caeb442-2834-4859-b660-9172ed61ee71',
+        brodaer: 'https://openactive.io/activity-list/#9caeb442-2834-4859-b660-9172ed61ee71',
       },
       {
-        id: 'http://openactive.io/activity-list/#0a5f732d-e806-4e51-ad40-0a7de0239c8c',
+        id: 'https://openactive.io/activity-list/#0a5f732d-e806-4e51-ad40-0a7de0239c8c',
         type: 'skos:Concept',
         prefLabel: 'Football',
         'skos:definition': 'Football is widely considered to be the most popular sport in the world. The beautiful game is England\'s national sport',
-        topConceptOf: 'http://openactive.io/activity-list/',
+        topConceptOf: 'https://openactive.io/activity-list/',
       },
     ],
   };
@@ -112,12 +112,12 @@ describe('ActivityInActivityListRule', () => {
 
     const activities = [
       {
-        id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
+        id: 'https://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
         prefLabel: 'Secret Football',
         type: 'Concept',
       },
       {
-        id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
+        id: 'https://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
         prefLabel: 'Not Real Football',
         type: 'Concept',
       },
@@ -145,7 +145,7 @@ describe('ActivityInActivityListRule', () => {
 
     const activities = [
       {
-        id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
+        id: 'https://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
         prefLabel: 'Not Real Football',
         type: 'Concept',
         inScheme: 'http://example.org/bad-list.jsonld',
@@ -187,7 +187,7 @@ describe('ActivityInActivityListRule', () => {
 
     const activities = [
       {
-        id: 'http://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
+        id: 'https://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
         prefLabel: 'Not Real Football',
         type: 'Concept',
         inScheme: 'http://example.org/bad-list.jsonld',

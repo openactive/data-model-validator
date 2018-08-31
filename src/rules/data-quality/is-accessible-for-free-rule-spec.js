@@ -12,7 +12,7 @@ describe('IsAccessibleForFreeRule', () => {
     fields: {
       isAccessibleForFree: {
         fieldName: 'isAccessibleForFree',
-        requiredType: 'http://schema.org/Boolean',
+        requiredType: 'https://schema.org/Boolean',
       },
       offers: {
         fieldName: 'offers',

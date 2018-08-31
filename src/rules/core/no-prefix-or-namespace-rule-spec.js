@@ -8,7 +8,7 @@ describe('NoPrefixOrNamespaceRule', () => {
   const model = new Model({
     type: 'Event',
     hasId: true,
-    idFormat: 'http://schema.org/url',
+    idFormat: 'https://schema.org/url',
     inSpec: [
       '@context',
       'id',
@@ -112,8 +112,8 @@ describe('NoPrefixOrNamespaceRule', () => {
     const data = {
       type: 'Event',
       id: 'http://example.org/event/1',
-      'http://schema.org/name': 'Event Name',
-      'https://www.openactive.org/ns#ageRange': {
+      'https://schema.org/name': 'Event Name',
+      'https://openactive.io/ageRange': {
         type: 'QuantitativeValue',
         minValue: 0,
       },
