@@ -40,7 +40,7 @@ module.exports = class TimeFormatRule extends Rule {
     if (type === 'https://schema.org/Time'
         || fieldObj.isOnlyType('https://schema.org/Time')
     ) {
-      if (!moment(fieldValue, ['HH:mm:ssZZ', 'HH:mmZZ'], true).isValid()) {
+      if (!moment(fieldValue, ['HH:mm:ss', 'HH:mm', 'HH:mm:ssZZ', 'HH:mmZZ'], true).isValid()) {
         errors.push(
           this.createError(
             'default',

@@ -28,6 +28,8 @@ describe('TimeFormatRule', () => {
     }, 'latest');
     model.hasSpecification = true;
     const values = [
+      '09:00',
+      '09:00:00',
       '09:00:00Z',
       '09:00:00+01:00',
     ];
@@ -60,7 +62,6 @@ describe('TimeFormatRule', () => {
     const values = [
       '2017-09-06T09:00:00',
       '2018-10-17',
-      '09:00:00',
       '25:00:00Z',
       'ABC',
     ];
@@ -95,7 +96,6 @@ describe('TimeFormatRule', () => {
     const values = [
       '2017-09-06T09:00:00',
       '2018-10-17',
-      '09:00:00',
       '25:00:00Z',
       'ABC',
     ];
@@ -120,7 +120,6 @@ describe('TimeFormatRule', () => {
     const model = new Model({}, 'latest');
 
     const values = [
-      '09:00',
       '25:00:00Z',
     ];
 
