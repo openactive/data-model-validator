@@ -32,6 +32,7 @@ const ValidationErrorType = {
   THUMBNAIL_HAS_NO_THUMBNAIL: 'thumbnail_has_no_thumbnail',
   USE_FIELD_ALIASES: 'use_field_aliases',
   FOUND_RPDE_FEED: 'found_rpde_feed',
+  MODEL_MUST_BE_CHILD: 'model_must_be_child',
 };
 
 module.exports = Object.freeze(ValidationErrorType);
