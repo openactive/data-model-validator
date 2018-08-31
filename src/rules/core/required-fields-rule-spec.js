@@ -52,7 +52,7 @@ describe('RequiredFieldsRule', () => {
 
   it('should return no errors if all required fields are present', () => {
     const data = {
-      '@context': 'https://openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/',
       type: 'Event',
       'oa:activity': {
         id: 'https://example.com/reference/activities#Speedball',
@@ -95,7 +95,7 @@ describe('RequiredFieldsRule', () => {
 
   it('should return a failure per field if any required fields are missing', () => {
     const data = {
-      '@context': 'https://openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/',
       type: 'Event',
     };
 

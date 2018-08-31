@@ -15,6 +15,10 @@ describe('FieldsNotInModelRule', () => {
       'type',
       'activity',
       'location',
+      'disallowed_field',
+    ],
+    notInSpec: [
+      'disallowed_field',
     ],
     commonTypos: {
       offer: 'offers',
@@ -72,7 +76,7 @@ describe('FieldsNotInModelRule', () => {
 
   it('should return no errors if all fields are in the spec', () => {
     const data = {
-      '@context': 'https://openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/',
       type: 'Event',
       activity: {
         id: 'https://example.com/reference/activities#Speedball',
@@ -116,7 +120,7 @@ describe('FieldsNotInModelRule', () => {
   it('should return no errors if a field is in a custom context', () => {
     const data = {
       '@context': [
-        'https://openactive.io/ns/oa.jsonld',
+        'https://openactive.io/',
         'http://example.org/ext/1.0/schema.jsonld',
       ],
       type: 'Event',
@@ -175,7 +179,7 @@ describe('FieldsNotInModelRule', () => {
   it('should return an error if a field is not in a custom context', () => {
     const data = {
       '@context': [
-        'https://openactive.io/ns/oa.jsonld',
+        'https://openactive.io/',
         'http://example.org/ext/1.0/schema.jsonld',
       ],
       type: 'Event',
@@ -239,7 +243,7 @@ describe('FieldsNotInModelRule', () => {
   it('should return no errors if a field is in a custom context with a graph', () => {
     const data = {
       '@context': [
-        'https://openactive.io/ns/oa.jsonld',
+        'https://openactive.io/',
         'http://example.org/ext/1.0/schema.jsonld',
       ],
       type: 'Event',
@@ -298,7 +302,7 @@ describe('FieldsNotInModelRule', () => {
 
   it('should return a warning per field if any fields are not in the spec, but are in schema.org', () => {
     const data = {
-      '@context': 'https://openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/',
       type: 'Event',
       alternateName: 'Alternate Event',
     };
@@ -324,9 +328,32 @@ describe('FieldsNotInModelRule', () => {
     }
   });
 
+  it('should return a failure per field if any fields are not allowed in the spec', () => {
+    const data = {
+      '@context': 'https://openactive.io/',
+      type: 'Event',
+      disallowed_field: 'This field is disallowed by the spec',
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
+
+    for (const error of errors) {
+      expect(error.type).toBe(ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC);
+      expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
+    }
+  });
+
   it('should return a failure per field if any fields are not in the spec', () => {
     const data = {
-      '@context': 'https://openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/',
       type: 'Event',
       invalid_field: 'This field is not in the spec',
       another_invalid_field: 'This field is also not in the spec',
@@ -350,7 +377,7 @@ describe('FieldsNotInModelRule', () => {
 
   it('should return a notice per field if any extension fields are present', () => {
     const data = {
-      '@context': 'https://openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/',
       type: 'Event',
       'beta:experimental_field': 'This field is experimental',
       'beta:another_experimental_field': 'This field is also experimental',
