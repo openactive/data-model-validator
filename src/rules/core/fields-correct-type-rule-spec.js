@@ -965,6 +965,78 @@ describe('FieldsCorrectTypeRule', () => {
       expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
+  it('should return an error for a scalar value of the correct array type', () => {
+    const model = new Model({
+      type: 'Event',
+      fields: {
+        integer_array: {
+          fieldName: 'integer_array',
+          requiredType: 'ArrayOf#https://schema.org/Integer',
+        },
+        float_array: {
+          fieldName: 'float_array',
+          requiredType: 'ArrayOf#https://schema.org/Float',
+        },
+        boolean_array: {
+          fieldName: 'boolean_array',
+          requiredType: 'ArrayOf#https://schema.org/Boolean',
+        },
+        url_array: {
+          fieldName: 'url_array',
+          requiredType: 'ArrayOf#https://schema.org/url',
+        },
+        date_array: {
+          fieldName: 'date_array',
+          requiredType: 'ArrayOf#https://schema.org/Date',
+        },
+        datetime_array: {
+          fieldName: 'datetime_array',
+          requiredType: 'ArrayOf#https://schema.org/DateTime',
+        },
+        duration_array: {
+          fieldName: 'duration_array',
+          requiredType: 'ArrayOf#https://schema.org/Duration',
+        },
+        text_array: {
+          fieldName: 'text_array',
+          requiredType: 'ArrayOf#https://schema.org/Text',
+        },
+        model_array: {
+          fieldName: 'model_array',
+          model: 'ArrayOf#Schedule',
+        },
+      },
+    }, 'latest');
+    model.hasSpecification = true;
+
+    const data = {
+      integer_array: 1,
+      float_array: 1.3,
+      boolean_array: true,
+      url_array: 'http://www.example.com',
+      date_array: '2018-01-01',
+      datetime_array: '2017-05-12T09:00:00Z',
+      duration_array: 'PT30M',
+      text_array: 'Lorem ipsum',
+      model_array: {
+        type: 'Schedule',
+      },
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+    expect(errors.length).toBe(9);
+
+    for (const error of errors) {
+      expect(error.type).toBe(ValidationErrorType.INVALID_TYPE);
+      expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
+  });
 
   // Multiple rules
   it('should return no error for an valid type with multiple rules', () => {

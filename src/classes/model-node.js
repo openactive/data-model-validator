@@ -111,7 +111,10 @@ const ModelNode = class {
     if (
       this.model.inSpec.indexOf(field) >= 0
       && this.parentNode !== null
-      && this.parentNode.model.type === this.model.type
+      && (
+        this.parentNode.model.type === this.model.type
+        || this.model.subClassGraph.indexOf(`#${this.parentNode.model.type}`) >= 0
+      )
     ) {
       // Does our property allow us to inherit?
       if (
