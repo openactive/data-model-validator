@@ -48,11 +48,18 @@ describe('validate', () => {
         type: 'ImageObject',
         url: 'http://www.example.org/logo.png',
       }],
-      subEvent: [{
-        type: 'Event',
-        id: 'http://www.example.org/events/12',
-        url: 'http://www.example.org/events/12',
-      }],
+      subEvent: [
+        {
+          type: 'Event',
+          id: 'http://www.example.org/events/12',
+          url: 'http://www.example.org/events/12',
+        },
+        {
+          type: 'ScheduledSession',
+          id: 'http://www.example.org/events/13',
+          url: 'http://www.example.org/events/13',
+        },
+      ],
       organizer: [{
         id: 'http://www.example.org',
         type: 'Organization',
