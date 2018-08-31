@@ -64,8 +64,16 @@ const Model = class {
     return this.data.inSpec || [];
   }
 
+  get notInSpec() {
+    return this.data.notInSpec || [];
+  }
+
   hasFieldInSpec(field) {
     return PropertyHelper.arrayHasField(this.inSpec, field, this.version);
+  }
+
+  hasFieldNotInSpec(field) {
+    return PropertyHelper.arrayHasField(this.notInSpec, field, this.version);
   }
 
   getField(field) {

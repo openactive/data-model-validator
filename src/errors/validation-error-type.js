@@ -7,6 +7,7 @@ const ValidationErrorType = {
   MODEL_NOT_FOUND: 'model_not_found',
   FILE_NOT_FOUND: 'file_not_found',
   FIELD_NOT_IN_SPEC: 'field_not_in_spec',
+  FIELD_NOT_ALLOWED_IN_SPEC: 'field_not_allowed_in_spec',
   FIELD_COULD_BE_TYPO: 'field_could_be_typo',
   EXPERIMENTAL_FIELDS_NOT_CHECKED: 'experimental_fields_not_checked',
   UNSUPPORTED_VALUE: 'unsupported_value',

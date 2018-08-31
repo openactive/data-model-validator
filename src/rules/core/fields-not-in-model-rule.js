@@ -47,6 +47,16 @@ module.exports = class FieldsNotInModelRule extends Rule {
           severity: ValidationErrorSeverity.WARNING,
           type: ValidationErrorType.FIELD_NOT_IN_SPEC,
         },
+        notAllowed: {
+          description: 'Raises an for fields that are explicitly disallowed by a model.',
+          message: 'This field is not allowed in {{model}}.',
+          sampleValues: {
+            model: 'HeadlineEvent',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.WARNING,
+          type: ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC,
+        },
       },
     };
   }
@@ -103,7 +113,9 @@ module.exports = class FieldsNotInModelRule extends Rule {
     const errors = [];
     let testKey = null;
     let messageValues;
-    if (!node.model.hasFieldInSpec(field)) {
+    if (node.model.hasFieldNotInSpec(field)) {
+      testKey = 'notAllowed';
+    } else if (!node.model.hasFieldInSpec(field)) {
       // Get prop values
       const contexts = this.getContexts(node);
       const prop = PropertyHelper.getFullyQualifiedProperty(field, this.options.version, contexts);
@@ -156,18 +168,18 @@ module.exports = class FieldsNotInModelRule extends Rule {
           testKey = 'notInSpec';
         }
       }
-      if (testKey) {
-        errors.push(
-          this.createError(
-            testKey,
-            {
-              value: node.getValue(field),
-              path: node.getPath(field),
-            },
-            messageValues,
-          ),
-        );
-      }
+    }
+    if (testKey) {
+      errors.push(
+        this.createError(
+          testKey,
+          {
+            value: node.getValue(field),
+            path: node.getPath(field),
+          },
+          messageValues,
+        ),
+      );
     }
     return errors;
   }

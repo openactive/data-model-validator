@@ -66,7 +66,7 @@ describe('RequiredOptionalFieldsRule', () => {
 
   it('should return no errors if required optional fields are present', () => {
     const data = {
-      '@context': 'https://openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/',
       type: 'Event',
       startDate: '2018-01-27T12:00:00Z',
     };
@@ -84,7 +84,7 @@ describe('RequiredOptionalFieldsRule', () => {
 
   it('should return no errors if required optional fields are present with a namespace', () => {
     const data = {
-      '@context': 'https://openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/',
       type: 'Event',
       'schema:startDate': '2018-01-27T12:00:00Z',
     };
@@ -102,7 +102,7 @@ describe('RequiredOptionalFieldsRule', () => {
 
   it('should return a failure per option group if any required optional fields are missing', () => {
     const data = {
-      '@context': 'https://openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/',
       type: 'Event',
     };
 

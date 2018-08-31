@@ -23,7 +23,7 @@ describe('ActivityInActivityListRule', () => {
   }, 'latest');
 
   const activityList = {
-    '@context': 'https://openactive.io/ns/oa.jsonld',
+    '@context': 'https://openactive.io/',
     '@id': 'https://openactive.io/activity-list/',
     title: 'OpenActive Activity List',
     description: 'This document describes the OpenActive standard activity list.',

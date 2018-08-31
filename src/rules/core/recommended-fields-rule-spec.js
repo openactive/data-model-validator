@@ -51,7 +51,7 @@ describe('RecommendedFieldsRule', () => {
 
   it('should return no errors if all recommended fields are present', () => {
     const data = {
-      '@context': 'https://openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/',
       type: 'Event',
       name: 'Tai chi Class',
       'schema:description': 'A class about Tai Chi',
@@ -70,7 +70,7 @@ describe('RecommendedFieldsRule', () => {
 
   it('should return a warning per field if any recommended fields are missing', () => {
     const data = {
-      '@context': 'https://openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/',
       type: 'Event',
     };
 
