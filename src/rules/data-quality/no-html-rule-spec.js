@@ -12,7 +12,7 @@ describe('NoHtmlRule', () => {
     fields: {
       description: {
         fieldName: 'description',
-        requiredType: 'http://schema.org/Text',
+        requiredType: 'https://schema.org/Text',
       },
     },
   }, 'latest');

@@ -28,6 +28,7 @@
     "jsonpath": "^1.0.0",
     "moment": "^2.22.2",
     "sync-request": "^6.0.0",
+    "uritemplate": "^0.3.4",
     "validator": "^10.7.0"
   },
   "devDependencies": {

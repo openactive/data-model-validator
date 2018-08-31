@@ -26,7 +26,7 @@ module.exports = class NoPrefixOrNamespaceRule extends Rule {
           description: 'Validates that a field in the specification is not submitted with its namespace.',
           message: 'Whilst valid JSON-LD, field "{{submittedField}}" should be submitted without its namespace as "{{field}}".',
           sampleValues: {
-            submittedField: 'http://schema.org/name',
+            submittedField: 'https://schema.org/name',
             field: 'name',
           },
           category: ValidationErrorCategory.CONFORMANCE,

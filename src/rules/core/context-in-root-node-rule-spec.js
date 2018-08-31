@@ -173,7 +173,7 @@ describe('ContextInRootNodeRule', () => {
       ],
       fields: {
         '@context': {
-          requiredType: 'ArrayOf#http://schema.org/url',
+          requiredType: 'ArrayOf#https://schema.org/url',
         },
       },
     }, 'latest');

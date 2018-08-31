@@ -15,7 +15,7 @@ module.exports = class ValueInOptionsRule extends Rule {
           message: 'Value "{{value}}" is not in the allowed values for this field. Should be one of {{allowedValues}}.',
           sampleValues: {
             value: 'Male',
-            allowedValues: '"http://openactive.io/ns#Female", "http://openactive.io/ns#Male", "http://openactive.io/ns#None"',
+            allowedValues: '"https://openactive.io/Female", "https://openactive.io/Male", "https://openactive.io/None"',
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,

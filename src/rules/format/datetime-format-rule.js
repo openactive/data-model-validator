@@ -37,8 +37,8 @@ module.exports = class DatetimeFormatRule extends Rule {
 
     const fieldValue = node.getValue(field);
     const type = fieldObj.detectType(fieldValue);
-    if (type === 'http://schema.org/DateTime'
-        || fieldObj.isOnlyType('http://schema.org/DateTime')
+    if (type === 'https://schema.org/DateTime'
+        || fieldObj.isOnlyType('https://schema.org/DateTime')
     ) {
       if (!moment(fieldValue, 'YYYY-MM-DD\\THH:mm:ssZZ', true).isValid()) {
         errors.push(

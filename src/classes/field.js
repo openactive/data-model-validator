@@ -1,3 +1,4 @@
+const UriTemplate = require('uritemplate');
 const DataModelHelper = require('../helpers/data-model');
 const PropertyHelper = require('../helpers/property');
 
@@ -92,60 +93,74 @@ const Field = class {
       return 'null';
     }
     if (typeof (data) === 'boolean') {
-      return 'http://schema.org/Boolean';
+      return 'https://schema.org/Boolean';
     }
     if (typeof (data) === 'number') {
-      returnType = 'http://schema.org/Float';
+      returnType = 'https://schema.org/Float';
       if (
         /^-?[0-9]+([eE]-?[0-9]+)?$/.test(String(data))
                 && data % 1 === 0
       ) {
-        returnType = 'http://schema.org/Integer';
+        returnType = 'https://schema.org/Integer';
       }
       // If the type above isn't in the possible types, but Float is,
       // just cast as Float
       if (
         inArray
         && possibleTypes.indexOf(`ArrayOf#${returnType}`) < 0
-        && possibleTypes.indexOf('ArrayOf#http://schema.org/Float') >= 0
+        && possibleTypes.indexOf('ArrayOf#https://schema.org/Float') >= 0
       ) {
-        returnType = 'http://schema.org/Float';
+        returnType = 'https://schema.org/Float';
       } else if (
         !inArray
         && possibleTypes.indexOf(returnType) < 0
-        && possibleTypes.indexOf('http://schema.org/Float') >= 0
+        && possibleTypes.indexOf('https://schema.org/Float') >= 0
       ) {
-        returnType = 'http://schema.org/Float';
+        returnType = 'https://schema.org/Float';
       }
       return returnType;
     }
     if (typeof (data) === 'string') {
-      returnType = 'http://schema.org/Text';
-      if (this.constructor.URL_REGEX.test(data)) {
-        returnType = 'http://schema.org/url';
-      } else if (/^[0-9]{4}(-?)[0-9]{2}\1[0-9]{2}$/.test(data)) {
-        returnType = 'http://schema.org/Date';
+      returnType = 'https://schema.org/Text';
+      if (/^[0-9]{4}(-?)[0-9]{2}\1[0-9]{2}$/.test(data)) {
+        returnType = 'https://schema.org/Date';
       } else if (/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(Z|[+-][0-9]{2}:[0-9]{2})?$/.test(data)) {
-        returnType = 'http://schema.org/DateTime';
+        returnType = 'https://schema.org/DateTime';
       } else if (/^[0-9]{2}:[0-9]{2}(:[0-9]{2})?(Z|[+-][0-9]{2}:[0-9]{2})?$/.test(data)) {
-        returnType = 'http://schema.org/Time';
+        returnType = 'https://schema.org/Time';
       } else if (/^P[.,0-9YMDHTMSW]+$/.test(data)) {
-        returnType = 'http://schema.org/Duration';
+        returnType = 'https://schema.org/Duration';
+      } else {
+        // Is this a URL template?
+        // This processes most strings... so could be a bit intensive
+        const template = UriTemplate.parse(data);
+        let isUrlTemplate = false;
+        for (const expression of template.expressions) {
+          if (expression.constructor.name === 'VariableExpression') {
+            isUrlTemplate = true;
+            break;
+          }
+        }
+        if (isUrlTemplate) {
+          returnType = 'https://schema.org/urlTemplate';
+        } else if (this.constructor.URL_REGEX.test(data)) {
+          returnType = 'https://schema.org/url';
+        }
       }
       // If the types above aren't in the possible types, but Text is,
       // just cast as Text
       if (
         inArray
         && possibleTypes.indexOf(`ArrayOf#${returnType}`) < 0
-        && possibleTypes.indexOf('ArrayOf#http://schema.org/Text') >= 0
+        && possibleTypes.indexOf('ArrayOf#https://schema.org/Text') >= 0
       ) {
-        returnType = 'http://schema.org/Text';
+        returnType = 'https://schema.org/Text';
       } else if (
         !inArray
         && possibleTypes.indexOf(returnType) < 0
-        && possibleTypes.indexOf('http://schema.org/Text') >= 0
+        && possibleTypes.indexOf('https://schema.org/Text') >= 0
       ) {
-        returnType = 'http://schema.org/Text';
+        returnType = 'https://schema.org/Text';
       }
       return returnType;
     }
@@ -292,12 +307,13 @@ const Field = class {
 Field.URL_REGEX = /^(?:(?:https?|ftp):\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,}))\.?)(?::\d{2,5})?(?:[/?#]\S*)?$/i;
 
 Field.canBeTypeOfMapping = {
-  'http://schema.org/Date': 'http://schema.org/Text',
-  'http://schema.org/DateTime': 'http://schema.org/Text',
-  'http://schema.org/Duration': 'http://schema.org/Text',
-  'http://schema.org/Time': 'http://schema.org/Text',
-  'http://schema.org/Integer': 'http://schema.org/Float',
-  'http://schema.org/url': 'http://schema.org/Text',
+  'https://schema.org/Date': 'https://schema.org/Text',
+  'https://schema.org/DateTime': 'https://schema.org/Text',
+  'https://schema.org/Duration': 'https://schema.org/Text',
+  'https://schema.org/Time': 'https://schema.org/Text',
+  'https://schema.org/Integer': 'https://schema.org/Float',
+  'https://schema.org/url': 'https://schema.org/Text',
+  'https://schema.org/urlTemplate': 'https://schema.org/Text',
 };
 
 module.exports = Field;

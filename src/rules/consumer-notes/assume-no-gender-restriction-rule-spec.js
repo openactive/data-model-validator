@@ -14,11 +14,11 @@ describe('AssumeNoGenderRestrictionRule', () => {
     fields: {
       genderRestriction: {
         fieldName: 'genderRestriction',
-        requiredType: 'http://schema.org/url',
+        requiredType: 'https://schema.org/url',
         options: [
-          'http://openactive.io/ns#Female',
-          'http://openactive.io/ns#Male',
-          'http://openactive.io/ns#None',
+          'https://openactive.io/Female',
+          'https://openactive.io/Male',
+          'https://openactive.io/None',
         ],
       },
     },
@@ -35,7 +35,7 @@ describe('AssumeNoGenderRestrictionRule', () => {
   it('should return no errors if the genderRestriction fields are valid', () => {
     const data = {
       type: 'Event',
-      genderRestriction: 'http://openactive.io/ns#Female',
+      genderRestriction: 'https://openactive.io/Female',
     };
 
     const nodeToTest = new ModelNode(
@@ -52,7 +52,7 @@ describe('AssumeNoGenderRestrictionRule', () => {
   it('should return no errors if the genderRestriction fields are valid', () => {
     const data = {
       type: 'Event',
-      'oa:genderRestriction': 'http://openactive.io/ns#Female',
+      'oa:genderRestriction': 'https://openactive.io/Female',
     };
 
     const nodeToTest = new ModelNode(
@@ -88,7 +88,7 @@ describe('AssumeNoGenderRestrictionRule', () => {
   it('should return a notice if the genderRestriction field is not valid', () => {
     const data = {
       type: 'Event',
-      genderRestriction: 'http://openactive.io/ns#Invalid',
+      genderRestriction: 'https://openactive.io/Invalid',
     };
 
     const nodeToTest = new ModelNode(

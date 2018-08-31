@@ -8,7 +8,7 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 
 describe('FieldsNotInModelRule', () => {
   const model = new Model({
-    derivedFrom: 'http://schema.org/Event',
+    derivedFrom: 'https://schema.org/Event',
     type: 'Event',
     inSpec: [
       '@context',
@@ -30,37 +30,37 @@ describe('FieldsNotInModelRule', () => {
     },
     '@graph': [
       {
-        '@id': 'http://schema.org/Event',
+        '@id': 'https://schema.org/Event',
         '@type': 'rdfs:Class',
         'http://www.w3.org/2002/07/owl#equivalentClass': {
           '@id': 'http://purl.org/dc/dcmitype/Event',
         },
-        'rdfs:comment': 'An event happening at a certain time and location, such as a concert, lecture, or festival. Ticketing information may be added via the <a class="localLink" href="http://schema.org/offers">offers</a> property. Repeated events may be structured as separate Event objects.',
+        'rdfs:comment': 'An event happening at a certain time and location, such as a concert, lecture, or festival. Ticketing information may be added via the <a class="localLink" href="https://schema.org/offers">offers</a> property. Repeated events may be structured as separate Event objects.',
         'rdfs:label': 'Event',
         'rdfs:subClassOf': {
-          '@id': 'http://schema.org/Thing',
+          '@id': 'https://schema.org/Thing',
         },
       },
       {
-        '@id': 'http://schema.org/Thing',
+        '@id': 'https://schema.org/Thing',
         '@type': 'rdfs:Class',
         'rdfs:comment': 'The most generic type of item.',
         'rdfs:label': 'Thing',
       },
       {
-        '@id': 'http://schema.org/alternateName',
+        '@id': 'https://schema.org/alternateName',
         '@type': 'rdf:Property',
-        'http://schema.org/domainIncludes': {
-          '@id': 'http://schema.org/Thing',
+        'https://schema.org/domainIncludes': {
+          '@id': 'https://schema.org/Thing',
         },
-        'http://schema.org/rangeIncludes': {
-          '@id': 'http://schema.org/Text',
+        'https://schema.org/rangeIncludes': {
+          '@id': 'https://schema.org/Text',
         },
         'rdfs:comment': 'An alias for the item.',
         'rdfs:label': 'alternateName',
       },
     ],
-    '@id': 'http://schema.org/#3.4',
+    '@id': 'https://schema.org/#3.4',
   };
 
   const rule = new FieldsNotInModelRule();
@@ -72,7 +72,7 @@ describe('FieldsNotInModelRule', () => {
 
   it('should return no errors if all fields are in the spec', () => {
     const data = {
-      '@context': 'https://www.openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/ns/oa.jsonld',
       type: 'Event',
       activity: {
         id: 'https://example.com/reference/activities#Speedball',
@@ -116,7 +116,7 @@ describe('FieldsNotInModelRule', () => {
   it('should return no errors if a field is in a custom context', () => {
     const data = {
       '@context': [
-        'https://www.openactive.io/ns/oa.jsonld',
+        'https://openactive.io/ns/oa.jsonld',
         'http://example.org/ext/1.0/schema.jsonld',
       ],
       type: 'Event',
@@ -175,7 +175,7 @@ describe('FieldsNotInModelRule', () => {
   it('should return an error if a field is not in a custom context', () => {
     const data = {
       '@context': [
-        'https://www.openactive.io/ns/oa.jsonld',
+        'https://openactive.io/ns/oa.jsonld',
         'http://example.org/ext/1.0/schema.jsonld',
       ],
       type: 'Event',
@@ -239,7 +239,7 @@ describe('FieldsNotInModelRule', () => {
   it('should return no errors if a field is in a custom context with a graph', () => {
     const data = {
       '@context': [
-        'https://www.openactive.io/ns/oa.jsonld',
+        'https://openactive.io/ns/oa.jsonld',
         'http://example.org/ext/1.0/schema.jsonld',
       ],
       type: 'Event',
@@ -257,11 +257,11 @@ describe('FieldsNotInModelRule', () => {
         {
           '@id': 'http://example.org/ext#customName',
           '@type': 'rdf:Property',
-          'http://schema.org/domainIncludes': {
-            '@id': 'http://schema.org/Thing',
+          'https://schema.org/domainIncludes': {
+            '@id': 'https://schema.org/Thing',
           },
-          'http://schema.org/rangeIncludes': {
-            '@id': 'http://schema.org/Text',
+          'https://schema.org/rangeIncludes': {
+            '@id': 'https://schema.org/Text',
           },
           'rdfs:comment': 'A custom property.',
           'rdfs:label': 'customName',
@@ -298,7 +298,7 @@ describe('FieldsNotInModelRule', () => {
 
   it('should return a warning per field if any fields are not in the spec, but are in schema.org', () => {
     const data = {
-      '@context': 'https://www.openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/ns/oa.jsonld',
       type: 'Event',
       alternateName: 'Alternate Event',
     };
@@ -326,7 +326,7 @@ describe('FieldsNotInModelRule', () => {
 
   it('should return a failure per field if any fields are not in the spec', () => {
     const data = {
-      '@context': 'https://www.openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/ns/oa.jsonld',
       type: 'Event',
       invalid_field: 'This field is not in the spec',
       another_invalid_field: 'This field is also not in the spec',
@@ -350,7 +350,7 @@ describe('FieldsNotInModelRule', () => {
 
   it('should return a notice per field if any extension fields are present', () => {
     const data = {
-      '@context': 'https://www.openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/ns/oa.jsonld',
       type: 'Event',
       'beta:experimental_field': 'This field is experimental',
       'beta:another_experimental_field': 'This field is also experimental',

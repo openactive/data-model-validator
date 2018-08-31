@@ -17,14 +17,14 @@ describe('JsonLoaderHelper', () => {
     }));
 
     const response = JsonLoaderHelper.getFile(
-      'https://www.openactive.io/activity-list/activity-list.jsonld',
+      'https://openactive.io/activity-list/activity-list.jsonld',
       new OptionsHelper({
         loadRemoteJson: true,
       }),
     );
 
     expect(RequestHelper.get).toHaveBeenCalledWith(
-      'https://www.openactive.io/activity-list/activity-list.jsonld',
+      'https://openactive.io/activity-list/activity-list.jsonld',
     );
     expect(
       response.errorCode,
@@ -41,14 +41,14 @@ describe('JsonLoaderHelper', () => {
     }));
 
     const response = JsonLoaderHelper.getFile(
-      'https://www.openactive.io/activity-list/activity-list.json',
+      'https://openactive.io/activity-list/activity-list.json',
       new OptionsHelper({
         loadRemoteJson: true,
       }),
     );
 
     expect(RequestHelper.get).toHaveBeenCalledWith(
-      'https://www.openactive.io/activity-list/activity-list.json',
+      'https://openactive.io/activity-list/activity-list.json',
     );
     expect(
       response.errorCode,

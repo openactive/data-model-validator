@@ -23,7 +23,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/Boolean',
+          requiredType: 'https://schema.org/Boolean',
         },
       },
     }, 'latest');
@@ -48,7 +48,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/Boolean',
+          requiredType: 'https://schema.org/Boolean',
         },
       },
     }, 'latest');
@@ -77,15 +77,15 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/Float',
+          requiredType: 'https://schema.org/Float',
         },
         field2: {
           fieldName: 'field2',
-          requiredType: 'http://schema.org/Float',
+          requiredType: 'https://schema.org/Float',
         },
         field3: {
           fieldName: 'field3',
-          requiredType: 'http://schema.org/Float',
+          requiredType: 'https://schema.org/Float',
         },
       },
     }, 'latest');
@@ -111,15 +111,15 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/Float',
+          requiredType: 'https://schema.org/Float',
         },
         field2: {
           fieldName: 'field2',
-          requiredType: 'http://schema.org/Float',
+          requiredType: 'https://schema.org/Float',
         },
         field3: {
           fieldName: 'field3',
-          requiredType: 'http://schema.org/Float',
+          requiredType: 'https://schema.org/Float',
         },
       },
     }, 'latest');
@@ -153,15 +153,15 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/Integer',
+          requiredType: 'https://schema.org/Integer',
         },
         field2: {
           fieldName: 'field2',
-          requiredType: 'http://schema.org/Integer',
+          requiredType: 'https://schema.org/Integer',
         },
         field3: {
           fieldName: 'field3',
-          requiredType: 'http://schema.org/Integer',
+          requiredType: 'https://schema.org/Integer',
         },
       },
     }, 'latest');
@@ -188,15 +188,15 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/Integer',
+          requiredType: 'https://schema.org/Integer',
         },
         field2: {
           fieldName: 'field2',
-          requiredType: 'http://schema.org/Integer',
+          requiredType: 'https://schema.org/Integer',
         },
         field3: {
           fieldName: 'field3',
-          requiredType: 'http://schema.org/Integer',
+          requiredType: 'https://schema.org/Integer',
         },
       },
     }, 'latest');
@@ -230,7 +230,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/url',
+          requiredType: 'https://schema.org/url',
         },
       },
     }, 'latest');
@@ -267,7 +267,76 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/url',
+          requiredType: 'https://schema.org/url',
+        },
+      },
+    }, 'latest');
+    model.hasSpecification = true;
+
+    const values = [
+      'http://10.1.1.1',
+      'http://1.1.1.1.1',
+      'http://127.0.0.1',
+      'http://localhost/',
+      true,
+      27,
+      {},
+    ];
+
+    for (const value of values) {
+      const data = {
+        field: value,
+      };
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(errors.length).toBe(1);
+      expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
+  });
+
+  // urlTemplate
+  it('should return no error for an valid urlTemplate type', () => {
+    const model = new Model({
+      type: 'Event',
+      fields: {
+        field: {
+          fieldName: 'field',
+          requiredType: 'https://schema.org/urlTemplate',
+        },
+      },
+    }, 'latest');
+    model.hasSpecification = true;
+    const values = [
+      'http://{domain}/{?query*}',
+    ];
+
+    for (const value of values) {
+      const data = {
+        field: value,
+      };
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(errors.length).toBe(0);
+    }
+  });
+  it('should return an error for an invalid urlTemplate type', () => {
+    const model = new Model({
+      type: 'Event',
+      fields: {
+        field: {
+          fieldName: 'field',
+          requiredType: 'https://schema.org/urlTemplate',
         },
       },
     }, 'latest');
@@ -307,7 +376,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/Date',
+          requiredType: 'https://schema.org/Date',
         },
       },
     }, 'latest');
@@ -337,7 +406,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/Date',
+          requiredType: 'https://schema.org/Date',
         },
       },
     }, 'latest');
@@ -374,7 +443,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/DateTime',
+          requiredType: 'https://schema.org/DateTime',
         },
       },
     }, 'latest');
@@ -405,7 +474,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/DateTime',
+          requiredType: 'https://schema.org/DateTime',
         },
       },
     }, 'latest');
@@ -443,7 +512,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/Duration',
+          requiredType: 'https://schema.org/Duration',
         },
       },
     }, 'latest');
@@ -474,7 +543,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/Duration',
+          requiredType: 'https://schema.org/Duration',
         },
       },
     }, 'latest');
@@ -512,7 +581,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/Text',
+          requiredType: 'https://schema.org/Text',
         },
       },
     }, 'latest', 'latest');
@@ -546,7 +615,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/Text',
+          requiredType: 'https://schema.org/Text',
         },
       },
     }, 'latest');
@@ -614,7 +683,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/Text',
+          requiredType: 'https://schema.org/Text',
         },
       },
     }, 'latest');
@@ -697,35 +766,35 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         integer_array: {
           fieldName: 'integer_array',
-          requiredType: 'ArrayOf#http://schema.org/Integer',
+          requiredType: 'ArrayOf#https://schema.org/Integer',
         },
         float_array: {
           fieldName: 'float_array',
-          requiredType: 'ArrayOf#http://schema.org/Float',
+          requiredType: 'ArrayOf#https://schema.org/Float',
         },
         boolean_array: {
           fieldName: 'boolean_array',
-          requiredType: 'ArrayOf#http://schema.org/Boolean',
+          requiredType: 'ArrayOf#https://schema.org/Boolean',
         },
         url_array: {
           fieldName: 'url_array',
-          requiredType: 'ArrayOf#http://schema.org/url',
+          requiredType: 'ArrayOf#https://schema.org/url',
         },
         date_array: {
           fieldName: 'date_array',
-          requiredType: 'ArrayOf#http://schema.org/Date',
+          requiredType: 'ArrayOf#https://schema.org/Date',
         },
         datetime_array: {
           fieldName: 'datetime_array',
-          requiredType: 'ArrayOf#http://schema.org/DateTime',
+          requiredType: 'ArrayOf#https://schema.org/DateTime',
         },
         duration_array: {
           fieldName: 'duration_array',
-          requiredType: 'ArrayOf#http://schema.org/Duration',
+          requiredType: 'ArrayOf#https://schema.org/Duration',
         },
         text_array: {
           fieldName: 'text_array',
-          requiredType: 'ArrayOf#http://schema.org/Text',
+          requiredType: 'ArrayOf#https://schema.org/Text',
         },
         model_array: {
           fieldName: 'model_array',
@@ -797,35 +866,35 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         integer_array: {
           fieldName: 'integer_array',
-          requiredType: 'ArrayOf#http://schema.org/Integer',
+          requiredType: 'ArrayOf#https://schema.org/Integer',
         },
         float_array: {
           fieldName: 'float_array',
-          requiredType: 'ArrayOf#http://schema.org/Float',
+          requiredType: 'ArrayOf#https://schema.org/Float',
         },
         boolean_array: {
           fieldName: 'boolean_array',
-          requiredType: 'ArrayOf#http://schema.org/Boolean',
+          requiredType: 'ArrayOf#https://schema.org/Boolean',
         },
         url_array: {
           fieldName: 'integer_array',
-          requiredType: 'ArrayOf#http://schema.org/url',
+          requiredType: 'ArrayOf#https://schema.org/url',
         },
         date_array: {
           fieldName: 'float_array',
-          requiredType: 'ArrayOf#http://schema.org/Date',
+          requiredType: 'ArrayOf#https://schema.org/Date',
         },
         datetime_array: {
           fieldName: 'boolean_array',
-          requiredType: 'ArrayOf#http://schema.org/DateTime',
+          requiredType: 'ArrayOf#https://schema.org/DateTime',
         },
         duration_array: {
           fieldName: 'integer_array',
-          requiredType: 'ArrayOf#http://schema.org/Duration',
+          requiredType: 'ArrayOf#https://schema.org/Duration',
         },
         text_array: {
           fieldName: 'float_array',
-          requiredType: 'ArrayOf#http://schema.org/Text',
+          requiredType: 'ArrayOf#https://schema.org/Text',
         },
         model_array: {
           fieldName: 'boolean_array',
@@ -904,10 +973,10 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/url',
+          requiredType: 'https://schema.org/url',
           model: '#Schedule',
           alternativeTypes: [
-            'http://schema.org/DateTime',
+            'https://schema.org/DateTime',
           ],
           alternativeModels: [
             'ArrayOf#Person',
@@ -950,10 +1019,10 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/url',
+          requiredType: 'https://schema.org/url',
           model: '#Schedule',
           alternativeTypes: [
-            'http://schema.org/DateTime',
+            'https://schema.org/DateTime',
           ],
           alternativeModels: [
             'ArrayOf#Person',
@@ -999,7 +1068,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/Boolean',
+          requiredType: 'https://schema.org/Boolean',
         },
       },
     }, 'latest');
@@ -1027,7 +1096,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'http://schema.org/Boolean',
+          requiredType: 'https://schema.org/Boolean',
         },
       },
     }, 'latest');

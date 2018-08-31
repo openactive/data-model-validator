@@ -12,7 +12,7 @@ describe('NoZeroDurationRule', () => {
     fields: {
       duration: {
         fieldName: 'duration',
-        requiredType: 'http://schema.org/Duration',
+        requiredType: 'https://schema.org/Duration',
       },
     },
   }, 'latest');

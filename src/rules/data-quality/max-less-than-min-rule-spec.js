@@ -12,11 +12,11 @@ describe('MaxLessThenMinRule', () => {
     fields: {
       minValue: {
         fieldName: 'minValue',
-        requiredType: 'http://schema.org/Integer',
+        requiredType: 'https://schema.org/Integer',
       },
       maxValue: {
         fieldName: 'maxValue',
-        requiredType: 'http://schema.org/Integer',
+        requiredType: 'https://schema.org/Integer',
       },
     },
   }, 'latest');

@@ -28,7 +28,7 @@ module.exports = class CurrencyCodeFormatRule extends Rule {
       return [];
     }
     const errors = [];
-    if (fieldObj.sameAs === 'http://schema.org/priceCurrency') {
+    if (fieldObj.sameAs === 'https://schema.org/priceCurrency') {
       const fieldValue = node.getValue(field);
       if (typeof (cc.code(fieldValue)) === 'undefined') {
         errors.push(

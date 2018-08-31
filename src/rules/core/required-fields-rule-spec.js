@@ -30,7 +30,7 @@ describe('RequiredFieldsRule', () => {
     fields: {
       name: {
         fieldName: 'name',
-        requiredType: 'http://schema.org/Text',
+        requiredType: 'https://schema.org/Text',
       },
       subEvent: {
         fieldName: 'subEvent',
@@ -52,7 +52,7 @@ describe('RequiredFieldsRule', () => {
 
   it('should return no errors if all required fields are present', () => {
     const data = {
-      '@context': 'https://www.openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/ns/oa.jsonld',
       type: 'Event',
       'oa:activity': {
         id: 'https://example.com/reference/activities#Speedball',
@@ -95,7 +95,7 @@ describe('RequiredFieldsRule', () => {
 
   it('should return a failure per field if any required fields are missing', () => {
     const data = {
-      '@context': 'https://www.openactive.io/ns/oa.jsonld',
+      '@context': 'https://openactive.io/ns/oa.jsonld',
       type: 'Event',
     };
 

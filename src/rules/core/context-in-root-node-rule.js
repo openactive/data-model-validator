@@ -60,9 +60,9 @@ module.exports = class ContextInRootNodeRule extends Rule {
     // Is this the root node?
     if (node.parentNode === null || !node.parentNode.model.isJsonLd) {
       const backupField = new Field({
-        requiredType: 'http://schema.org/url',
+        requiredType: 'https://schema.org/url',
         alternativeTypes: [
-          'ArrayOf#http://schema.org/url',
+          'ArrayOf#https://schema.org/url',
         ],
       }, node.options.version);
 

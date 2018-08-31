@@ -22,7 +22,7 @@ describe('DateFormatRule', () => {
       fields: {
         date: {
           fieldName: 'date',
-          requiredType: 'http://schema.org/Date',
+          requiredType: 'https://schema.org/Date',
         },
       },
     }, 'latest');
@@ -53,7 +53,7 @@ describe('DateFormatRule', () => {
       fields: {
         date: {
           fieldName: 'date',
-          requiredType: 'http://schema.org/Date',
+          requiredType: 'https://schema.org/Date',
         },
       },
     }, 'latest');
@@ -88,7 +88,7 @@ describe('DateFormatRule', () => {
       fields: {
         startDate: {
           fieldName: 'startDate',
-          requiredType: 'http://schema.org/Date',
+          requiredType: 'https://schema.org/Date',
         },
       },
     }, 'latest');

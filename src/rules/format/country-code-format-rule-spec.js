@@ -12,8 +12,8 @@ describe('CountryCodeFormatRule', () => {
     fields: {
       addressCountry: {
         fieldName: 'addressCountry',
-        sameAs: 'http://schema.org/addressCountry',
-        requiredType: 'http://schema.org/Text',
+        sameAs: 'https://schema.org/addressCountry',
+        requiredType: 'https://schema.org/Text',
       },
     },
   }, 'latest');
