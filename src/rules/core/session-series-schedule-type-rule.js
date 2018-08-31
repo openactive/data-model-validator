@@ -1,4 +1,5 @@
 const Rule = require('../rule');
+const PropertyHelper = require('../../helpers/property');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -30,13 +31,13 @@ module.exports = class SessionSeriesScheduleTypeRule extends Rule {
     if (
       typeof fieldValue === 'object'
       && !(fieldValue instanceof Array)
-      && fieldValue.instanceType !== 'ScheduledSession'
+      && PropertyHelper.getObjectField(fieldValue, 'instanceType', node.options.version) !== 'ScheduledSession'
     ) {
       errors.push(
         this.createError(
           'default',
           {
-            value: fieldValue.instanceType,
+            value: PropertyHelper.getObjectField(fieldValue, 'instanceType', node.options.version),
             path: node.getPath(field, 'instanceType'),
           },
         ),

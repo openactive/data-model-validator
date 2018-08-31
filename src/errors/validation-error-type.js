@@ -34,6 +34,7 @@ const ValidationErrorType = {
   USE_FIELD_ALIASES: 'use_field_aliases',
   FOUND_RPDE_FEED: 'found_rpde_feed',
   MODEL_MUST_BE_CHILD: 'model_must_be_child',
+  EVENT_REQUIRING_BOOKING_MUST_HAVE_VALID_OFFER: 'event_requiring_booking_must_have_valid_offer',
 };
 
 module.exports = Object.freeze(ValidationErrorType);
