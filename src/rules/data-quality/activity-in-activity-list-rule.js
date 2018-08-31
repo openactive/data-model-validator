@@ -36,11 +36,20 @@ module.exports = class ActivityInActivityListRule extends Rule {
         listInvalid: {
           message: 'Activity list "{{list}}" did not return a valid JSON response. Please check that it contains a JSON document.',
           sampleValues: {
-            list: 'https://openactive.io/activity-list/',
+            list: 'https://openactive.io/activity-list',
           },
           category: ValidationErrorCategory.INTERNAL,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FILE_NOT_FOUND,
+        },
+        upgradeActivityList: {
+          message: 'URL "https://openactive.io/activity-list" should now be used in the "inScheme" property to reference the OpenActive Activity list rather than "{{list}}".',
+          sampleValues: {
+            list: 'https://www.openactive.io/activity-list/activity-list.jsonld',
+          },
+          category: ValidationErrorCategory.INTERNAL,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
         },
       },
     };
@@ -51,6 +60,16 @@ module.exports = class ActivityInActivityListRule extends Rule {
     if (typeof fieldValue === 'undefined') {
       return [];
     }
+    const upgradeActivityLists = [
+      'https://www.openactive.io/activity-list/activity-list.jsonld',
+      'https://openactive.io/activity-list/activity-list.jsonld',
+      'http://www.openactive.io/activity-list/activity-list.jsonld',
+      'http://openactive.io/activity-list/activity-list.jsonld',
+      'https://www.openactive.io/activity-list/',
+      'https://openactive.io/activity-list/',
+      'http://www.openactive.io/activity-list/',
+      'http://openactive.io/activity-list/',
+    ];
     const errors = [];
     let found = false;
     let index = 0;
@@ -60,15 +79,26 @@ module.exports = class ActivityInActivityListRule extends Rule {
         if (typeof activity === 'object' && activity !== null) {
           found = false;
           let activityIdentifier;
-
+          const inScheme = PropertyHelper.getObjectField(activity, 'inScheme', node.options.version);
           const activityLists = [];
-          let listUrls = Object.values(metaData.defaultActivityLists);
-          if (
-            typeof activity.inScheme !== 'undefined'
-            && listUrls.indexOf(activity.inScheme) < 0
-            && typeof metaData.defaultActivityLists[activity.inScheme] === 'undefined'
-          ) {
-            listUrls = [activity.inScheme];
+          let listUrls = metaData.defaultActivityLists;
+          if (typeof inScheme !== 'undefined') {
+            if (upgradeActivityLists.indexOf(inScheme) >= 0) {
+              errors.push(
+                this.createError(
+                  'upgradeActivityList',
+                  {
+                    value: activity,
+                    path: node.getPath(field, index),
+                  },
+                  {
+                    list: inScheme,
+                  },
+                ),
+              );
+            } else if (metaData.defaultActivityLists.indexOf(inScheme) < 0) {
+              listUrls = [inScheme];
+            }
           }
           for (const listUrl of listUrls) {
             const jsonResponse = JsonLoaderHelper.getFile(listUrl, node.options);
@@ -87,7 +117,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
                     path: node.getPath(field, index),
                   },
                   {
-                    list: activity.inScheme,
+                    list: inScheme,
                     code: jsonResponse.statusCode,
                   },
                 ),
@@ -101,7 +131,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
                     path: node.getPath(field, index),
                   },
                   {
-                    list: activity.inScheme,
+                    list: inScheme,
                   },
                 ),
               );

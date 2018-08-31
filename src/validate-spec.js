@@ -32,7 +32,7 @@ describe('validate', () => {
           id: 'https://openactive.io/activity-list/#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
           prefLabel: 'Tai Chi',
           type: 'Concept',
-          inScheme: 'https://openactive.io/activity-list/activity-list.jsonld',
+          inScheme: 'https://openactive.io/activity-list',
         },
       ],
       category: [
@@ -40,7 +40,7 @@ describe('validate', () => {
           id: 'https://openactive.io/activity-list/#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
           prefLabel: 'Holistic Classes',
           type: 'Concept',
-          inScheme: 'https://openactive.io/activity-list/activity-list.jsonld',
+          inScheme: 'https://openactive.io/activity-list',
         },
       ],
       eventStatus: 'https://schema.org/EventScheduled',
@@ -121,7 +121,7 @@ describe('validate', () => {
     };
     activityList = {
       '@context': 'https://openactive.io/',
-      '@id': 'https://openactive.io/activity-list/',
+      '@id': 'https://openactive.io/activity-list',
       title: 'OpenActive Activity List',
       description: 'This document describes the OpenActive standard activity list.',
       type: 'skos:ConceptScheme',

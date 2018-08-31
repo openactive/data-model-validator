@@ -64,7 +64,7 @@ class JsonLoaderHelper {
       fetchTime: (new Date()).valueOf(),
     };
     try {
-      const response = RequestHelper.get(url);
+      const response = RequestHelper.get(url, { accept: 'application/ld+json' });
       const { headers } = response;
 
       returnObject.contentType = headers['content-type'];

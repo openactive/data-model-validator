@@ -24,7 +24,7 @@ describe('ActivityInActivityListRule', () => {
 
   const activityList = {
     '@context': 'https://openactive.io/',
-    '@id': 'https://openactive.io/activity-list/',
+    '@id': 'https://openactive.io/activity-list',
     title: 'OpenActive Activity List',
     description: 'This document describes the OpenActive standard activity list.',
     type: 'skos:ConceptScheme',
@@ -42,7 +42,7 @@ describe('ActivityInActivityListRule', () => {
         type: 'skos:Concept',
         prefLabel: 'Football',
         'skos:definition': 'Football is widely considered to be the most popular sport in the world. The beautiful game is England\'s national sport',
-        topConceptOf: 'https://openactive.io/activity-list/',
+        topConceptOf: 'https://openactive.io/activity-list',
       },
     ],
   };
@@ -175,6 +175,48 @@ describe('ActivityInActivityListRule', () => {
       expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
       expect(errors.length).toBe(2);
       expect(errors[0].type).toBe(ValidationErrorType.FILE_NOT_FOUND);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+      expect(errors[1].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
+      expect(errors[1].severity).toBe(ValidationErrorSeverity.WARNING);
+    }
+  });
+  it('should return an error when using an old Activity List URL', () => {
+    const data = {
+      type: 'Event',
+    };
+
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+      errorCode: JsonLoaderHelper.ERROR_NONE,
+      statusCode: 200,
+      data: activityList,
+      url,
+      exception: null,
+      contentType: 'application/json',
+      fetchTime: (new Date()).valueOf(),
+    }));
+
+    const activities = [
+      {
+        id: 'https://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
+        prefLabel: 'Not Real Football',
+        type: 'Concept',
+        inScheme: 'https://openactive.io/activity-list/activity-list.jsonld',
+      },
+    ];
+
+    for (const activity of activities) {
+      data.activity = [activity];
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+        options,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
+      expect(errors.length).toBe(2);
+      expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
       expect(errors[1].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
       expect(errors[1].severity).toBe(ValidationErrorSeverity.WARNING);
