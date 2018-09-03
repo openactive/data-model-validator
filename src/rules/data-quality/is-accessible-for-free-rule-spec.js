@@ -247,7 +247,7 @@ describe('IsAccessibleForFreeRule', () => {
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
   });
 
-  it('should return no error when isAccessibleForFree is set to false with a parent zero offer', () => {
+  it('should return an error when isAccessibleForFree is set to false with a parent zero offer', () => {
     const data = {
       type: 'Event',
       superEvent: {
@@ -274,7 +274,7 @@ describe('IsAccessibleForFreeRule', () => {
     expect(errors[0].type).toBe(ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
   });
-  it('should return no error when isAccessibleForFree is not set with a parent zero offer', () => {
+  it('should return an error when isAccessibleForFree is not set with a parent zero offer', () => {
     const data = {
       type: 'Event',
       superEvent: {

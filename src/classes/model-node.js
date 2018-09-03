@@ -1,4 +1,6 @@
 const jp = require('jsonpath');
+const Model = require('./model');
+const DataModelHelper = require('../helpers/data-model');
 const OptionsHelper = require('../helpers/options');
 const PropertyHelper = require('../helpers/property');
 
@@ -106,15 +108,21 @@ const ModelNode = class {
     return undefined;
   }
 
+  canInheritFrom(parentNode) {
+    return (
+      parentNode.model.type === this.model.type
+      || this.model.subClassGraph.indexOf(`#${parentNode.model.type}`) >= 0
+      || parentNode.model.subClassGraph.indexOf(`#${this.model.type}`) >= 0
+      || this.model.subClassGraph.filter(value => parentNode.model.subClassGraph.indexOf(value) !== -1).length > 0
+    );
+  }
+
   getInheritNode(field) {
     // Check for a parentNode first that is the same type as us
     if (
       this.model.inSpec.indexOf(field) >= 0
       && this.parentNode !== null
-      && (
-        this.parentNode.model.type === this.model.type
-        || this.model.subClassGraph.indexOf(`#${this.parentNode.model.type}`) >= 0
-      )
+      && this.canInheritFrom(this.parentNode)
     ) {
       // Does our property allow us to inherit?
       if (
@@ -134,20 +142,26 @@ const ModelNode = class {
       for (const fieldKey in this.model.fields) {
         if (Object.prototype.hasOwnProperty.call(this.model.fields, fieldKey)) {
           const modelField = this.model.fields[fieldKey];
+          const fieldValue = this.getValue(fieldKey);
           if (typeof modelField.inheritsFrom !== 'undefined'
             && this.constructor.checkInheritRule(modelField.inheritsFrom, field)
-            && typeof this.value[modelField.fieldName] === 'object'
-            && !(this.value[modelField.fieldName] instanceof Array)
-            && this.value[modelField.fieldName] !== null
-            && this.value[modelField.fieldName].type === this.model.type
+            && typeof fieldValue === 'object'
+            && !(fieldValue instanceof Array)
+            && fieldValue !== null
           ) {
-            return new this.constructor(
-              modelField.fieldName,
-              this.value[modelField.fieldName],
-              this,
-              this.model,
-              this.options,
-            );
+            const parentModel = DataModelHelper.loadModel(fieldValue.type, this.options.version);
+            if (parentModel) {
+              const parentNode = new this.constructor(
+                modelField.fieldName,
+                fieldValue,
+                this,
+                new Model(parentModel),
+                this.options,
+              );
+              if (this.canInheritFrom(parentNode)) {
+                return parentNode;
+              }
+            }
           }
         }
       }
