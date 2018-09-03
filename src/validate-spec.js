@@ -15,7 +15,7 @@ describe('validate', () => {
     validEvent = {
       '@context': metaData.contextUrl,
       id: 'http://www.example.org/events/1',
-      type: 'Event',
+      type: 'EventSeries',
       name: 'Tai chi Class',
       description: 'A Tai chi class',
       duration: 'PT1H',
