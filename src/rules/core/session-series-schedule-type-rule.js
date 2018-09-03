@@ -10,11 +10,11 @@ module.exports = class SessionSeriesScheduleTypeRule extends Rule {
     this.targetFields = { SessionSeries: ['eventSchedule'] };
     this.meta = {
       name: 'SessionSeriesScheduleTypeRule',
-      description: 'Validates that the eventSchedule of a SessionSeries has an instanceType of ScheduledSession.',
+      description: 'Validates that the eventSchedule of a SessionSeries has an scheduledEventType of ScheduledSession.',
       tests: {
         default: {
-          description: 'Raises a failure if the eventSchedule of a SessionSeries doesn not have an instanceType of ScheduledSession.',
-          message: 'The eventSchedule of a SessionSeries must have an instanceType of "ScheduledSession".',
+          description: 'Raises a failure if the eventSchedule of a SessionSeries doesn not have an scheduledEventType of ScheduledSession.',
+          message: 'The eventSchedule of a SessionSeries must have an scheduledEventType of "ScheduledSession".',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
@@ -31,14 +31,14 @@ module.exports = class SessionSeriesScheduleTypeRule extends Rule {
     if (
       typeof fieldValue === 'object'
       && !(fieldValue instanceof Array)
-      && PropertyHelper.getObjectField(fieldValue, 'instanceType', node.options.version) !== 'ScheduledSession'
+      && PropertyHelper.getObjectField(fieldValue, 'scheduledEventType', node.options.version) !== 'ScheduledSession'
     ) {
       errors.push(
         this.createError(
           'default',
           {
-            value: PropertyHelper.getObjectField(fieldValue, 'instanceType', node.options.version),
-            path: node.getPath(field, 'instanceType'),
+            value: PropertyHelper.getObjectField(fieldValue, 'scheduledEventType', node.options.version),
+            path: node.getPath(field, 'scheduledEventType'),
           },
         ),
       );

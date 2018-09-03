@@ -26,11 +26,11 @@ describe('SessionSeriesScheduleTypeRule', () => {
     expect(isTargeted).toBe(false);
   });
 
-  it('should return no errors if the instanceType of the eventSchedule of the SessionSeries is ScheduledSession', () => {
+  it('should return no errors if the scheduledEventType of the eventSchedule of the SessionSeries is ScheduledSession', () => {
     const data = {
       type: 'SessionSeries',
       eventSchedule: {
-        instanceType: 'ScheduledSession',
+        scheduledEventType: 'ScheduledSession',
       },
     };
 
@@ -61,11 +61,11 @@ describe('SessionSeriesScheduleTypeRule', () => {
     expect(errors.length).toBe(0);
   });
 
-  it('should return a failure if the instanceType of the eventSchedule of the SessionSeries is not ScheduledSession', () => {
+  it('should return a failure if the scheduledEventType of the eventSchedule of the SessionSeries is not ScheduledSession', () => {
     const data = {
       type: 'SessionSeries',
       eventSchedule: {
-        instanceType: 'Event',
+        scheduledEventType: 'Event',
       },
     };
 
