@@ -44,6 +44,7 @@ module.exports = {
     require('./data-quality/concept-id-in-scheme-rule'),
     require('./data-quality/openactive-urls-correct-rule'),
     require('./data-quality/thumbnail-has-no-thumbnail-rule'),
+    require('./data-quality/address-warning-rule'),
 
     // Notes on the data consumer
     require('./consumer-notes/assume-no-gender-restriction-rule'),
