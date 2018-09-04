@@ -209,7 +209,7 @@ describe('validate', () => {
       {},
       validEvent,
       {
-        '@type': 'Event',
+        '@type': 'EventSeries',
         'schema:name': validEvent.name,
         'oa:ageRange': Object.assign({}, validEvent.ageRange),
       },

@@ -46,6 +46,7 @@ module.exports = {
     require('./data-quality/openactive-urls-correct-rule'),
     require('./data-quality/thumbnail-has-no-thumbnail-rule'),
     require('./data-quality/address-warning-rule'),
+    require('./data-quality/event-no-schedule-subevent-rule'),
 
     // Notes on the data consumer
     require('./consumer-notes/assume-no-gender-restriction-rule'),
