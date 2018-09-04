@@ -13,7 +13,7 @@ module.exports = class AgeRangeMinOrMaxRule extends Rule {
       description: 'Validates that an Event ageRange has a minValue or maxValue.',
       tests: {
         default: {
-          message: '{{model}} "{{field}}" must have a minValue or a maxValue defined.',
+          message: '`{{model}}` `"{{field}}"` must have a `minValue` or a `maxValue` defined.',
           sampleValues: {
             field: 'ageRange',
             model: 'Event',

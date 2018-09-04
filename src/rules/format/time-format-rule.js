@@ -11,10 +11,10 @@ module.exports = class TimeFormatRule extends Rule {
     this.targetFields = '*';
     this.meta = {
       name: 'TimeFormatRule',
-      description: 'Validates that Time fields are in the correct format.',
+      description: 'Validates that Time properties are in the correct format.',
       tests: {
         default: {
-          message: 'Times should be expressed as ISO 8601 format times with a trailing definition of timezone. For example, 12:00Z or 13:00+01:00.',
+          message: 'Times must be expressed as ISO 8601 format times _without_ a trailing definition of timezone. For example, `"12:00"`.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.INVALID_FORMAT,

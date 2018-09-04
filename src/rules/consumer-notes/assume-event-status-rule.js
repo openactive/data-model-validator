@@ -6,13 +6,16 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 module.exports = class AssumeEventStatusRule extends Rule {
   constructor(options) {
     super(options);
-    this.targetModels = ['Event'];
+    this.targetModels = ['Event', 'CourseInstance', 'EventSeries', 'HeadlineEvent', 'ScheduledSession', 'SessionSeries'];
     this.meta = {
       name: 'AssumeEventStatusRule',
       description: 'Generates a notice for how data consumers wil interpret an Event without a valid eventStatus.',
       tests: {
         default: {
-          message: 'Data consumers will assume the event status is scheduled if not specified or invalid.',
+          message: 'Data consumers will assume the `eventStatus` is scheduled if not specified or invalid.\n\nThis `{{model}}` is currently assumed to have the equivalent of:\n\n```\n"eventStatus": "https://openactive.io/EventScheduled"\n```',
+          sampleValues: {
+            model: 'Event',
+          },
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.SUGGESTION,
           type: ValidationErrorType.CONSUMER_ASSUME_EVENT_STATUS,
@@ -41,6 +44,9 @@ module.exports = class AssumeEventStatusRule extends Rule {
           {
             value: testValue,
             path: node.getPath(node.getMappedFieldName('eventStatus') || 'eventStatus'),
+          },
+          {
+            model: node.model.type,
           },
         ),
       );

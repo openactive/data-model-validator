@@ -13,8 +13,8 @@ module.exports = class SessionSeriesScheduleTypeRule extends Rule {
       description: 'Validates that the eventSchedule of a SessionSeries has an scheduledEventType of ScheduledSession.',
       tests: {
         default: {
-          description: 'Raises a failure if the eventSchedule of a SessionSeries doesn not have an scheduledEventType of ScheduledSession.',
-          message: 'The eventSchedule of a SessionSeries must have an scheduledEventType of "ScheduledSession".',
+          description: 'Raises a failure if the eventSchedule of a SessionSeries does not have an scheduledEventType of ScheduledSession.',
+          message: 'The `eventSchedule` of a `SessionSeries` must have an `scheduledEventType` of `"ScheduledSession"`.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,

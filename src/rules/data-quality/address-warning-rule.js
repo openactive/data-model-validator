@@ -12,7 +12,7 @@ module.exports = class AddressWarningRule extends Rule {
       description: 'Raises a warning about the use of data if the address property is not a PostalAddress',
       tests: {
         default: {
-          message: 'Not including components within your address field limits the potential use of your data. For example, Google Reserve requires streetAddress, addressLocality, addressRegion, postalCode and addressCountry to all be provided.',
+          message: 'Not including components within your address property limits the potential use of your data. For example, Google Reserve requires streetAddress, addressLocality, addressRegion, postalCode and addressCountry to all be provided.',
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.WARNING,
           type: ValidationErrorType.TYPE_LIMITS_USE,

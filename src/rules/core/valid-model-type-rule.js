@@ -13,23 +13,23 @@ module.exports = class ValidModelTypeRule extends Rule {
       description: 'Validates that objects are submitted with a recognised type.',
       tests: {
         noType: {
-          message: 'Please add a "type" property to this JSON object.',
+          message: 'Please add a `type` property to this JSON object.\n\nFor example:\n\n```\n{\n  "type": "Event"\n}\n```',
           category: ValidationErrorCategory.DATA_QUALITY,
-          severity: ValidationErrorSeverity.WARNING,
+          severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.MISSING_REQUIRED_FIELD,
         },
         noTypeWithHint: {
-          message: 'Objects in "{{field}}" must be of type "{{typeHint}}". Please add "type": "{{typeHint}}" to this object to allow for further validation.',
+          message: 'Objects in `{{field}}` must be of type `{{typeHint}}`. Please amend the property to `"type": "{{typeHint}}"` in the object to allow for further validation.\n\nFor example:\n\n```\n"{{field}}": {\n  "type": "{{typeHint}}"\n}\n```',
           sampleValues: {
             field: 'activity',
             typeHint: 'Concept',
           },
           category: ValidationErrorCategory.DATA_QUALITY,
-          severity: ValidationErrorSeverity.WARNING,
+          severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.MISSING_REQUIRED_FIELD,
         },
         noExperimental: {
-          message: 'Type "{{type}}" is not recognised by the validator, and cannot be checked for validity.',
+          message: 'Type `{{type}}` is not recognised by the validator, as it is not part of the [Modelling Opportunity Data specification](https://www.openactive.io/modelling-opportunity-data/) or schema.org, and cannot be checked for validity.',
           sampleValues: {
             type: 'CreativeWork',
           },

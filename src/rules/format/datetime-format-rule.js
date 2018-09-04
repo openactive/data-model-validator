@@ -11,10 +11,10 @@ module.exports = class DatetimeFormatRule extends Rule {
     this.targetFields = '*';
     this.meta = {
       name: 'DatetimeFormatRule',
-      description: 'Validates that DateTime fields are in the correct format.',
+      description: 'Validates that DateTime properties are in the correct format.',
       tests: {
         default: {
-          message: 'DateTimes should be expressed as ISO 8601 format datetimes with a trailing definition of timezone. For example, 2018-08-01T10:51:02Z or 2018-08-01T10:51:02+01:00.',
+          message: 'DateTimes must be expressed as ISO 8601 format datetimes with a trailing definition of timezone. For example, `"2018-08-01T10:51:02Z"` or `"2018-08-01T10:51:02+01:00"`.\n\nFor more information, see [the specification](https://www.w3.org/2017/08/realtime-paged-data-exchange/#date-and-time-formats).',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.INVALID_FORMAT,

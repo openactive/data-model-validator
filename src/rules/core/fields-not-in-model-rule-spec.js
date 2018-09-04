@@ -347,7 +347,7 @@ describe('FieldsNotInModelRule', () => {
 
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC);
-      expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
 
@@ -371,7 +371,7 @@ describe('FieldsNotInModelRule', () => {
 
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.FIELD_NOT_IN_SPEC);
-      expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
 

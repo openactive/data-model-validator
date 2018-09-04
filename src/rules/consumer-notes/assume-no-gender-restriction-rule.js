@@ -6,13 +6,16 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 module.exports = class AssumeNoGenderRestrictionRule extends Rule {
   constructor(options) {
     super(options);
-    this.targetModels = ['Event'];
+    this.targetModels = ['Event', 'CourseInstance', 'EventSeries', 'HeadlineEvent', 'ScheduledSession', 'SessionSeries'];
     this.meta = {
       name: 'AssumeNoGenderRestrictionRule',
       description: 'Generates a notice for how data consumers will interpret an Event without a valid genderRestriction.',
       tests: {
         default: {
-          message: 'Data consumers will assume that there is no gender restriction when no valid genderRestriction is supplied on an Event.',
+          message: 'Data consumers will assume that there is no gender restriction when no valid `genderRestriction` is supplied on a `{{model}}`.',
+          sampleValues: {
+            model: 'Event',
+          },
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.SUGGESTION,
           type: ValidationErrorType.CONSUMER_ASSUME_NO_GENDER_RESTRICTION,
@@ -41,6 +44,9 @@ module.exports = class AssumeNoGenderRestrictionRule extends Rule {
           {
             value: testValue,
             path: node.getPath(node.getMappedFieldName('genderRestriction') || 'genderRestriction'),
+          },
+          {
+            model: node.model.type,
           },
         ),
       );

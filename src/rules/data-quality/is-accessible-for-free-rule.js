@@ -7,13 +7,16 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 module.exports = class IsAccessibleForFreeRule extends Rule {
   constructor(options) {
     super(options);
-    this.targetModels = ['Event'];
+    this.targetModels = ['Event', 'CourseInstance', 'EventSeries', 'HeadlineEvent', 'ScheduledSession', 'SessionSeries'];
     this.meta = {
       name: 'IsAccessibleForFreeRule',
       description: 'Validates that isAccessibleForFree is set to true for events that have a zero-price offer.',
       tests: {
         default: {
-          message: 'Events with at least one zero price offer should have isAccessibleForFree set to true.',
+          message: 'Where a `{{model}}` has at least one Offer with `price` set to `0`, it should also have a property named `isAccessibleForFree` set to `true`.\n\nFor example:\n\n```\n{\n  "type": "{{model}}",\n  "offers": [\n    {\n      "type": "Offer",\n      "price": 0\n    }\n  ],\n  "isAccessibleForFree": true\n}\n```',
+          sampleValues: {
+            model: 'Event',
+          },
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.WARNING,
           type: ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE,
@@ -57,6 +60,9 @@ module.exports = class IsAccessibleForFreeRule extends Rule {
               {
                 value: isAccessibleForFree,
                 path: node.getPath(node.getMappedFieldName('isAccessibleForFree') || 'isAccessibleForFree'),
+              },
+              {
+                model: node.model.type,
               },
             ),
           );

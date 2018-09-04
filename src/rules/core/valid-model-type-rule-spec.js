@@ -61,7 +61,7 @@ describe('ValidModelTypeRule', () => {
 
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
-      expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
 
@@ -91,8 +91,8 @@ describe('ValidModelTypeRule', () => {
 
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
-      expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
-      expect(error.message).toBe('Objects in "subEvent" must be of type "Event". Please add "type": "Event" to this object to allow for further validation.');
+      expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
+      expect(error.message).toBe('Objects in `subEvent` must be of type `Event`. Please amend the property to `"type": "Event"` in the object to allow for further validation.\n\nFor example:\n\n```\n"subEvent": {\n  "type": "Event"\n}\n```');
     }
   });
 
@@ -124,7 +124,7 @@ describe('ValidModelTypeRule', () => {
 
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
-      expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
 

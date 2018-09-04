@@ -16,28 +16,28 @@ module.exports = class ContextInRootNodeRule extends Rule {
       tests: {
         noContext: {
           description: 'Raises a failure if the @context is missing from the root node.',
-          message: `The @context field is required in the root node of your data. It should contain the OpenActive context (${metaData.contextUrl}) as a string or the first element in an array.`,
+          message: `The \`@context\` property is required in the root object. It must contain the OpenActive context ("${metaData.contextUrl}") as a string or the first element in an array.\n\nFor example:\n\n\`\`\`\n{\n  "@context": "${metaData.contextUrl}",\n  "type": "Event"\n}\n\`\`\``,
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.MISSING_REQUIRED_FIELD,
         },
         hasContext: {
           description: 'Raises a failure if the @context is present in a non-root node.',
-          message: `The @context field is required to only be in the root node of your data. It should contain the OpenActive context (${metaData.contextUrl}) as a string or the first element in an array.`,
+          message: 'The `@context` property must only be present in the root object. Please ensure that this property is not present in other objects.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_SPEC,
         },
         oaNotInRightPlace: {
           description: `Validates that the @context contains the OpenActive context (${metaData.contextUrl}) as a string or the first element in an array.`,
-          message: `The @context should contain the OpenActive context (${metaData.contextUrl}) as a string or the first element in an array.`,
+          message: `The \`@context\` property must contain the OpenActive context ("${metaData.contextUrl}") as a string or the first element in an array.\n\nFor example:\n\n\`\`\`\n{\n  "@context": "${metaData.contextUrl}",\n  "type": "Event"\n}\n\`\`\``,
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
         },
         type: {
           description: 'Validates that the context is a url or an array or urls.',
-          message: 'Whilst JSON-LD supports inline context objects, the @context should be a URL or array of URLs, with each URL pointing to a published context.',
+          message: `Whilst JSON-LD supports inline context objects, for use in OpenActive the \`@context\` property must contain a URL or array of URLs, with each URL pointing to a published context.\n\nThe \`@context\` property must also contain the OpenActive context ("${metaData.contextUrl}") as the first element in this array.`,
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.INVALID_TYPE,

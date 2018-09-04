@@ -11,16 +11,16 @@ module.exports = class LatLongFormatRule extends Rule {
     };
     this.meta = {
       name: 'LatLongFormatRule',
-      description: 'Validates that latitude and longitude fields are in the correct format.',
+      description: 'Validates that latitude and longitude properties are in the correct format.',
       tests: {
         latitude: {
-          message: 'Geo latitude points should be expressed as floating point numbers, -90 to 90.',
+          message: 'Geo latitude points must be expressed as floating point numbers, in the range `-90` to `90`.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.INVALID_FORMAT,
         },
         longitude: {
-          message: 'Geo longitude points should be expressed as floating point numbers, -180 to 180.',
+          message: 'Geo longitude points must be expressed as floating point numbers, in the range `-180` to `180`.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.INVALID_FORMAT,

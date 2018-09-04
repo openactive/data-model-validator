@@ -10,10 +10,10 @@ module.exports = class DurationFormatRule extends Rule {
     this.targetFields = '*';
     this.meta = {
       name: 'DurationFormatRule',
-      description: 'Validates that duration fields are in the correct format.',
+      description: 'Validates that duration properties are in the correct format.',
       tests: {
         default: {
-          message: 'Durations should be expressed as ISO 8601 durations. For example, P1D, PT1H or PT1H30M.',
+          message: 'Durations must be expressed as ISO 8601 durations. For example, `"P1D"`, `"PT1H"` or `"PT1H30M"`.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.INVALID_FORMAT,

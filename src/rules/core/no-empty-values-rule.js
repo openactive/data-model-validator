@@ -9,25 +9,25 @@ module.exports = class NoEmptyValuesRule extends Rule {
     this.targetFields = '*';
     this.meta = {
       name: 'NoEmptyValuesRule',
-      description: 'Validates that fields are not null, an empty string or an empty array.',
+      description: 'Validates that properties are not null, an empty string or an empty array.',
       tests: {
         notNull: {
-          description: 'Validates that a field is not null.',
-          message: 'Fields must not be null',
+          description: 'Validates that a property is not null.',
+          message: 'Properties must be omitted when they contain null values. This can be achieved with Null Value Handling serialisation settings in many JSON libraries, for example [Json.NET](https://www.newtonsoft.com/json/help/html/T_Newtonsoft_Json_NullValueHandling.htm).',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_IS_EMPTY,
         },
         notEmptyString: {
-          description: 'Validates that a field is not an empty string.',
-          message: 'Fields must not contain empty strings.',
+          description: 'Validates that a property is not an empty string.',
+          message: 'Properties must be omitted when they contain empty strings.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_IS_EMPTY,
         },
         notEmptyArray: {
-          description: 'Validates that a field is not an empty array.',
-          message: 'Fields must not contain empty arrays.',
+          description: 'Validates that a property is not an empty array.',
+          message: 'Properties must be omitted when they contain empty arrays.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_IS_EMPTY,

@@ -10,11 +10,11 @@ module.exports = class NoPrefixOrNamespaceRule extends Rule {
     this.targetFields = '*';
     this.meta = {
       name: 'NoPrefixOrNamespaceRule',
-      description: 'Validates that fields that are aliased in the @context are not submitted in their unaliased form.',
+      description: 'Validates that properties that are aliased in the @context are not submitted in their unaliased form.',
       tests: {
         typeAndId: {
           description: 'Validates that @type and @id are submitted as type and id.',
-          message: 'Field "@{{field}}" should be submitted as "{{field}}"',
+          message: 'OpenActive.io maps the JSON-LD property `@{{field}}` to `{{field}}`, so `{{field}}` should always be used as the name of this property.',
           sampleValues: {
             field: 'type',
           },
@@ -23,8 +23,8 @@ module.exports = class NoPrefixOrNamespaceRule extends Rule {
           type: ValidationErrorType.USE_FIELD_ALIASES,
         },
         noNamespace: {
-          description: 'Validates that a field in the specification is not submitted with its namespace.',
-          message: 'Whilst valid JSON-LD, field "{{submittedField}}" should be submitted without its namespace as "{{field}}".',
+          description: 'Validates that a property in the specification is not submitted with its namespace.',
+          message: 'Whilst valid JSON-LD, property `{{submittedField}}` should be included without its namespace. Simply rename this property to `{{field}}`.',
           sampleValues: {
             submittedField: 'https://schema.org/name',
             field: 'name',
@@ -34,8 +34,8 @@ module.exports = class NoPrefixOrNamespaceRule extends Rule {
           type: ValidationErrorType.USE_FIELD_ALIASES,
         },
         noPrefix: {
-          description: 'Validates that a field in the specification is not submitted with its prefix.',
-          message: 'Whilst valid JSON-LD, field "{{submittedField}}" should be submitted without its prefix as "{{field}}".',
+          description: 'Validates that a property in the specification is not submitted with its prefix.',
+          message: 'Whilst valid JSON-LD, property `{{submittedField}}` should be included without its prefix. Simply rename this property to `{{field}}`.',
           sampleValues: {
             submittedField: 'schema:name',
             field: 'name',

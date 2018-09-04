@@ -12,7 +12,7 @@ module.exports = class MaxLessThenMinRule extends Rule {
       description: 'Validates that minValue is less than or equal to the maxValue of a QuantitativeValue.',
       tests: {
         default: {
-          message: 'minValue must not be greater than maxValue.',
+          message: '`minValue` must not be greater than `maxValue`.',
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.WARNING,
           type: ValidationErrorType.MIN_VALUE_GREATER_THAN_MAX_VALUE,

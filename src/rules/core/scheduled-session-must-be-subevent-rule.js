@@ -13,7 +13,7 @@ module.exports = class ScheduledSessionMustBeSubeventRule extends Rule {
       tests: {
         default: {
           description: 'Raises a failure if a ScheduledSession is found that isn\'t referenced from a subEvent.',
-          message: 'A ScheduledSession must be a subEvent of another Event.',
+          message: 'A `ScheduledSession` must be a `subEvent` of another `Event`.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.MODEL_MUST_BE_CHILD,

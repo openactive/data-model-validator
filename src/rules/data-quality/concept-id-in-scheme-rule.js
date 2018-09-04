@@ -13,7 +13,18 @@ module.exports = class ConceptIdInSchemeRule extends Rule {
       description: 'Validates that both id and inScheme are set on Concept if one of them is set.',
       tests: {
         default: {
-          message: 'If one of "id" or "inScheme" are set on a Concept, the other should be set too.',
+          description: 'Validates that both id and inScheme are set on Concept if one of them is set.',
+          message: 'When using a controlled vocabulary via `inScheme`, `id` must also be included to reference the Concept in the controlled vocabulary.\n\n`id` must not be set without reference to a controlled vocabulary.\n\nYou can fix this by supplying a `{{field}}`.',
+          sampleValues: {
+            field: 'inScheme',
+          },
+          category: ValidationErrorCategory.DATA_QUALITY,
+          severity: ValidationErrorSeverity.WARNING,
+          type: ValidationErrorType.CONCEPT_ID_AND_IN_SCHEME_TOGETHER,
+        },
+        activity: {
+          description: 'Validates that both id and inScheme are set on Concept if one of them is set in an activity list.',
+          message: 'When using an activity list via `inScheme`, `id` must also be included to reference the Concept in the activity list.\n\n`id` must not be set without reference to an activity list.\n\nAn example referece to an activity list is below:\n\n```\n"activity": [\n  {\n    "type": "Concept",\n    "id": "https://openactive.io/activity-list#72ddb2dc-7d75-424e-880a-d90eabe91381",\n    "inScheme": "https://openactive.io/activity-list",\n    "prefLabel": "Running"\n  }\n]\n```',
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.WARNING,
           type: ValidationErrorType.CONCEPT_ID_AND_IN_SCHEME_TOGETHER,
@@ -30,14 +41,13 @@ module.exports = class ConceptIdInSchemeRule extends Rule {
     if (!node.hasMappedField(otherField)) {
       errors.push(
         this.createError(
-          'default',
+          node.name === 'activity' ? 'activity' : 'default',
           {
             value: node.getValue(field),
             path: node.getPath(field),
           },
           {
-            field,
-            model: node.model.type,
+            field: otherField,
           },
         ),
       );

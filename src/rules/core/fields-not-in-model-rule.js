@@ -13,18 +13,18 @@ module.exports = class FieldsNotInModelRule extends Rule {
     this.targetFields = '*';
     this.meta = {
       name: 'FieldsNotInModelRule',
-      description: 'Validates that all fields are present in the specification.',
+      description: 'Validates that all properties are present in the specification.',
       tests: {
         invalidExperimental: {
-          description: 'Raises a notice if experimental fields are detected, but have no definition in the @context.',
-          message: 'No definition for this extension field could be found. Extension fields should be described by a published JSON-LD definition, which should be referred to in the @context. Please check that you have a published context defined, and that this field is defined within it.',
+          description: 'Raises a notice if experimental properties are detected, but have no definition in the @context.',
+          message: 'No definition for this extension property could be found. Extension properties must be described by a published JSON-LD definition, which must be referred to in the `@context`. Please check that you have a published context defined, and that this property is defined within it.\n\nFor more information about extension properties, see the [extension properties guide](https://www.openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.NOTICE,
           type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
         },
         typoHint: {
           description: 'Detects common typos, and raises a warning informing on how to correct.',
-          message: 'Field "{{typoField}}" is a common typo for "{{actualField}}". Please correct this field to "{{actualField}}".',
+          message: '`{{typoField}}` is a common misspelling for the property `{{actualField}}`. Please correct this property to `{{actualField}}`.',
           sampleValues: {
             typoField: 'offer',
             actualField: 'offers',
@@ -34,27 +34,33 @@ module.exports = class FieldsNotInModelRule extends Rule {
           type: ValidationErrorType.FIELD_COULD_BE_TYPO,
         },
         inSchemaOrg: {
-          description: 'Raises a notice that fields in the schema.org schema that aren\'t in the OpenActive specification aren\'t checked by the validator.',
-          message: 'This field is declared in schema.org but this validator is not yet capable of checking whether they have the right format or values. You should refer to the schema.org documentation for additional guidance.',
+          description: 'Raises a notice that properties in the schema.org schema that aren\'t in the OpenActive specification aren\'t checked by the validator.',
+          message: '`{{field}}` is declared in schema.org but this validator is not yet capable of checking whether they have the right format or values. You should refer to the schema.org documentation for [{{field}}](https://schema.org/{{field}}) for additional guidance.',
+          sampleValues: {
+            field: 'actor',
+          },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.NOTICE,
           type: ValidationErrorType.SCHEMA_ORG_FIELDS_NOT_CHECKED,
         },
         notInSpec: {
-          description: 'Raises a warning for fields that aren\'t in the OpenActive specification, and that aren\'t caught by other rules.',
-          message: 'This field is not defined in the OpenActive specification.',
+          description: 'Raises a warning for properties that aren\'t in the OpenActive specification, and that aren\'t caught by other rules.',
+          message: 'This property is not defined in the OpenActive specification. Data publishers are encouraged to publish as many data properties as possible, and for those that don\'t match the specification, to use [extension properties](https://www.openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).\n\nFor example:\n\n```\n{\n  "ext:{{field}}": "my custom data"\n}\n```\n\nIf you are trying to use a recognised property, please check the spelling. Otherwise if you are trying to add your own property, simply rename it to `ext:{{field}}`.',
+          sampleValues: {
+            field: 'myCustomPropertyName',
+          },
           category: ValidationErrorCategory.CONFORMANCE,
-          severity: ValidationErrorSeverity.WARNING,
+          severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_SPEC,
         },
         notAllowed: {
-          description: 'Raises an for fields that are explicitly disallowed by a model.',
-          message: 'This field is not allowed in {{model}}.',
+          description: 'Raises an for properties that are explicitly disallowed by a model.',
+          message: 'This property is not allowed in {{model}}.',
           sampleValues: {
             model: 'HeadlineEvent',
           },
           category: ValidationErrorCategory.CONFORMANCE,
-          severity: ValidationErrorSeverity.WARNING,
+          severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC,
         },
       },
@@ -164,6 +170,9 @@ module.exports = class FieldsNotInModelRule extends Rule {
         }
         if (inSchemaOrg) {
           testKey = 'inSchemaOrg';
+          messageValues = {
+            field,
+          };
         } else {
           testKey = 'notInSpec';
         }

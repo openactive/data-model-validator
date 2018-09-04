@@ -7,14 +7,14 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 module.exports = class IfNeedsBookingMustHaveValidOfferRule extends Rule {
   constructor(options) {
     super(options);
-    this.targetModels = ['Event'];
+    this.targetModels = ['Event', 'CourseInstance', 'EventSeries', 'HeadlineEvent', 'ScheduledSession', 'SessionSeries'];
     this.meta = {
       name: 'IfNeedsBookingMustHaveValidOfferRule',
       description: 'Validates that an Event with a isAccessibleWithoutBooking of false has a valid offer with an id or url.',
       tests: {
         default: {
           description: 'Raises a failure if an Event with a isAccessibleWithoutBooking of false has no valid offer with an id or url.',
-          message: 'An Event with an isAccessibleWithoutBooking set to false should have at least one Offer with an id or url.',
+          message: 'An `Event` with `isAccessibleWithoutBooking` set to `false` should have at least one `Offer` with an `id` or `url`.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.EVENT_REQUIRING_BOOKING_MUST_HAVE_VALID_OFFER,

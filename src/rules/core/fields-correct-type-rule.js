@@ -9,17 +9,17 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     this.targetFields = '*';
     this.meta = {
       name: 'FieldsCorrectTypeRule',
-      description: 'Validates that all fields are the correct type.',
+      description: 'Validates that all properties are the correct type.',
       tests: {
         noValueObjects: {
           description: 'Raises a notice if a JSON-LD value object is found.',
-          message: 'Whilst value objects are valid JSON-LD, they are not part of the OpenActive specification.',
+          message: 'Whilst value objects are valid JSON-LD, they are not part of the OpenActive specification. Please use a JavaScript primitive type instead.',
           category: ValidationErrorCategory.CONFORMANCE,
-          severity: ValidationErrorSeverity.NOTICE,
+          severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.UNSUPPORTED_VALUE,
         },
         singleType: {
-          description: 'Validates that a field conforms to a single type.',
+          description: 'Validates that a property conforms to a single type.',
           message: 'Invalid type, expected {{expectedType}} but found {{foundType}}.',
           sampleValues: {
             expectedType: '"https://schema.org/Text"',
@@ -30,7 +30,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           type: ValidationErrorType.INVALID_TYPE,
         },
         multipleTypes: {
-          description: 'Validates that a field conforms one of a list of types.',
+          description: 'Validates that a property conforms one of a list of types.',
           message: 'Invalid type, expected one of {{expectedTypes}} but found {{foundType}}.',
           sampleValues: {
             expectedTypes: '"https://schema.org/Text", "ArrayOf#https://schema.org/Text"',

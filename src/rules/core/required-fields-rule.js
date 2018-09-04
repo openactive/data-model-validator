@@ -9,10 +9,10 @@ module.exports = class RequiredFieldsRule extends Rule {
     this.targetModels = '*';
     this.meta = {
       name: 'RequiredFieldsRule',
-      description: 'Validates that all required fields are present in the JSON data.',
+      description: 'Validates that all required properties are present in the JSON data.',
       tests: {
         default: {
-          message: 'Required field "{{field}}" is missing from "{{model}}".',
+          message: 'Required property "{{field}}" is missing from "{{model}}".',
           sampleValues: {
             field: 'name',
             model: 'Event',

@@ -12,7 +12,7 @@ module.exports = class ThumbnailHasNoThumbnailRule extends Rule {
       description: 'Validates that a thumbnail of an ImageObject does not have its own thumbnail.',
       tests: {
         default: {
-          message: 'The thumbnail of an ImageObject cannot have its own thumbnail.',
+          message: 'The thumbnail of an `ImageObject` cannot be the same as the `ImageObject` itself.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.THUMBNAIL_HAS_NO_THUMBNAIL,

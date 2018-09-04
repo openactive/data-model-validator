@@ -9,13 +9,13 @@ module.exports = class ValueInOptionsRule extends Rule {
     this.targetFields = '*';
     this.meta = {
       name: 'ValueInOptionsRule',
-      description: 'Validates that fields contain allowed values.',
+      description: 'Validates that properties contain allowed values.',
       tests: {
         default: {
-          message: 'Value "{{value}}" is not in the allowed values for this field. Should be one of {{allowedValues}}.',
+          message: 'Value `"{{value}}"` is not in the allowed values for this property. Must be one of {{allowedValues}}.',
           sampleValues: {
             value: 'Male',
-            allowedValues: '"https://openactive.io/Female", "https://openactive.io/Male", "https://openactive.io/None"',
+            allowedValues: '`"https://openactive.io/Female"`, `"https://openactive.io/Male"`, `"https://openactive.io/None"`',
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -60,7 +60,7 @@ module.exports = class ValueInOptionsRule extends Rule {
             },
             {
               value: fieldValue,
-              allowedValues: `"${fieldObj.options.join('", "')}"`,
+              allowedValues: `\`"${fieldObj.options.join('"`, `"')}"\``,
             },
           ),
         );

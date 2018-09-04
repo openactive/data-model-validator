@@ -10,18 +10,18 @@ module.exports = class CountryCodeFormatRule extends Rule {
     this.targetFields = { PostalAddress: ['addressCountry'] };
     this.meta = {
       name: 'CountryCodeFormatRule',
-      description: 'Validates that country code fields are in the correct format.',
+      description: 'Validates that country code properties are in the correct format.',
       tests: {
         default: {
-          description: 'Validates that country code fields are in the correct format.',
-          message: 'Country codes should be expressed as per the assigned codes in ISO 3166-1 Alpha 2.',
+          description: 'Validates that country code properties are in the correct format.',
+          message: 'Country codes should be expressed as per the assigned codes in [ISO 3166-1 Alpha 2](https://en.wikipedia.org/wiki/ISO_3166-1). For example `"GB"` (not `"UK"`).',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.INVALID_FORMAT,
         },
         ukDetected: {
           description: 'If the country code passed is "UK", provides a hint that it should be "GB".',
-          message: 'Country codes should be expressed as per the assigned codes in ISO 3166-1 Alpha 2. In this standard, "UK" should be "GB".',
+          message: 'Country codes must be expressed as per the assigned codes in [ISO 3166-1 Alpha 2](https://en.wikipedia.org/wiki/ISO_3166-1). In this standard, `"UK"` should be `"GB"`.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.INVALID_FORMAT,

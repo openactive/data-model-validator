@@ -89,7 +89,7 @@ describe('RpdeFeedRule', () => {
 
     expect(errors[0].type).toBe(ValidationErrorType.FOUND_RPDE_FEED);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.NOTICE);
-    expect(errors[0].message).toBe('The JSON you have submitted appears to be an RPDE feed. For performance reasons, the validator has only checked the first 2 items in this feed. Please note that validation on RPDE feeds within the model validator is limited to checking whether required fields are present, and that the data in each item is a valid data model.');
+    expect(errors[0].message).toContain('first 2 items');
 
     expect(data.items.length).toBe(2);
   });

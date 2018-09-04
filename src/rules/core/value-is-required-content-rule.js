@@ -9,10 +9,10 @@ module.exports = class ValueIsRequiredContentRule extends Rule {
     this.targetFields = '*';
     this.meta = {
       name: 'ValueIsRequiredContentRule',
-      description: 'Validates that fields match defined required content.',
+      description: 'Validates that properties match defined required content.',
       tests: {
         default: {
-          message: 'Value "{{value}}" is not an allowed value for this field. Should be "{{allowedValue}}".',
+          message: 'Value `"{{value}}"` is not an allowed value for this property. Must be `"{{allowedValue}}"`.',
           sampleValues: {
             value: 'Event',
             allowedValue: 'Session',

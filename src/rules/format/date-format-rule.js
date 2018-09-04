@@ -11,10 +11,10 @@ module.exports = class DateFormatRule extends Rule {
     this.targetFields = '*';
     this.meta = {
       name: 'DateFormatRule',
-      description: 'Validates that Date fields are in the correct format.',
+      description: 'Validates that Date properties are in the correct format.',
       tests: {
         default: {
-          message: 'Dates should be expressed as ISO 8601 dates. For example, 2018-08-01.',
+          message: 'Dates must be expressed as ISO 8601 dates. For example, `"2018-08-01"`.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.INVALID_FORMAT,

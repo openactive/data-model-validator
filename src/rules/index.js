@@ -21,6 +21,7 @@ module.exports = {
     require('./core/session-series-schedule-type-rule'),
     require('./core/context-in-root-node-rule'),
     require('./core/scheduled-session-must-be-subevent-rule'),
+    require('./core/if-needs-booking-must-have-valid-offer-rule'),
 
     // Formatting rules
     require('./format/duration-format-rule'),

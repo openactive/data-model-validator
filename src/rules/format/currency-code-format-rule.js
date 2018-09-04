@@ -10,10 +10,10 @@ module.exports = class CurrencyCodeFormatRule extends Rule {
     this.targetFields = '*';
     this.meta = {
       name: 'CurrencyCodeFormatRule',
-      description: 'Validates that currency code fields are in the correct format.',
+      description: 'Validates that currency code properties are in the correct format.',
       tests: {
         default: {
-          message: 'Currency codes should be expressed as per the assigned 3-letter codes in ISO 4217.',
+          message: 'Currency codes must be expressed as per the assigned [3-letter codes in ISO 4217](https://en.wikipedia.org/wiki/ISO_4217). For example `"GBP"`.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.INVALID_FORMAT,

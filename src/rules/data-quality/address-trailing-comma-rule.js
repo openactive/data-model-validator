@@ -11,10 +11,10 @@ module.exports = class AddressTrailingCommaRule extends Rule {
     };
     this.meta = {
       name: 'AddressTrailingCommaRule',
-      description: 'Validates that address fields don\'t end with trailing commas.',
+      description: 'Validates that address properties don\'t end with trailing commas.',
       tests: {
         default: {
-          message: 'Address fields should not have a trailing comma.',
+          message: 'Address properties should not have a trailing comma.',
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.WARNING,
           type: ValidationErrorType.ADDRESS_HAS_TRAILING_COMMA,

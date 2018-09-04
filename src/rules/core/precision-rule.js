@@ -10,11 +10,11 @@ module.exports = class PrecisionRule extends Rule {
     this.targetFields = '*';
     this.meta = {
       name: 'PrecisionRule',
-      description: 'Validates that all fields are to the correct number of decimal places.',
+      description: 'Validates that all properties are to the correct number of decimal places.',
       tests: {
         belowMinimum: {
-          description: 'Raises a suggestion if a number\'s precision is below the minimum number of decimal places suggested for a field.',
-          message: 'This field should have at least {{minDecimalPlaces}} decimal places. Note that this notice will also appear when trailing zeros have been truncated.',
+          description: 'Raises a suggestion if a number\'s precision is below the minimum number of decimal places suggested for a property.',
+          message: 'The value of this property should have at least {{minDecimalPlaces}} decimal places. Note that this notice will also appear when trailing zeros have been truncated.',
           sampleValues: {
             minDecimalPlaces: 3,
           },
@@ -23,8 +23,8 @@ module.exports = class PrecisionRule extends Rule {
           type: ValidationErrorType.INVALID_PRECISION,
         },
         aboveMaximum: {
-          description: 'Raises a warning if a number\'s precision is above the maximum number of decimal places required for a field.',
-          message: 'This field should not exceed {{maxDecimalPlaces}} decimal places.',
+          description: 'Raises a warning if a number\'s precision is above the maximum number of decimal places required for a property.',
+          message: 'The value of this property must not exceed {{maxDecimalPlaces}} decimal places.',
           sampleValues: {
             maxDecimalPlaces: 2,
           },

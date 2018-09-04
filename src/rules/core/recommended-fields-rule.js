@@ -9,10 +9,10 @@ module.exports = class RecommendedFieldsRule extends Rule {
     this.targetModels = '*';
     this.meta = {
       name: 'RecommendedFieldsRule',
-      description: 'Validates that all recommended fields are present in the JSON data.',
+      description: 'Validates that all recommended properties are present in the JSON data.',
       tests: {
         default: {
-          message: 'Recommended field "{{field}}" is missing from "{{model}}".',
+          message: 'Recommended property `{{field}}` is missing from `{{model}}`.',
           sampleValues: {
             field: 'description',
             model: 'Event',

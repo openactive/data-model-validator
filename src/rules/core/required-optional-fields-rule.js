@@ -9,12 +9,12 @@ module.exports = class RequiredOptionalFieldsRule extends Rule {
     this.targetModels = '*';
     this.meta = {
       name: 'RequiredOptionalFieldsRule',
-      description: 'Validates that all optional fields that are part of a required group are present in the JSON data.',
+      description: 'Validates that all optional properties that are part of a required group are present in the JSON data.',
       tests: {
         default: {
-          message: 'While these properties are marked as optional, a data publisher must provide one of {{optionalFields}} for an "{{model}}".',
+          message: 'When publishing a `{{model}}`, a data publisher must provide one of {{optionalFields}}. For more information see the [Modelling Opportunity Data specification](https://www.openactive.io/modelling-opportunity-data/).',
           sampleValues: {
-            optionalFields: '"startDate", "eventSchedule"',
+            optionalFields: '`startDate`, `eventSchedule`',
             model: 'Event',
           },
           category: ValidationErrorCategory.CONFORMANCE,
@@ -23,7 +23,6 @@ module.exports = class RequiredOptionalFieldsRule extends Rule {
         },
       },
     };
-    this.description = 'Validates that all optional fields that are part of a required group are present in the JSON data.';
   }
 
   validateModel(node) {
@@ -55,7 +54,7 @@ module.exports = class RequiredOptionalFieldsRule extends Rule {
                 path: node.getPath(option.options),
               },
               {
-                optionalFields: `"${option.options.join('", "')}"`,
+                optionalFields: `\`${option.options.join('`, `')}\``,
                 model: node.model.type,
               },
             ),

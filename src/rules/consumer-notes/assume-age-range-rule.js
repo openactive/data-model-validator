@@ -6,35 +6,38 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 module.exports = class AssumeAgeRangeRule extends Rule {
   constructor(options) {
     super(options);
-    this.targetModels = ['Event'];
+    this.targetModels = ['Event', 'CourseInstance', 'EventSeries', 'HeadlineEvent', 'ScheduledSession', 'SessionSeries'];
     this.meta = {
       name: 'AssumeAgeRangeRule',
       description: 'Generates a notice for various ageRange combinations on Event.',
       tests: {
         noAgeRange: {
           description: 'Generates a notice that informs how a data consumer will interpret an Event with no age range.',
-          message: 'Data consumers will assume the age range is 18+ when not specified.',
+          message: 'Data consumers will assume that the `ageRange` is 18+ when not specified.\n\nThis `{{model}}` is currently assumed to have the equivalent of:\n\n```\n"ageRange": {\n  "minValue": 18\n}```',
+          sampleValues: {
+            model: 'Event',
+          },
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.SUGGESTION,
           type: ValidationErrorType.CONSUMER_ASSUME_AGE_RANGE,
         },
         noMinValue: {
           description: 'Generates a notice that informs how a data consumer will interpret an Event with an age range with no minValue.',
-          message: 'Data consumers will assume the age range has no minimum age if no minValue is specified.',
+          message: 'Data consumers will assume that the `ageRange` has no minimum age if no `minValue` is specified.',
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.SUGGESTION,
           type: ValidationErrorType.CONSUMER_ASSUME_AGE_RANGE,
         },
         noMaxValue: {
           description: 'Generates a notice that informs how a data consumer will interpret an Event with an age range with no maxValue.',
-          message: 'Data consumers will assume the age range has no maximum age if no maxValue is specified.',
+          message: 'Data consumers will assume that the `ageRange` has no maximum age if no `maxValue` is specified.',
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.SUGGESTION,
           type: ValidationErrorType.CONSUMER_ASSUME_AGE_RANGE,
         },
         noMaxValueMinValueZero: {
           description: 'Generates a notice that informs how a data consumer will interpret an Event with an age range with no maxValue and a minValue of zero.',
-          message: 'Data consumers will assume the age range is suitable for all if minValue is 0 and no maxValue is specified.',
+          message: 'Data consumers will assume that the `ageRange` is suitable for all if `minValue` is `0` and no `maxValue` is specified.',
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.SUGGESTION,
           type: ValidationErrorType.CONSUMER_ASSUME_AGE_RANGE,
@@ -87,6 +90,9 @@ module.exports = class AssumeAgeRangeRule extends Rule {
           {
             value: testValue,
             path: node.getPath(node.getMappedFieldName('ageRange') || 'ageRange'),
+          },
+          {
+            model: node.model.type,
           },
         ),
       );

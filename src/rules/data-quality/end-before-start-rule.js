@@ -7,13 +7,13 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 module.exports = class EndBeforeStartRule extends Rule {
   constructor(options) {
     super(options);
-    this.targetModels = ['Event', 'Schedule'];
+    this.targetModels = ['Event', 'CourseInstance', 'EventSeries', 'HeadlineEvent', 'ScheduledSession', 'SessionSeries', 'Schedule'];
     this.meta = {
       name: 'EndBeforeStartRule',
       description: 'Validates that startDate is before the endDate of an Event or Schedule.',
       tests: {
         default: {
-          message: 'Start date should not be after the end date of {{model}}.',
+          message: 'Start date should not be after the end date of `{{model}}`.',
           sampleValues: {
             model: 'Event',
           },

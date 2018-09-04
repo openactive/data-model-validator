@@ -7,13 +7,16 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 module.exports = class NoZeroDurationRule extends Rule {
   constructor(options) {
     super(options);
-    this.targetModels = ['Event', 'Schedule'];
+    this.targetModels = ['Event', 'CourseInstance', 'EventSeries', 'HeadlineEvent', 'ScheduledSession', 'SessionSeries', 'Schedule'];
     this.meta = {
       name: 'NoZeroDurationRule',
       description: 'Validates that a duration is non-zero in an Event or Schedule.',
       tests: {
         default: {
-          message: 'Zero durations are not allowed.',
+          message: 'A `{{model}}` must have a non-zero duration.',
+          sampleValues: {
+            model: 'Event',
+          },
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.NO_ZERO_DURATION,
@@ -35,6 +38,9 @@ module.exports = class NoZeroDurationRule extends Rule {
           {
             value: fieldValue,
             path: node.getPath(node.getMappedFieldName('duration')),
+          },
+          {
+            model: node.model.type,
           },
         ),
       );

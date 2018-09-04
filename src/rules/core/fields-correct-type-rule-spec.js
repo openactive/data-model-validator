@@ -1162,7 +1162,7 @@ describe('FieldsCorrectTypeRule', () => {
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 
-  it('should return a notice if it encounters a value object', () => {
+  it('should return a failure if it encounters a value object', () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -1189,6 +1189,6 @@ describe('FieldsCorrectTypeRule', () => {
     const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.UNSUPPORTED_VALUE);
-    expect(errors[0].severity).toBe(ValidationErrorSeverity.NOTICE);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 });

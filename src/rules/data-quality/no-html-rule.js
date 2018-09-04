@@ -9,7 +9,7 @@ module.exports = class NoHtmlRule extends Rule {
     this.targetFields = '*';
     this.meta = {
       name: 'NoHtmlRule',
-      description: 'Validates that a text field doesn\'t contain HTML.',
+      description: 'Validates that a text property doesn\'t contain HTML.',
       tests: {
         default: {
           message: 'HTML should be stripped from all data before publishing.',
