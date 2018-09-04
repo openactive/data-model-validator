@@ -47,6 +47,7 @@ module.exports = {
     require('./data-quality/thumbnail-has-no-thumbnail-rule'),
     require('./data-quality/address-warning-rule'),
     require('./data-quality/event-no-schedule-subevent-rule'),
+    require('./data-quality/session-course-has-subevent-or-schedule-rule'),
 
     // Notes on the data consumer
     require('./consumer-notes/assume-no-gender-restriction-rule'),
