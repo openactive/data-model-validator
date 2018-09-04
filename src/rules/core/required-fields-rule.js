@@ -12,7 +12,7 @@ module.exports = class RequiredFieldsRule extends Rule {
       description: 'Validates that all required properties are present in the JSON data.',
       tests: {
         default: {
-          message: 'Required property "{{field}}" is missing from "{{model}}".',
+          message: 'Required property `{{field}}` is missing from `{{model}}`.',
           sampleValues: {
             field: 'name',
             model: 'Event',

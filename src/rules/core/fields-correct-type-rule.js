@@ -20,10 +20,11 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         },
         singleType: {
           description: 'Validates that a property conforms to a single type.',
-          message: 'Invalid type, expected {{expectedType}} but found {{foundType}}.',
+          message: 'Invalid type, expected {{expectedType}} but found {{foundType}}.{{examples}}',
           sampleValues: {
-            expectedType: '"https://schema.org/Text"',
-            foundType: '"https://schema.org/Float"',
+            expectedType: this.constructor.getHumanReadableType('https://schema.org/Text'),
+            foundType: this.constructor.getHumanReadableType('https://schema.org/Float'),
+            examples: this.constructor.makeExamples('property', ['https://schema.org/Text']),
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -31,10 +32,11 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         },
         multipleTypes: {
           description: 'Validates that a property conforms one of a list of types.',
-          message: 'Invalid type, expected one of {{expectedTypes}} but found {{foundType}}.',
+          message: 'Invalid type, expected one of {{expectedTypes}} but found {{foundType}}.{{examples}}',
           sampleValues: {
-            expectedTypes: '"https://schema.org/Text", "ArrayOf#https://schema.org/Text"',
-            foundType: '"https://schema.org/Float"',
+            expectedTypes: this.constructor.makeExpectedTypeList(['https://schema.org/Text', 'ArrayOf#https://schema.org/Text', '#Concept', 'ArrayOf#Concept']),
+            foundType: this.constructor.getHumanReadableType('https://schema.org/Float'),
+            examples: this.constructor.makeExamples('property', ['https://schema.org/Text', 'ArrayOf#https://schema.org/Text', '#Concept', 'ArrayOf#Concept']),
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -42,6 +44,123 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         },
       },
     };
+  }
+
+  static getHumanReadableType(type) {
+    let ret = '';
+    let isArray = false;
+    let readableType = type;
+    if (type.match(/^ArrayOf#/)) {
+      ret = '`Array` of ';
+      readableType = readableType.replace(/^ArrayOf#/, '');
+      isArray = true;
+    }
+    return `${ret}${this.getHumanReadableRawType(readableType, isArray)}`;
+  }
+
+  static getHumanReadableRawType(type, isArray = false) {
+    let plural = '';
+    if (isArray) {
+      plural = 's';
+    }
+    switch (type) {
+      case 'https://schema.org/Text':
+        return `[\`string${plural}\`](${type})`;
+      case 'https://schema.org/Float':
+        return `[\`float${plural}\`](${type})`;
+      case 'https://schema.org/Boolean':
+        return `[\`boolean${plural}\`](${type})`;
+      case 'https://schema.org/Integer':
+        return `[\`integer${plural}\`](${type})`;
+      case 'https://schema.org/Date':
+        return `[\`string${plural}\` containing an ISO 8601 Date](${type})`;
+      case 'https://schema.org/DateTime':
+        return `[\`string${plural}\` containing an ISO 8601 DateTime](${type})`;
+      case 'https://schema.org/Time':
+        return `[\`string${plural}\` containing an ISO 8601 Time](${type})`;
+      case 'https://schema.org/Duration':
+        return `[\`string${plural}\` containing an ISO 8601 Duration](${type})`;
+      case 'https://schema.org/url':
+        return `[\`string${plural}\` containing a url](${type})`;
+      case 'https://schema.org/urlTemplate':
+        return `[\`string${plural}\` containing a urlTemplate](${type})`;
+      default:
+        return `\`${type.replace(/^#/, '')}\``;
+    }
+  }
+
+  static getHumanReadableExample(property, type) {
+    let isArray = false;
+    let prefix = '';
+    let readableType = type;
+    if (type.match(/^ArrayOf#/)) {
+      readableType = readableType.replace(/^ArrayOf#/, '');
+      isArray = true;
+      prefix = '  ';
+    }
+    const humanReadableType = this.getHumanReadableRawType(readableType, isArray);
+    let aOrAn = 'A';
+    if (isArray || humanReadableType.match(/^\[?`[aeiouAEIOU]/)) {
+      aOrAn = 'An';
+    }
+    const hint = `${aOrAn} ${isArray ? 'array of ' : ''}${humanReadableType} looks like this:`;
+
+    let example = '';
+    switch (readableType) {
+      case 'https://schema.org/Text':
+        example = `${prefix}"example string"`;
+        break;
+      case 'https://schema.org/Float':
+        example = `${prefix}1.234`;
+        break;
+      case 'https://schema.org/Boolean':
+        example = `${prefix}true`;
+        break;
+      case 'https://schema.org/Integer':
+        example = `${prefix}1234`;
+        break;
+      case 'https://schema.org/Date':
+        example = `${prefix}"2017-03-04Z"`;
+        break;
+      case 'https://schema.org/DateTime':
+        example = `${prefix}"2017-03-04T20:15:00Z"`;
+        break;
+      case 'https://schema.org/Time':
+        example = `${prefix}"20:15"`;
+        break;
+      case 'https://schema.org/Duration':
+        example = `${prefix}"PT30M"`;
+        break;
+      case 'https://schema.org/url':
+        example = `${prefix}"https://www.example.org/"`;
+        break;
+      case 'https://schema.org/urlTemplate':
+        example = `${prefix}"https://www.example.org/{startDate}/{endDate}"`;
+        break;
+      default:
+        example = `${prefix}{\n${prefix}  "type": "${readableType.replace(/^#/, '')}"\n${prefix}}`;
+        break;
+    }
+    if (isArray) {
+      return `${hint}\n\n\`\`\`\n${property ? `"${property}": ` : ''}[\n${example}\n]\n\`\`\``;
+    }
+    return `${hint}\n\n\`\`\`\n${property ? `"${property}": ` : ''}${example}\n\`\`\``;
+  }
+
+  static makeExpectedTypeList(typeChecks) {
+    let expectedTypes = '\n\n<ul>';
+    for (const typeCheck of typeChecks) {
+      expectedTypes = `${expectedTypes}<li>${this.getHumanReadableType(typeCheck)}</li>`;
+    }
+    return `${expectedTypes}</ul>`;
+  }
+
+  static makeExamples(property, types) {
+    let examples = '';
+    for (const type of types) {
+      examples = `${examples}\n\n${this.getHumanReadableExample(property, type)}`;
+    }
+    return examples;
   }
 
   validateField(node, field) {
@@ -72,6 +191,10 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     if (!checkPass) {
       let testKey;
       let messageValues = {};
+      let propName = node.name;
+      if (propName === '$') {
+        propName = null;
+      }
       // Check whether we have a value object
       if (
         typeof fieldValue === 'object'
@@ -84,14 +207,17 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       } else if (typeChecks.length === 1) {
         testKey = 'singleType';
         messageValues = {
-          expectedType: `"${typeChecks[0]}"`,
-          foundType: `"${derivedType}"`,
+          expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
+          foundType: this.constructor.getHumanReadableType(derivedType),
+          examples: this.constructor.makeExamples(propName, typeChecks),
         };
       } else {
         testKey = 'multipleTypes';
+        const expectedTypes = this.constructor.makeExpectedTypeList(typeChecks);
         messageValues = {
-          expectedTypes: `"${typeChecks.join('", "')}"`,
-          foundType: `"${derivedType}"`,
+          expectedTypes,
+          foundType: this.constructor.getHumanReadableType(derivedType),
+          examples: this.constructor.makeExamples(propName, typeChecks),
         };
       }
       errors.push(
