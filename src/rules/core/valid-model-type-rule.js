@@ -28,6 +28,16 @@ module.exports = class ValidModelTypeRule extends Rule {
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.MISSING_REQUIRED_FIELD,
         },
+        noTypeWithArrayHint: {
+          message: 'Objects in `{{field}}` must be of type `{{typeHint}}`. Please amend the property to `"type": "{{typeHint}}"` in the object to allow for further validation.\n\nFor example:\n\n```\n"{{field}}": [\n  {\n    "type": "{{typeHint}}"\n  }\n]\n```',
+          sampleValues: {
+            field: 'activity',
+            typeHint: 'Concept',
+          },
+          category: ValidationErrorCategory.DATA_QUALITY,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.MISSING_REQUIRED_FIELD,
+        },
         noExperimental: {
           message: 'Type `{{type}}` is not recognised by the validator, as it is not part of the [Modelling Opportunity Data specification](https://www.openactive.io/modelling-opportunity-data/) or schema.org, and cannot be checked for validity.',
           sampleValues: {
@@ -62,6 +72,9 @@ module.exports = class ValidModelTypeRule extends Rule {
           const uniqueTypes = [...new Set(types.map(x => x.replace(/^ArrayOf/, '')))];
           if (uniqueTypes.length === 1 && uniqueTypes[0].match(/^#/)) {
             testKey = 'noTypeWithHint';
+            if (typeof node.arrayIndex !== 'undefined') {
+              testKey = 'noTypeWithArrayHint';
+            }
             messageValues = {
               field: node.name,
               typeHint: uniqueTypes[0].substr(1),

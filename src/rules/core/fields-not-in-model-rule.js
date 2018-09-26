@@ -35,7 +35,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
         },
         inSchemaOrg: {
           description: 'Raises a notice that properties in the schema.org schema that aren\'t in the OpenActive specification aren\'t checked by the validator.',
-          message: '`{{field}}` is declared in schema.org but this validator is not yet capable of checking whether they have the right format or values. You should refer to the schema.org documentation for [{{field}}](https://schema.org/{{field}}) for additional guidance.',
+          message: '`schema:{{field}}` is declared in schema.org but this validator is not yet capable of checking whether they have the right format or values. You should refer to the schema.org documentation for [schema:{{field}}](https://schema.org/{{field}}) for additional guidance.',
           sampleValues: {
             field: 'actor',
           },
@@ -160,9 +160,13 @@ module.exports = class FieldsNotInModelRule extends Rule {
       } else {
         // Is this in schema.org?
         let inSchemaOrg = false;
+        let fieldToTest = field;
+        if (prop.prefix === 'schema') {
+          fieldToTest = prop.label;
+        }
         if (typeof node.model.derivedFrom !== 'undefined') {
           for (const spec of node.options.schemaOrgSpecifications) {
-            if (GraphHelper.isPropertyInClass(spec, `schema:${field}`, node.model.derivedFrom, node.options.version)) {
+            if (GraphHelper.isPropertyInClass(spec, `schema:${fieldToTest}`, node.model.derivedFrom, node.options.version)) {
               inSchemaOrg = true;
               break;
             }
@@ -171,10 +175,13 @@ module.exports = class FieldsNotInModelRule extends Rule {
         if (inSchemaOrg) {
           testKey = 'inSchemaOrg';
           messageValues = {
-            field,
+            field: prop.label,
           };
         } else {
           testKey = 'notInSpec';
+          messageValues = {
+            field: prop.label,
+          };
         }
       }
     }
