@@ -191,8 +191,8 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     if (!checkPass) {
       let testKey;
       let messageValues = {};
-      let propName = node.name;
-      if (propName === '$') {
+      let propName = field;
+      if (propName === '$' || !propName) {
         propName = null;
       }
       // Check whether we have a value object
