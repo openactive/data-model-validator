@@ -18,10 +18,7 @@ module.exports = {
     require('./core/value-is-required-content-rule'),
     require('./core/precision-rule'),
     require('./core/no-prefix-or-namespace-rule'),
-    require('./core/session-series-schedule-type-rule'),
     require('./core/context-in-root-node-rule'),
-    require('./core/scheduled-session-must-be-subevent-rule'),
-    require('./core/if-needs-booking-must-have-valid-offer-rule'),
 
     // Formatting rules
     require('./format/duration-format-rule'),
@@ -48,6 +45,10 @@ module.exports = {
     require('./data-quality/address-warning-rule'),
     require('./data-quality/event-no-schedule-subevent-rule'),
     require('./data-quality/session-course-has-subevent-or-schedule-rule'),
+    require('./data-quality/scheduled-session-must-be-subevent-rule'),
+    require('./data-quality/session-series-schedule-type-rule'),
+    require('./data-quality/currency-if-non-zero-price-rule'),
+    require('./data-quality/if-needs-booking-must-have-valid-offer-rule'),
 
     // Notes on the data consumer
     require('./consumer-notes/assume-no-gender-restriction-rule'),
