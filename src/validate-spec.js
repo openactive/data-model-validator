@@ -53,25 +53,58 @@ describe('validate', () => {
           type: 'Event',
           id: 'http://www.example.org/events/12',
           url: 'http://www.example.org/events/12',
+          startDate: '2017-03-22T20:00:00Z',
+          endDate: '2017-03-22T21:00:00Z',
+          offers: [{
+            id: 'http://example.org/offer/1',
+            ageRange: {
+              type: 'QuantitativeValue',
+              minValue: 18,
+              maxValue: 65,
+            },
+            url: 'http://example.org/offer/1',
+            type: 'Offer',
+            name: 'Single session',
+            price: 5,
+            priceCurrency: 'GBP',
+          }],
         },
         {
           type: 'ScheduledSession',
           id: 'http://www.example.org/events/13',
           url: 'http://www.example.org/events/13',
+          startDate: '2017-03-29T20:00:00Z',
+          endDate: '2017-03-29T21:00:00Z',
+          offers: [{
+            id: 'http://example.org/offer/1',
+            ageRange: {
+              type: 'QuantitativeValue',
+              minValue: 18,
+              maxValue: 65,
+            },
+            url: 'http://example.org/offer/1',
+            type: 'Offer',
+            name: 'Single session',
+            price: 5,
+            priceCurrency: 'GBP',
+          }],
         },
       ],
-      organizer: [{
+      organizer: {
         id: 'http://www.example.org',
         type: 'Organization',
         name: 'Example Co',
         url: 'http://www.example.org',
         description: 'Example organizer',
         telephone: '01234567890',
+        sameAs: [
+          'http://www.example.org/facebook',
+        ],
         logo: {
           type: 'ImageObject',
           url: 'http://www.example.org/logo.png',
         },
-      }],
+      },
       leader: [{
         id: 'http://www.example.org/person/1',
         type: 'Person',
@@ -118,6 +151,21 @@ describe('validate', () => {
           },
         ],
       },
+      offers: [{
+        id: 'http://example.org/offer/1',
+        ageRange: {
+          type: 'QuantitativeValue',
+          minValue: 18,
+          maxValue: 65,
+        },
+        url: 'http://example.org/offer/1',
+        type: 'Offer',
+        name: 'Single session',
+        price: 5,
+        priceCurrency: 'GBP',
+      }],
+      maximumAttendeeCapacity: 20,
+      remainingAttendeeCapacity: 10,
     };
     activityList = {
       '@context': 'https://openactive.io/',
