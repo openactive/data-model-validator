@@ -110,7 +110,6 @@ const PropertyHelper = class {
     const prop = this.getFullyQualifiedProperty(property, version, contexts);
     const enumObj = DataModelHelper.loadEnum(prop.label, version);
     const allowedOptions = [];
-    const metaData = DataModelHelper.getMetaData(version);
     for (const option of enumObj.values) {
       allowedOptions.push(`${enumObj.namespace}${option}`);
       const optionProp = this.getFullyQualifiedProperty(`${enumObj.namespace}${option}`, version, contexts);
