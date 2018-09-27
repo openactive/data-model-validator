@@ -32,7 +32,13 @@ module.exports = class SessionCourseHasSubeventOrScheduleRule extends Rule {
     const subEventValue = node.getValue('subEvent');
 
     if (
-      typeof eventScheduleValue === 'undefined'
+      (
+        typeof eventScheduleValue === 'undefined'
+        || (
+          eventScheduleValue instanceof Array
+          && eventScheduleValue.length === 0
+        )
+      )
       && (
         typeof subEventValue === 'undefined'
         || (
@@ -40,6 +46,7 @@ module.exports = class SessionCourseHasSubeventOrScheduleRule extends Rule {
           && subEventValue.length === 0
         )
       )
+      && node.name !== 'superEvent'
     ) {
       errors.push(
         this.createError(

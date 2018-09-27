@@ -29,9 +29,11 @@ describe('SessionSeriesScheduleTypeRule', () => {
   it('should return no errors if the scheduledEventType of the eventSchedule of the SessionSeries is ScheduledSession', () => {
     const data = {
       type: 'SessionSeries',
-      eventSchedule: {
-        scheduledEventType: 'ScheduledSession',
-      },
+      eventSchedule: [
+        {
+          scheduledEventType: 'ScheduledSession',
+        },
+      ],
     };
 
     const nodeToTest = new ModelNode(
@@ -64,9 +66,11 @@ describe('SessionSeriesScheduleTypeRule', () => {
   it('should return a failure if the scheduledEventType of the eventSchedule of the SessionSeries is not ScheduledSession', () => {
     const data = {
       type: 'SessionSeries',
-      eventSchedule: {
-        scheduledEventType: 'Event',
-      },
+      eventSchedule: [
+        {
+          scheduledEventType: 'Event',
+        },
+      ],
     };
 
     const nodeToTest = new ModelNode(

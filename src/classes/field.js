@@ -273,6 +273,12 @@ const Field = class {
     ) {
       testTypeKey = testTypeKey.substr(8);
       actualTypeKey = actualTypeKey.substr(8);
+    } else if (
+      testTypeKey.substr(0, 1) === '#'
+      && actualTypeKey.substr(0, 1) === '#'
+    ) {
+      testTypeKey = testTypeKey.substr(1);
+      actualTypeKey = actualTypeKey.substr(1);
     }
     if (
       typeof (this.constructor.canBeTypeOfMapping[testTypeKey]) !== 'undefined'
