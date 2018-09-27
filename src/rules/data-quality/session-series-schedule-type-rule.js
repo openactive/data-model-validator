@@ -30,18 +30,25 @@ module.exports = class SessionSeriesScheduleTypeRule extends Rule {
 
     if (
       typeof fieldValue === 'object'
-      && !(fieldValue instanceof Array)
-      && PropertyHelper.getObjectField(fieldValue, 'scheduledEventType', node.options.version) !== 'ScheduledSession'
+      && fieldValue instanceof Array
     ) {
-      errors.push(
-        this.createError(
-          'default',
-          {
-            value: PropertyHelper.getObjectField(fieldValue, 'scheduledEventType', node.options.version),
-            path: node.getPath(field, 'scheduledEventType'),
-          },
-        ),
-      );
+      let index = 0;
+      for (const indexValue of fieldValue) {
+        if (
+          PropertyHelper.getObjectField(indexValue, 'scheduledEventType', node.options.version) !== 'ScheduledSession'
+        ) {
+          errors.push(
+            this.createError(
+              'default',
+              {
+                value: PropertyHelper.getObjectField(fieldValue, 'scheduledEventType', node.options.version),
+                path: node.getPath(field, 'scheduledEventType', index),
+              },
+            ),
+          );
+        }
+        index += 1;
+      }
     }
 
     return errors;

@@ -25,7 +25,10 @@ module.exports = class ScheduledSessionMustBeSubeventRule extends Rule {
   validateModel(node) {
     const errors = [];
 
-    if (node.name !== 'subEvent') {
+    if (
+      node.name !== 'subEvent'
+      && !node.hasField('superEvent')
+    ) {
       errors.push(
         this.createError(
           'default',
