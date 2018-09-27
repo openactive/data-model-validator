@@ -10,25 +10,30 @@ describe('ValueInOptionsRule', () => {
     fields: {
       eventStatus: {
         fieldName: 'eventStatus',
-        requiredType: 'https://schema.org/url',
-        options: [
-          'https://schema.org/EventCancelled',
-          'https://schema.org/EventPostponed',
-          'https://schema.org/EventRescheduled',
-          'https://schema.org/EventScheduled',
-        ],
+        requiredType: 'https://schema.org/EventStatusType',
       },
       dayOfWeek: {
         fieldName: 'dayOfWeek',
-        requiredType: 'ArrayOf#https://schema.org/url',
+        requiredType: 'ArrayOf#https://schema.org/DayOfWeek',
+      },
+      singleOption: {
+        fieldName: 'singleOption',
+        requiredType: 'https://schema.org/Text',
         options: [
-          'https://schema.org/Monday',
-          'https://schema.org/Tuesday',
-          'https://schema.org/Wednesday',
-          'https://schema.org/Thursday',
-          'https://schema.org/Friday',
-          'https://schema.org/Saturday',
-          'https://schema.org/Sunday',
+          'GET',
+          'POST',
+          'PUT',
+          'HEAD',
+        ],
+      },
+      multipleOption: {
+        fieldName: 'multipleOption',
+        requiredType: 'ArrayOf#https://schema.org/Text',
+        options: [
+          'GET',
+          'POST',
+          'PUT',
+          'HEAD',
         ],
       },
     },
@@ -45,7 +50,7 @@ describe('ValueInOptionsRule', () => {
   it('should return no errors if the field value is in the options array', () => {
     const data = {
       type: 'Event',
-      eventStatus: 'https://schema.org/EventScheduled',
+      singleOption: 'GET',
     };
 
     const nodeToTest = new ModelNode(
@@ -60,6 +65,43 @@ describe('ValueInOptionsRule', () => {
   });
 
   it('should return a failure if the field value is not in the options array', () => {
+    const data = {
+      type: 'Event',
+      singleOption: 'DELETE',
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
+
+    expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+  });
+
+  it('should return no errors if the field value is in the enum options array', () => {
+    const data = {
+      type: 'Event',
+      eventStatus: 'https://schema.org/EventScheduled',
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(0);
+  });
+
+  it('should return a failure if the field value is not in the enum options array', () => {
     const data = {
       type: 'Event',
       eventStatus: 'https://schema.org/EventInvalid',
@@ -82,7 +124,7 @@ describe('ValueInOptionsRule', () => {
   it('should return no errors if the field value is in the options array when the value is an array', () => {
     const data = {
       type: 'Event',
-      dayOfWeek: ['https://schema.org/Sunday'],
+      multipleOption: ['GET'],
     };
 
     const nodeToTest = new ModelNode(
@@ -97,6 +139,43 @@ describe('ValueInOptionsRule', () => {
   });
 
   it('should return a failure if the field value is not in the options array when the value is an array', () => {
+    const data = {
+      type: 'Event',
+      multipleOption: ['DELETE'],
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
+
+    expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+  });
+
+  it('should return no errors if the field value is in the enum options array when the value is an array', () => {
+    const data = {
+      type: 'Event',
+      dayOfWeek: ['https://schema.org/Sunday'],
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(0);
+  });
+
+  it('should return a failure if the field value is not in the enum options array when the value is an array', () => {
     const data = {
       type: 'Event',
       dayOfWeek: ['https://schema.org/Thirdday'],

@@ -26,7 +26,7 @@ describe('validate', () => {
         minValue: 18,
         maxValue: 60,
       },
-      genderRestriction: 'https://openactive.io/None',
+      genderRestriction: 'https://openactive.io/NoRestriction',
       activity: [
         {
           id: 'https://openactive.io/activity-list/#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
