@@ -81,7 +81,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
           let activityIdentifier;
           const inScheme = PropertyHelper.getObjectField(activity, 'inScheme', node.options.version);
           const activityLists = [];
-          let listUrls = metaData.defaultActivityLists;
+          let listUrls = metaData.defaultActivityLists.slice();
           if (typeof inScheme !== 'undefined') {
             if (upgradeActivityLists.indexOf(inScheme) >= 0) {
               errors.push(
@@ -108,7 +108,10 @@ module.exports = class ActivityInActivityListRule extends Rule {
               && jsonResponse.data !== null
             ) {
               activityLists.push(jsonResponse.data);
-            } else if (jsonResponse.statusCode !== 200) {
+            } else if (
+              jsonResponse.statusCode !== 200
+              && jsonResponse.statusCode !== null
+            ) {
               errors.push(
                 this.createError(
                   'listErrorCode',
@@ -117,7 +120,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
                     path: node.getPath(field, index),
                   },
                   {
-                    list: inScheme,
+                    list: listUrl,
                     code: jsonResponse.statusCode,
                   },
                 ),
@@ -131,7 +134,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
                     path: node.getPath(field, index),
                   },
                   {
-                    list: inScheme,
+                    list: listUrl,
                   },
                 ),
               );
