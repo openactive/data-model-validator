@@ -14,6 +14,10 @@ describe('NoHtmlRule', () => {
         fieldName: 'description',
         requiredType: 'https://schema.org/Text',
       },
+      'beta:formattedDescription': {
+        fieldName: 'beta:formattedDescription',
+        requiredType: 'https://schema.org/Text',
+      },
     },
   }, 'latest');
 
@@ -45,7 +49,7 @@ describe('NoHtmlRule', () => {
       expect(errors.length).toBe(0);
     }
   });
-  it('should return no error when no HTML is supplied in content in a namespaced field', () => {
+  it('should return no error when HTML is supplied in beta:formattedDescription', () => {
     const data = {
       type: 'Event',
     };
@@ -57,7 +61,30 @@ describe('NoHtmlRule', () => {
     ];
 
     for (const description of descriptions) {
-      data['schema:description'] = description;
+      data.description = description;
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(errors.length).toBe(0);
+    }
+  });
+  it('should return no error when no HTML is supplied in content in a namespaced field', () => {
+    const data = {
+      type: 'Event',
+    };
+
+    const descriptions = [
+      '<p>Test HTML</p>',
+      'Street 1,<br />Street 2',
+      '<script>XSS.vulnerability = true;</script>',
+    ];
+
+    for (const description of descriptions) {
+      data['beta:formattedDescription'] = description;
       const nodeToTest = new ModelNode(
         '$',
         data,
