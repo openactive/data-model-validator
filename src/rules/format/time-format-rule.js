@@ -19,6 +19,16 @@ module.exports = class TimeFormatRule extends Rule {
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.INVALID_FORMAT,
         },
+        leadingZero: {
+          message: 'Times must be expressed as ISO 8601 format times _without_ a trailing definition of timezone, but padded with a leading zero. You can fix this error by adding a leading zero to your time. For example:\n\n```\n{\n  "{{prop}}": "0{{time}}"\n}\n```',
+          sampleValues: {
+            prop: 'startTime',
+            time: '9:00',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.INVALID_FORMAT,
+        },
       },
     };
   }
@@ -41,13 +51,21 @@ module.exports = class TimeFormatRule extends Rule {
         || fieldObj.isOnlyType('https://schema.org/Time')
     ) {
       if (!moment(fieldValue, ['HH:mm:ss', 'HH:mm', 'HH:mm:ssZZ', 'HH:mmZZ'], true).isValid()) {
+        let errorKey = 'default';
+        const messageValues = {};
+        if (fieldValue.match(/^[0-9]:[0-5][0-9]$/)) {
+          errorKey = 'leadingZero';
+          messageValues.prop = field;
+          messageValues.time = fieldValue;
+        }
         errors.push(
           this.createError(
-            'default',
+            errorKey,
             {
               value: fieldValue,
               path: node.getPath(field),
             },
+            messageValues,
           ),
         );
       }

@@ -126,7 +126,7 @@ const Field = class {
         returnType = 'https://schema.org/Date';
       } else if (/^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(Z|[+-][0-9]{2}:[0-9]{2})?$/.test(data)) {
         returnType = 'https://schema.org/DateTime';
-      } else if (/^[0-9]{2}:[0-9]{2}(:[0-9]{2})?(Z|[+-][0-9]{2}:[0-9]{2})?$/.test(data)) {
+      } else if (/^[0-9]{1,2}:[0-9]{2}(:[0-9]{2})?(Z|[+-][0-9]{2}:[0-9]{2})?$/.test(data)) {
         returnType = 'https://schema.org/Time';
       } else if (/^P[.,0-9YMDHTMSW]+$/.test(data)) {
         returnType = 'https://schema.org/Duration';
