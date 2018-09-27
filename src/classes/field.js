@@ -131,20 +131,35 @@ const Field = class {
       } else if (/^P[.,0-9YMDHTMSW]+$/.test(data)) {
         returnType = 'https://schema.org/Duration';
       } else {
-        // Is this a URL template?
-        // This processes most strings... so could be a bit intensive
-        const template = UriTemplate.parse(data);
-        let isUrlTemplate = false;
-        for (const expression of template.expressions) {
-          if (expression.constructor.name === 'VariableExpression') {
-            isUrlTemplate = true;
+        // Do we have an enum in our possible types?
+        let isEnum = false;
+        for (const type of possibleTypes) {
+          const allowedOptions = PropertyHelper.getEnumOptions(type, this.version);
+          if (
+            allowedOptions.length > 0
+            && allowedOptions.indexOf(data) >= 0
+          ) {
+            isEnum = true;
+            returnType = type;
             break;
           }
         }
-        if (isUrlTemplate) {
-          returnType = 'https://schema.org/urlTemplate';
-        } else if (this.constructor.URL_REGEX.test(data)) {
-          returnType = 'https://schema.org/url';
+        if (!isEnum) {
+          // Is this a URL template?
+          // This processes most strings... so could be a bit intensive
+          const template = UriTemplate.parse(data);
+          let isUrlTemplate = false;
+          for (const expression of template.expressions) {
+            if (expression.constructor.name === 'VariableExpression') {
+              isUrlTemplate = true;
+              break;
+            }
+          }
+          if (isUrlTemplate) {
+            returnType = 'https://schema.org/urlTemplate';
+          } else if (this.constructor.URL_REGEX.test(data)) {
+            returnType = 'https://schema.org/url';
+          }
         }
       }
       // If the types above aren't in the possible types, but Text is,

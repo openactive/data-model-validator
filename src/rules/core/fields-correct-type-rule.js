@@ -1,4 +1,5 @@
 const Rule = require('../rule');
+const PropertyHelper = require('../../helpers/property');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -24,7 +25,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           sampleValues: {
             expectedType: this.constructor.getHumanReadableType('https://schema.org/Text'),
             foundType: this.constructor.getHumanReadableType('https://schema.org/Float'),
-            examples: this.constructor.makeExamples('property', ['https://schema.org/Text']),
+            examples: this.constructor.makeExamples('property', ['https://schema.org/Text'], this.options.version),
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -36,7 +37,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           sampleValues: {
             expectedTypes: this.constructor.makeExpectedTypeList(['https://schema.org/Text', 'ArrayOf#https://schema.org/Text', '#Concept', 'ArrayOf#Concept']),
             foundType: this.constructor.getHumanReadableType('https://schema.org/Float'),
-            examples: this.constructor.makeExamples('property', ['https://schema.org/Text', 'ArrayOf#https://schema.org/Text', '#Concept', 'ArrayOf#Concept']),
+            examples: this.constructor.makeExamples('property', ['https://schema.org/Text', 'ArrayOf#https://schema.org/Text', '#Concept', 'ArrayOf#Concept'], this.options.version),
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -89,7 +90,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     }
   }
 
-  static getHumanReadableExample(property, type) {
+  static getHumanReadableExample(property, type, version) {
     let isArray = false;
     let prefix = '';
     let readableType = type;
@@ -138,7 +139,12 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         example = `${prefix}"https://www.example.org/{startDate}/{endDate}"`;
         break;
       default:
-        example = `${prefix}{\n${prefix}  "type": "${readableType.replace(/^#/, '')}"\n${prefix}}`;
+        if (PropertyHelper.isEnum(readableType, version)) {
+          const allowedOptions = PropertyHelper.getEnumOptions(readableType, version);
+          example = `${prefix}"${allowedOptions[0]}"`;
+        } else {
+          example = `${prefix}{\n${prefix}  "type": "${readableType.replace(/^#/, '')}"\n${prefix}}`;
+        }
         break;
     }
     if (isArray) {
@@ -155,10 +161,10 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     return `${expectedTypes}</ul>`;
   }
 
-  static makeExamples(property, types) {
+  static makeExamples(property, types, version) {
     let examples = '';
     for (const type of types) {
-      examples = `${examples}\n\n${this.getHumanReadableExample(property, type)}`;
+      examples = `${examples}\n\n${this.getHumanReadableExample(property, type, version)}`;
     }
     return examples;
   }
@@ -209,7 +215,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         messageValues = {
           expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
           foundType: this.constructor.getHumanReadableType(derivedType),
-          examples: this.constructor.makeExamples(propName, typeChecks),
+          examples: this.constructor.makeExamples(propName, typeChecks, node.options.version),
         };
       } else {
         testKey = 'multipleTypes';
@@ -217,7 +223,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         messageValues = {
           expectedTypes,
           foundType: this.constructor.getHumanReadableType(derivedType),
-          examples: this.constructor.makeExamples(propName, typeChecks),
+          examples: this.constructor.makeExamples(propName, typeChecks, node.options.version),
         };
       }
       errors.push(

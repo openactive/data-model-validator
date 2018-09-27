@@ -1,4 +1,6 @@
 const Rule = require('../rule');
+const DataModelHelper = require('../../helpers/data-model');
+const PropertyHelper = require('../../helpers/property');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -12,10 +14,10 @@ module.exports = class ValueInOptionsRule extends Rule {
       description: 'Validates that properties contain allowed values.',
       tests: {
         default: {
-          message: 'Value `"{{value}}"` is not in the allowed values for this property. Must be one of {{allowedValues}}.',
+          message: 'Value `"{{value}}"` is not in the allowed values for this property. Must be one of:\n\n{{allowedValues}}.',
           sampleValues: {
             value: 'Male',
-            allowedValues: '`"https://openactive.io/Female"`, `"https://openactive.io/Male"`, `"https://openactive.io/None"`',
+            allowedValues: '<ul><li>`"https://openactive.io/Female"`</li><li>`"https://openactive.io/Male"`</li><li>`"https://openactive.io/None"`</li></ul>',
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -34,20 +36,41 @@ module.exports = class ValueInOptionsRule extends Rule {
     const fieldObj = node.model.getField(field);
     const fieldValue = node.getValue(field);
 
-    if (typeof fieldValue !== 'undefined'
+    if (
+      typeof fieldValue !== 'undefined'
       && typeof fieldObj !== 'undefined'
-      && typeof fieldObj.options !== 'undefined'
     ) {
       let isInOptions = true;
-      if (fieldValue instanceof Array && fieldObj.canBeArray()) {
-        for (const value of fieldValue) {
-          if (fieldObj.options.indexOf(value) < 0) {
-            isInOptions = false;
-            break;
+      let allowedOptions;
+      let testType;
+      const possibleTypes = fieldObj.getAllPossibleTypes();
+      if (possibleTypes.length === 1) {
+        testType = possibleTypes[0].replace(/^ArrayOf#/, '');
+      } else {
+        testType = fieldObj.detectType(fieldValue).replace(/^ArrayOf#/, '');
+      }
+      if (
+        typeof fieldObj.options !== 'undefined'
+      ) {
+        allowedOptions = fieldObj.options;
+      } else if (
+        typeof testType !== 'undefined'
+        && PropertyHelper.isEnum(testType, node.options.version)
+      ) {
+        allowedOptions = PropertyHelper.getEnumOptions(testType, node.options.version);
+      }
+
+      if (typeof allowedOptions !== 'undefined') {
+        if (fieldValue instanceof Array && fieldObj.canBeArray()) {
+          for (const value of fieldValue) {
+            if (allowedOptions.indexOf(value) < 0) {
+              isInOptions = false;
+              break;
+            }
           }
+        } else if (allowedOptions.indexOf(fieldValue) < 0) {
+          isInOptions = false;
         }
-      } else if (fieldObj.options.indexOf(fieldValue) < 0) {
-        isInOptions = false;
       }
 
       if (!isInOptions) {
@@ -60,7 +83,7 @@ module.exports = class ValueInOptionsRule extends Rule {
             },
             {
               value: fieldValue,
-              allowedValues: `\`"${fieldObj.options.join('"`, `"')}"\``,
+              allowedValues: `<ul><li>\`"${allowedOptions.join('"`</li><li>`"')}"\`</li></ul>`,
             },
           ),
         );

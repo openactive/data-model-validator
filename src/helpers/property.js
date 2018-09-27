@@ -82,6 +82,45 @@ const PropertyHelper = class {
     return undefined;
   }
 
+  static isEnum(property, version, contexts = []) {
+    if (typeof property === 'undefined') {
+      return false;
+    }
+    if (typeof this.enumCache === 'undefined') {
+      this.enumCache = {};
+    }
+    if (typeof this.enumCache[version] === 'undefined') {
+      this.enumCache[version] = DataModelHelper.getEnums(version);
+    }
+    const prop = this.getFullyQualifiedProperty(property, version, contexts);
+    for (const enumKey in this.enumCache[version]) {
+      if (Object.prototype.hasOwnProperty.call(this.enumCache[version], enumKey)) {
+        if (enumKey === prop.label && this.enumCache[version][enumKey].namespace === prop.namespace) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  static getEnumOptions(property, version, contexts = []) {
+    if (!this.isEnum(property, version, contexts)) {
+      return [];
+    }
+    const prop = this.getFullyQualifiedProperty(property, version, contexts);
+    const enumObj = DataModelHelper.loadEnum(prop.label, version);
+    const allowedOptions = [];
+    const metaData = DataModelHelper.getMetaData(version);
+    for (const option of enumObj.values) {
+      allowedOptions.push(`${enumObj.namespace}${option}`);
+      const optionProp = this.getFullyQualifiedProperty(`${enumObj.namespace}${option}`, version, contexts);
+      if (typeof optionProp.alias !== 'undefined' && optionProp.alias !== null) {
+        allowedOptions.push(optionProp.alias);
+      }
+    }
+    return allowedOptions;
+  }
+
   static getFullyQualifiedProperty(property, version, contexts = []) {
     if (typeof property === 'undefined') {
       return undefined;
@@ -143,6 +182,7 @@ const PropertyHelper = class {
   }
 
   static clearCache() {
+    this.enumCache = {};
     this.propertyCache = {};
   }
 };
