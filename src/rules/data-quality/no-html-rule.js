@@ -27,6 +27,9 @@ module.exports = class NoHtmlRule extends Rule {
   }
 
   validateField(node, field) {
+    if (field === 'beta:formattedDescription') {
+      return [];
+    }
     const fieldValue = node.getValue(field);
     if (typeof fieldValue !== 'string') {
       return [];
