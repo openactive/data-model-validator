@@ -92,7 +92,7 @@ class Rule {
             PropertyHelper.stringMatchesField(
               modelType,
               model.type,
-              model.version
+              model.version,
             )
             && (
               this.targetFields[modelType] === '*'
