@@ -75,10 +75,12 @@ describe('ActivityInActivityListRule', () => {
       {
         'skos:prefLabel': 'Football',
         type: 'Concept',
+        inScheme: 'https://openactive.io/activity-list',
       },
       {
         'skos:prefLabel': 'flag football',
         type: 'Concept',
+        inScheme: 'https://openactive.io/activity-list',
       },
     ];
 
@@ -133,9 +135,11 @@ describe('ActivityInActivityListRule', () => {
         options,
       );
       const errors = rule.validate(nodeToTest);
-      expect(errors.length).toBe(1);
-      expect(errors[0].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
+      expect(errors.length).toBe(2);
+      expect(errors[0].type).toBe(ValidationErrorType.USE_OFFICIAL_ACTIVITY_LIST);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(errors[1].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
+      expect(errors[1].severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });
   it('should return an error when an activity list URL does not exist', () => {
@@ -173,11 +177,13 @@ describe('ActivityInActivityListRule', () => {
       );
       const errors = rule.validate(nodeToTest);
       expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
-      expect(errors.length).toBe(2);
-      expect(errors[0].type).toBe(ValidationErrorType.FILE_NOT_FOUND);
-      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
-      expect(errors[1].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
-      expect(errors[1].severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(errors.length).toBe(3);
+      expect(errors[0].type).toBe(ValidationErrorType.USE_OFFICIAL_ACTIVITY_LIST);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(errors[1].type).toBe(ValidationErrorType.FILE_NOT_FOUND);
+      expect(errors[1].severity).toBe(ValidationErrorSeverity.FAILURE);
+      expect(errors[2].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
+      expect(errors[2].severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });
   it('should return an error when using an old Activity List URL', () => {
@@ -257,11 +263,13 @@ describe('ActivityInActivityListRule', () => {
       );
       const errors = rule.validate(nodeToTest);
       expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
-      expect(errors.length).toBe(2);
-      expect(errors[0].type).toBe(ValidationErrorType.FILE_NOT_FOUND);
-      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
-      expect(errors[1].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
-      expect(errors[1].severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(errors.length).toBe(3);
+      expect(errors[0].type).toBe(ValidationErrorType.USE_OFFICIAL_ACTIVITY_LIST);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(errors[1].type).toBe(ValidationErrorType.FILE_NOT_FOUND);
+      expect(errors[1].severity).toBe(ValidationErrorSeverity.FAILURE);
+      expect(errors[2].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
+      expect(errors[2].severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });
 });
