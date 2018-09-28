@@ -108,6 +108,26 @@ describe('NoPrefixOrNamespaceRule', () => {
       expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });
+  it('should return a warning if prefixed field values with aliases are used', () => {
+    const data = {
+      type: 'skos:Concept',
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
+
+    for (const error of errors) {
+      expect(error.type).toBe(ValidationErrorType.USE_FIELD_ALIASES);
+      expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
+    }
+  });
   it('should return a warning if prefixed fields with namespaces are used', () => {
     const data = {
       type: 'Event',
@@ -128,6 +148,26 @@ describe('NoPrefixOrNamespaceRule', () => {
     const errors = rule.validate(nodeToTest);
 
     expect(errors.length).toBe(2);
+
+    for (const error of errors) {
+      expect(error.type).toBe(ValidationErrorType.USE_FIELD_ALIASES);
+      expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
+    }
+  });
+  it('should return a warning if prefixed field values with namespaces are used', () => {
+    const data = {
+      type: 'https://schema.org/Event',
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
 
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.USE_FIELD_ALIASES);
