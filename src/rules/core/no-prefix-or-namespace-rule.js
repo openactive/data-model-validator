@@ -44,6 +44,30 @@ module.exports = class NoPrefixOrNamespaceRule extends Rule {
           severity: ValidationErrorSeverity.WARNING,
           type: ValidationErrorType.USE_FIELD_ALIASES,
         },
+        noNamespaceValue: {
+          description: 'Validates that a property value in the specification is not submitted with its namespace.',
+          message: 'Whilst valid JSON-LD, the value of property `{{field}}` should be included without its namespace. Simply change the value of this property from `{{submittedValue}}` to `{{correctedValue}}`.',
+          sampleValues: {
+            submittedValue: 'skos:Concept',
+            correctedValue: 'Concept',
+            field: 'type',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.WARNING,
+          type: ValidationErrorType.USE_FIELD_ALIASES,
+        },
+        noPrefixValue: {
+          description: 'Validates that a property value in the specification is not submitted with its prefix.',
+          message: 'Whilst valid JSON-LD, the value of property `{{field}}` should be included without its prefix. Simply change the value of this property from `{{submittedValue}}` to `{{correctedValue}}`.',
+          sampleValues: {
+            submittedValue: 'https://schema.org/Event',
+            correctedValue: 'Event',
+            field: 'type',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.WARNING,
+          type: ValidationErrorType.USE_FIELD_ALIASES,
+        },
       },
     };
   }
@@ -99,6 +123,33 @@ module.exports = class NoPrefixOrNamespaceRule extends Rule {
           messageValues,
         ),
       );
+    }
+    if (prop.alias === 'type') {
+      // Check the value of this
+      const fieldValue = node.getValue(field);
+      const valueProp = PropertyHelper.getFullyQualifiedProperty(fieldValue, node.options.version);
+      let testKeyValue;
+      if (`${valueProp.prefix}:${valueProp.label}` === fieldValue) {
+        testKeyValue = 'noPrefixValue';
+      } else if (`${valueProp.namespace}${valueProp.label}` === fieldValue) {
+        testKeyValue = 'noNamespaceValue';
+      }
+      if (testKeyValue) {
+        errors.push(
+          this.createError(
+            testKeyValue,
+            {
+              value: node.getValue(field),
+              path: node.getPath(field),
+            },
+            {
+              field,
+              submittedValue: fieldValue,
+              correctedValue: valueProp.alias || valueProp.label,
+            },
+          ),
+        );
+      }
     }
     return errors;
   }
