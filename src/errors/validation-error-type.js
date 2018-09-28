@@ -29,6 +29,7 @@ const ValidationErrorType = {
   MISSING_IS_ACCESSIBLE_FOR_FREE: 'missing_is_accessible_for_free',
   ADDRESS_HAS_TRAILING_COMMA: 'address_has_trailing_comma',
   CONCEPT_ID_AND_IN_SCHEME_TOGETHER: 'concept_id_and_in_scheme_together',
+  CONCEPT_NO_NON_CORE_PROPS: 'concept_no_non_core_props',
   SCHEMA_ORG_FIELDS_NOT_CHECKED: 'schema_org_fields_not_checked',
   THUMBNAIL_HAS_NO_THUMBNAIL: 'thumbnail_has_no_thumbnail',
   USE_FIELD_ALIASES: 'use_field_aliases',

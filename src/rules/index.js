@@ -40,6 +40,7 @@ module.exports = {
     require('./data-quality/address-trailing-comma-rule'),
     require('./data-quality/no-html-rule'),
     require('./data-quality/concept-id-in-scheme-rule'),
+    require('./data-quality/concept-no-props-if-inscheme-rule'),
     require('./data-quality/openactive-urls-correct-rule'),
     require('./data-quality/thumbnail-has-no-thumbnail-rule'),
     require('./data-quality/address-warning-rule'),

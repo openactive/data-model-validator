@@ -82,29 +82,41 @@ class Rule {
   }
 
   isFieldTargeted(model, field) {
-    return (
-      this.targetFields === '*'
-      || (
-        typeof this.targetFields === 'object'
-        && typeof this.targetFields[model.type] !== 'undefined'
-        && (
-          this.targetFields[model.type] === '*'
-          || PropertyHelper.stringMatchesField(
-            this.targetFields[model.type],
-            field,
-            model.version,
-          )
-          || (
-            this.targetFields[model.type] instanceof Array
-            && PropertyHelper.arrayHasField(
-              this.targetFields[model.type],
-              field,
-              model.version,
+    if (this.targetFields === '*') {
+      return true;
+    }
+    if (typeof this.targetFields === 'object') {
+      for (const modelType in this.targetFields) {
+        if (Object.prototype.hasOwnProperty.call(this.targetFields, modelType)) {
+          if (
+            PropertyHelper.stringMatchesField(
+              modelType,
+              model.type,
+              model.version
             )
-          )
-        )
-      )
-    );
+            && (
+              this.targetFields[modelType] === '*'
+              || PropertyHelper.stringMatchesField(
+                this.targetFields[modelType],
+                field,
+                model.version,
+              )
+              || (
+                this.targetFields[modelType] instanceof Array
+                && PropertyHelper.arrayHasField(
+                  this.targetFields[modelType],
+                  field,
+                  model.version,
+                )
+              )
+            )
+          ) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
 }
 

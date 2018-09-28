@@ -13,8 +13,9 @@ class ApplyRules {
     // rules on the object.
     let modelObject = null;
     if (typeof modelName !== 'undefined') {
+      const qualifiedModelName = PropertyHelper.getFullyQualifiedProperty(modelName, version);
       try {
-        const modelData = DataModelHelper.loadModel(modelName, version);
+        const modelData = DataModelHelper.loadModel(qualifiedModelName.alias || modelName, version);
         if (modelData) {
           modelObject = new Model(modelData, version, true);
         }
