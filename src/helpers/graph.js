@@ -1,7 +1,7 @@
-const DataModelHelper = require('./data-model');
+const PropertyHelper = require('./property');
 
 const GraphHelper = class {
-  static getClassGraph(spec, classId, version) {
+  static getClassGraph(spec, classId, version, subClassSpecs) {
     if (typeof this.cache === 'undefined') {
       this.cache = {};
     }
@@ -14,67 +14,86 @@ const GraphHelper = class {
       }
     }
     let classes = [];
-    if (typeof spec['@graph'] !== 'undefined') {
-      if (spec['@graph'] instanceof Array) {
-        for (const item of spec['@graph']) {
-          classes = this.processClass(spec, item, classId, version);
-          if (classes.length > 0) {
-            break;
-          }
-        }
-      }
-    } else {
-      for (const itemKey in spec) {
-        if (Object.prototype.hasOwnProperty.call(spec, itemKey)) {
-          if (!itemKey.match(/^@/)) {
-            const item = spec[itemKey];
-            classes = this.processClass(spec, item, classId, version);
+    const graphSpecs = [spec].concat(subClassSpecs);
+    for (const graphSpec of graphSpecs) {
+      if (typeof graphSpec['@graph'] !== 'undefined') {
+        const context = this.mergeContexts(graphSpec['@context']);
+        const graph = this.processGraph(graphSpec['@graph'], context, version);
+        if (graph instanceof Array) {
+          for (const item of graph) {
+            classes = this.processClass(graphSpec, item, classId, version, subClassSpecs);
             if (classes.length > 0) {
               break;
             }
           }
         }
-      }
-    }
-    return classes;
-  }
-
-  static processClass(spec, item, classId, version) {
-    let classes = [];
-    const type = this.getProperty(spec, item, '@type', version);
-    const id = this.getProperty(spec, item, '@id', version);
-    if (
-      type === 'rdfs:Class'
-      && id === classId
-    ) {
-      classes.push(classId);
-      const subClassOf = this.getProperty(spec, item, 'rdfs:subClassOf', version);
-      if (
-        typeof subClassOf === 'object'
-        && subClassOf !== null
-      ) {
-        const subClassId = this.getProperty(spec, subClassOf, '@id', version);
-        if (typeof subClassId === 'string') {
-          classes = classes.concat(this.getClassGraph(spec, subClassId, version));
+      } else {
+        for (const itemKey in graphSpec) {
+          if (Object.prototype.hasOwnProperty.call(graphSpec, itemKey)) {
+            if (!itemKey.match(/^@/)) {
+              const item = graphSpec[itemKey];
+              classes = this.processClass(graphSpec, item, classId, version, subClassSpecs);
+              if (classes.length > 0) {
+                break;
+              }
+            }
+          }
         }
       }
-      if (typeof spec['@id'] !== 'undefined') {
-        this.cache[spec['@id']][classId] = classes;
+      if (classes.length > 0) {
+        break;
       }
     }
     return classes;
   }
 
-  static isPropertyInClass(spec, typeName, classId, version) {
-    const classes = this.getClassGraph(spec, classId, version);
+  static processClass(spec, item, classId, version, subClassSpecs) {
+    let classes = [];
+    const type = this.getProperty(spec, item, '@type', version);
+    if (typeof type === 'string') {
+      const id = this.getProperty(spec, item, '@id', version);
+      const context = this.mergeContexts(spec['@context']);
+      const classIdProp = PropertyHelper.getFullyQualifiedProperty(classId, version, { '@context': context });
+      const idProp = PropertyHelper.getFullyQualifiedProperty(id, version, { '@context': context });
+      const typeProp = PropertyHelper.getFullyQualifiedProperty(type, version, { '@context': context });
+      if (
+        typeProp.namespace === 'http://www.w3.org/2000/01/rdf-schema#'
+        && typeProp.label === 'Class'
+        && idProp.namespace !== null
+        && idProp.label !== null
+        && idProp.namespace === classIdProp.namespace
+        && idProp.label === classIdProp.label
+      ) {
+        classes.push(`${classIdProp.namespace}${classIdProp.label}`);
+        const subClassOf = this.getProperty(spec, item, 'http://www.w3.org/2000/01/rdf-schema#subClassOf', version);
+        if (
+          typeof subClassOf === 'object'
+          && subClassOf !== null
+        ) {
+          const subClassId = this.getProperty(spec, subClassOf, '@id', version);
+          if (typeof subClassId === 'string') {
+            classes = classes.concat(this.getClassGraph(spec, subClassId, version, subClassSpecs));
+          }
+        } else if (typeof subClassOf === 'string') {
+          classes = classes.concat(this.getClassGraph(spec, subClassOf, version, subClassSpecs));
+        }
+        if (typeof spec['@id'] !== 'undefined') {
+          this.cache[spec['@id']][classId] = classes;
+        }
+      }
+    }
+    return classes;
+  }
+
+  static isPropertyInClass(spec, typeName, classId, version, subClassSpecs = []) {
+    const classes = this.getClassGraph(spec, classId, version, subClassSpecs);
     if (typeof spec['@graph'] !== 'undefined') {
-      if (spec['@graph'] instanceof Array) {
-        for (const item of spec['@graph']) {
+      const context = this.mergeContexts(spec['@context']);
+      const graph = this.processGraph(spec['@graph'], context, version);
+      if (graph instanceof Array) {
+        for (const item of graph) {
           if (this.isProperty(spec, item, typeName, version)) {
-            if (this.processProperty(spec, item, classes, version)) {
-              return true;
-            }
-            return false;
+            return this.processProperty(spec, item, classes, version);
           }
         }
       }
@@ -84,16 +103,20 @@ const GraphHelper = class {
           if (!itemKey.match(/^@/)) {
             const item = spec[itemKey];
             if (this.isProperty(spec, item, typeName, version)) {
-              if (this.processProperty(spec, item, classes, version)) {
-                return true;
-              }
-              return false;
+              return this.processProperty(spec, item, classes, version);
             }
           }
         }
       }
     }
-    return false;
+    return this.isPropertyInClassReturn(GraphHelper.PROPERTY_NOT_FOUND);
+  }
+
+  static isPropertyInClassReturn(code, data = null) {
+    return {
+      code,
+      data,
+    };
   }
 
   static isProperty(spec, item, typeName, version) {
@@ -109,26 +132,103 @@ const GraphHelper = class {
   }
 
   static processProperty(spec, item, classes, version) {
-    if (classes.length === 0) {
-      return true;
-    }
     let includes = this.getProperty(spec, item, 'schema:domainIncludes', version);
+    if (typeof includes === 'undefined') {
+      includes = this.getProperty(spec, item, 'rdfs:domain', version);
+    }
     if (typeof includes !== 'undefined') {
+      if (classes.length === 0) {
+        return this.isPropertyInClassReturn(GraphHelper.PROPERTY_DOMAIN_NOT_FOUND);
+      }
       if (!(includes instanceof Array)) {
         includes = [includes];
       }
+      const returnIncludes = [];
+      const context = this.mergeContexts(spec['@context']);
       for (const include of includes) {
-        const includeId = this.getProperty(spec, include, '@id', version);
+        let includeId;
         if (
-          typeof includeId === 'string'
-          && classes.indexOf(includeId) >= 0
+          typeof include === 'object'
+          && include !== null
         ) {
-          return true;
+          includeId = this.getProperty(spec, include, '@id', version);
+        } else if (typeof include === 'string') {
+          includeId = include;
+        }
+        if (typeof includeId === 'string') {
+          const prop = PropertyHelper.getFullyQualifiedProperty(includeId, version, { '@context': context });
+          if (prop.namespace) {
+            returnIncludes.push(`${prop.namespace}${prop.label}`);
+          } else if (prop.prefix) {
+            returnIncludes.push(`${prop.prefix}:${prop.label}`);
+          } else {
+            returnIncludes.push(includeId);
+          }
+          for (const classItem of classes) {
+            if (this.isPropertyEqual(spec, includeId, classItem, version)) {
+              return this.isPropertyInClassReturn(GraphHelper.PROPERTY_FOUND);
+            }
+          }
         }
       }
-      return false;
+      if (returnIncludes.length > 0) {
+        return this.isPropertyInClassReturn(GraphHelper.PROPERTY_NOT_IN_DOMAIN, returnIncludes);
+      }
     }
-    return true;
+    return this.isPropertyInClassReturn(GraphHelper.PROPERTY_FOUND);
+  }
+
+  static processGraph(graph, context, version) {
+    if (graph instanceof Array) {
+      return graph;
+    }
+    let combinedGraph = [];
+    if (
+      typeof graph === 'object'
+      && graph !== null
+      && typeof graph['@context'] === 'object'
+    ) {
+      for (const prop in graph['@context']) {
+        if (Object.prototype.hasOwnProperty.call(graph['@context'], prop)) {
+          if (
+            typeof graph['@context'][prop] === 'object'
+            && typeof graph['@context'][prop]['@reverse'] !== 'undefined'
+          ) {
+            const qualifiedProp = PropertyHelper.getFullyQualifiedProperty(
+              graph['@context'][prop]['@reverse'],
+              version,
+              { '@context': context },
+            );
+            if (
+              qualifiedProp.namespace === 'http://www.w3.org/2000/01/rdf-schema#'
+              && qualifiedProp.label === 'isDefinedBy'
+              && typeof graph[prop] === 'object'
+              && graph[prop] instanceof Array
+            ) {
+              combinedGraph = combinedGraph.concat(graph[prop]);
+            }
+          }
+        }
+      }
+    }
+
+    return combinedGraph;
+  }
+
+  static mergeContexts(contexts = []) {
+    // Merge the contexts into a flat structure
+    let mergedContext = {};
+    if (contexts instanceof Array) {
+      for (const context of contexts) {
+        // If this is not an object, we can't process it
+        if (typeof context === 'object' && context !== null) {
+          mergedContext = Object.assign(mergedContext, context);
+        }
+      }
+    } else if (typeof contexts === 'object' && contexts !== null) {
+      mergedContext = Object.assign(mergedContext, contexts);
+    }
+    return mergedContext;
   }
 
   static getProperty(spec, item, field, version) {
@@ -138,55 +238,26 @@ const GraphHelper = class {
     if (typeof spec['@context'] === 'undefined') {
       return undefined;
     }
-    const context = spec['@context'];
-    if (field.match(/^@/)) {
-      for (const key in context) {
-        if (Object.prototype.hasOwnProperty.call(context, key)) {
-          if (context[key] === field) {
-            if (typeof item[key] !== 'undefined') {
-              return item[key];
-            }
-          }
-        }
-      }
-    } else {
-      const metaData = DataModelHelper.getMetaData(version);
-      const matches = field.match(/^(([a-zA-Z]+):)?([a-zA-Z0-9]+)$/);
-      if (matches !== null && typeof matches[1] !== 'undefined') {
-        const prefix = matches[2];
-        const unprefixedField = matches[3];
-        let namespace = metaData.namespaces[prefix];
-        if (typeof namespace === 'undefined'
-          && context[prefix] !== 'undefined'
-        ) {
-          namespace = context[prefix];
-        }
-        if (typeof item[`${namespace}${unprefixedField}`] !== 'undefined') {
-          return item[`${namespace}${unprefixedField}`];
-        }
-        let localPrefix;
-        for (const key in context) {
-          if (Object.prototype.hasOwnProperty.call(context, key)) {
-            if (context[key] === namespace) {
-              localPrefix = key;
-              if (typeof item[`${key}:${unprefixedField}`] !== 'undefined') {
-                return item[`${key}:${unprefixedField}`];
-              }
-            } else if (
-              typeof localPrefix !== 'undefined'
-              && context[key] === `${localPrefix}:${unprefixedField}`
-            ) {
-              if (typeof item[key] !== 'undefined') {
-                return item[key];
-              }
-            } else if (context[key] === `${namespace}${unprefixedField}`) {
-              if (typeof item[key] !== 'undefined') {
-                return item[key];
-              }
-            }
-          }
-        }
-      }
+    const context = this.mergeContexts(spec['@context']);
+    const prop = PropertyHelper.getFullyQualifiedProperty(field, version, { '@context': context });
+    if (
+      typeof prop.alias !== 'undefined'
+      && prop.alias !== null
+      && typeof item[prop.alias] !== 'undefined'
+    ) {
+      return item[prop.alias];
+    }
+    if (
+      prop.prefix !== null
+      && typeof item[`${prop.prefix}:${prop.label}`] !== 'undefined'
+    ) {
+      return item[`${prop.prefix}:${prop.label}`];
+    }
+    if (
+      prop.namespace !== null
+      && typeof item[`${prop.namespace}${prop.label}`] !== 'undefined'
+    ) {
+      return item[`${prop.namespace}${prop.label}`];
     }
     return undefined;
   }
@@ -195,51 +266,34 @@ const GraphHelper = class {
     if (typeof spec['@context'] === 'undefined') {
       return (field === userSupplied);
     }
-    const context = spec['@context'];
-    const metaData = DataModelHelper.getMetaData(version);
-    const matches = field.match(/^(([a-zA-Z]+):)?([a-zA-Z0-9]+)$/);
-    if (matches !== null && typeof matches[1] !== 'undefined') {
-      const prefix = matches[2];
-      const unprefixedField = matches[3];
-      let namespace = metaData.namespaces[prefix];
-      if (typeof namespace === 'undefined') {
-        if (field === userSupplied) {
-          return true;
-        }
-        if (context[prefix] !== 'undefined') {
-          namespace = context[prefix];
-        }
-      }
-      if (`${namespace}${unprefixedField}` === userSupplied) {
-        return true;
-      }
-      let localPrefix;
-      for (const key in context) {
-        if (Object.prototype.hasOwnProperty.call(context, key)) {
-          if (context[key] === namespace) {
-            localPrefix = key;
-            if (`${key}:${unprefixedField}` === userSupplied) {
-              return true;
-            }
-          } else if (
-            typeof localPrefix !== 'undefined'
-            && context[key] === `${localPrefix}:${unprefixedField}`
-          ) {
-            if (key === userSupplied) {
-              return true;
-            }
-          } else if (context[key] === `${namespace}${unprefixedField}`) {
-            if (key === userSupplied) {
-              return true;
-            }
-          }
-        }
-      }
-    } else if (field === userSupplied) {
+    const context = this.mergeContexts(spec['@context']);
+    const prop = PropertyHelper.getFullyQualifiedProperty(field, version, { '@context': context });
+    if (
+      typeof prop.alias !== 'undefined'
+      && prop.alias !== null
+      && prop.alias === userSupplied
+    ) {
+      return true;
+    }
+    if (
+      prop.prefix !== null
+      && `${prop.prefix}:${prop.label}` === userSupplied
+    ) {
+      return true;
+    }
+    if (
+      prop.namespace !== null
+      && `${prop.namespace}${prop.label}` === userSupplied
+    ) {
       return true;
     }
     return false;
   }
 };
+
+GraphHelper.PROPERTY_FOUND = 1;
+GraphHelper.PROPERTY_NOT_FOUND = 2;
+GraphHelper.PROPERTY_NOT_IN_DOMAIN = 3;
+GraphHelper.PROPERTY_DOMAIN_NOT_FOUND = 4;
 
 module.exports = GraphHelper;
