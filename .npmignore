@@ -1,0 +1,13 @@
+# Tests
+spec
+src/**/*[sS]pec.js
+
+# CI
+.travis.yml
+.nvmrc
+
+# Linters
+.eslintrc*
+
+# Editor settings
+.editorconfig
