@@ -22,6 +22,60 @@ module.exports = class FieldsNotInModelRule extends Rule {
           severity: ValidationErrorSeverity.NOTICE,
           type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
         },
+        invalidExperimentalNotInDomain: {
+          description: 'Raises a notice if experimental properties are detected, but have no definition in the @context.',
+          message: 'A definition for this extension property was found, but it has not been included in the correct object type. Please check the spelling of this property and ensure that you are using it within the correct object `"type"`.\n\nThe types allowed for this property are:\n\n{{domains}}\n\nFor more information about extension properties, see the [extension properties guide](https://www.openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
+          sampleValues: {
+            domains: '<ul><li>https://schema.org/Place</li></ul>',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
+        },
+        invalidExperimentalDomainNotFound: {
+          description: 'Raises a notice if experimental properties are detected, but have no definition in the @context.',
+          message: 'A definition for this extension property was found, but a check could not be performed to assess whether it has been included in the correct object `"type"`.\n\nFor more information about extension properties, see the [extension properties guide](https://www.openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.NOTICE,
+          type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
+        },
+        extensionErrorCode: {
+          message: 'Context "{{context}}" did not return a valid HTTP status. The server returned an error {{code}}.',
+          sampleValues: {
+            context: 'https://openactive.io/ns-beta',
+            code: 500,
+          },
+          category: ValidationErrorCategory.INTERNAL,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.FILE_NOT_FOUND,
+        },
+        extensionInvalid: {
+          message: 'Context "{{context}}" did not return a valid JSON response. Please check that it contains a JSON document in the format described in [the specification](https://www.openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
+          sampleValues: {
+            context: 'https://openactive.io/ns-beta',
+          },
+          category: ValidationErrorCategory.INTERNAL,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.FILE_NOT_FOUND,
+        },
+        extensionComplex: {
+          message: 'Context "{{context}}" contains nested contexts that cannot be processed by the validator at this time.',
+          sampleValues: {
+            context: 'https://openactive.io/ns-beta',
+          },
+          category: ValidationErrorCategory.INTERNAL,
+          severity: ValidationErrorSeverity.NOTICE,
+          type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
+        },
+        extensionGraph: {
+          message: 'Context "{{context}}" contains a `@graph` property that cannot be processed by the validator at this time.',
+          sampleValues: {
+            context: 'https://openactive.io/ns-beta',
+          },
+          category: ValidationErrorCategory.INTERNAL,
+          severity: ValidationErrorSeverity.NOTICE,
+          type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
+        },
         typoHint: {
           description: 'Detects common typos, and raises a warning informing on how to correct.',
           message: '`{{typoField}}` is a common misspelling for the property `{{actualField}}`. Please correct this property to `{{actualField}}`.',
@@ -45,7 +99,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
         },
         notInSpec: {
           description: 'Raises a warning for properties that aren\'t in the OpenActive specification, and that aren\'t caught by other rules.',
-          message: 'This property is not defined in the OpenActive specification. Data publishers are encouraged to publish as many data properties as possible, and for those that don\'t match the specification, to use [extension properties](https://www.openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).\n\nFor example:\n\n```\n{\n  "ext:{{field}}": "my custom data"\n}\n```\n\nIf you are trying to use a recognised property, please check the spelling. Otherwise if you are trying to add your own property, simply rename it to `ext:{{field}}`.',
+          message: 'This property is not defined in the OpenActive specification. Data publishers are encouraged to publish as many data properties as possible, and for those that don\'t match the specification, to use [extension properties](https://www.openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).\n\nFor example:\n\n```\n{\n  "ext:{{field}}": "my custom data"\n}\n```\n\nIf you are trying to use a recognised property, please check the spelling and ensure that you are using it within the correct object `"type"`. Otherwise if you are trying to add your own property, simply rename it to `ext:{{field}}`.',
           sampleValues: {
             field: 'myCustomPropertyName',
           },
@@ -76,14 +130,17 @@ module.exports = class FieldsNotInModelRule extends Rule {
     return testNode;
   }
 
-  getContexts(node) {
+  getContexts(node, field) {
     const rootNode = this.constructor.getRootJsonLdNode(node);
     let contexts = rootNode.getValue('@context');
     if (
       typeof contexts !== 'string'
       && !(contexts instanceof Array)
     ) {
-      return [];
+      return {
+        errors: [],
+        contexts: [],
+      };
     }
     if (!(contexts instanceof Array)) {
       contexts = [contexts];
@@ -91,20 +148,103 @@ module.exports = class FieldsNotInModelRule extends Rule {
 
     const metaData = DataModelHelper.getMetaData(this.options.version);
     const returnContexts = [];
+    const errors = [];
 
     for (const url of contexts) {
-      if (url !== metaData.contextUrl) {
+      if (typeof url === 'string' && url !== metaData.contextUrl) {
         const jsonResponse = JsonLoaderHelper.getFile(url, node.options);
         if (
           jsonResponse.errorCode === JsonLoaderHelper.ERROR_NONE
           && typeof jsonResponse.data === 'object'
           && jsonResponse.data !== null
         ) {
-          returnContexts.push(jsonResponse.data);
+          const returnedContext = jsonResponse.data;
+          if (typeof returnedContext['@context'] !== 'undefined') {
+            if (returnedContext['@context'] instanceof Array) {
+              let index = 0;
+              for (const subContext of returnedContext['@context']) {
+                if (typeof subContext === 'string') {
+                  const subJsonResponse = JsonLoaderHelper.getFile(subContext, node.options);
+                  const subReturnedContext = subJsonResponse.data;
+                  if (
+                    typeof subReturnedContext['@context'] === 'object'
+                    && subReturnedContext['@context'] !== null
+                    && !(subReturnedContext['@context'] instanceof Array)
+                  ) {
+                    returnedContext['@context'][index] = subReturnedContext['@context'];
+                  } else {
+                    errors.push(
+                      this.createError(
+                        'extensionComplex',
+                        {
+                          value: subContext,
+                          path: node.getPath(field),
+                        },
+                        {
+                          context: subContext,
+                        },
+                      ),
+                    );
+                  }
+                  if (typeof subReturnedContext['@graph'] !== 'undefined') {
+                    errors.push(
+                      this.createError(
+                        'extensionGraph',
+                        {
+                          value: subContext,
+                          path: node.getPath(field),
+                        },
+                        {
+                          context: subContext,
+                        },
+                      ),
+                    );
+                  }
+                }
+                index += 1;
+              }
+            }
+          }
+          returnContexts.push(returnedContext);
+        } else if (
+          jsonResponse.statusCode !== 200
+          && jsonResponse.statusCode !== null
+        ) {
+          errors.push(
+            this.createError(
+              'extensionErrorCode',
+              {
+                value: url,
+                path: node.getPath(field),
+              },
+              {
+                context: url,
+                code: jsonResponse.statusCode,
+              },
+            ),
+          );
+        } else {
+          errors.push(
+            this.createError(
+              'extensionInvalid',
+              {
+                value: url,
+                path: node.getPath(field),
+              },
+              {
+                context: url,
+              },
+            ),
+          );
         }
+      } else if (typeof url === 'object' && url !== null) {
+        returnContexts.push(url);
       }
     }
-    return returnContexts;
+    return {
+      contexts: returnContexts,
+      errors,
+    };
   }
 
   validateField(node, field) {
@@ -116,16 +256,21 @@ module.exports = class FieldsNotInModelRule extends Rule {
     if (field === '@context') {
       return [];
     }
-    const errors = [];
+    let errors = [];
     let testKey = null;
     let messageValues;
     if (node.model.hasFieldNotInSpec(field)) {
       testKey = 'notAllowed';
     } else if (!node.model.hasFieldInSpec(field)) {
       // Get prop values
-      const contexts = this.getContexts(node);
-      const prop = PropertyHelper.getFullyQualifiedProperty(field, this.options.version, contexts);
+      const contextInfo = this.getContexts(node, field);
+      errors = errors.concat(contextInfo.errors);
+      const prop = PropertyHelper.getFullyQualifiedProperty(field, this.options.version, contextInfo.contexts);
       const metaData = DataModelHelper.getMetaData(this.options.version);
+      const oaContext = {
+        '@context': DataModelHelper.getContext(this.options.version),
+        '@graph': DataModelHelper.getGraph(this.options.version),
+      };
       if (Object.keys(metaData.namespaces).indexOf(prop.prefix) < 0) {
         if (
           prop.namespace === null
@@ -135,20 +280,51 @@ module.exports = class FieldsNotInModelRule extends Rule {
         } else {
           // We should see if this field is even allowed in this model
           let isDefined = false;
-          for (const context of contexts) {
+          let graphResponse;
+          for (const context of contextInfo.contexts) {
             let model;
-            if (typeof node.model.derivedFrom !== 'undefined') {
+            if (
+              typeof node.model.derivedFrom !== 'undefined'
+              && node.model.derivedFrom !== null
+            ) {
               model = node.model.derivedFrom;
             } else {
               model = `${metaData.openActivePrefix}:${node.model.type}`;
             }
-            if (GraphHelper.isPropertyInClass(context, field, model, node.options.version)) {
+            graphResponse = GraphHelper.isPropertyInClass(
+              context,
+              field,
+              model,
+              node.options.version,
+              [oaContext, ...node.options.schemaOrgSpecifications],
+            );
+            if (graphResponse.code === GraphHelper.PROPERTY_FOUND) {
               isDefined = true;
+              break;
+            }
+            if (
+              graphResponse.code === GraphHelper.PROPERTY_NOT_IN_DOMAIN
+              || graphResponse.code === GraphHelper.PROPERTY_DOMAIN_NOT_FOUND
+            ) {
               break;
             }
           }
           if (!isDefined) {
-            testKey = 'invalidExperimental';
+            switch (graphResponse.code) {
+              case GraphHelper.PROPERTY_NOT_FOUND:
+              default:
+                testKey = 'invalidExperimental';
+                break;
+              case GraphHelper.PROPERTY_NOT_IN_DOMAIN:
+                testKey = 'invalidExperimentalNotInDomain';
+                messageValues = {
+                  domains: `<ul><li>${graphResponse.data.join('</li><li>')}</li></ul>`,
+                };
+                break;
+              case GraphHelper.PROPERTY_DOMAIN_NOT_FOUND:
+                testKey = 'invalidExperimentalDomainNotFound';
+                break;
+            }
           }
         }
       } else if (typeof node.model.commonTypos[field] !== 'undefined') {
@@ -166,7 +342,13 @@ module.exports = class FieldsNotInModelRule extends Rule {
         }
         if (typeof node.model.derivedFrom !== 'undefined') {
           for (const spec of node.options.schemaOrgSpecifications) {
-            if (GraphHelper.isPropertyInClass(spec, `schema:${fieldToTest}`, node.model.derivedFrom, node.options.version)) {
+            const graphResponse = GraphHelper.isPropertyInClass(
+              spec,
+              `schema:${fieldToTest}`,
+              node.model.derivedFrom,
+              node.options.version,
+            );
+            if (graphResponse.code === GraphHelper.PROPERTY_FOUND) {
               inSchemaOrg = true;
               break;
             }

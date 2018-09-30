@@ -286,6 +286,7 @@ describe('FieldsNotInModelRule', () => {
 
     const options = new OptionsHelper({
       loadRemoteJson: true,
+      schemaOrgSpecifications: [schemaOrgSpec],
     });
 
     const nodeToTest = new ModelNode(
