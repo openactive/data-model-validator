@@ -28,6 +28,7 @@ module.exports = {
     require('./format/currency-code-format-rule'),
     require('./format/country-code-format-rule'),
     require('./format/lat-long-format-rule'),
+    require('./format/rrule-format-rule'),
 
     // Logic rules
     require('./data-quality/end-before-start-rule'),
