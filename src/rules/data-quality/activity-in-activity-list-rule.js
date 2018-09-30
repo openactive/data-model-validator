@@ -47,9 +47,15 @@ module.exports = class ActivityInActivityListRule extends Rule {
           sampleValues: {
             list: 'https://www.openactive.io/activity-list/activity-list.jsonld',
           },
-          category: ValidationErrorCategory.INTERNAL,
+          category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
+        },
+        useOfficialActivityList: {
+          message: 'To ensure your data gets used by the largest number of apps and websites, it is recommended that you align your activities with the official [OpenActive activity list](https://openactive.io/activity-list).`',
+          category: ValidationErrorCategory.DATA_QUALITY,
+          severity: ValidationErrorSeverity.WARNING,
+          type: ValidationErrorType.USE_OFFICIAL_ACTIVITY_LIST,
         },
       },
     };
@@ -98,7 +104,26 @@ module.exports = class ActivityInActivityListRule extends Rule {
               );
             } else if (metaData.defaultActivityLists.indexOf(inScheme) < 0) {
               listUrls = [inScheme];
+              errors.push(
+                this.createError(
+                  'useOfficialActivityList',
+                  {
+                    value: activity,
+                    path: node.getPath(field, index),
+                  },
+                ),
+              );
             }
+          } else {
+            errors.push(
+              this.createError(
+                'useOfficialActivityList',
+                {
+                  value: activity,
+                  path: node.getPath(field, index),
+                },
+              ),
+            );
           }
           for (const listUrl of listUrls) {
             const jsonResponse = JsonLoaderHelper.getFile(listUrl, node.options);
