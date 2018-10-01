@@ -112,10 +112,6 @@ const PropertyHelper = class {
     const allowedOptions = [];
     for (const option of enumObj.values) {
       allowedOptions.push(`${enumObj.namespace}${option}`);
-      const optionProp = this.getFullyQualifiedProperty(`${enumObj.namespace}${option}`, version, contexts);
-      if (typeof optionProp.alias !== 'undefined' && optionProp.alias !== null) {
-        allowedOptions.push(optionProp.alias);
-      }
     }
     return allowedOptions;
   }
