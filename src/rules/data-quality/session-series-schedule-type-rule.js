@@ -35,7 +35,8 @@ module.exports = class SessionSeriesScheduleTypeRule extends Rule {
       let index = 0;
       for (const indexValue of fieldValue) {
         if (
-          PropertyHelper.getObjectField(indexValue, 'scheduledEventType', node.options.version) !== 'ScheduledSession'
+          PropertyHelper.getObjectField(indexValue, 'type', node.options.version) === 'Schedule'
+          && PropertyHelper.getObjectField(indexValue, 'scheduledEventType', node.options.version) !== 'ScheduledSession'
         ) {
           errors.push(
             this.createError(
