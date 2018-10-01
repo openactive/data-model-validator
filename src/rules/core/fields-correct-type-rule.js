@@ -31,6 +31,30 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.INVALID_TYPE,
         },
+        singleTypeSubclassSingleError: {
+          description: 'Validates that a property conforms to a single type.',
+          message: 'Invalid type, found {{foundType}}, which is not allowed in {{expectedType}}.{{examples}}',
+          sampleValues: {
+            expectedType: this.constructor.getHumanReadableType('LocationFeatureSpecification'),
+            foundType: this.constructor.getHumanReadableType('ChangingRooms'),
+            examples: this.constructor.makeExamples('property', ['LocationFeatureSpecification'], this.options.version),
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.INVALID_TYPE,
+        },
+        singleTypeSubclassMultipleError: {
+          description: 'Validates that a property conforms to a single type.',
+          message: 'Invalid type, found {{foundTypes}} which are not allowed in {{expectedType}}.{{examples}}',
+          sampleValues: {
+            expectedType: this.constructor.getHumanReadableType('LocationFeatureSpecification'),
+            foundTypes: this.constructor.makeExpectedTypeList(['ChangingRooms', 'GolfCourse']),
+            examples: this.constructor.makeExamples('property', ['LocationFeatureSpecification'], this.options.version),
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.INVALID_TYPE,
+        },
         multipleTypes: {
           description: 'Validates that a property conforms one of a list of types.',
           message: 'Invalid type, expected one of {{expectedTypes}} but found {{foundType}}.{{examples}}',
@@ -219,12 +243,46 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       ) {
         testKey = 'noValueObjects';
       } else if (typeChecks.length === 1) {
-        testKey = 'singleType';
-        messageValues = {
-          expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
-          foundType: this.constructor.getHumanReadableType(derivedType),
-          examples: this.constructor.makeExamples(propName, typeChecks, node.options.version),
-        };
+        let noArrayDerivedType = derivedType;
+        let noArrayTypeCheck = typeChecks[0];
+        if (derivedType.match(/^ArrayOf#/) && typeChecks[0].match(/^ArrayOf#/)) {
+          noArrayDerivedType = derivedType.replace(/^ArrayOf#/, '');
+          noArrayTypeCheck = typeChecks[0].replace(/^ArrayOf#/, '');
+        }
+        if (noArrayDerivedType.match(/^{([A-Za-z:]+)(?:,([A-Za-z:]+))+}$/)) {
+          const r = /(,?([A-Za-z:]+))/g;
+          let match = r.exec(noArrayDerivedType);
+          const notAllowed = [];
+          while (match !== null) {
+            const testMatch = fieldObj.canBeTypeOf(match[2], noArrayTypeCheck);
+            if (!testMatch) {
+              notAllowed.push(match[2]);
+            }
+            match = r.exec(noArrayDerivedType);
+          }
+          if (notAllowed.length === 1) {
+            testKey = 'singleTypeSubclassSingleError';
+            messageValues = {
+              expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
+              foundType: this.constructor.getHumanReadableType(notAllowed[0]),
+              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version),
+            };
+          } else if (notAllowed.length > 1) {
+            testKey = 'singleTypeSubclassMultipleError';
+            messageValues = {
+              expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
+              foundTypes: this.constructor.makeExpectedTypeList(notAllowed),
+              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version),
+            };
+          }
+        } else {
+          testKey = 'singleType';
+          messageValues = {
+            expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
+            foundType: this.constructor.getHumanReadableType(derivedType),
+            examples: this.constructor.makeExamples(propName, typeChecks, node.options.version),
+          };
+        }
       } else {
         testKey = 'multipleTypes';
         const expectedTypes = this.constructor.makeExpectedTypeList(typeChecks);
