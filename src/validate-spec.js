@@ -139,8 +139,8 @@ describe('validate', () => {
         },
         openingHoursSpecification: [{
           type: 'OpeningHoursSpecification',
-          opens: '07:00Z',
-          closes: '21:00Z',
+          opens: '07:00',
+          closes: '21:00',
           dayOfWeek: 'https://schema.org/Monday',
         }],
         amenityFeature: [
@@ -374,8 +374,8 @@ describe('validate', () => {
       },
       openingHoursSpecification: [{
         type: 'OpeningHoursSpecification',
-        opens: '07:00Z',
-        closes: '21:00Z',
+        opens: '07:00',
+        closes: '21:00',
         dayOfWeek: 'https://schema.org/Monday',
       }],
       amenityFeature: [
@@ -429,8 +429,8 @@ describe('validate', () => {
       },
       openingHoursSpecification: [{
         type: 'OpeningHoursSpecification',
-        opens: '07:00Z',
-        closes: '21:00Z',
+        opens: '07:00',
+        closes: '21:00',
         dayOfWeek: 'https://schema.org/Monday',
       }],
       amenityFeature: [

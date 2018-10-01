@@ -30,8 +30,6 @@ describe('TimeFormatRule', () => {
     const values = [
       '09:00',
       '09:00:00',
-      '09:00:00Z',
-      '09:00:00+01:00',
     ];
 
     for (const value of values) {
@@ -62,6 +60,8 @@ describe('TimeFormatRule', () => {
     const values = [
       '2017-09-06T09:00:00',
       '2018-10-17',
+      '09:00:00Z',
+      '09:00:00+01:00',
       '25:00:00Z',
       'ABC',
     ];
