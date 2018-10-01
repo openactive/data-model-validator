@@ -15,7 +15,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
       description: 'Validates that an activity is in the OpenActive activity list.',
       tests: {
         default: {
-          message: 'Activity "{{activity}}" could not be found in the OpenActive activity list.',
+          message: 'Activity `"{{activity}}"` could not be found in the OpenActive activity list.',
           sampleValues: {
             activity: 'Touch Football',
           },
@@ -23,8 +23,30 @@ module.exports = class ActivityInActivityListRule extends Rule {
           severity: ValidationErrorSeverity.WARNING,
           type: ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST,
         },
+        noPrefLabelMatch: {
+          message: 'Activity `"{{activity}}"` was found in the activity list `"{{list}}"`, but the `"prefLabel"` did not match.\n\nThe correct `"prefLabel"` is `"{{correctPrefLabel}}"`.',
+          sampleValues: {
+            activity: 'https://openactive.io/activity-list#dc8b8b2b-0a83-403f-863a-4ec05ebb2410',
+            correctPrefLabel: 'Touch Rugby Union',
+            list: 'https://openactive.io/activity-list',
+          },
+          category: ValidationErrorCategory.DATA_QUALITY,
+          severity: ValidationErrorSeverity.WARNING,
+          type: ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST,
+        },
+        noIdMatch: {
+          message: 'Activity `"{{activity}}"` was found in the activity list `"{{list}}"`, but the `"id"` did not match.\n\nThe correct `"id"` is `"{{correctId}}"`.',
+          sampleValues: {
+            activity: 'Touch Rugby Union',
+            correctId: 'https://openactive.io/activity-list#dc8b8b2b-0a83-403f-863a-4ec05ebb2410',
+            list: 'https://openactive.io/activity-list',
+          },
+          category: ValidationErrorCategory.DATA_QUALITY,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST,
+        },
         listErrorCode: {
-          message: 'Activity list "{{list}}" did not return a valid HTTP status. The server returned an error {{code}}.',
+          message: 'Activity list `"{{list}}"` did not return a valid HTTP status. The server returned an error {{code}}.',
           sampleValues: {
             list: 'https://openactive.io/activity-list/invalid-list.jsonld',
             code: 200,
@@ -34,7 +56,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
           type: ValidationErrorType.FILE_NOT_FOUND,
         },
         listInvalid: {
-          message: 'Activity list "{{list}}" did not return a valid JSON response. Please check that it contains a JSON document in the format described in [the specification](https://www.openactive.io/modelling-opportunity-data/#describing-activity-lists-code-skos-conceptscheme-code-and-physical-activity-code-skos-concept-code-).',
+          message: 'Activity list `"{{list}}"` did not return a valid JSON response. Please check that it contains a JSON document in the format described in [the specification](https://www.openactive.io/modelling-opportunity-data/#describing-activity-lists-code-skos-conceptscheme-code-and-physical-activity-code-skos-concept-code-).',
           sampleValues: {
             list: 'https://openactive.io/activity-list',
           },
@@ -43,7 +65,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
           type: ValidationErrorType.FILE_NOT_FOUND,
         },
         upgradeActivityList: {
-          message: 'URL "https://openactive.io/activity-list" should now be used in the "inScheme" property to reference the OpenActive Activity list rather than "{{list}}".',
+          message: 'URL "https://openactive.io/activity-list" should now be used in the `"inScheme"` property to reference the OpenActive Activity list rather than `"{{list}}"`.',
           sampleValues: {
             list: 'https://www.openactive.io/activity-list/activity-list.jsonld',
           },
@@ -81,6 +103,11 @@ module.exports = class ActivityInActivityListRule extends Rule {
     ];
     const errors = [];
     let found = false;
+    let idMatch = false;
+    let prefLabelMatch = false;
+    let correctId;
+    let correctPrefLabel;
+    let currentList;
     let index = 0;
     const metaData = DataModelHelper.getMetaData(node.options.version);
     if (fieldValue instanceof Array) {
@@ -136,6 +163,9 @@ module.exports = class ActivityInActivityListRule extends Rule {
               && jsonResponse.data !== null
             ) {
               activityLists.push(jsonResponse.data);
+              if (typeof activityLists[activityLists.length - 1]['@url'] === 'undefined') {
+                activityLists[activityLists.length - 1]['@url'] = listUrl;
+              }
             } else if (
               jsonResponse.statusCode !== 200
               && jsonResponse.statusCode !== null
@@ -169,44 +199,73 @@ module.exports = class ActivityInActivityListRule extends Rule {
             }
           }
           for (const activityList of activityLists) {
+            currentList = activityList['@url'];
             if (typeof activityList.concepts !== 'undefined') {
               for (const concept of activityList.concepts) {
                 const prefLabel = PropertyHelper.getObjectField(activity, 'prefLabel', node.options.version);
-                const notation = PropertyHelper.getObjectField(activity, 'notation', node.options.version);
                 const id = PropertyHelper.getObjectField(activity, 'id', node.options.version);
                 if (typeof prefLabel !== 'undefined') {
                   activityIdentifier = prefLabel;
+                  prefLabelMatch = false;
+                  correctPrefLabel = concept.prefLabel;
                   if (concept.prefLabel.toLowerCase() === prefLabel.toLowerCase()) {
                     found = true;
-                    break;
+                    prefLabelMatch = true;
                   }
-                } else if (typeof id !== 'undefined') {
-                  activityIdentifier = id;
+                } else {
+                  prefLabelMatch = true;
+                }
+                if (typeof id !== 'undefined') {
+                  if (typeof prefLabel === 'undefined' || !prefLabelMatch) {
+                    activityIdentifier = id;
+                  }
+                  idMatch = false;
+                  correctId = concept.id;
                   if (concept.id === id) {
                     found = true;
-                    break;
+                    idMatch = true;
                   }
-                } else if (typeof notation !== 'undefined') {
-                  activityIdentifier = notation;
-                  if (concept.notation === notation) {
-                    found = true;
-                    break;
-                  }
+                } else {
+                  idMatch = true;
+                }
+                if (found) {
+                  break;
                 }
               }
             }
           }
+          let errorKey;
+          let messageValues;
           if (!found) {
+            errorKey = 'default';
+            messageValues = {
+              activity: activityIdentifier,
+            };
+          } else if (!prefLabelMatch) {
+            errorKey = 'noPrefLabelMatch';
+            messageValues = {
+              activity: activityIdentifier,
+              correctPrefLabel,
+              list: currentList,
+            };
+          } else if (!idMatch) {
+            errorKey = 'noIdMatch';
+            messageValues = {
+              activity: activityIdentifier,
+              correctId,
+              list: currentList,
+            };
+          }
+
+          if (errorKey) {
             errors.push(
               this.createError(
-                'default',
+                errorKey,
                 {
                   value: activity,
                   path: node.getPath(field, index),
                 },
-                {
-                  activity: activityIdentifier,
-                },
+                messageValues,
               ),
             );
           }
