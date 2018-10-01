@@ -75,6 +75,9 @@ module.exports = class ActivityInActivityListRule extends Rule {
       'https://openactive.io/activity-list/',
       'http://www.openactive.io/activity-list/',
       'http://openactive.io/activity-list/',
+      'https://www.openactive.io/activity-list',
+      'http://www.openactive.io/activity-list',
+      'http://openactive.io/activity-list',
     ];
     const errors = [];
     let found = false;
