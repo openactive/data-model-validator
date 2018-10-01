@@ -31,7 +31,28 @@ describe('SessionSeriesScheduleTypeRule', () => {
       type: 'SessionSeries',
       eventSchedule: [
         {
+          type: 'Schedule',
           scheduledEventType: 'ScheduledSession',
+        },
+      ],
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(0);
+  });
+  it('should return no errors if the type of the eventSchedule of the SessionSeries is PartialSchedule', () => {
+    const data = {
+      type: 'SessionSeries',
+      eventSchedule: [
+        {
+          type: 'PartialSchedule',
         },
       ],
     };
@@ -68,6 +89,7 @@ describe('SessionSeriesScheduleTypeRule', () => {
       type: 'SessionSeries',
       eventSchedule: [
         {
+          type: 'Schedule',
           scheduledEventType: 'Event',
         },
       ],
