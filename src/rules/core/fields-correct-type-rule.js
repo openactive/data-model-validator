@@ -192,6 +192,14 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       return [];
     }
 
+    // Ignore - this will be picked up by ValueInOptionsRule
+    if (
+      typeChecks.length === 1
+      && PropertyHelper.isEnum(typeChecks[0], node.options.version)
+    ) {
+      return [];
+    }
+
     const checkPass = fieldObj.detectedTypeIsAllowed(fieldValue);
 
     if (!checkPass) {
