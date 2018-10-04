@@ -16,14 +16,14 @@ This library can be used in your own application, perhaps as part of your CI pip
 ### Install
 
 ```shell
-$ npm install openactive-data-model-validator
+$ npm install @openactive/data-model-validator
 ```
 
 ### Usage
 
 ```js
 
-const { validate } = require('openactive-data-model-validator');
+const { validate } = require('@openactive/data-model-validator');
 
 const data = {
   '@context': 'https://www.openactive.io/ns/oa.jsonld',
@@ -65,7 +65,7 @@ Whether to load remote JSON documents. For example, remote `@context` definition
 e.g.
 
 ```js
-const { validate } = require('openactive-data-model-validator');
+const { validate } = require('@openactive/data-model-validator');
 
 const data = {
   // ...
@@ -87,7 +87,7 @@ Used in conjunction with `loadRemoteJson`. If set, allows the JSON loader to cac
 e.g.
 
 ```js
-const { validate } = require('openactive-data-model-validator');
+const { validate } = require('@openactive/data-model-validator');
 
 const data = {
   // ...
@@ -110,7 +110,7 @@ Used in conjunction with `loadRemoteJson` and `remoteJsonCachePath`. It sets the
 e.g.
 
 ```js
-const { validate } = require('openactive-data-model-validator');
+const { validate } = require('@openactive/data-model-validator');
 
 const data = {
   // ...
@@ -132,7 +132,7 @@ A limit of the number of RPDE `"updated"` data items to validate. It is helpful 
 e.g.
 
 ```js
-const { validate } = require('openactive-data-model-validator');
+const { validate } = require('@openactive/data-model-validator');
 
 const feed = {
   // ...
@@ -152,7 +152,7 @@ An array of schema.org specifications in `JSON-LD` format. For example, see http
 e.g.
 
 ```js
-const { validate } = require('openactive-data-model-validator');
+const { validate } = require('@openactive/data-model-validator');
 
 const data = {
   // ...
@@ -193,7 +193,7 @@ The validator will detect the type of the model being validated from the `type` 
 e.g.
 
 ```js
-const { validate } = require('openactive-data-model-validator');
+const { validate } = require('@openactive/data-model-validator');
 
 const model = {
   type: 'CustomAction'
@@ -214,7 +214,7 @@ The version of the specification to validate against. If not provided, this will
 e.g.
 
 ```js
-const { validate } = require('openactive-data-model-validator');
+const { validate } = require('@openactive/data-model-validator');
 
 const model = {
   type: 'CustomAction'
