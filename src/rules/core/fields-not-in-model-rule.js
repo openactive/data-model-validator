@@ -261,6 +261,9 @@ module.exports = class FieldsNotInModelRule extends Rule {
     let messageValues;
     if (node.model.hasFieldNotInSpec(field)) {
       testKey = 'notAllowed';
+      messageValues = {
+        model: node.model.type,
+      };
     } else if (!node.model.hasFieldInSpec(field)) {
       // Get prop values
       const contextInfo = this.getContexts(node, field);
