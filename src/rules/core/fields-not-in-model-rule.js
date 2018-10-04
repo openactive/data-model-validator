@@ -343,7 +343,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
         if (prop.prefix === 'schema') {
           fieldToTest = prop.label;
         }
-        if (typeof node.model.derivedFrom !== 'undefined') {
+        if (typeof node.model.derivedFrom !== 'undefined' && node.model.derivedFrom !== null) {
           for (const spec of node.options.schemaOrgSpecifications) {
             const graphResponse = GraphHelper.isPropertyInClass(
               spec,
