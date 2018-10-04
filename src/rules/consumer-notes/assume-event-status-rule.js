@@ -12,7 +12,7 @@ module.exports = class AssumeEventStatusRule extends Rule {
       description: 'Generates a notice for how data consumers wil interpret an Event without a valid eventStatus.',
       tests: {
         default: {
-          message: 'Data consumers will assume the `eventStatus` is scheduled if not specified or invalid.\n\nThis `{{model}}` is currently assumed to have the equivalent of:\n\n```\n"eventStatus": "https://openactive.io/EventScheduled"\n```',
+          message: 'Data consumers will assume the `eventStatus` is scheduled if not specified or invalid.\n\nThis `{{model}}` is currently assumed to have the equivalent of:\n\n```\n"eventStatus": "https://schema.org/EventScheduled"\n```',
           sampleValues: {
             model: 'Event',
           },
