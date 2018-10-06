@@ -18,7 +18,7 @@ module.exports = class EndBeforeStartRule extends Rule {
             model: 'Event',
           },
           category: ValidationErrorCategory.DATA_QUALITY,
-          severity: ValidationErrorSeverity.WARNING,
+          severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.START_DATE_AFTER_END_DATE,
         },
       },

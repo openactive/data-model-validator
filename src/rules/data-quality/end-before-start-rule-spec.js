@@ -89,6 +89,6 @@ describe('EndBeforeStartRule', () => {
     const errors = rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.START_DATE_AFTER_END_DATE);
-    expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 });
