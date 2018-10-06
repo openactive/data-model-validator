@@ -6,7 +6,7 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 module.exports = class DatesMustHaveDurationRule extends Rule {
   constructor(options) {
     super(options);
-    this.targetModels = ['Event', 'CourseInstance', 'EventSeries', 'HeadlineEvent', 'ScheduledSession', 'SessionSeries', 'Schedule'];
+    this.targetModels = ['Event', 'CourseInstance', 'EventSeries', 'HeadlineEvent', 'ScheduledSession', 'SessionSeries', 'Schedule', 'Slot'];
     this.meta = {
       name: 'DatesMustHaveDurationRule',
       description: 'Validates that a duration is supplied where both startDate and endDate are given in an Event or Schedule.',

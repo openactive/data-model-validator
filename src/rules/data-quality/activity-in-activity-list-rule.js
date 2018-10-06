@@ -9,7 +9,7 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 module.exports = class ActivityInActivityListRule extends Rule {
   constructor(options) {
     super(options);
-    this.targetFields = { Event: ['activity'] };
+    this.targetFields = { Event: ['activity'], FacilityUse: ['activity'], IndividualFacilityUse: ['activity'] };
     this.meta = {
       name: 'ActivityInActivityListRule',
       description: 'Validates that an activity is in the OpenActive activity list.',
