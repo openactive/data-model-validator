@@ -65,7 +65,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
           type: ValidationErrorType.FILE_NOT_FOUND,
         },
         upgradeActivityList: {
-          message: 'URL "https://openactive.io/activity-list" should now be used in the `"inScheme"` property to reference the OpenActive Activity list rather than `"{{list}}"`.',
+          message: 'URL `"https://openactive.io/activity-list"` should now be used in the `"inScheme"` property to reference the OpenActive Activity list rather than `"{{list}}"`.',
           sampleValues: {
             list: 'https://www.openactive.io/activity-list/activity-list.jsonld',
           },
