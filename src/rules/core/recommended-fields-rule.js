@@ -12,10 +12,11 @@ module.exports = class RecommendedFieldsRule extends Rule {
       description: 'Validates that all recommended properties are present in the JSON data.',
       tests: {
         default: {
-          message: 'Recommended property `{{field}}` is missing from `{{model}}`.',
+          message: 'Recommended property `{{field}}` is missing from `{{model}}`.{{example}}',
           sampleValues: {
             field: 'description',
             model: 'Event',
+            example: '',
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.WARNING,
@@ -33,6 +34,14 @@ module.exports = class RecommendedFieldsRule extends Rule {
     const errors = [];
     for (const field of node.model.recommendedFields) {
       const testValue = node.getValueWithInheritance(field);
+      let example = '';
+      // Don't fetch examples for models that are not part of the Modelling Spec
+      if (!node.model.isJsonLd) {
+        const fieldObj = node.model.getField(field);
+        if (typeof fieldObj === 'undefined') {
+          example = fieldObj.getRenderedExample('\n\nA full example looks like this:\n\n');
+        }
+      }
       if (typeof testValue === 'undefined') {
         errors.push(
           this.createError(
@@ -44,6 +53,7 @@ module.exports = class RecommendedFieldsRule extends Rule {
             {
               field,
               model: node.model.type,
+              example,
             },
           ),
         );
