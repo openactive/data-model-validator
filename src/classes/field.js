@@ -70,7 +70,7 @@ const Field = class {
 
   getRenderedExample(prefix) {
     if (typeof (this.example) !== 'undefined' && this.example !== null) {
-      const { example, property, requiredType } = this;
+      const { example, fieldName, requiredType } = this;
       let renderedExample = '';
       if (typeof example === 'object') {
         renderedExample = JSON.stringify(example, null, 2);
@@ -78,7 +78,7 @@ const Field = class {
         const isNotString = requiredType && (requiredType.indexOf('Integer') > -1 || requiredType.indexOf('Float') > -1 || requiredType.indexOf('Boolean') > -1);
         renderedExample = isNotString ? `${example}` : `"${example}"`;
       }
-      return `${prefix || ''}\`\`\`\n${property ? `"${property}": ` : ''}${renderedExample}\n\`\`\``;
+      return `${prefix || ''}\`\`\`\n${fieldName ? `"${fieldName}": ` : ''}${renderedExample}\n\`\`\``;
     }
     return '';
   }
