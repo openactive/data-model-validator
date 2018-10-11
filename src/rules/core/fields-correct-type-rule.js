@@ -190,7 +190,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     for (const type of types) {
       examples = `${examples}\n\n${this.getHumanReadableExample(property, type, version)}`;
     }
-    if (renderedExample !== '') {
+    if (renderedExample) {
       const hint = types.length > 1 ? 'A full example of the preferred approach looks like this:' : 'A full example looks like this:';
       examples = `${examples}\n\n${hint}\n\n${renderedExample}`;
     }

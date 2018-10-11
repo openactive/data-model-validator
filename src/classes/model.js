@@ -99,6 +99,17 @@ const Model = class {
   hasField(field) {
     return PropertyHelper.objectHasField(this.fields, field, this.version);
   }
+
+  getRenderedExample(field) {
+    // Don't fetch examples for models that are not part of the Modelling Spec
+    if (this.isJsonLd && this.version) {
+      const fieldObj = this.getField(field);
+      if (typeof fieldObj !== 'undefined') {
+        return fieldObj.getRenderedExample();
+      }
+    }
+    return undefined;
+  }
 };
 
 module.exports = Model;

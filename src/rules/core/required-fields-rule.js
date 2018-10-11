@@ -34,14 +34,7 @@ module.exports = class RequiredFieldsRule extends Rule {
     const errors = [];
     for (const field of node.model.requiredFields) {
       const testValue = node.getValueWithInheritance(field);
-      let example = '';
-      // Don't fetch examples for models that are not part of the Modelling Spec
-      if (!node.model.isJsonLd) {
-        const fieldObj = node.model.getField(field);
-        if (typeof fieldObj === 'undefined') {
-          example = fieldObj.getRenderedExample('\n\nA full example looks like this:\n\n');
-        }
-      }
+      const example = node.model.getRenderedExample(field);
       if (typeof testValue === 'undefined') {
         errors.push(
           this.createError(
@@ -53,7 +46,7 @@ module.exports = class RequiredFieldsRule extends Rule {
             {
               field,
               model: node.model.type,
-              example,
+              example: example ? `\n\nA full example looks like this:\n\n${example}` : '',
             },
           ),
         );

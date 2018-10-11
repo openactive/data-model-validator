@@ -80,7 +80,7 @@ const Field = class {
       }
       return `${prefix || ''}\`\`\`\n${fieldName ? `"${fieldName}": ` : ''}${renderedExample}\n\`\`\``;
     }
-    return '';
+    return undefined;
   }
 
   canBeArray() {
