@@ -61,7 +61,14 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           sampleValues: {
             expectedTypes: this.constructor.makeExpectedTypeList(['https://schema.org/Text', 'ArrayOf#https://schema.org/Text', '#Concept', 'ArrayOf#Concept']),
             foundType: this.constructor.getHumanReadableType('https://schema.org/Float'),
-            examples: this.constructor.makeExamples('property', ['https://schema.org/Text', 'ArrayOf#https://schema.org/Text', '#Concept', 'ArrayOf#Concept'], this.options.version),
+            examples: this.constructor.makeExamples('property', ['https://schema.org/Text', 'ArrayOf#https://schema.org/Text', '#Concept', 'ArrayOf#Concept'], this.options.version, [
+              {
+                type: 'Concept',
+                id: 'https://openactive.io/activity-list#5e78bcbe-36db-425a-9064-bf96d09cc351',
+                prefLabel: 'Bodypump™',
+                inScheme: 'https://openactive.io/activity-list',
+              },
+            ]),
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -185,10 +192,14 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     return `${expectedTypes}</ul>`;
   }
 
-  static makeExamples(property, types, version) {
+  static makeExamples(property, types, version, example) {
     let examples = '';
     for (const type of types) {
       examples = `${examples}\n\n${this.getHumanReadableExample(property, type, version)}`;
+    }
+    if (example) {
+      const hint = types.length > 1 ? 'A full example of the preferred approach looks like this:' : 'A full example looks like this:';
+      examples = `${examples}\n\n${hint}\n\n\`\`\`\n${property ? `"${property}": ` : ''}${example}\n\`\`\``;
     }
     return examples;
   }
@@ -265,14 +276,14 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
             messageValues = {
               expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
               foundType: this.constructor.getHumanReadableType(notAllowed[0]),
-              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version),
+              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, field.example),
             };
           } else if (notAllowed.length > 1) {
             testKey = 'singleTypeSubclassMultipleError';
             messageValues = {
               expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
               foundTypes: this.constructor.makeExpectedTypeList(notAllowed),
-              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version),
+              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, field.example),
             };
           }
         } else {
@@ -280,7 +291,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           messageValues = {
             expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
             foundType: this.constructor.getHumanReadableType(derivedType),
-            examples: this.constructor.makeExamples(propName, typeChecks, node.options.version),
+            examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, field.example),
           };
         }
       } else {
@@ -289,7 +300,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         messageValues = {
           expectedTypes,
           foundType: this.constructor.getHumanReadableType(derivedType),
-          examples: this.constructor.makeExamples(propName, typeChecks, node.options.version),
+          examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, field.example),
         };
       }
       errors.push(
