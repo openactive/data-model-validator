@@ -40,7 +40,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
           type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
         },
         extensionErrorCode: {
-          message: 'Context "{{context}}" did not return a valid HTTP status. The server returned an error {{code}}.',
+          message: 'Context "{{context}}" did not return a valid HTTP status. The server returned an error {{code}}.\n\nThe correct way to reference the OpenActive contexts is using these URLs:\n\n <ul><li>`"https://openactive.io/"` (always required)</li><li>`"https://openactive.io/ns-beta"` (only required if using `beta:` properties)</li></ul>',
           sampleValues: {
             context: 'https://openactive.io/ns-beta',
             code: 500,
@@ -50,7 +50,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
           type: ValidationErrorType.FILE_NOT_FOUND,
         },
         extensionInvalid: {
-          message: 'Context "{{context}}" did not return a valid JSON response. Please check that it contains a JSON document in the format described in [the specification](https://www.openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
+          message: 'Context "{{context}}" did not return a valid JSON response. Please check that it contains a JSON document in the format described in [the specification](https://www.openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).\n\nThe correct way to reference the OpenActive contexts is using these URLs:\n\n <ul><li>`"https://openactive.io/"` (always required)</li><li>`"https://openactive.io/ns-beta"` (only required if using `beta:` properties)</li></ul>',
           sampleValues: {
             context: 'https://openactive.io/ns-beta',
           },
