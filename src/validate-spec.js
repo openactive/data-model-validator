@@ -535,7 +535,7 @@ describe('validate', () => {
       items: [
         {
           id: 'ABCDEF09001015',
-          kind: 'session',
+          kind: 'SessionSeries',
           state: 'updated',
           data: validEvent,
           modified: 1533177378657,
