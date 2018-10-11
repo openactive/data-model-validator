@@ -276,14 +276,14 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
             messageValues = {
               expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
               foundType: this.constructor.getHumanReadableType(notAllowed[0]),
-              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, field.example),
+              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.example),
             };
           } else if (notAllowed.length > 1) {
             testKey = 'singleTypeSubclassMultipleError';
             messageValues = {
               expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
               foundTypes: this.constructor.makeExpectedTypeList(notAllowed),
-              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, field.example),
+              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.example),
             };
           }
         } else {
@@ -291,7 +291,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           messageValues = {
             expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
             foundType: this.constructor.getHumanReadableType(derivedType),
-            examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, field.example),
+            examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.example),
           };
         }
       } else {
@@ -300,7 +300,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         messageValues = {
           expectedTypes,
           foundType: this.constructor.getHumanReadableType(derivedType),
-          examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, field.example),
+          examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.example),
         };
       }
       errors.push(
