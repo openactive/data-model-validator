@@ -40,6 +40,7 @@
   },
   "scripts": {
     "lint": "eslint \"src/**/*.js\"",
+    "lint-fix": "eslint \"src/**/*.js\" --fix",
     "pretest": "npm run lint",
     "test": "npm run test-no-lint",
     "test-no-lint": "jasmine",

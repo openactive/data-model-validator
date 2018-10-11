@@ -68,6 +68,21 @@ const Field = class {
     return PropertyHelper.getObjectField(data, this.data.fieldName, this.version);
   }
 
+  getRenderedExample(prefix) {
+    if (typeof (this.example) !== 'undefined' && this.example !== null) {
+      const { example, property, requiredType } = this;
+      let renderedExample = '';
+      if (typeof example === 'object') {
+        renderedExample = JSON.stringify(example, null, 2);
+      } else {
+        const isNotString = requiredType && (requiredType.indexOf('Integer') > -1 || requiredType.indexOf('Float') > -1 || requiredType.indexOf('Boolean') > -1);
+        renderedExample = isNotString ? `${example}` : `"${example}"`;
+      }
+      return `${prefix || ''}\`\`\`\n${property ? `"${property}": ` : ''}${renderedExample}\n\`\`\``;
+    }
+    return '';
+  }
+
   canBeArray() {
     const types = this.getAllPossibleTypes();
     for (const type of types) {

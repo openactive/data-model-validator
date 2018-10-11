@@ -61,14 +61,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           sampleValues: {
             expectedTypes: this.constructor.makeExpectedTypeList(['https://schema.org/Text', 'ArrayOf#https://schema.org/Text', '#Concept', 'ArrayOf#Concept']),
             foundType: this.constructor.getHumanReadableType('https://schema.org/Float'),
-            examples: this.constructor.makeExamples('property', ['https://schema.org/Text', 'ArrayOf#https://schema.org/Text', '#Concept', 'ArrayOf#Concept'], this.options.version, [
-              {
-                type: 'Concept',
-                id: 'https://openactive.io/activity-list#5e78bcbe-36db-425a-9064-bf96d09cc351',
-                prefLabel: 'Bodypump™',
-                inScheme: 'https://openactive.io/activity-list',
-              },
-            ]),
+            examples: this.constructor.makeExamples('property', ['https://schema.org/Text', 'ArrayOf#https://schema.org/Text', '#Concept', 'ArrayOf#Concept'], this.options.version),
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -192,27 +185,16 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     return `${expectedTypes}</ul>`;
   }
 
-  static makeExamples(property, types, version, example, requiredType) {
+  static makeExamples(property, types, version, renderedExample) {
     let examples = '';
     for (const type of types) {
       examples = `${examples}\n\n${this.getHumanReadableExample(property, type, version)}`;
     }
-    if (example) {
+    if (renderedExample !== '') {
       const hint = types.length > 1 ? 'A full example of the preferred approach looks like this:' : 'A full example looks like this:';
-      examples = `${examples}\n\n${hint}\n\n${this.renderExample(example, property, requiredType)}`;
+      examples = `${examples}\n\n${hint}\n\n${renderedExample}`;
     }
     return examples;
-  }
-
-  static renderExample(example, property, requiredType) {
-    let renderedExample = '';
-    if (typeof example === 'object') {
-      renderedExample = JSON.stringify(example, null, 2);
-    } else {
-      const isNumber = requiredType && (requiredType.indexOf('Integer') > -1 || requiredType.indexOf('Float') > -1);
-      renderedExample = isNumber ? `${example}` : `"${example}"`;
-    }
-    return `\`\`\`\n${property ? `"${property}": ` : ''}${renderedExample}\n\`\`\``;
   }
 
   validateField(node, field) {
@@ -287,14 +269,14 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
             messageValues = {
               expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
               foundType: this.constructor.getHumanReadableType(notAllowed[0]),
-              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.example, fieldObj.requiredType),
+              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample()),
             };
           } else if (notAllowed.length > 1) {
             testKey = 'singleTypeSubclassMultipleError';
             messageValues = {
               expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
               foundTypes: this.constructor.makeExpectedTypeList(notAllowed),
-              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.example, fieldObj.requiredType),
+              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample()),
             };
           }
         } else {
@@ -302,7 +284,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           messageValues = {
             expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
             foundType: this.constructor.getHumanReadableType(derivedType),
-            examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.example, fieldObj.requiredType),
+            examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample()),
           };
         }
       } else {
@@ -311,7 +293,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         messageValues = {
           expectedTypes,
           foundType: this.constructor.getHumanReadableType(derivedType),
-          examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.example, fieldObj.requiredType),
+          examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample()),
         };
       }
       errors.push(
