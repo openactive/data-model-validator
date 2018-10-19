@@ -12,10 +12,12 @@ module.exports = class RequiredOptionalFieldsRule extends Rule {
       description: 'Validates that all optional properties that are part of a required group are present in the JSON data.',
       tests: {
         default: {
-          message: 'When publishing a `{{model}}`, a data publisher must provide one of {{optionalFields}}. For more information see the [Modelling Opportunity Data specification](https://www.openactive.io/modelling-opportunity-data/).',
+          message: 'When publishing a `{{model}}`, a data publisher must provide {{qualifier}} one of {{optionalFields}}.{{message}}',
           sampleValues: {
             optionalFields: '`startDate`, `eventSchedule`',
             model: 'Event',
+            qualifier: 'at least',
+            message: '',
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -55,6 +57,8 @@ module.exports = class RequiredOptionalFieldsRule extends Rule {
               },
               {
                 optionalFields: `\`${option.options.join('`, `')}\``,
+                message: option.description && option.description.length > 0 ? `\n\n${option.description.join('\n\n')}` : '',
+                qualifier: option.oneOf ? 'exactly' : 'at least',
                 model: node.model.type,
               },
             ),
