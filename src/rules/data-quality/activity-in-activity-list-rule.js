@@ -17,6 +17,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
       EventSeries: ['activity'],
       HeadlineEvent: ['activity'],
       SessionSeries: ['activity'],
+      Course: ['activity'],
     };
     this.meta = {
       name: 'ActivityInActivityListRule',
