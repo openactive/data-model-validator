@@ -27,21 +27,21 @@ describe('ActivityInActivityListRule', () => {
     '@id': 'https://openactive.io/activity-list',
     title: 'OpenActive Activity List',
     description: 'This document describes the OpenActive standard activity list.',
-    type: 'skos:ConceptScheme',
+    type: 'ConceptScheme',
     license: 'https://creativecommons.org/licenses/by/4.0/',
     concept: [
       {
-        id: 'https://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a1',
-        type: 'skos:Concept',
+        id: 'https://openactive.io/activity-list#a4375402-067d-4549-9d3a-8c1e998350a1',
+        type: 'Concept',
         prefLabel: 'Flag Football',
-        'skos:definition': 'Flag is the fastest growing format of the game in Great Britain, encompassing schools, colleges, universities and in the community.',
-        brodaer: 'https://openactive.io/activity-list/#9caeb442-2834-4859-b660-9172ed61ee71',
+        definition: 'Flag is the fastest growing format of the game in Great Britain, encompassing schools, colleges, universities and in the community.',
+        broader: ['https://openactive.io/activity-list#9caeb442-2834-4859-b660-9172ed61ee71'],
       },
       {
-        id: 'https://openactive.io/activity-list/#0a5f732d-e806-4e51-ad40-0a7de0239c8c',
-        type: 'skos:Concept',
+        id: 'https://openactive.io/activity-list#0a5f732d-e806-4e51-ad40-0a7de0239c8c',
+        type: 'Concept',
         prefLabel: 'Football',
-        'skos:definition': 'Football is widely considered to be the most popular sport in the world. The beautiful game is England\'s national sport',
+        definition: 'Football is widely considered to be the most popular sport in the world. The beautiful game is England\'s national sport',
         topConceptOf: 'https://openactive.io/activity-list',
       },
     ],
@@ -73,12 +73,12 @@ describe('ActivityInActivityListRule', () => {
 
     const activities = [
       {
-        'skos:prefLabel': 'Football',
+        prefLabel: 'Football',
         type: 'Concept',
         inScheme: 'https://openactive.io/activity-list',
       },
       {
-        'skos:prefLabel': 'flag football',
+        prefLabel: 'flag football',
         type: 'Concept',
         inScheme: 'https://openactive.io/activity-list',
       },
@@ -114,12 +114,12 @@ describe('ActivityInActivityListRule', () => {
 
     const activities = [
       {
-        id: 'https://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
+        id: 'https://openactive.io/activity-list#a4375402-067d-4549-9d3a-8c1e998350a3',
         prefLabel: 'Secret Football',
         type: 'Concept',
       },
       {
-        id: 'https://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
+        id: 'https://openactive.io/activity-list#a4375402-067d-4549-9d3a-8c1e998350a3',
         prefLabel: 'Not Real Football',
         type: 'Concept',
       },

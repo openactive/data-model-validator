@@ -172,14 +172,14 @@ describe('validate', () => {
       '@id': 'https://openactive.io/activity-list',
       title: 'OpenActive Activity List',
       description: 'This document describes the OpenActive standard activity list.',
-      type: 'skos:ConceptScheme',
+      type: 'ConceptScheme',
       license: 'https://creativecommons.org/licenses/by/4.0/',
-      concepts: [
+      concept: [
         {
           id: 'https://openactive.io/activity-list/#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
-          type: 'skos:Concept',
+          type: 'Concept',
           prefLabel: 'Tai Chi',
-          'skos:definition': 'Tai chi combines deep breathing and relaxation with slow and gentle movements.',
+          definition: 'Tai chi combines deep breathing and relaxation with slow and gentle movements.',
           broader: 'https://openactive.io/activity-list/#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
         },
       ],
