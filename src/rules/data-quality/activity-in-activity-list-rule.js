@@ -209,8 +209,8 @@ module.exports = class ActivityInActivityListRule extends Rule {
           }
           for (const activityList of activityLists) {
             currentList = activityList['@url'];
-            if (typeof activityList.concepts !== 'undefined') {
-              for (const concept of activityList.concepts) {
+            if (typeof activityList.concept !== 'undefined') {
+              for (const concept of activityList.concept) {
                 const prefLabel = PropertyHelper.getObjectField(activity, 'prefLabel', node.options.version);
                 const id = PropertyHelper.getObjectField(activity, 'id', node.options.version);
                 if (typeof prefLabel !== 'undefined') {
