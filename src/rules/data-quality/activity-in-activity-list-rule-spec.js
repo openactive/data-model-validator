@@ -29,7 +29,7 @@ describe('ActivityInActivityListRule', () => {
     description: 'This document describes the OpenActive standard activity list.',
     type: 'skos:ConceptScheme',
     license: 'https://creativecommons.org/licenses/by/4.0/',
-    concepts: [
+    concept: [
       {
         id: 'https://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a1',
         type: 'skos:Concept',
