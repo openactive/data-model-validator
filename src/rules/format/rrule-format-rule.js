@@ -40,6 +40,7 @@ module.exports = class RruleFormatRule extends Rule {
       try {
         fieldValue.forEach((value) => {
           if (allowedOptions.indexOf(value) < 0) {
+            if (value.indexOf(',') > -1) throw new Error('Must separate components as elements in array');
             rrulestr(`DTSTART:20120201T023000Z\nRRULE:FREQ=WEEKLY;COUNT=5;BYDAY=${value}`);
           }
         });

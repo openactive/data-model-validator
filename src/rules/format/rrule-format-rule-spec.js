@@ -30,10 +30,8 @@ describe('RruleFormatRule', () => {
     model.hasSpecification = true;
     const values = [
       'MO',
-      'MO,TH',
       '2MO',
       '-1FR',
-      '2MO,-2FR',
     ];
 
     for (const value of values) {
@@ -66,6 +64,8 @@ describe('RruleFormatRule', () => {
       'TR',
       'MOTU',
       '2MO,2TY',
+      '2MO,-2FR',
+      'MO,TH',
     ];
 
     for (const value of values) {
