@@ -22,7 +22,8 @@ describe('RruleFormatRule', () => {
       fields: {
         byDay: {
           fieldName: 'byDay',
-          requiredType: 'https://schema.org/Text',
+          requiredType: 'ArrayOf#https://schema.org/DayOfWeek',
+          alternativeTypes: ['ArrayOf#https://schema.org/Text'],
         },
       },
     }, 'latest');
@@ -37,7 +38,7 @@ describe('RruleFormatRule', () => {
 
     for (const value of values) {
       const data = {
-        byDay: value,
+        byDay: [value, 'https://schema.org/Monday'],
       };
       const nodeToTest = new ModelNode(
         '$',
@@ -49,13 +50,14 @@ describe('RruleFormatRule', () => {
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid byDay value', () => {
+  it('should return an error for an invalid byDay iCal value', () => {
     const model = new Model({
       type: 'Schedule',
       fields: {
         byDay: {
           fieldName: 'byDay',
-          requiredType: 'https://schema.org/Text',
+          requiredType: 'ArrayOf#https://schema.org/DayOfWeek',
+          alternativeTypes: ['ArrayOf#https://schema.org/Text'],
         },
       },
     }, 'latest');
@@ -68,7 +70,41 @@ describe('RruleFormatRule', () => {
 
     for (const value of values) {
       const data = {
-        byDay: value,
+        byDay: [value, 'https://schema.org/Monday'],
+      };
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = rule.validate(nodeToTest);
+      expect(errors.length).toBe(1);
+      expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
+  });
+  it('should return an error for an invalid byDay schema.org value', () => {
+    const model = new Model({
+      type: 'Schedule',
+      fields: {
+        byDay: {
+          fieldName: 'byDay',
+          requiredType: 'ArrayOf#https://schema.org/DayOfWeek',
+          alternativeTypes: ['ArrayOf#https://schema.org/Text'],
+        },
+      },
+    }, 'latest');
+    model.hasSpecification = true;
+    const values = [
+      'http://schema.org/Monday',
+      'http://schema.org/NotADay',
+      'Monday',
+    ];
+
+    for (const value of values) {
+      const data = {
+        byDay: [value, '2MO'],
       };
       const nodeToTest = new ModelNode(
         '$',
