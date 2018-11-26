@@ -15,10 +15,11 @@ describe('validate', () => {
     validEvent = {
       '@context': metaData.contextUrl,
       id: 'http://www.example.org/events/1',
-      type: 'EventSeries',
+      type: 'SessionSeries',
       name: 'Tai chi Class',
       description: 'A Tai chi class',
       duration: 'PT1H',
+      isCoached: true,
       url: 'http://www.example.org/events/1',
       startDate: '2017-03-22T20:00:00Z',
       ageRange: {
@@ -29,7 +30,7 @@ describe('validate', () => {
       genderRestriction: 'https://openactive.io/NoRestriction',
       activity: [
         {
-          id: 'https://openactive.io/activity-list/#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
+          id: 'https://openactive.io/activity-list#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
           prefLabel: 'Tai Chi',
           type: 'Concept',
           inScheme: 'https://openactive.io/activity-list',
@@ -37,12 +38,22 @@ describe('validate', () => {
       ],
       category: [
         {
-          id: 'https://openactive.io/activity-list/#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
+          id: 'https://openactive.io/activity-list#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
           prefLabel: 'Holistic Classes',
           type: 'Concept',
           inScheme: 'https://openactive.io/activity-list',
         },
       ],
+      programme: {
+        type: 'Brand',
+        name: 'Play Ball!',
+        url: 'http://example.org/brand/play-ball',
+        description: 'Something about a ball',
+        logo: {
+          type: 'ImageObject',
+          url: 'http://example.com/static/image/speedball_large.jpg',
+        },
+      },
       eventStatus: 'https://schema.org/EventScheduled',
       image: [{
         type: 'ImageObject',
@@ -50,7 +61,7 @@ describe('validate', () => {
       }],
       subEvent: [
         {
-          type: 'Event',
+          type: 'ScheduledSession',
           id: 'http://www.example.org/events/12',
           url: 'http://www.example.org/events/12',
           startDate: '2017-03-22T20:00:00Z',
@@ -68,6 +79,7 @@ describe('validate', () => {
             price: 5,
             priceCurrency: 'GBP',
           }],
+          remainingAttendeeCapacity: 10,
         },
         {
           type: 'ScheduledSession',
@@ -88,6 +100,7 @@ describe('validate', () => {
             price: 5,
             priceCurrency: 'GBP',
           }],
+          remainingAttendeeCapacity: 10,
         },
       ],
       organizer: {
@@ -165,7 +178,6 @@ describe('validate', () => {
         priceCurrency: 'GBP',
       }],
       maximumAttendeeCapacity: 20,
-      remainingAttendeeCapacity: 10,
     };
     activityList = {
       '@context': 'https://openactive.io/',
@@ -176,11 +188,11 @@ describe('validate', () => {
       license: 'https://creativecommons.org/licenses/by/4.0/',
       concept: [
         {
-          id: 'https://openactive.io/activity-list/#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
+          id: 'https://openactive.io/activity-list#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
           type: 'Concept',
           prefLabel: 'Tai Chi',
           definition: 'Tai chi combines deep breathing and relaxation with slow and gentle movements.',
-          broader: 'https://openactive.io/activity-list/#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
+          broader: 'https://openactive.io/activity-list#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
         },
       ],
     };
