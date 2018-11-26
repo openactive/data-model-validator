@@ -223,9 +223,12 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     // Ignore - this will be picked up by ValueInOptionsRule
     let testType;
     if (typeChecks.length === 1) {
-      testType = typeChecks[0].replace(/^ArrayOf#/, '');
+      [testType] = typeChecks;
     } else {
-      testType = fieldObj.detectType(fieldValue).replace(/^ArrayOf#/, '');
+      testType = fieldObj.detectType(fieldValue);
+    }
+    if (fieldValue instanceof Array && fieldObj.canBeArray()) {
+      testType = testType.replace(/^ArrayOf#/, '');
     }
     if (
       typeof testType !== 'undefined'
