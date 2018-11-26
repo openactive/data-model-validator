@@ -59,11 +59,13 @@ module.exports = class ValueInOptionsRule extends Rule {
         allowedOptions = PropertyHelper.getEnumOptions(testType, node.options.version);
       }
 
+      let singleFieldValue = fieldValue;
       if (typeof allowedOptions !== 'undefined') {
         if (fieldValue instanceof Array && fieldObj.canBeArray()) {
           for (const value of fieldValue) {
             if (allowedOptions.indexOf(value) < 0) {
               isInOptions = false;
+              singleFieldValue = value;
               break;
             }
           }
@@ -77,11 +79,11 @@ module.exports = class ValueInOptionsRule extends Rule {
           this.createError(
             'default',
             {
-              value: fieldValue,
+              value: singleFieldValue,
               path: node.getPath(field),
             },
             {
-              value: fieldValue,
+              value: singleFieldValue,
               allowedValues: `<ul><li>\`"${allowedOptions.join('"`</li><li>`"')}"\`</li></ul>`,
             },
           ),

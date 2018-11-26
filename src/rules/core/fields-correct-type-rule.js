@@ -221,9 +221,15 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     }
 
     // Ignore - this will be picked up by ValueInOptionsRule
+    let testType;
+    if (typeChecks.length === 1) {
+      testType = typeChecks[0].replace(/^ArrayOf#/, '');
+    } else {
+      testType = fieldObj.detectType(fieldValue).replace(/^ArrayOf#/, '');
+    }
     if (
-      typeChecks.length === 1
-      && PropertyHelper.isEnum(typeChecks[0], node.options.version)
+      typeof testType !== 'undefined'
+      && PropertyHelper.isEnum(testType, node.options.version)
     ) {
       return [];
     }
