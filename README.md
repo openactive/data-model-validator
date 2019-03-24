@@ -228,6 +228,33 @@ const options = {
 const result = validate(model, options);
 ```
 
+#### doRunAsync
+
+If true, the validator will run I/O actions asynchronously and return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises). **It is recommended to have this option set to true** especially for an application that accepts multiple requests as it will unblock the event loop to be free to run other code concurrently.
+
+By default it is set to false for backwards compatability.
+
+e.g.
+
+```js
+const { validate } = require('@openactive/data-model-validator');
+
+async function run() {
+  const model = {
+    type: 'CustomAction'
+    // ...
+  };
+
+  const options = {
+    doRunAsync: true
+  };
+
+  const result = await validate(model, options);
+  
+  // Do something with result
+}
+```
+
 ## Development
 
 ### Getting started

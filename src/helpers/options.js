@@ -30,6 +30,10 @@ const OptionsHelper = class {
   get version() {
     return this.options.version || 'latest';
   }
+
+  get doRunAsync() {
+    return this.options.doRunAsync || false;
+  }
 };
 
 module.exports = OptionsHelper;
