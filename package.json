@@ -24,6 +24,7 @@
   "license": "MIT",
   "dependencies": {
     "@openactive/data-models": "^1.2.25",
+    "axios": "^0.18.0",
     "currency-codes": "^1.5.0",
     "jsonpath": "^1.0.0",
     "moment": "^2.22.2",
