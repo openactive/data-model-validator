@@ -1,6 +1,6 @@
 places where sync is used:
 
-- anything that imports 'sync-request'
 - json-loader:
+  - sync-request (via request)
   - fs.existsSync
   - fs.readFileSync
