@@ -12,11 +12,11 @@ describe('ConceptIdInSchemeRule', () => {
     fields: {
       id: {
         fieldName: 'id',
-        requiredType: 'https://schema.org/url',
+        requiredType: 'https://schema.org/URL',
       },
       inScheme: {
         fieldName: 'inScheme',
-        requiredType: 'https://schema.org/url',
+        requiredType: 'https://schema.org/URL',
       },
     },
   }, 'latest');

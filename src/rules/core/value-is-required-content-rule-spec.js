@@ -10,7 +10,7 @@ describe('ValueIsRequiredContentRule', () => {
     fields: {
       eventStatus: {
         fieldName: 'eventStatus',
-        requiredType: 'https://schema.org/url',
+        requiredType: 'https://schema.org/URL',
         requiredContent: 'https://schema.org/EventScheduled',
       },
     },

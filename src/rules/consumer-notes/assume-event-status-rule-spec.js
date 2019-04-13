@@ -14,7 +14,7 @@ describe('AssumeEventStatusRule', () => {
     fields: {
       eventStatus: {
         fieldName: 'eventStatus',
-        requiredType: 'https://schema.org/url',
+        requiredType: 'https://schema.org/URL',
         options: [
           'https://schema.org/EventCancelled',
           'https://schema.org/EventPostponed',

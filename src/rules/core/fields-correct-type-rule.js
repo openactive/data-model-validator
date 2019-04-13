@@ -105,7 +105,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         return `[\`string${plural}\` containing an ISO 8601 Time](${type})`;
       case 'https://schema.org/Duration':
         return `[\`string${plural}\` containing an ISO 8601 Duration](${type})`;
-      case 'https://schema.org/url':
+      case 'https://schema.org/URL':
         return `[\`string${plural}\` containing a url](${type})`;
       case 'https://schema.org/urlTemplate':
         return `[\`string${plural}\` containing a urlTemplate](${type})`;
@@ -156,7 +156,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       case 'https://schema.org/Duration':
         example = `${prefix}"PT30M"`;
         break;
-      case 'https://schema.org/url':
+      case 'https://schema.org/URL':
         example = `${prefix}"https://www.example.org/"`;
         break;
       case 'https://schema.org/urlTemplate':

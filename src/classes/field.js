@@ -173,7 +173,7 @@ const Field = class {
           if (isUrlTemplate) {
             returnType = 'https://schema.org/urlTemplate';
           } else if (this.constructor.URL_REGEX.test(data)) {
-            returnType = 'https://schema.org/url';
+            returnType = 'https://schema.org/URL';
           }
         }
       }
@@ -348,7 +348,7 @@ Field.canBeTypeOfMapping = {
   'https://schema.org/Duration': 'https://schema.org/Text',
   'https://schema.org/Time': 'https://schema.org/Text',
   'https://schema.org/Integer': 'https://schema.org/Float',
-  'https://schema.org/url': 'https://schema.org/Text',
+  'https://schema.org/URL': 'https://schema.org/Text',
   'https://schema.org/urlTemplate': 'https://schema.org/Text',
 };
 

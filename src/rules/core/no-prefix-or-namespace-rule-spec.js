@@ -8,7 +8,7 @@ describe('NoPrefixOrNamespaceRule', () => {
   const model = new Model({
     type: 'Event',
     hasId: true,
-    idFormat: 'https://schema.org/url',
+    idFormat: 'https://schema.org/URL',
     inSpec: [
       '@context',
       'id',

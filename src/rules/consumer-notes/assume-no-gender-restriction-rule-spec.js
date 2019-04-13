@@ -14,7 +14,7 @@ describe('AssumeNoGenderRestrictionRule', () => {
     fields: {
       genderRestriction: {
         fieldName: 'genderRestriction',
-        requiredType: 'https://schema.org/url',
+        requiredType: 'https://schema.org/URL',
         options: [
           'https://openactive.io/Female',
           'https://openactive.io/Male',

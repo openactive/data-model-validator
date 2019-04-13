@@ -230,7 +230,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'https://schema.org/url',
+          requiredType: 'https://schema.org/URL',
         },
       },
     }, 'latest');
@@ -267,7 +267,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'https://schema.org/url',
+          requiredType: 'https://schema.org/URL',
         },
       },
     }, 'latest');
@@ -778,7 +778,7 @@ describe('FieldsCorrectTypeRule', () => {
         },
         url_array: {
           fieldName: 'url_array',
-          requiredType: 'ArrayOf#https://schema.org/url',
+          requiredType: 'ArrayOf#https://schema.org/URL',
         },
         date_array: {
           fieldName: 'date_array',
@@ -878,7 +878,7 @@ describe('FieldsCorrectTypeRule', () => {
         },
         url_array: {
           fieldName: 'integer_array',
-          requiredType: 'ArrayOf#https://schema.org/url',
+          requiredType: 'ArrayOf#https://schema.org/URL',
         },
         date_array: {
           fieldName: 'float_array',
@@ -983,7 +983,7 @@ describe('FieldsCorrectTypeRule', () => {
         },
         url_array: {
           fieldName: 'url_array',
-          requiredType: 'ArrayOf#https://schema.org/url',
+          requiredType: 'ArrayOf#https://schema.org/URL',
         },
         date_array: {
           fieldName: 'date_array',
@@ -1045,7 +1045,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'https://schema.org/url',
+          requiredType: 'https://schema.org/URL',
           model: '#Schedule',
           alternativeTypes: [
             'https://schema.org/DateTime',
@@ -1091,7 +1091,7 @@ describe('FieldsCorrectTypeRule', () => {
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'https://schema.org/url',
+          requiredType: 'https://schema.org/URL',
           model: '#Schedule',
           alternativeTypes: [
             'https://schema.org/DateTime',
