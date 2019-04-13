@@ -23,7 +23,7 @@ module.exports = class SessionSeriesScheduleTypeRule extends Rule {
     };
   }
 
-  validateField(node, field) {
+  validateFieldSync(node, field) {
     const errors = [];
 
     const fieldValue = node.getValue(field);

@@ -25,7 +25,7 @@ module.exports = class ConceptNoPropsIfInSchemeRule extends Rule {
     };
   }
 
-  validateField(node, field) {
+  validateFieldSync(node, field) {
     const errors = [];
     if (node.hasMappedField('inScheme')) {
       errors.push(

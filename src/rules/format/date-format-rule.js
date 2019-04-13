@@ -23,7 +23,7 @@ module.exports = class DateFormatRule extends Rule {
     };
   }
 
-  validateField(node, field) {
+  validateFieldSync(node, field) {
     const errors = [];
     let fieldObj;
     if (node.model.hasSpecification) {

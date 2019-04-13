@@ -22,7 +22,7 @@ module.exports = class CurrencyCodeFormatRule extends Rule {
     };
   }
 
-  validateField(node, field) {
+  validateFieldSync(node, field) {
     const fieldObj = node.model.getField(field);
     if (typeof fieldObj === 'undefined') {
       return [];

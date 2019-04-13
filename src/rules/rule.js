@@ -14,18 +14,37 @@ class Rule {
     };
   }
 
-  validate(nodeToTest) {
+  async validateAsync(nodeToTest) {
     let errors = [];
-    // console.log(nodeToTest);
     if (this.isModelTargeted(nodeToTest.model)) {
-      errors = errors.concat(this.validateModel(nodeToTest));
+      const modelErrors = this.validateModel(nodeToTest);
+      errors = errors.concat(modelErrors);
     }
     for (const field in nodeToTest.value) {
       if (
         Object.prototype.hasOwnProperty.call(nodeToTest.value, field)
         && this.isFieldTargeted(nodeToTest.model, field)
       ) {
-        errors = errors.concat(this.validateField(nodeToTest, field));
+        const fieldErrors = await this.validateFieldAsync(nodeToTest, field);
+        errors = errors.concat(fieldErrors);
+      }
+    }
+    return errors;
+  }
+
+  validateSync(nodeToTest) {
+    let errors = [];
+    if (this.isModelTargeted(nodeToTest.model)) {
+      const modelErrors = this.validateModel(nodeToTest);
+      errors = errors.concat(modelErrors);
+    }
+    for (const field in nodeToTest.value) {
+      if (
+        Object.prototype.hasOwnProperty.call(nodeToTest.value, field)
+        && this.isFieldTargeted(nodeToTest.model, field)
+      ) {
+        const fieldErrors = this.validateFieldSync(nodeToTest, field);
+        errors = errors.concat(fieldErrors);
       }
     }
     return errors;
@@ -35,8 +54,12 @@ class Rule {
     throw Error('Model validation rule not implemented');
   }
 
-  validateField(/* node, field */) {
+  validateFieldSync(/* node, field */) {
     throw Error('Field validation rule not implemented');
+  }
+
+  async validateFieldAsync(node, field) {
+    return this.validateFieldSync(node, field);
   }
 
   createError(testKey, extra = {}, messageValues = undefined) {

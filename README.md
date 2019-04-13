@@ -230,6 +230,8 @@ const result = validate(model, options);
 
 #### doRunAsync
 
+TODO TODO TODO change to docs for validateAsync
+
 If true, the validator will run I/O actions asynchronously and return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises). **It is recommended to have this option set to true** especially for an application that accepts multiple requests as it will unblock the event loop to be free to run other code concurrently.
 
 By default it is set to false for backwards compatability.

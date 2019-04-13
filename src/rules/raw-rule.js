@@ -1,12 +1,20 @@
 const Rule = require('./rule');
 
 const RawRule = class extends Rule {
-  validate(json) {
-    return this.validateRaw(json);
+  async validateAsync(json) {
+    return await this.validateRawAsync(json);
   }
 
-  validateRaw(/* json */) {
+  validateSync(json) {
+    return this.validateRawSync(json);
+  }
+
+  validateRawSync(/* json */) {
     throw Error('Raw JSON validation rule not implemented');
+  }
+
+  async validateRawAsync(json) {
+    return this.validateRawSync(json);
   }
 
   isModelTargeted() {

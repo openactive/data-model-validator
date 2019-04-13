@@ -92,7 +92,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
     };
   }
 
-  validateField(node, field) {
+  async validateFieldAsync(node, field) {
     const fieldValue = node.getValue(field);
     if (typeof fieldValue === 'undefined') {
       return [];
@@ -165,7 +165,201 @@ module.exports = class ActivityInActivityListRule extends Rule {
             );
           }
           for (const listUrl of listUrls) {
-            const jsonResponse = JsonLoaderHelper.getFile(listUrl, node.options);
+            const jsonResponse = await JsonLoaderHelper.getFileAsync(listUrl, node.options);
+            if (
+              jsonResponse.errorCode === JsonLoaderHelper.ERROR_NONE
+              && typeof jsonResponse.data === 'object'
+              && jsonResponse.data !== null
+            ) {
+              activityLists.push(jsonResponse.data);
+              if (typeof activityLists[activityLists.length - 1]['@url'] === 'undefined') {
+                activityLists[activityLists.length - 1]['@url'] = listUrl;
+              }
+            } else if (
+              jsonResponse.statusCode !== 200
+              && jsonResponse.statusCode !== null
+            ) {
+              errors.push(
+                this.createError(
+                  'listErrorCode',
+                  {
+                    value: activity,
+                    path: node.getPath(field, index),
+                  },
+                  {
+                    list: listUrl,
+                    code: jsonResponse.statusCode,
+                  },
+                ),
+              );
+            } else {
+              errors.push(
+                this.createError(
+                  'listInvalid',
+                  {
+                    value: activity,
+                    path: node.getPath(field, index),
+                  },
+                  {
+                    list: listUrl,
+                  },
+                ),
+              );
+            }
+          }
+          for (const activityList of activityLists) {
+            currentList = activityList['@url'];
+            if (typeof activityList.concept !== 'undefined') {
+              for (const concept of activityList.concept) {
+                const prefLabel = PropertyHelper.getObjectField(activity, 'prefLabel', node.options.version);
+                const id = PropertyHelper.getObjectField(activity, 'id', node.options.version);
+                if (typeof prefLabel !== 'undefined') {
+                  activityIdentifier = prefLabel;
+                  prefLabelMatch = false;
+                  correctPrefLabel = concept.prefLabel;
+                  if (concept.prefLabel.toLowerCase() === prefLabel.toLowerCase()) {
+                    found = true;
+                    prefLabelMatch = true;
+                  }
+                } else {
+                  prefLabelMatch = true;
+                }
+                if (typeof id !== 'undefined') {
+                  if (typeof prefLabel === 'undefined' || !prefLabelMatch) {
+                    activityIdentifier = id;
+                  }
+                  idMatch = false;
+                  correctId = concept.id;
+                  if (concept.id === id) {
+                    found = true;
+                    idMatch = true;
+                  }
+                } else {
+                  idMatch = true;
+                }
+                if (found) {
+                  break;
+                }
+              }
+            }
+          }
+          let errorKey;
+          let messageValues;
+          if (!found) {
+            errorKey = 'default';
+            messageValues = {
+              activity: activityIdentifier,
+            };
+          } else if (!prefLabelMatch) {
+            errorKey = 'noPrefLabelMatch';
+            messageValues = {
+              activity: activityIdentifier,
+              correctPrefLabel,
+              list: currentList,
+            };
+          } else if (!idMatch) {
+            errorKey = 'noIdMatch';
+            messageValues = {
+              activity: activityIdentifier,
+              correctId,
+              list: currentList,
+            };
+          }
+
+          if (errorKey) {
+            errors.push(
+              this.createError(
+                errorKey,
+                {
+                  value: activity,
+                  path: node.getPath(field, index),
+                },
+                messageValues,
+              ),
+            );
+          }
+        }
+        index += 1;
+      }
+    }
+
+    return errors;
+  }
+
+  validateFieldSync(node, field) {
+    const fieldValue = node.getValue(field);
+    if (typeof fieldValue === 'undefined') {
+      return [];
+    }
+    const upgradeActivityLists = [
+      'https://www.openactive.io/activity-list/activity-list.jsonld',
+      'https://openactive.io/activity-list/activity-list.jsonld',
+      'http://www.openactive.io/activity-list/activity-list.jsonld',
+      'http://openactive.io/activity-list/activity-list.jsonld',
+      'https://www.openactive.io/activity-list/',
+      'https://openactive.io/activity-list/',
+      'http://www.openactive.io/activity-list/',
+      'http://openactive.io/activity-list/',
+      'https://www.openactive.io/activity-list',
+      'http://www.openactive.io/activity-list',
+      'http://openactive.io/activity-list',
+    ];
+    const errors = [];
+    let found = false;
+    let idMatch = false;
+    let prefLabelMatch = false;
+    let correctId;
+    let correctPrefLabel;
+    let currentList;
+    let index = 0;
+    const metaData = DataModelHelper.getMetaData(node.options.version);
+    if (fieldValue instanceof Array) {
+      for (const activity of fieldValue) {
+        if (typeof activity === 'object' && activity !== null) {
+          found = false;
+          let activityIdentifier;
+          const inScheme = PropertyHelper.getObjectField(activity, 'inScheme', node.options.version);
+          const activityLists = [];
+          let listUrls = metaData.defaultActivityLists.slice();
+          if (typeof inScheme !== 'undefined') {
+            if (upgradeActivityLists.indexOf(inScheme) >= 0) {
+              errors.push(
+                this.createError(
+                  'upgradeActivityList',
+                  {
+                    value: activity,
+                    path: node.getPath(field, index),
+                  },
+                  {
+                    list: inScheme,
+                  },
+                ),
+              );
+            } else if (metaData.defaultActivityLists.indexOf(inScheme) < 0) {
+              listUrls = [inScheme];
+              errors.push(
+                this.createError(
+                  'useOfficialActivityList',
+                  {
+                    value: activity,
+                    path: node.getPath(field, index),
+                  },
+                ),
+              );
+            }
+          } else {
+            errors.push(
+              this.createError(
+                'useOfficialActivityList',
+                {
+                  value: activity,
+                  path: node.getPath(field, index),
+                },
+              ),
+            );
+          }
+          for (const listUrl of listUrls) {
+            const jsonResponse = JsonLoaderHelper.getFileSync(listUrl, node.options);
             if (
               jsonResponse.errorCode === JsonLoaderHelper.ERROR_NONE
               && typeof jsonResponse.data === 'object'

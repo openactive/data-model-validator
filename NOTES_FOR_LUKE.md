@@ -1,6 +1,12 @@
 places where sync is used:
 
-- json-loader:
-  - sync-request (via request)
-  - fs.existsSync
-  - fs.readFileSync
+- [x] Split application into -Sync and -Async
+  - [x] json-loader:
+    - [x] sync-request (via request)
+    - [x] fs.existsSync
+    - [x] fs.readFileSync
+  - [x] Rules
+  - [x] Raw Rules
+  - [x] validate.js
+- [ ] Update tests
+- [ ] Update docs

@@ -26,7 +26,7 @@ module.exports = class NoHtmlRule extends Rule {
     return /<(?=.*? .*?\/ ?>|br|hr|input|!--|wbr)[a-z]+.*?>|<([a-z]+).*?<\/\1>/i.test(str);
   }
 
-  validateField(node, field) {
+  validateFieldSync(node, field) {
     if (field === 'beta:formattedDescription') {
       return [];
     }

@@ -245,7 +245,7 @@ class JsonLoaderHelper {
    * @param {Options} options
    * @returns {Object} File object
    */
-  static getFile(url, options) {
+  static getFileSync(url, options) {
     const hash = crypto.createHash('sha256');
     hash.update(url);
     const hashKey = hash.digest('hex');

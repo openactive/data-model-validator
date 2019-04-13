@@ -28,7 +28,7 @@ module.exports = class ValidInputRule extends RawRule {
     };
   }
 
-  validateRaw(data) {
+  validateRawSync(data) {
     const errors = [];
     let testKey;
     if (

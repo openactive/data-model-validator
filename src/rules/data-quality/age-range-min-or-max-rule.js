@@ -26,7 +26,7 @@ module.exports = class AgeRangeMinOrMaxRule extends Rule {
     };
   }
 
-  validateField(node, field) {
+  validateFieldSync(node, field) {
     const fieldValue = node.getValue(field);
     if (typeof fieldValue === 'undefined') {
       return [];
