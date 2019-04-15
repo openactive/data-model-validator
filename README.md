@@ -22,35 +22,53 @@ $ npm install @openactive/data-model-validator
 ### Usage
 
 ```js
+const { validateAsync } = require('@openactive/data-model-validator');
 
-const { validate } = require('@openactive/data-model-validator');
-
-const data = {
-  '@context': 'https://www.openactive.io/ns/oa.jsonld',
-  type: 'Event',
-  name: 'Tai chi Class',
-  url: 'http://www.example.org/events/1',
-  startDate: '2017-03-22T20:00:00',
-  activity: 'Tai Chi',
-  location: {
-    type: 'Place',
-    name: 'ExampleCo Gym',
-    address: {
-      type: 'PostalAddress',
-      streetAddress: '1 High Street',
-      addressLocality: 'Bristol',
-      postalCode: 'BS1 4SD'
+async function run() {
+  const data = {
+    '@context': 'https://www.openactive.io/ns/oa.jsonld',
+    type: 'Event',
+    name: 'Tai chi Class',
+    url: 'http://www.example.org/events/1',
+    startDate: '2017-03-22T20:00:00',
+    activity: 'Tai Chi',
+    location: {
+      type: 'Place',
+      name: 'ExampleCo Gym',
+      address: {
+        type: 'PostalAddress',
+        streetAddress: '1 High Street',
+        addressLocality: 'Bristol',
+        postalCode: 'BS1 4SD'
+      }
     }
-  }
-};
+  };
 
-// Check whether the JSON conforms to the Event model
-const result = validate(data);
+  // Check whether the JSON conforms to the Event model
+  const result = await validateAsync(data);
 
-// Returns:
-// [{category: 'conformance', type: 'missing_required_field', message: 'Required field is missing.', value: undefined, severity: 'failure', path: '$.context' }, ... ]
-
+  // Returns:
+  // [{category: 'conformance', type: 'missing_required_field', message: 'Required field is missing.', value: undefined, severity: 'failure', path: '$.context' }, ... ]
+}
 ```
+
+### Async or Sync
+
+Validator performs I/O operations when running including fetching from `@context` URLs (see option: `loadRemoteJson`) and caching to file system (see option: `remoteJsonCachePath`). It does these in order to provide greater degree of validation certainty as well as performance gains for multiple re-runs.
+
+Validator provides three functions that can do validation:
+
+- `validateAsync` - Validator runs I/O actions asynchronously and returns the result in a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)
+- `validateSync` - Validator runs I/O actions synchronously and doesn't return a promise
+- `validate` - This is just an alias of `validateSync` for backwards compatibility
+
+These can all be accessed from the index:
+
+```js
+const { validateAsync, validateSync, validate } = require('@openactive/data-model-validator');
+```
+
+**It is recommended to use `validateAsync`** - especially for an application that accepts multiple requests - as it will unblock the event loop to be free to run other code concurrently.
 
 ### Options
 
@@ -65,17 +83,19 @@ Whether to load remote JSON documents. For example, remote `@context` definition
 e.g.
 
 ```js
-const { validate } = require('@openactive/data-model-validator');
+const { validateAsync } = require('@openactive/data-model-validator');
 
-const data = {
-  // ...
-};
+async function run() {
+  const data = {
+    // ...
+  };
 
-const options = {
-  loadRemoteJson: true
-};
+  const options = {
+    loadRemoteJson: true
+  };
 
-const result = validate(data, options);
+  const result = await validateAsync(data, options);
+}
 ```
 
 #### remoteJsonCachePath
@@ -87,18 +107,20 @@ Used in conjunction with `loadRemoteJson`. If set, allows the JSON loader to cac
 e.g.
 
 ```js
-const { validate } = require('@openactive/data-model-validator');
+const { validateAsync } = require('@openactive/data-model-validator');
 
-const data = {
-  // ...
-};
+async function run() {
+  const data = {
+    // ...
+  };
 
-const options = {
-  loadRemoteJson: true,
-  remoteJsonCachePath: '/tmp'
-};
+  const options = {
+    loadRemoteJson: true,
+    remoteJsonCachePath: '/tmp'
+  };
 
-const result = validate(data, options);
+  const result = await validateAsync(data, options);
+}
 ```
 
 #### remoteJsonCacheTimeToLive
@@ -110,19 +132,21 @@ Used in conjunction with `loadRemoteJson` and `remoteJsonCachePath`. It sets the
 e.g.
 
 ```js
-const { validate } = require('@openactive/data-model-validator');
+const { validateAsync } = require('@openactive/data-model-validator');
 
-const data = {
-  // ...
-};
+async function run() {
+  const data = {
+    // ...
+  };
 
-const options = {
-  loadRemoteJson: true,
-  remoteJsonCachePath: '/tmp',
-  remoteJsonCacheTimeToLive: 3600
-};
+  const options = {
+    loadRemoteJson: true,
+    remoteJsonCachePath: '/tmp',
+    remoteJsonCacheTimeToLive: 3600
+  };
 
-const result = validate(data, options);
+  const result = await validateAsync(data, options);
+}
 ```
 
 #### rpdeItemLimit
@@ -132,17 +156,19 @@ A limit of the number of RPDE `"updated"` data items to validate. It is helpful 
 e.g.
 
 ```js
-const { validate } = require('@openactive/data-model-validator');
+const { validateAsync } = require('@openactive/data-model-validator');
 
-const feed = {
-  // ...
-};
+async function run() {
+  const feed = {
+    // ...
+  };
 
-const options = {
-  rpdeItemLimit: 10
-};
+  const options = {
+    rpdeItemLimit: 10
+  };
 
-const result = validate(feed, options);
+  const result = await validateAsync(feed, options);
+}
 ```
 
 #### schemaOrgSpecifications
@@ -152,38 +178,40 @@ An array of schema.org specifications in `JSON-LD` format. For example, see http
 e.g.
 
 ```js
-const { validate } = require('@openactive/data-model-validator');
+const { validateAsync } = require('@openactive/data-model-validator');
 
-const data = {
-  // ...
-};
+async function run() {
+  const data = {
+    // ...
+  };
 
-const options = {
-  schemaOrgSpecifications: [
-    {
-      '@context': {
-        rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-        rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
-        xsd: 'http://www.w3.org/2001/XMLSchema#',
-      },
-      '@graph': [
-        {
-          '@id': 'http://schema.org/CafeOrCoffeeShop',
-          '@type': 'rdfs:Class',
-          'rdfs:comment': 'A cafe or coffee shop.',
-          'rdfs:label': 'CafeOrCoffeeShop',
-          'rdfs:subClassOf': {
-            '@id': 'http://schema.org/FoodEstablishment'
-          },
+  const options = {
+    schemaOrgSpecifications: [
+      {
+        '@context': {
+          rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+          rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+          xsd: 'http://www.w3.org/2001/XMLSchema#',
         },
-        // ...
-      ],
-      '@id': 'http://schema.org/#3.4',
-    },
-  ],
-};
+        '@graph': [
+          {
+            '@id': 'http://schema.org/CafeOrCoffeeShop',
+            '@type': 'rdfs:Class',
+            'rdfs:comment': 'A cafe or coffee shop.',
+            'rdfs:label': 'CafeOrCoffeeShop',
+            'rdfs:subClassOf': {
+              '@id': 'http://schema.org/FoodEstablishment'
+            },
+          },
+          // ...
+        ],
+        '@id': 'http://schema.org/#3.4',
+      },
+    ],
+  };
 
-const result = validate(data, options);
+  const result = await validateAsync(data, options);
+}
 ```
 
 #### type
@@ -193,18 +221,20 @@ The validator will detect the type of the model being validated from the `type` 
 e.g.
 
 ```js
-const { validate } = require('@openactive/data-model-validator');
+const { validateAsync } = require('@openactive/data-model-validator');
 
-const model = {
-  type: 'CustomAction'
-  // ...
-};
+async function run() {
+  const model = {
+    type: 'CustomAction'
+    // ...
+  };
 
-const options = {
-  type: 'Action'
-};
+  const options = {
+    type: 'Action'
+  };
 
-const result = validate(model, options);
+  const result = await validateAsync(model, options);
+}
 ```
 
 #### version
@@ -214,32 +244,7 @@ The version of the specification to validate against. If not provided, this will
 e.g.
 
 ```js
-const { validate } = require('@openactive/data-model-validator');
-
-const model = {
-  type: 'CustomAction'
-  // ...
-};
-
-const options = {
-  version: '2.0'
-};
-
-const result = validate(model, options);
-```
-
-#### doRunAsync
-
-TODO TODO TODO change to docs for validateAsync
-
-If true, the validator will run I/O actions asynchronously and return a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises). **It is recommended to have this option set to true** especially for an application that accepts multiple requests as it will unblock the event loop to be free to run other code concurrently.
-
-By default it is set to false for backwards compatability.
-
-e.g.
-
-```js
-const { validate } = require('@openactive/data-model-validator');
+const { validateAsync } = require('@openactive/data-model-validator');
 
 async function run() {
   const model = {
@@ -248,12 +253,10 @@ async function run() {
   };
 
   const options = {
-    doRunAsync: true
+    version: '2.0'
   };
 
-  const result = await validate(model, options);
-  
-  // Do something with result
+  const result = await validateAsync(model, options);
 }
 ```
 

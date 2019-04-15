@@ -16,7 +16,7 @@ describe('DateFormatRule', () => {
   });
 
   // ISO8601Date
-  it('should return no error for an valid date', () => {
+  it('should return no error for an valid date', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -43,11 +43,11 @@ describe('DateFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid date', () => {
+  it('should return an error for an invalid date', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -76,13 +76,13 @@ describe('DateFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
-  it('should return an error for an invalid date with a namespace', () => {
+  it('should return an error for an invalid date with a namespace', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -111,13 +111,13 @@ describe('DateFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
-  it('should return an error for an invalid date from an unknown Model', () => {
+  it('should return an error for an invalid date from an unknown Model', async () => {
     const model = new Model({}, 'latest');
 
     const values = [
@@ -135,7 +135,7 @@ describe('DateFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

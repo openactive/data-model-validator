@@ -21,7 +21,7 @@ describe('NoEmptyValuesRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no errors if all fields are non-empty', () => {
+  it('should return no errors if all fields are non-empty', async () => {
     const data = {
       '@context': 'https://openactive.io/',
       type: 'Event',
@@ -35,12 +35,12 @@ describe('NoEmptyValuesRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return a failure per field if any fields are null, empty strings or empty arrays', () => {
+  it('should return a failure per field if any fields are null, empty strings or empty arrays', async () => {
     const data = {
       '@context': 'https://openactive.io/',
       type: 'Event',
@@ -55,7 +55,7 @@ describe('NoEmptyValuesRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
 
     expect(errors.length).toBe(3);
 

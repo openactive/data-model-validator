@@ -25,7 +25,7 @@ describe('IfNeedsBookingMustHaveValidOfferRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no errors if the Event has an isAccessibleWithoutBooking of true', () => {
+  it('should return no errors if the Event has an isAccessibleWithoutBooking of true', async () => {
     const data = {
       type: 'Event',
       isAccessibleWithoutBooking: true,
@@ -37,12 +37,12 @@ describe('IfNeedsBookingMustHaveValidOfferRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return no errors if the Event has an isAccessibleWithoutBooking of false, but has an offer with an id or url', () => {
+  it('should return no errors if the Event has an isAccessibleWithoutBooking of false, but has an offer with an id or url', async () => {
     const dataItems = [
       {
         type: 'Event',
@@ -73,13 +73,13 @@ describe('IfNeedsBookingMustHaveValidOfferRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
 
       expect(errors.length).toBe(0);
     }
   });
 
-  it('should return an error if the Event as an isAccessibleWithoutBooking of false, and no offer with an id or url', () => {
+  it('should return an error if the Event as an isAccessibleWithoutBooking of false, and no offer with an id or url', async () => {
     const dataItems = [
       {
         type: 'Event',
@@ -108,7 +108,7 @@ describe('IfNeedsBookingMustHaveValidOfferRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
 
       expect(errors.length).toBe(1);
 

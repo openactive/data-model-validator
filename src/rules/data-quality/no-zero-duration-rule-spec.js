@@ -22,7 +22,7 @@ describe('NoZeroDurationRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no error when a non-zero duration is supplied', () => {
+  it('should return no error when a non-zero duration is supplied', async () => {
     const data = {
       type: 'Event',
       duration: 'PT1H',
@@ -34,11 +34,11 @@ describe('NoZeroDurationRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
 
-  it('should return an error when a zero duration is supplied', () => {
+  it('should return an error when a zero duration is supplied', async () => {
     const data = {
       type: 'Event',
       duration: 'PT0S',
@@ -50,13 +50,13 @@ describe('NoZeroDurationRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.NO_ZERO_DURATION);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 
-  it('should return an error when a zero duration is supplied with a namespace', () => {
+  it('should return an error when a zero duration is supplied with a namespace', async () => {
     const data = {
       type: 'Event',
       'schema:duration': 'PT0S',
@@ -68,7 +68,7 @@ describe('NoZeroDurationRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.NO_ZERO_DURATION);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

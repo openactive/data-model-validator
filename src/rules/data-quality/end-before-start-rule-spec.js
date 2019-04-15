@@ -26,7 +26,7 @@ describe('EndBeforeStartRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no error when the startDate is before the endDate', () => {
+  it('should return no error when the startDate is before the endDate', async () => {
     const data = {
       type: 'Event',
       startDate: '2017-09-06T09:00:00Z',
@@ -39,10 +39,10 @@ describe('EndBeforeStartRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when the startDate is before the endDate in a namespaced field', () => {
+  it('should return no error when the startDate is before the endDate in a namespaced field', async () => {
     const data = {
       type: 'Event',
       'schema:startDate': '2017-09-06T09:00:00Z',
@@ -55,10 +55,10 @@ describe('EndBeforeStartRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when the startDate is set, but the endDate isn\'t', () => {
+  it('should return no error when the startDate is set, but the endDate isn\'t', async () => {
     const data = {
       type: 'Event',
       startDate: '2017-09-06T09:00:00Z',
@@ -70,10 +70,10 @@ describe('EndBeforeStartRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return an error when the startDate is after the endDate', () => {
+  it('should return an error when the startDate is after the endDate', async () => {
     const data = {
       type: 'Event',
       startDate: '2017-09-06T09:00:00Z',
@@ -86,7 +86,7 @@ describe('EndBeforeStartRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.START_DATE_AFTER_END_DATE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

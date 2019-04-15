@@ -23,7 +23,7 @@ describe('ScheduledSessionMustBeSubeventRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no errors if the ScheduledSession is a subEvent of another Event', () => {
+  it('should return no errors if the ScheduledSession is a subEvent of another Event', async () => {
     const data = {
       type: 'ScheduledSession',
     };
@@ -34,12 +34,12 @@ describe('ScheduledSessionMustBeSubeventRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return an error if the ScheduledSession is not a subEvent of another Event', () => {
+  it('should return an error if the ScheduledSession is not a subEvent of another Event', async () => {
     const data = {
       type: 'ScheduledSession',
     };
@@ -50,7 +50,7 @@ describe('ScheduledSessionMustBeSubeventRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
 
     expect(errors.length).toBe(1);
 

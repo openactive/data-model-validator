@@ -30,7 +30,7 @@ describe('AddressWarningRule', () => {
   });
 
   // No error
-  it('should return no error when address is a PostalAddress object', () => {
+  it('should return no error when address is a PostalAddress object', async () => {
     const data = {
       type: 'Place',
       address: {
@@ -45,10 +45,10 @@ describe('AddressWarningRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when address is not set', () => {
+  it('should return no error when address is not set', async () => {
     const data = {
       type: 'Place',
     };
@@ -59,12 +59,12 @@ describe('AddressWarningRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
 
   // Error
-  it('should return an error when address is a string', () => {
+  it('should return an error when address is a string', async () => {
     const data = {
       type: 'Event',
       address: '1, Test Road',
@@ -76,7 +76,7 @@ describe('AddressWarningRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.TYPE_LIMITS_USE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);

@@ -26,7 +26,7 @@ describe('OpenactiveUrlsCorrectRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no errors if the context URL starts with https://openactive.io', () => {
+  it('should return no errors if the context URL starts with https://openactive.io', async () => {
     const dataItems = [
       {
         '@context': metaData.contextUrl,
@@ -45,13 +45,13 @@ describe('OpenactiveUrlsCorrectRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
 
       expect(errors.length).toBe(0);
     }
   });
 
-  it('should return no error if the context does not have OpenActive namespace in it', () => {
+  it('should return no error if the context does not have OpenActive namespace in it', async () => {
     const dataItems = [
       {
         '@context': 'https://example.org/ns',
@@ -70,13 +70,13 @@ describe('OpenactiveUrlsCorrectRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
 
       expect(errors.length).toBe(0);
     }
   });
 
-  it('should return an error if the context is present, but contains a field not matching the correct scheme / domain', () => {
+  it('should return an error if the context is present, but contains a field not matching the correct scheme / domain', async () => {
     const dataItems = [
       {
         '@context': 'https://www.openactive.io/ns/oa.jsonld',
@@ -111,7 +111,7 @@ describe('OpenactiveUrlsCorrectRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
 
       expect(errors.length).toBe(1);
 

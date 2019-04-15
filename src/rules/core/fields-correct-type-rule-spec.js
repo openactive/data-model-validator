@@ -17,7 +17,7 @@ describe('FieldsCorrectTypeRule', () => {
 
   // Single types
   // Boolean
-  it('should return no error for an valid boolean type', () => {
+  it('should return no error for an valid boolean type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -39,10 +39,10 @@ describe('FieldsCorrectTypeRule', () => {
       model,
     );
 
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return an error for an invalid boolean type', () => {
+  it('should return an error for an invalid boolean type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -64,14 +64,14 @@ describe('FieldsCorrectTypeRule', () => {
       model,
     );
 
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 
   // Float
-  it('should return no error for an valid float type', () => {
+  it('should return no error for an valid float type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -102,10 +102,10 @@ describe('FieldsCorrectTypeRule', () => {
       model,
     );
 
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return an error for an invalid float type', () => {
+  it('should return an error for an invalid float type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -137,7 +137,7 @@ describe('FieldsCorrectTypeRule', () => {
       model,
     );
 
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(3);
 
     for (const error of errors) {
@@ -147,7 +147,7 @@ describe('FieldsCorrectTypeRule', () => {
   });
 
   // Integer
-  it('should return no error for an valid integer type', () => {
+  it('should return no error for an valid integer type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -179,10 +179,10 @@ describe('FieldsCorrectTypeRule', () => {
       model,
     );
 
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return an error for an invalid integer type', () => {
+  it('should return an error for an invalid integer type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -214,7 +214,7 @@ describe('FieldsCorrectTypeRule', () => {
       model,
     );
 
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(3);
 
     for (const error of errors) {
@@ -224,7 +224,7 @@ describe('FieldsCorrectTypeRule', () => {
   });
 
   // url
-  it('should return no error for an valid url type', () => {
+  it('should return no error for an valid url type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -257,11 +257,11 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid url type', () => {
+  it('should return an error for an invalid url type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -293,7 +293,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -301,7 +301,7 @@ describe('FieldsCorrectTypeRule', () => {
   });
 
   // urlTemplate
-  it('should return no error for an valid urlTemplate type', () => {
+  it('should return no error for an valid urlTemplate type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -326,11 +326,11 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid urlTemplate type', () => {
+  it('should return an error for an invalid urlTemplate type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -362,7 +362,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -370,7 +370,7 @@ describe('FieldsCorrectTypeRule', () => {
   });
 
   // Date
-  it('should return no error for an valid date type', () => {
+  it('should return no error for an valid date type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -396,11 +396,11 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid date type', () => {
+  it('should return an error for an invalid date type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -429,7 +429,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -437,7 +437,7 @@ describe('FieldsCorrectTypeRule', () => {
   });
 
   // DateTime
-  it('should return no error for an valid datetime type', () => {
+  it('should return no error for an valid datetime type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -464,11 +464,11 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid datetime type', () => {
+  it('should return an error for an invalid datetime type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -498,7 +498,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -506,7 +506,7 @@ describe('FieldsCorrectTypeRule', () => {
   });
 
   // Duration
-  it('should return no error for an valid duration type', () => {
+  it('should return no error for an valid duration type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -533,11 +533,11 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid duration type', () => {
+  it('should return an error for an invalid duration type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -567,7 +567,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -575,7 +575,7 @@ describe('FieldsCorrectTypeRule', () => {
   });
 
   // Text
-  it('should return no error for an valid text type', () => {
+  it('should return no error for an valid text type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -605,11 +605,11 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid text type', () => {
+  it('should return an error for an invalid text type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -637,7 +637,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -645,7 +645,7 @@ describe('FieldsCorrectTypeRule', () => {
   });
 
   // Model
-  it('should return no error for an valid model type', () => {
+  it('should return no error for an valid model type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -673,11 +673,11 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid model type', () => {
+  it('should return an error for an invalid model type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -713,13 +713,13 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
-  it('should return no error for an invalid flexible model type', () => {
+  it('should return no error for an invalid flexible model type', async () => {
     const model = new Model({
       type: 'Place',
       fields: {
@@ -754,13 +754,13 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
 
   // ArrayOf
-  it('should return no error for an valid array type', () => {
+  it('should return no error for an valid array type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -857,10 +857,10 @@ describe('FieldsCorrectTypeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return an error for an invalid array type', () => {
+  it('should return an error for an invalid array type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -957,7 +957,7 @@ describe('FieldsCorrectTypeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(9);
 
     for (const error of errors) {
@@ -965,7 +965,7 @@ describe('FieldsCorrectTypeRule', () => {
       expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
-  it('should return an error for a scalar value of the correct array type', () => {
+  it('should return an error for a scalar value of the correct array type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -1029,7 +1029,7 @@ describe('FieldsCorrectTypeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(9);
 
     for (const error of errors) {
@@ -1039,7 +1039,7 @@ describe('FieldsCorrectTypeRule', () => {
   });
 
   // Multiple rules
-  it('should return no error for an valid type with multiple rules', () => {
+  it('should return no error for an valid type with multiple rules', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -1081,11 +1081,11 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid type with multiple rules', () => {
+  it('should return an error for an invalid type with multiple rules', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -1128,13 +1128,13 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
-  it('should not throw if it encounters null', () => {
+  it('should not throw if it encounters null', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -1156,13 +1156,13 @@ describe('FieldsCorrectTypeRule', () => {
       model,
     );
 
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 
-  it('should return a failure if it encounters a value object', () => {
+  it('should return a failure if it encounters a value object', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -1186,7 +1186,7 @@ describe('FieldsCorrectTypeRule', () => {
       model,
     );
 
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.UNSUPPORTED_VALUE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

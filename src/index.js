@@ -3,7 +3,7 @@
  * MIT Licensed
  */
 const defaultRules = require('./rules');
-const { validate, isRpdeFeed } = require('./validate');
+const { validateAsync, validateSync, validate, isRpdeFeed } = require('./validate');
 const Rule = require('./rules/rule');
 const ValidationError = require('./errors/validation-error');
 const ValidationErrorCategory = require('./errors/validation-error-category');
@@ -15,6 +15,8 @@ function createValidator() {
     defaultRules,
     isRpdeFeed,
     Rule,
+    validateAsync,
+    validateSync,
     validate,
     ValidationError,
     ValidationErrorCategory,

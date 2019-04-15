@@ -74,7 +74,7 @@ describe('FieldsNotInModelRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no errors if all fields are in the spec', () => {
+  it('should return no errors if all fields are in the spec', async () => {
     const data = {
       '@context': 'https://openactive.io/',
       type: 'Event',
@@ -112,12 +112,12 @@ describe('FieldsNotInModelRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return no errors if a field is in a custom context', () => {
+  it('should return no errors if a field is in a custom context', async () => {
     const data = {
       '@context': [
         'https://openactive.io/',
@@ -171,12 +171,12 @@ describe('FieldsNotInModelRule', () => {
       model,
       options,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return an error if a field is not in a custom context', () => {
+  it('should return an error if a field is not in a custom context', async () => {
     const data = {
       '@context': [
         'https://openactive.io/',
@@ -230,7 +230,7 @@ describe('FieldsNotInModelRule', () => {
       model,
       options,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -240,7 +240,7 @@ describe('FieldsNotInModelRule', () => {
     }
   });
 
-  it('should return no errors if a field is in a custom context with a graph', () => {
+  it('should return no errors if a field is in a custom context with a graph', async () => {
     const data = {
       '@context': [
         'https://openactive.io/',
@@ -296,12 +296,12 @@ describe('FieldsNotInModelRule', () => {
       model,
       options,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return a warning per field if any fields are not in the spec, but are in schema.org', () => {
+  it('should return a warning per field if any fields are not in the spec, but are in schema.org', async () => {
     const data = {
       '@context': 'https://openactive.io/',
       type: 'Event',
@@ -319,7 +319,7 @@ describe('FieldsNotInModelRule', () => {
       model,
       options,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -329,7 +329,7 @@ describe('FieldsNotInModelRule', () => {
     }
   });
 
-  it('should return a failure per field if any fields are not allowed in the spec', () => {
+  it('should return a failure per field if any fields are not allowed in the spec', async () => {
     const data = {
       '@context': 'https://openactive.io/',
       type: 'Event',
@@ -342,7 +342,7 @@ describe('FieldsNotInModelRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -352,7 +352,7 @@ describe('FieldsNotInModelRule', () => {
     }
   });
 
-  it('should return a failure per field if any fields are not in the spec', () => {
+  it('should return a failure per field if any fields are not in the spec', async () => {
     const data = {
       '@context': 'https://openactive.io/',
       type: 'Event',
@@ -366,7 +366,7 @@ describe('FieldsNotInModelRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
 
     expect(errors.length).toBe(2);
 
@@ -376,7 +376,7 @@ describe('FieldsNotInModelRule', () => {
     }
   });
 
-  it('should return a notice per field if any extension fields are present', () => {
+  it('should return a notice per field if any extension fields are present', async () => {
     const data = {
       '@context': 'https://openactive.io/',
       type: 'Event',
@@ -393,7 +393,7 @@ describe('FieldsNotInModelRule', () => {
       model,
     );
 
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
 
     expect(errors.length).toBe(4);
 
@@ -403,7 +403,7 @@ describe('FieldsNotInModelRule', () => {
     }
   });
 
-  it('should return a failure per field if a field is a typo', () => {
+  it('should return a failure per field if a field is a typo', async () => {
     const data = {
       type: 'Event',
       offer: {
@@ -422,7 +422,7 @@ describe('FieldsNotInModelRule', () => {
       model,
     );
 
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
 
     expect(errors.length).toBe(1);
 

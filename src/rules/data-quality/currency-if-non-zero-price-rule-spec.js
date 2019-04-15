@@ -24,7 +24,7 @@ describe('CurrencyIfNonZeroPriceRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no errors if the Offer has a price of zero', () => {
+  it('should return no errors if the Offer has a price of zero', async () => {
     const data = {
       type: 'Offer',
       price: 0,
@@ -36,12 +36,12 @@ describe('CurrencyIfNonZeroPriceRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return no errors if the Offer has a non-zero price, but has a currency set', () => {
+  it('should return no errors if the Offer has a non-zero price, but has a currency set', async () => {
     const data = {
       type: 'Offer',
       price: 5,
@@ -54,12 +54,12 @@ describe('CurrencyIfNonZeroPriceRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return an error if the Offer has a non-zero price, and has no currency set', () => {
+  it('should return an error if the Offer has a non-zero price, and has no currency set', async () => {
     const dataItems = [
       {
         type: 'Offer',
@@ -74,7 +74,7 @@ describe('CurrencyIfNonZeroPriceRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
 
       expect(errors.length).toBe(1);
 

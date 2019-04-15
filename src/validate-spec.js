@@ -1,10 +1,11 @@
-const { validate } = require('./validate');
+const { validateAsync } = require('./validate');
 const ValidationErrorSeverity = require('./errors/validation-error-severity');
 const ValidationErrorType = require('./errors/validation-error-type');
 const DataModelHelper = require('./helpers/data-model');
 const OptionsHelper = require('./helpers/options');
 const JsonLoaderHelper = require('./helpers/json-loader');
 
+// TODO TODO TODO include a validateSync test here as well
 describe('validate', () => {
   let validEvent;
   let options;
@@ -197,7 +198,7 @@ describe('validate', () => {
       ],
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+    spyOn(JsonLoaderHelper, 'getFileAsync').and.callFake(async url => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: activityList,
@@ -213,10 +214,10 @@ describe('validate', () => {
     });
   });
 
-  it('should return a failure if passed an invalid model', () => {
+  it('should return a failure if passed an invalid model', async () => {
     const data = {};
 
-    const result = validate(data, new OptionsHelper({ type: 'InvalidModel' }));
+    const result = await validateAsync(data, new OptionsHelper({ type: 'InvalidModel' }));
 
     expect(result.length).toBe(2);
     expect(result[0].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
@@ -226,45 +227,43 @@ describe('validate', () => {
     expect(result[1].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 
-  it('should not throw if no type is passed', () => {
+  it('should not throw if no type is passed', async () => {
     const data = {};
 
-    validate(data);
-
-    const validateFunc = () => { validate(data); };
-
-    expect(validateFunc).not.toThrow();
+    await expectAsync(async () => {
+      await validateAsync(data);
+    }).not.toBeRejected();
   });
 
-  it('should return a warning if an array is passed to validate', () => {
+  it('should return a warning if an array is passed to validate', async () => {
     const data = [];
 
-    const result = validate(data, options);
+    const result = await validateAsync(data, options);
 
     expect(result.length).toBe(1);
     expect(result[0].type).toBe(ValidationErrorType.INVALID_JSON);
     expect(result[0].severity).toBe(ValidationErrorSeverity.WARNING);
   });
 
-  it('should return a failure if a non-object is passed to validate', () => {
+  it('should return a failure if a non-object is passed to validate', async () => {
     const data = 'bad_data';
 
-    const result = validate(data, options);
+    const result = await validateAsync(data, options);
 
     expect(result.length).toBe(1);
     expect(result[0].type).toBe(ValidationErrorType.INVALID_JSON);
     expect(result[0].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 
-  it('should return no errors for a valid Event', () => {
+  it('should return no errors for a valid Event', async () => {
     const event = Object.assign({}, validEvent);
 
-    const result = validate(event, options);
+    const result = await validateAsync(event, options);
 
     expect(result.length).toBe(0);
   });
 
-  it('should only return alias warnings for a valid Event with aliased properties', () => {
+  it('should only return alias warnings for a valid Event with aliased properties', async () => {
     const event = Object.assign(
       {},
       validEvent,
@@ -279,7 +278,7 @@ describe('validate', () => {
     delete event.name;
     delete event.ageRange;
 
-    const result = validate(event, options);
+    const result = await validateAsync(event, options);
 
     expect(result.length).toBe(3);
 
@@ -289,20 +288,20 @@ describe('validate', () => {
     }
   });
 
-  it('should provide a jsonpath to the location of a problem', () => {
+  it('should provide a jsonpath to the location of a problem', async () => {
     // This event is missing location addressRegion, which is a recommended field
     const event = Object.assign({}, validEvent);
 
     delete event.location.address.addressRegion;
 
-    const result = validate(event, options);
+    const result = await validateAsync(event, options);
 
     expect(result.length).toBe(1);
 
     expect(result[0].path).toBe('$.location.address.addressRegion');
   });
 
-  it('should provide a jsonpath to the location of a problem with a namespace', () => {
+  it('should provide a jsonpath to the location of a problem with a namespace', async () => {
     const event = Object.assign(
       {},
       validEvent,
@@ -317,7 +316,7 @@ describe('validate', () => {
 
     delete event.ageRange;
 
-    const result = validate(event, options);
+    const result = await validateAsync(event, options);
 
     expect(result.length).toBe(2);
 
@@ -325,7 +324,7 @@ describe('validate', () => {
     expect(result[1].path).toBe('$["https://openactive.io/ageRange"].minValue');
   });
 
-  it('should check submodels of a model even if we don\'t know what type it is', () => {
+  it('should check submodels of a model even if we don\'t know what type it is', async () => {
     const data = {
       type: 'UnknownType',
       geo: {
@@ -337,7 +336,7 @@ describe('validate', () => {
       },
     };
 
-    const result = validate(data, options);
+    const result = await validateAsync(data, options);
 
     expect(result.length).toBe(4);
 
@@ -358,7 +357,7 @@ describe('validate', () => {
     expect(result[3].path).toBe('$.location');
   });
 
-  it('should cope with flexible model types', () => {
+  it('should cope with flexible model types', async () => {
     const place = {
       '@context': metaData.contextUrl,
       id: 'http://www.example.org/locations/gym',
@@ -404,7 +403,7 @@ describe('validate', () => {
       ],
     };
 
-    const result = validate(place, options);
+    const result = await validateAsync(place, options);
 
     expect(result.length).toBe(1);
 
@@ -413,7 +412,7 @@ describe('validate', () => {
     expect(result[0].path).toBe('$.amenityFeature[1]');
   });
 
-  it('should cope with arrays of flexible model types mixed with invalid elements', () => {
+  it('should cope with arrays of flexible model types mixed with invalid elements', async () => {
     const place = {
       '@context': metaData.contextUrl,
       id: 'http://www.example.org/locations/gym',
@@ -460,7 +459,7 @@ describe('validate', () => {
       ],
     };
 
-    const result = validate(place, options);
+    const result = await validateAsync(place, options);
 
     expect(result.length).toBe(2);
 
@@ -473,7 +472,7 @@ describe('validate', () => {
     expect(result[1].path).toBe('$.amenityFeature[2]');
   });
 
-  it('should not throw if a property of value null is passed', () => {
+  it('should not throw if a property of value null is passed', async () => {
     const data = {
       '@context': metaData.contextUrl,
       type: 'Event',
@@ -482,15 +481,15 @@ describe('validate', () => {
 
     let result;
 
-    const doValidate = () => {
-      result = validate(data, options);
+    const doValidate = async () => {
+      result = await validateAsync(data, options);
     };
 
-    expect(doValidate).not.toThrow();
+    await expectAsync(doValidate).not.toBeRejected();
     expect(typeof result).toBe('object');
   });
 
-  it('should not throw if a property of value null is passed', () => {
+  it('should not throw if a property of value null is passed', async () => {
     const data = {
       '@context': metaData.contextUrl,
       type: 'Event',
@@ -499,20 +498,20 @@ describe('validate', () => {
 
     let result;
 
-    const doValidate = () => {
-      result = validate(data, options);
+    const doValidate = async () => {
+      result = await validateAsync(data, options);
     };
 
-    expect(doValidate).not.toThrow();
+    await expectAsync(doValidate).not.toBeRejected();
     expect(typeof result).toBe('object');
   });
 
-  it('should return an unsupported warning if nested arrays are passed', () => {
+  it('should return an unsupported warning if nested arrays are passed', async () => {
     const event = Object.assign({}, validEvent);
 
     event.leader = [event.leader];
 
-    const result = validate(event, options);
+    const result = await validateAsync(event, options);
 
     expect(result.length).toBe(1);
 
@@ -521,7 +520,7 @@ describe('validate', () => {
     expect(result[0].path).toBe('$.leader');
   });
 
-  it('should not throw if a value object is passed', () => {
+  it('should not throw if a value object is passed', async () => {
     const event = Object.assign({}, validEvent);
 
     event.name = {
@@ -529,11 +528,11 @@ describe('validate', () => {
     };
 
     let result;
-    const doValidate = () => {
-      result = validate(event, options);
+    const doValidate = async () => {
+      result = await validateAsync(event, options);
     };
 
-    expect(doValidate).not.toThrow();
+    await expectAsync(doValidate).not.toBeRejected();
 
     expect(result.length).toBe(1);
 
@@ -542,7 +541,7 @@ describe('validate', () => {
     expect(result[0].path).toBe('$.name');
   });
 
-  it('should recognise an RPDE feed', () => {
+  it('should recognise an RPDE feed', async () => {
     const feed = {
       items: [
         {
@@ -557,7 +556,7 @@ describe('validate', () => {
       license: 'https://creativecommons.org/licenses/by/4.0/',
     };
 
-    const result = validate(feed, options);
+    const result = await validateAsync(feed, options);
 
     expect(result.length).toBe(1);
     expect(result[0].type).toBe(ValidationErrorType.FOUND_RPDE_FEED);

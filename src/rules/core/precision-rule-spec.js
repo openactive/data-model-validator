@@ -31,7 +31,7 @@ describe('PrecisionRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no error for a value above a minDecimalPlaces threshold', () => {
+  it('should return no error for a value above a minDecimalPlaces threshold', async () => {
     const values = [
       -89.123456,
       5.01123,
@@ -48,11 +48,11 @@ describe('PrecisionRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for a value below a minDecimalPlaces threshold', () => {
+  it('should return an error for a value below a minDecimalPlaces threshold', async () => {
     const values = [
       90.120,
       -100.1,
@@ -69,14 +69,14 @@ describe('PrecisionRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_PRECISION);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
     }
   });
 
-  it('should return no error for a value below a maxDecimalPlaces threshold', () => {
+  it('should return no error for a value below a maxDecimalPlaces threshold', async () => {
     const values = [
       10,
       10.50,
@@ -93,11 +93,11 @@ describe('PrecisionRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for a value above a maxDecimalPlaces threshold', () => {
+  it('should return an error for a value above a maxDecimalPlaces threshold', async () => {
     const values = [
       90.995,
       100.0001,
@@ -113,7 +113,7 @@ describe('PrecisionRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validateAsync(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_PRECISION);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);

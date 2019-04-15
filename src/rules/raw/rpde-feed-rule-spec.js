@@ -11,16 +11,16 @@ describe('RpdeFeedRule', () => {
     expect(rule.isFieldTargeted()).toBe(false);
   });
 
-  it('should return no notices for input that isn\'t an RPDE feed', () => {
+  it('should return no notices for input that isn\'t an RPDE feed', async () => {
     const data = {
       type: 'Event',
     };
 
-    const { errors } = rule.validate(data);
+    const { errors } = await rule.validateAsync(data);
     expect(errors.length).toBe(0);
   });
 
-  it('should return a notice for an RPDE feed', () => {
+  it('should return a notice for an RPDE feed', async () => {
     const data = {
       items: [
         {
@@ -37,14 +37,14 @@ describe('RpdeFeedRule', () => {
       license: 'https://creativecommons.org/licenses/by/4.0/',
     };
 
-    const { errors } = rule.validate(data);
+    const { errors } = await rule.validateAsync(data);
     expect(errors.length).toBe(1);
 
     expect(errors[0].type).toBe(ValidationErrorType.FOUND_RPDE_FEED);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.NOTICE);
   });
 
-  it('should return a notice for an RPDE feed, and modify the data with a limit to the number of items', () => {
+  it('should return a notice for an RPDE feed, and modify the data with a limit to the number of items', async () => {
     const feed = {
       items: [
         {
@@ -84,7 +84,7 @@ describe('RpdeFeedRule', () => {
     });
     const ruleWithOptions = new RpdeFeedRule(options);
 
-    const { data, errors } = ruleWithOptions.validate(feed);
+    const { data, errors } = await ruleWithOptions.validateAsync(feed);
     expect(errors.length).toBe(1);
 
     expect(errors[0].type).toBe(ValidationErrorType.FOUND_RPDE_FEED);

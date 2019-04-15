@@ -32,7 +32,7 @@ describe('ConceptIdInSchemeRule', () => {
     expect(isTargeted).toBe(false);
   });
 
-  it('should return no error when both id and inScheme are specified', () => {
+  it('should return no error when both id and inScheme are specified', async () => {
     const data = {
       type: 'Concept',
       id: 'http://example.org/concept/1',
@@ -45,10 +45,10 @@ describe('ConceptIdInSchemeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when both id and inScheme are specified in a namespaced field', () => {
+  it('should return no error when both id and inScheme are specified in a namespaced field', async () => {
     const data = {
       type: 'Concept',
       id: 'http://example.org/concept/1',
@@ -61,10 +61,10 @@ describe('ConceptIdInSchemeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when neither id or inScheme are specified', () => {
+  it('should return no error when neither id or inScheme are specified', async () => {
     const data = {
       type: 'Concept',
     };
@@ -75,10 +75,10 @@ describe('ConceptIdInSchemeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return an error when an id but no inScheme is set', () => {
+  it('should return an error when an id but no inScheme is set', async () => {
     const data = {
       type: 'Concept',
       id: 'http://example.org/concept/1',
@@ -90,12 +90,12 @@ describe('ConceptIdInSchemeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.CONCEPT_ID_AND_IN_SCHEME_TOGETHER);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
   });
-  it('should return an error when an inScheme but no id is set', () => {
+  it('should return an error when an inScheme but no id is set', async () => {
     const data = {
       type: 'Concept',
       inScheme: 'http://example.org/scheme/2',
@@ -107,7 +107,7 @@ describe('ConceptIdInSchemeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.CONCEPT_ID_AND_IN_SCHEME_TOGETHER);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);

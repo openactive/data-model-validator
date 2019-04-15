@@ -35,7 +35,7 @@ describe('IsAccessibleForFreeRule', () => {
   });
 
   // No error
-  it('should return no error when isAccessibleForFree is set to true with a zero offer', () => {
+  it('should return no error when isAccessibleForFree is set to true with a zero offer', async () => {
     const data = {
       type: 'Event',
       offers: [{
@@ -54,10 +54,10 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when isAccessibleForFree is set to true with a zero offer in a namespaced field', () => {
+  it('should return no error when isAccessibleForFree is set to true with a zero offer in a namespaced field', async () => {
     const data = {
       type: 'Event',
       'schema:offers': [{
@@ -76,10 +76,10 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when isAccessibleForFree is set to false with no zero offer', () => {
+  it('should return no error when isAccessibleForFree is set to false with no zero offer', async () => {
     const data = {
       type: 'Event',
       offers: [{
@@ -98,10 +98,10 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when isAccessibleForFree is not set with no zero offer', () => {
+  it('should return no error when isAccessibleForFree is not set with no zero offer', async () => {
     const data = {
       type: 'Event',
       offers: [{
@@ -119,11 +119,11 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
 
-  it('should return no error when isAccessibleForFree is set to true with a parent zero offer', () => {
+  it('should return no error when isAccessibleForFree is set to true with a parent zero offer', async () => {
     const data = {
       type: 'Event',
       superEvent: {
@@ -145,10 +145,10 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when isAccessibleForFree is set to false with no parent zero offer', () => {
+  it('should return no error when isAccessibleForFree is set to false with no parent zero offer', async () => {
     const data = {
       type: 'Event',
       superEvent: {
@@ -170,10 +170,10 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when isAccessibleForFree is not set with no parent zero offer', () => {
+  it('should return no error when isAccessibleForFree is not set with no parent zero offer', async () => {
     const data = {
       type: 'Event',
       superEvent: {
@@ -194,12 +194,12 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(0);
   });
 
   // Error
-  it('should return an error when isAccessibleForFree is set to false with a zero offer', () => {
+  it('should return an error when isAccessibleForFree is set to false with a zero offer', async () => {
     const data = {
       type: 'Event',
       offers: [{
@@ -218,12 +218,12 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
   });
-  it('should return an error when isAccessibleForFree is not set with a zero offer', () => {
+  it('should return an error when isAccessibleForFree is not set with a zero offer', async () => {
     const data = {
       type: 'Event',
       offers: [{
@@ -241,13 +241,13 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
   });
 
-  it('should return an error when isAccessibleForFree is set to false with a parent zero offer', () => {
+  it('should return an error when isAccessibleForFree is set to false with a parent zero offer', async () => {
     const data = {
       type: 'Event',
       superEvent: {
@@ -269,12 +269,12 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
   });
-  it('should return an error when isAccessibleForFree is not set with a parent zero offer', () => {
+  it('should return an error when isAccessibleForFree is not set with a parent zero offer', async () => {
     const data = {
       type: 'Event',
       superEvent: {
@@ -295,7 +295,7 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validateAsync(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
