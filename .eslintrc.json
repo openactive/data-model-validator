@@ -4,6 +4,9 @@
     "node": true,
     "jasmine": true
   },
+  "globals": {
+    "expectAsync": true
+  },
   "rules": {
     "max-len": "off",
     "no-await-in-loop": 0,

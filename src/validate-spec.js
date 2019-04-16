@@ -230,9 +230,9 @@ describe('validate', () => {
   it('should not throw if no type is passed', async () => {
     const data = {};
 
-    await expectAsync(async () => {
-      await validateAsync(data);
-    }).not.toBeRejected();
+    await expectAsync(
+      validateAsync(data),
+    ).not.toBeRejected();
   });
 
   it('should return a warning if an array is passed to validate', async () => {
@@ -479,13 +479,7 @@ describe('validate', () => {
       'beta:distance': null,
     };
 
-    let result;
-
-    const doValidate = async () => {
-      result = await validateAsync(data, options);
-    };
-
-    await expectAsync(doValidate).not.toBeRejected();
+    const result = await validateAsync(data, options);
     expect(typeof result).toBe('object');
   });
 
@@ -496,13 +490,7 @@ describe('validate', () => {
       category: [null, null],
     };
 
-    let result;
-
-    const doValidate = async () => {
-      result = await validateAsync(data, options);
-    };
-
-    await expectAsync(doValidate).not.toBeRejected();
+    const result = await validateAsync(data, options);
     expect(typeof result).toBe('object');
   });
 
@@ -527,12 +515,7 @@ describe('validate', () => {
       '@value': event.name,
     };
 
-    let result;
-    const doValidate = async () => {
-      result = await validateAsync(event, options);
-    };
-
-    await expectAsync(doValidate).not.toBeRejected();
+    const result = await validateAsync(event, options);
 
     expect(result.length).toBe(1);
 

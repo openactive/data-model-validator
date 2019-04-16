@@ -5,6 +5,11 @@ const RawRule = class extends Rule {
     return await this.validateRawAsync(json);
   }
 
+  /**
+   * @deprecated since version 1.2.0, since it uses synchronous IO
+   *   (https://nodejs.org/en/docs/guides/blocking-vs-non-blocking/#comparing-code). Use
+   *   validateAsync() instead
+   */
   validateSync(json) {
     return this.validateRawSync(json);
   }

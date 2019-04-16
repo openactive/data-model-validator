@@ -3,7 +3,9 @@
  * MIT Licensed
  */
 const defaultRules = require('./rules');
-const { validateAsync, validateSync, validate, isRpdeFeed } = require('./validate');
+const {
+  validateAsync, validateSync, validate, isRpdeFeed,
+} = require('./validate');
 const Rule = require('./rules/rule');
 const ValidationError = require('./errors/validation-error');
 const ValidationErrorCategory = require('./errors/validation-error-category');

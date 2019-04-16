@@ -132,7 +132,11 @@ module.exports = class FieldsNotInModelRule extends Rule {
     return testNode;
   }
 
-  // TODO TODO TODO note about being deprecated
+  /**
+   * @deprecated since version 1.2.0, since it uses synchronous IO
+   *   (https://nodejs.org/de/docs/guides/blocking-vs-non-blocking/#comparing-code). Use
+   *   getContextsAsync() instead.
+   */
   getContextsSync(node, field) {
     const rootNode = this.constructor.getRootJsonLdNode(node);
     let contexts = rootNode.getValue('@context');
@@ -371,7 +375,11 @@ module.exports = class FieldsNotInModelRule extends Rule {
     };
   }
 
-  // TODO TODO TODO note about being deprecated
+  /**
+   * @deprecated since version 1.2.0, since it uses synchronous IO
+   *   (https://nodejs.org/en/docs/guides/blocking-vs-non-blocking/#comparing-code). Use
+   *   validateFieldAsync() instead
+   */
   validateFieldSync(node, field) {
     // Don't do this check for models that we don't actually have a spec for
     if (!node.model.hasSpecification) {

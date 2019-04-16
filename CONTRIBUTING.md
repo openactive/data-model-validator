@@ -69,9 +69,9 @@ The rule name you create should:
 
 **OR**
 
-* Set `this.targetFields` to an object map of the fields you are targeting in each model, or a string `'*''` wildcard. Setting the property to `null` means that the rule will be applied once to the whole model. If you target a model, you **MUST** implement `validateField`.
+* Set `this.targetFields` to an object map of the fields you are targeting in each model, or a string `'*''` wildcard. Setting the property to `null` means that the rule will be applied once to the whole model. If you target a model, you **MUST** implement `validateFieldAsync`.
 
-Generally speaking, you **SHOULD NOT** implement both `validateModel` and `validateField` in the same rule.
+Generally speaking, you **SHOULD NOT** implement both `validateModel` and `validateFieldAsync` in the same rule.
 
 There is a lot of flexibility in the way that you can target rules.
 
@@ -177,7 +177,7 @@ this.meta = {
 };
 ```
 
-### validateModel and validateField
+### validateModel and validateFieldAsync
 
 Only one of these methods is expected to be implemented on each rule.
 
@@ -193,7 +193,7 @@ The parameters they accept are:
   * `options` - A copy of the options passed to the `validate` method.
   * `parentNode` - The `ModelNode` object representing the parent of this node. Will be `null` if this is the root node.
   * `rootNode` - The `ModelNode` object representing the root node. Will be `null` if this is the root node.
-* `field` **(validateField only)** - the name of the field that has been selected for validation in this rule.
+* `field` **(validateFieldAsync only)** - the name of the field that has been selected for validation in this rule.
 
 The `validate*` methods should use the node provided to verify the data conforms to the rules it defines.
 

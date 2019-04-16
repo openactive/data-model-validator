@@ -29,7 +29,11 @@ class ApplyRules {
     return modelObject;
   }
 
-  // TODO deprecated
+  /**
+   * @deprecated since version 1.2.0, since it uses synchronous IO
+   *   (https://nodejs.org/en/docs/guides/blocking-vs-non-blocking/#comparing-code). Use
+   *   applySubModelRulesAsync() instead
+   */
   static applySubModelRulesSync(rules, nodeToTest, field) {
     // parent, path
     let errors = [];
@@ -103,7 +107,11 @@ class ApplyRules {
     return errors;
   }
 
-  // TODO deprecated
+  /**
+   * @deprecated since version 1.2.0, since it uses synchronous IO
+   *   (https://nodejs.org/en/docs/guides/blocking-vs-non-blocking/#comparing-code). Use
+   *   applyModelRulesAsync() instead
+   */
   static applyModelRulesSync(rules, nodeToTest) {
     let errors = [];
     for (const rule of rules) {
@@ -301,7 +309,11 @@ async function validateAsync(value, options) {
   return errors.map(x => x.data);
 }
 
-// TODO deprecated
+/**
+ * @deprecated since version 1.2.0, since it uses synchronous IO
+ *   (https://nodejs.org/en/docs/guides/blocking-vs-non-blocking/#comparing-code). Use
+ *   validateAsync() instead
+ */
 function validateSync(value, options) {
   let errors = [];
   let valueCopy = value;
@@ -399,7 +411,12 @@ function isRpdeFeed(data) {
 }
 
 module.exports = {
-  // TODO this is here for backwards compatability
+  /**
+   * `validate` is aliased to `validateSync` for backwards compatibility
+   * @deprecated since version 1.2.0, since it uses synchronous IO
+   *   (https://nodejs.org/en/docs/guides/blocking-vs-non-blocking/#comparing-code). Use
+   *   validateAsync instead
+   */
   validate: validateSync,
   validateSync,
   validateAsync,
