@@ -125,7 +125,11 @@ async function saveToFsCache(baseCachePath, url, fileObject) {
 async function getFromRemoteUrl(url) {
   let response;
   try {
-    response = axios.get(url, { headers: 'application/ld+json' });
+    response = await axios.get(url, {
+      headers: {
+        'Content-Type': 'application/ld+json',
+      },
+    });
   } catch (error) {
     if (error.response) {
       const { data, headers, status } = error.response;
@@ -137,6 +141,7 @@ async function getFromRemoteUrl(url) {
     return createErrorNoRemote(url);
   }
   const { data, headers, status } = response;
+  // "All header names are lower cased" (See: https://github.com/axios/axios#response-schema)
   const contentType = headers['content-type'];
   return createSuccess(url, data, { statusCode: status, contentType });
 }

@@ -1,4 +1,4 @@
-const RequestHelper = require('./request');
+const nock = require('nock');
 const JsonLoaderHelper = require('./json-loader');
 const OptionsHelper = require('./options');
 
@@ -6,52 +6,43 @@ describe('JsonLoaderHelper', () => {
   beforeEach(() => {
     JsonLoaderHelper.clearCache();
   });
-  it('should load a JSON file', () => {
-    spyOn(RequestHelper, 'get').and.callFake((method, url) => ({
-      headers: {
-        'content-type': 'application/ld+json',
-      },
-      url,
-      statusCode: 200,
-      body: '{}',
-    }));
+  afterEach(() => {
+    nock.cleanAll();
+  });
+  it('should load a JSON file', async () => {
+    const scope = nock('https://openactive.io')
+      .get('/activity-list')
+      .reply(200, {}, {
+        'Content-Type': 'application/ld+json',
+      });
 
-    const response = JsonLoaderHelper.getFile(
+    const response = await JsonLoaderHelper.getFileAsync(
       'https://openactive.io/activity-list',
       new OptionsHelper({
         loadRemoteJson: true,
       }),
     );
 
-    expect(RequestHelper.get).toHaveBeenCalledWith(
-      'https://openactive.io/activity-list',
-      { accept: 'application/ld+json' },
-    );
+    expect(scope.pendingMocks()).toEqual([]);
     expect(
       response.errorCode,
     ).toBe(JsonLoaderHelper.ERROR_NONE);
   });
-  it('should 404 on an invalid JSON file', () => {
-    spyOn(RequestHelper, 'get').and.callFake((method, url) => ({
-      headers: {
-        'content-type': 'application/ld+json',
-      },
-      url,
-      statusCode: 404,
-      body: null,
-    }));
+  it('should 404 on an invalid JSON file', async () => {
+    const scope = nock('https://openactive.io')
+      .get('/activity-list')
+      .reply(404, null, {
+        'Content-Type': 'application/ld+json',
+      });
 
-    const response = JsonLoaderHelper.getFile(
+    const response = await JsonLoaderHelper.getFileAsync(
       'https://openactive.io/activity-list',
       new OptionsHelper({
         loadRemoteJson: true,
       }),
     );
 
-    expect(RequestHelper.get).toHaveBeenCalledWith(
-      'https://openactive.io/activity-list',
-      { accept: 'application/ld+json' },
-    );
+    expect(scope.pendingMocks()).toEqual([]);
     expect(
       response.errorCode,
     ).toBe(JsonLoaderHelper.ERROR_NO_REMOTE);
