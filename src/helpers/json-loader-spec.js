@@ -5,9 +5,11 @@ const OptionsHelper = require('./options');
 describe('JsonLoaderHelper', () => {
   beforeEach(() => {
     JsonLoaderHelper.clearCache();
+    nock.disableNetConnect();
   });
   afterEach(() => {
     nock.cleanAll();
+    nock.enableNetConnect();
   });
   it('should load a JSON file', async () => {
     const scope = nock('https://openactive.io')
