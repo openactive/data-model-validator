@@ -153,9 +153,12 @@ function getOptionsOrDefault(options) {
   return options;
 }
 
-// TODO TODO TODO why fetch from in-memory if it could never be populated?
 /**
  * Get file from in-memory cache without being able to fetch it from remote.
+ *
+ * This will always return an ERROR_NO_REMOTE error unless JSON loader had
+ * previously been called with option to fetch from remote and therefore had
+ * a remote in its cache
  *
  * @param {string} url
  * @returns {Object} File object
