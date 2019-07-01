@@ -13,15 +13,15 @@ describe('ConceptNoPropsIfInSchemeRule', () => {
     fields: {
       inScheme: {
         fieldName: 'inScheme',
-        requiredType: 'https://schema.org/url',
+        requiredType: 'https://schema.org/URL',
       },
       broader: {
         fieldName: 'broader',
-        requiredType: 'ArrayOf#https://schema.org/url',
+        requiredType: 'ArrayOf#https://schema.org/URL',
       },
       narrower: {
         fieldName: 'narrower',
-        requiredType: 'ArrayOf#https://schema.org/url',
+        requiredType: 'ArrayOf#https://schema.org/URL',
       },
     },
   }, 'latest');
