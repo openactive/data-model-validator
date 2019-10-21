@@ -7,6 +7,7 @@ module.exports = class EventRemainingAttendeeCapacityRule extends Rule {
   constructor(options) {
     super(options);
     this.targetFields = { Event: ['remainigAttendeeCapacity'] };
+    this.targetModes = ['C1', 'C2', 'B'];
     this.meta = {
       name: 'EventRemainingAttendeeCapacityRule',
       description: 'Validates that the remainigAttendeeCapacity of an Event is greater than or equal to 0',

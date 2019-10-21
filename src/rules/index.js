@@ -51,6 +51,7 @@ module.exports = {
     require('./data-quality/session-series-schedule-type-rule'),
     require('./data-quality/currency-if-non-zero-price-rule'),
     require('./data-quality/if-needs-booking-must-have-valid-offer-rule'),
+    require('./data-quality/event-remaining-attendee-capacity-rule'),
 
     // Notes on the data consumer
     require('./consumer-notes/assume-no-gender-restriction-rule'),
