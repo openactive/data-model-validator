@@ -30,6 +30,10 @@ const OptionsHelper = class {
   get version() {
     return this.options.version || 'latest';
   }
+
+  get mode() {
+    return this.options.mode || 'opendata';
+  }
 };
 
 module.exports = OptionsHelper;

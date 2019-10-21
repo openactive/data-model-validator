@@ -228,6 +228,11 @@ const options = {
 const result = validate(model, options);
 ```
 
+#### mode
+
+Provides context as to usage mode that data should be validated against.
+For example, to only apply rules that are suitable for data used in a booking flow phase like C1, C2 or B.
+
 ## Development
 
 ### Getting started

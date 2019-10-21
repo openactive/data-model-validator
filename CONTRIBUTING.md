@@ -73,6 +73,10 @@ The rule name you create should:
 
 Generally speaking, you **SHOULD NOT** implement both `validateModel` and `validateField` in the same rule.
 
+Independently, a rule can also target particular modes of use. It is used to restrict rules which should only apply during a particular usage of the models (e.g. an Order used during one of the booking phases - C1, C2 and B). By default, a rule will target all modes.
+
+#### Model & field targetting
+
 There is a lot of flexibility in the way that you can target rules.
 
 To target all models at the top level:
@@ -105,6 +109,20 @@ this.targetFields = {
         'url'
     ]
 };
+```
+
+### Mode targetting
+
+To target all modes:
+
+```js
+this.targetModes = '*';
+```
+
+To target specific modes:
+
+```js
+this.targetModes = ['C2', 'B'];
 ```
 
 ### Metadata
@@ -250,6 +268,7 @@ class RequiredFieldsRule extends Rule {
   constructor(options) {
     super(options);
     this.targetModels = '*';
+    this.targetModes = '*';
     this.meta = {
       name: 'RequiredFieldsRule',
       description: 'Validates that all required fields are present in the JSON data.',
