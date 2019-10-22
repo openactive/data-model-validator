@@ -231,7 +231,24 @@ const result = validate(model, options);
 #### mode
 
 Provides context as to usage mode that data should be validated against.
-For example, to only apply rules that are suitable for data used in a booking flow phase like C1, C2 or B.
+
+e.g. To only apply rules that are suitable for data used in a booking flow phase like C2Request:
+
+```js
+const { validate, ValidationMode } = require('@openactive/data-model-validator');
+
+const model = {
+  type: 'CustomAction'
+  // ...
+};
+
+const options = {
+  mode: ValidationMode.C2Request
+  // ...
+};
+
+const result = validate(model, options);
+```
 
 ## Development
 
