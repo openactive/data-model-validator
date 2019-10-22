@@ -1,3 +1,5 @@
+const ValidationMode = require('./validation-mode');
+
 const OptionsHelper = class {
   constructor(options) {
     this.options = options || {};
@@ -32,7 +34,7 @@ const OptionsHelper = class {
   }
 
   get mode() {
-    return this.options.mode || 'opendata';
+    return this.options.mode || ValidationMode.OpenData;
   }
 };
 
