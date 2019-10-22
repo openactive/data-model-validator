@@ -14,6 +14,7 @@
         "exceptMethods": [
           "isFieldTargeted",
           "isModelTargeted",
+          "isValidationModeTargeted",
           "validateRaw",
           "validateModel",
           "validateField"

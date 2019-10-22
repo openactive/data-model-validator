@@ -16,6 +16,10 @@ const RawRule = class extends Rule {
   isFieldTargeted() {
     return false;
   }
+
+  isValidationModeTargeted() {
+    return false;
+  }
 };
 
 
