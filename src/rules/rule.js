@@ -18,7 +18,7 @@ class Rule {
   validate(nodeToTest) {
     let errors = [];
 
-    if (!this.isModeTargeted(nodeToTest.options.validationMode)) {
+    if (!this.isValidationModeTargeted(nodeToTest.options.validationMode)) {
       return errors;
     }
 
@@ -124,7 +124,7 @@ class Rule {
     return false;
   }
 
-  isModeTargeted(validationMode) {
+  isValidationModeTargeted(validationMode) {
     if (this.targetValidationModes === '*') return true;
 
 

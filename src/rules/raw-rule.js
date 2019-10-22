@@ -17,7 +17,7 @@ const RawRule = class extends Rule {
     return false;
   }
 
-  isModeTargeted() {
+  isValidationModeTargeted() {
     return false;
   }
 };

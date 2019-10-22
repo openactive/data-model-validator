@@ -111,7 +111,7 @@ this.targetFields = {
 };
 ```
 
-### Mode targetting
+### Validation Mode targetting
 
 To target all modes:
 
