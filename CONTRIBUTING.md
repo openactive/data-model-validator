@@ -116,13 +116,13 @@ this.targetFields = {
 To target all modes:
 
 ```js
-this.targetModes = '*';
+this.targetValidationModes = '*';
 ```
 
 To target specific modes:
 
 ```js
-this.targetModes = ['C2', 'B'];
+this.targetValidationModes = [ValidationMode.C1Request, ValidationMode.C2Response];
 ```
 
 ### Metadata
@@ -268,7 +268,7 @@ class RequiredFieldsRule extends Rule {
   constructor(options) {
     super(options);
     this.targetModels = '*';
-    this.targetModes = '*';
+    this.targetValidationModes = '*';
     this.meta = {
       name: 'RequiredFieldsRule',
       description: 'Validates that all required fields are present in the JSON data.',

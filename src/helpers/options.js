@@ -33,8 +33,8 @@ const OptionsHelper = class {
     return this.options.version || 'latest';
   }
 
-  get mode() {
-    return this.options.mode || ValidationMode.OpenData;
+  get validationMode() {
+    return this.options.validationMode || ValidationMode.OpenData;
   }
 };
 

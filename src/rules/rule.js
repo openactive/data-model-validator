@@ -7,7 +7,7 @@ class Rule {
     this.options = options || new OptionsHelper();
     this.targetModels = [];
     this.targetFields = {};
-    this.targetModes = '*';
+    this.targetValidationModes = '*';
     this.meta = {
       name: 'Rule',
       description: 'This is a base rule description that should be overridden.',
@@ -18,7 +18,7 @@ class Rule {
   validate(nodeToTest) {
     let errors = [];
 
-    if (!this.isModeTargeted(nodeToTest.options.mode)) {
+    if (!this.isModeTargeted(nodeToTest.options.validationMode)) {
       return errors;
     }
 
@@ -124,12 +124,12 @@ class Rule {
     return false;
   }
 
-  isModeTargeted(mode) {
-    if (this.targetModes === '*') return true;
+  isModeTargeted(validationMode) {
+    if (this.targetValidationModes === '*') return true;
 
 
-    if (this.targetModes instanceof Array) {
-      return this.targetModes.includes(mode);
+    if (this.targetValidationModes instanceof Array) {
+      return this.targetValidationModes.includes(validationMode);
     }
 
     return false;
