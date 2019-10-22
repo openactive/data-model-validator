@@ -53,7 +53,7 @@ console.log(defaultRules);
 
 ## Adding rules
 
-To add a new rule, you will need to extend the [`Rule`](src/rules/rule.js) class. 
+To add a new rule, you will need to extend the [`Rule`](src/rules/rule.js) class.
 
 The rule name you create should:
 
@@ -73,7 +73,7 @@ The rule name you create should:
 
 Generally speaking, you **SHOULD NOT** implement both `validateModel` and `validateField` in the same rule.
 
-Independently, a rule can also target particular modes of use. It is used to restrict rules which should only apply during a particular usage of the models (e.g. an Order used during one of the booking phases - C1, C2 and B). By default, a rule will target all modes.
+Independently, a rule can also target particular modes of use. It is used to restrict rules which should only apply during a particular usage of the models (e.g. an Order used during one of the booking phases - C1Request, C2Response or PatchOrder). By default, a rule will target all modes.
 
 #### Model & field targetting
 
@@ -151,7 +151,7 @@ Each test can define:
     * `ValidationErrorSeverity.NOTICE`
     * `ValidationErrorSeverity.SUGGESTION`
   * `type` - The type of the error when returned. Should come from the [`ValidationErrorType`](src/errors/validation-error-type.js) enum.
-  
+
 #### Example
 
 ```js
