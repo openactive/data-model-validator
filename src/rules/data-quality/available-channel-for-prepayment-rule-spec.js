@@ -3,7 +3,6 @@ const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
-const OptionsHelper = require('../../helpers/options');
 
 describe('AvailableChannelForPrepaymentRule', () => {
   const rule = new AvailableChannelForPrepaymentRule();
@@ -13,11 +12,11 @@ describe('AvailableChannelForPrepaymentRule', () => {
     fields: {
       availableChannel: {
         fieldName: 'availableChannel',
-        requiredType: 'https://openactive.io/RequiredStatusType',
+        requiredType: 'ArrayOf#https://openactive.io/AvailableChannelType',
       },
       prepayment: {
         fieldName: 'prepayment',
-        requiredType: 'ArrayOf#https://openactive.io/AvailableChannelType',
+        requiredType: 'https://openactive.io/RequiredStatusType',
       },
     },
   }, 'latest');
