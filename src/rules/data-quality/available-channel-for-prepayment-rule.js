@@ -12,7 +12,7 @@ module.exports = class AvailableChannelPrepaymentRule extends Rule {
       description: 'Validates if oa:prepayment is https://openactive.io/Required or https://openactive.io/Optional, then oa:availableChannel must contain at least one of https://openactive.io/OpenBookingPrepayment, https://openactive.io/TelephonePrepayment or https://openactive.io/OnlinePrepayment',
       tests: {
         default: {
-          message: 'The `{{availableChannel}}` is not a valid available channel when prepayment is required or optional.',
+          message: 'The `{{availableChannel}}` does not contain a valid available channel when prepayment is required or optional.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
@@ -25,20 +25,21 @@ module.exports = class AvailableChannelPrepaymentRule extends Rule {
     const errors = [];
 
     const prepaymentValue = node.getValue('prepayment');
+    const availableChannels = node.getValue(field);
 
     if (['https://openactive.io/Required', 'https://openactive.io/Optional'].includes(prepaymentValue)) {
-      const availableChannelValue = node.getValue('availableChannel');
-      const validAvailableChannelsForPrepayment = ['https://openactive.io/OpenBookingPrepayment', 'https://openactive.io/TelephonePrepayment', 'https://openactive.io/OnlinePrepayment'];
-      if (!validAvailableChannelsForPrepayment.includes(availableChannelValue)) {
+      const validAvailableChannels = ['https://openactive.io/OpenBookingPrepayment', 'https://openactive.io/TelephonePrepayment', 'https://openactive.io/OnlinePrepayment'];
+      const validAndPresentAvailableChannels = validAvailableChannels.filter(x => availableChannels.includes(x));
+      if (validAndPresentAvailableChannels.length === 0) {
         errors.push(
           this.createError(
             'default',
             {
-              value: availableChannelValue,
+              value: availableChannels,
               path: node.getPath('availableChannel'),
             },
             {
-              availableChannel: availableChannelValue,
+              availableChannel: availableChannels,
             },
           ),
         );

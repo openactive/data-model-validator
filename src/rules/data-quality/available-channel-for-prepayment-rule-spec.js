@@ -41,16 +41,18 @@ describe('AvailableChannelForPrepaymentRule', () => {
     expect(errors.length).toBe(0);
   });
 
+  const invalidChannel = 'https://openactive.io/Optional';
+
   const affectedPrepayments = ['https://openactive.io/Required', 'https://openactive.io/Optional'];
   for (const prepayment of affectedPrepayments) {
     describe(`when payment is ${prepayment}`, () => {
       const validAvailableChannelsForPrepayment = ['https://openactive.io/OpenBookingPrepayment', 'https://openactive.io/TelephonePrepayment', 'https://openactive.io/OnlinePrepayment'];
       for (const validChannel of validAvailableChannelsForPrepayment) {
-        it(`should return no error when availableChannel is set to ${validChannel}`, () => {
+        it(`should return no error when availableChannel contains ${validChannel}`, () => {
           const data = {
             type: 'Offer',
             prepayment,
-            availableChannel: validChannel,
+            availableChannel: [validChannel, invalidChannel],
           };
 
           const nodeToTest = new ModelNode(
@@ -64,11 +66,11 @@ describe('AvailableChannelForPrepaymentRule', () => {
         });
       }
 
-      it('should return an error when availableChannel is not set to a valid value', () => {
+      it('should return an error when availableChannel does not contain a valid value', () => {
         const data = {
           type: 'Offer',
           prepayment,
-          availableChannel: '',
+          availableChannel: [invalidChannel],
         };
 
         const nodeToTest = new ModelNode(
