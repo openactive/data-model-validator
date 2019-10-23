@@ -6,7 +6,7 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 module.exports = class AvailableChannelPrepaymentRule extends Rule {
   constructor(options) {
     super(options);
-    this.targetModels = ['Offer'];
+    this.targetFields = { Offer: 'availableChannel' };
     this.meta = {
       name: 'AvailableChannelPrepaymentRule',
       description: 'Validates if oa:prepayment is https://openactive.io/Required or https://openactive.io/Optional, then oa:availableChannel must contain at least one of https://openactive.io/OpenBookingPrepayment, https://openactive.io/TelephonePrepayment or https://openactive.io/OnlinePrepayment',
@@ -21,7 +21,7 @@ module.exports = class AvailableChannelPrepaymentRule extends Rule {
     };
   }
 
-  validateModel(node) {
+  validateField(node, field) {
     const errors = [];
 
     const prepaymentValue = node.getValue('prepayment');

@@ -21,8 +21,8 @@ describe('AvailableChannelForPrepaymentRule', () => {
     },
   }, 'latest');
 
-  it('should target Offer model', () => {
-    const isTargeted = rule.isModelTargeted(model);
+  it('should target availableChannel field', () => {
+    const isTargeted = rule.isFieldTargeted(model, 'availableChannel');
     expect(isTargeted).toBe(true);
   });
 
