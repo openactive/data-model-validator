@@ -76,8 +76,15 @@ const Model = class {
     return options || [];
   }
 
-  get recommendedFields() {
-    return this.data.recommendedFields || [];
+  getRecommendedFields(validationMode) {
+    let fields;
+    const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
+    if (typeof specificImperativeConfiguration === 'object') {
+      fields = specificImperativeConfiguration.recommendedFields;
+    } else {
+      fields = this.data.recommendedFields;
+    }
+    return fields || [];
   }
 
   hasRecommendedField(field) {

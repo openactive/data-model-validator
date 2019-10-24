@@ -32,7 +32,8 @@ module.exports = class RecommendedFieldsRule extends Rule {
       return [];
     }
     const errors = [];
-    for (const field of node.model.recommendedFields) {
+
+    for (const field of node.model.getRecommendedFields(node.options.validationMode)) {
       const testValue = node.getValueWithInheritance(field);
       const example = node.model.getRenderedExample(field);
       if (typeof testValue === 'undefined') {
