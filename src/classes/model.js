@@ -110,6 +110,14 @@ const Model = class {
     }
     return undefined;
   }
+
+  get validationMode() {
+    return this.data.validationMode;
+  }
+
+  get imperativeConfiguration() {
+    return this.data.imperativeConfiguration;
+  }
 };
 
 module.exports = Model;
