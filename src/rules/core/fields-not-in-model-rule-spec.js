@@ -9,6 +9,7 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 describe('FieldsNotInModelRule', () => {
   const model = new Model({
     derivedFrom: 'https://schema.org/Event',
+    baseSchemaClass: 'https://schema.org/Event', // Note property is added by loadModel, not in model files
     type: 'Event',
     inSpec: [
       '@context',
@@ -25,7 +26,6 @@ describe('FieldsNotInModelRule', () => {
     },
   }, 'latest');
   model.hasSpecification = true;
-  model.baseSchemaClass = 'https://schema.org/Event'; // Note property is added by loadModel
 
   const schemaOrgSpec = {
     '@context': {
