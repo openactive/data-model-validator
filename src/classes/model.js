@@ -65,8 +65,15 @@ const Model = class {
     return PropertyHelper.arrayHasField(this.requiredFields, field, this.version);
   }
 
-  get requiredOptions() {
-    return this.data.requiredOptions || [];
+  getRequiredOptions(validationMode) {
+    let options;
+    const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
+    if (typeof specificImperativeConfiguration === 'object') {
+      options = specificImperativeConfiguration.requiredOptions;
+    } else {
+      options = this.data.requiredOptions;
+    }
+    return options || [];
   }
 
   get recommendedFields() {
