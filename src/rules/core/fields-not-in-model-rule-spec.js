@@ -25,6 +25,7 @@ describe('FieldsNotInModelRule', () => {
     },
   }, 'latest');
   model.hasSpecification = true;
+  model.baseSchemaClass = 'https://schema.org/Event'; // Note property is added by loadModel
 
   const schemaOrgSpec = {
     '@context': {
