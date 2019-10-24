@@ -12,6 +12,10 @@ const Model = class {
     return this.data.derivedFrom;
   }
 
+  get baseSchemaClass() {
+    return this.data.baseSchemaClass;
+  }
+
   get type() {
     return this.data.type;
   }
