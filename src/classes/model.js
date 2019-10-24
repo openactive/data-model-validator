@@ -40,8 +40,25 @@ const Model = class {
     return this.data.commonTypos || {};
   }
 
-  get requiredFields() {
-    return this.data.requiredFields || [];
+  getImperativeConfiguration(validationMode) {
+    if (
+      typeof this.validationMode === 'object'
+      && typeof this.validationMode[validationMode] === 'string'
+    ) {
+      return this.imperativeConfiguration[this.validationMode[validationMode]];
+    }
+    return undefined;
+  }
+
+  getRequiredFields(validationMode) {
+    let fields;
+    const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
+    if (typeof specificImperativeConfiguration === 'object') {
+      fields = specificImperativeConfiguration.requiredFields;
+    } else {
+      fields = this.data.requiredFields;
+    }
+    return fields || [];
   }
 
   hasRequiredField(field) {
