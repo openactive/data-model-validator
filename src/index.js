@@ -9,6 +9,7 @@ const ValidationError = require('./errors/validation-error');
 const ValidationErrorCategory = require('./errors/validation-error-category');
 const ValidationErrorType = require('./errors/validation-error-type');
 const ValidationErrorSeverity = require('./errors/validation-error-severity');
+const ValidationMode = require('./helpers/validation-mode');
 
 function createValidator() {
   const root = {
@@ -20,6 +21,7 @@ function createValidator() {
     ValidationErrorCategory,
     ValidationErrorType,
     ValidationErrorSeverity,
+    ValidationMode,
   };
   return root;
 }
