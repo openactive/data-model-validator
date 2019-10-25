@@ -44,20 +44,51 @@ const Model = class {
     return this.data.commonTypos || {};
   }
 
-  get requiredFields() {
-    return this.data.requiredFields || [];
+  getImperativeConfiguration(validationMode) {
+    if (
+      typeof this.validationMode === 'object'
+      && typeof this.validationMode[validationMode] === 'string'
+    ) {
+      return this.imperativeConfiguration[this.validationMode[validationMode]];
+    }
+    return undefined;
+  }
+
+  getRequiredFields(validationMode) {
+    let fields;
+    const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
+    if (typeof specificImperativeConfiguration === 'object') {
+      fields = specificImperativeConfiguration.requiredFields;
+    } else {
+      fields = this.data.requiredFields;
+    }
+    return fields || [];
   }
 
   hasRequiredField(field) {
     return PropertyHelper.arrayHasField(this.requiredFields, field, this.version);
   }
 
-  get requiredOptions() {
-    return this.data.requiredOptions || [];
+  getRequiredOptions(validationMode) {
+    let options;
+    const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
+    if (typeof specificImperativeConfiguration === 'object') {
+      options = specificImperativeConfiguration.requiredOptions;
+    } else {
+      options = this.data.requiredOptions;
+    }
+    return options || [];
   }
 
-  get recommendedFields() {
-    return this.data.recommendedFields || [];
+  getRecommendedFields(validationMode) {
+    let fields;
+    const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
+    if (typeof specificImperativeConfiguration === 'object') {
+      fields = specificImperativeConfiguration.recommendedFields;
+    } else {
+      fields = this.data.recommendedFields;
+    }
+    return fields || [];
   }
 
   hasRecommendedField(field) {
@@ -113,6 +144,14 @@ const Model = class {
       }
     }
     return undefined;
+  }
+
+  get validationMode() {
+    return this.data.validationMode;
+  }
+
+  get imperativeConfiguration() {
+    return this.data.imperativeConfiguration;
   }
 };
 
