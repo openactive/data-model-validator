@@ -91,6 +91,15 @@ const Model = class {
     return fields || [];
   }
 
+  getShallNotIncludeFields(validationMode) {
+    const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
+    if (typeof specificImperativeConfiguration === 'object') {
+      const fields = specificImperativeConfiguration.shallNotInclude;
+      return fields || [];
+    }
+    return undefined; // there are no default shallNotInclude fields
+  }
+
   hasRecommendedField(field) {
     return PropertyHelper.arrayHasField(this.recommendedFields, field, this.version);
   }

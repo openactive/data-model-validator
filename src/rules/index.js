@@ -10,6 +10,7 @@ module.exports = {
     require('./core/valid-model-type-rule'),
     require('./core/required-fields-rule'),
     require('./core/required-optional-fields-rule'),
+    require('./core/shall-not-include-fields-rule'),
     require('./core/fields-not-in-model-rule'),
     require('./core/fields-correct-type-rule'),
     require('./core/recommended-fields-rule'),
@@ -51,6 +52,8 @@ module.exports = {
     require('./data-quality/session-series-schedule-type-rule'),
     require('./data-quality/currency-if-non-zero-price-rule'),
     require('./data-quality/if-needs-booking-must-have-valid-offer-rule'),
+    require('./data-quality/event-remaining-attendee-capacity-rule'),
+    require('./data-quality/available-channel-for-prepayment-rule'),
 
     // Notes on the data consumer
     require('./consumer-notes/assume-no-gender-restriction-rule'),
