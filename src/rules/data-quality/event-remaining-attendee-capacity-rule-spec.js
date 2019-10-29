@@ -24,16 +24,20 @@ describe('EventRemainingAttendeeCapacityRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  for (const mode of [ValidationMode.C1Request, ValidationMode.C1Response, ValidationMode.C2Request, ValidationMode.C2Response, ValidationMode.BRequest, ValidationMode.BResponse]) {
-    it(`should target booking validation mode ${mode}`, () => {
-      const isTargeted = rule.isValidationModeTargeted(mode);
-      expect(isTargeted).toBe(true);
-    });
-  }
+  describe('isValidationModeTargeted', () => {
+    const modesToTest = [ValidationMode.C1Request, ValidationMode.C1Response, ValidationMode.C2Request, ValidationMode.C2Response, ValidationMode.BRequest, ValidationMode.BResponse];
 
-  it('should not target OpenData validation mode', () => {
-    const isTargeted = rule.isValidationModeTargeted(ValidationMode.OpenData);
-    expect(isTargeted).toBe(false);
+    for (const mode of modesToTest) {
+      it(`should target ${mode}`, () => {
+        const isTargeted = rule.isValidationModeTargeted(mode);
+        expect(isTargeted).toBe(true);
+      });
+    }
+
+    it('should not target OpenData validation mode', () => {
+      const isTargeted = rule.isValidationModeTargeted(ValidationMode.OpenData);
+      expect(isTargeted).toBe(false);
+    });
   });
 
   describe('when in a booking mode like C1Request', () => {
