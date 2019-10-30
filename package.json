@@ -2,8 +2,8 @@
   "name": "@openactive/data-model-validator",
   "version": "1.4.2",
   "description": "A library to allow a developer to validate a JSON document against the OpenActive Modelling Opportunity Specification",
-  "homepage": "http://openactive.io",
-  "author": "Pete Walker <pete@imin.co> (https://github.com/petewalker)",
+  "homepage": "https://openactive.io",
+  "author": "OpenActive Community <hello@openactive.io>",
   "keywords": [
     "openactive",
     "odi",
