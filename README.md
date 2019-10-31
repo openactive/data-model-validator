@@ -244,7 +244,7 @@ const model = {
 };
 
 const options = {
-  validationMode: ValidationMode.C2Request
+  validationMode: 'C2Request'
   // ...
 };
 

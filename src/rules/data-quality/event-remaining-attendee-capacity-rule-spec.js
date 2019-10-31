@@ -4,7 +4,6 @@ const ModelNode = require('../../classes/model-node');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 const OptionsHelper = require('../../helpers/options');
-const ValidationMode = require('../../helpers/validation-mode');
 
 describe('EventRemainingAttendeeCapacityRule', () => {
   const rule = new EventRemainingAttendeeCapacityRule();
@@ -25,7 +24,7 @@ describe('EventRemainingAttendeeCapacityRule', () => {
   });
 
   describe('isValidationModeTargeted', () => {
-    const modesToTest = [ValidationMode.C1Request, ValidationMode.C1Response, ValidationMode.C2Request, ValidationMode.C2Response, ValidationMode.BRequest, ValidationMode.BResponse];
+    const modesToTest = ['C1Request', 'C1Response', 'C2Request', 'C2Response', 'BRequest', 'BResponse'];
 
     for (const mode of modesToTest) {
       it(`should target ${mode}`, () => {
@@ -34,14 +33,14 @@ describe('EventRemainingAttendeeCapacityRule', () => {
       });
     }
 
-    it('should not target OpenData validation mode', () => {
-      const isTargeted = rule.isValidationModeTargeted(ValidationMode.OpenData);
+    it('should not target RPDEFeed validation mode', () => {
+      const isTargeted = rule.isValidationModeTargeted('RPDEFeed');
       expect(isTargeted).toBe(false);
     });
   });
 
   describe('when in a booking mode like C1Request', () => {
-    const options = new OptionsHelper({ validationMode: ValidationMode.C1Request });
+    const options = new OptionsHelper({ validationMode: 'C1Request' });
 
     it('should return no error when remainingAttendeeCapacity is > 0', () => {
       const data = {

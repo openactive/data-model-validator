@@ -2,19 +2,18 @@ const Rule = require('../rule');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
-const ValidationMode = require('../../helpers/validation-mode');
 
 module.exports = class EventRemainingAttendeeCapacityRule extends Rule {
   constructor(options) {
     super(options);
     this.targetFields = { Event: ['remainigAttendeeCapacity'] };
     this.targetValidationModes = [
-      ValidationMode.C1Request,
-      ValidationMode.C1Response,
-      ValidationMode.C2Request,
-      ValidationMode.C2Response,
-      ValidationMode.BRequest,
-      ValidationMode.BResponse,
+      'C1Request',
+      'C1Response',
+      'C2Request',
+      'C2Response',
+      'BRequest',
+      'BResponse',
     ];
     this.meta = {
       name: 'EventRemainingAttendeeCapacityRule',

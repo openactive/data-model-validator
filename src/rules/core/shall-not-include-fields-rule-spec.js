@@ -4,7 +4,6 @@ const ModelNode = require('../../classes/model-node');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 const OptionsHelper = require('../../helpers/options');
-const ValidationMode = require('../../helpers/validation-mode');
 
 describe('ShallNotIncludeFieldsRule', () => {
   const rule = new ShallNotIncludeFieldsRule();
@@ -30,7 +29,7 @@ describe('ShallNotIncludeFieldsRule', () => {
   }, 'latest');
 
   describe('when in a validation mode with shallNotInclude setting', () => {
-    const options = new OptionsHelper({ validationMode: ValidationMode.C1Request });
+    const options = new OptionsHelper({ validationMode: 'C1Request' });
 
     it('should return no error when no shall not include fields part of data', () => {
       const data = {
