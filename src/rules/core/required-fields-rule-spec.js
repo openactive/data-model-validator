@@ -3,7 +3,6 @@ const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
-const ValidationMode = require('../../helpers/validation-mode');
 const OptionsHelper = require('../../helpers/options');
 
 describe('RequiredFieldsRule', () => {
@@ -128,7 +127,7 @@ describe('RequiredFieldsRule', () => {
   });
 
   describe('when validation mode is on with separate required fields', () => {
-    const options = new OptionsHelper({ validationMode: ValidationMode.C1Request });
+    const options = new OptionsHelper({ validationMode: 'C1Request' });
 
     it('should return no errors if all required fields are present', () => {
       const data = {

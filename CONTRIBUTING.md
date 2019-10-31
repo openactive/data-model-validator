@@ -122,7 +122,7 @@ this.targetValidationModes = '*';
 To target specific modes:
 
 ```js
-this.targetValidationModes = [ValidationMode.C1Request, ValidationMode.C2Response];
+this.targetValidationModes = ['C1Request', 'C2Response'];
 ```
 
 ### Metadata
