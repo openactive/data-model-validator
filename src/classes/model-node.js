@@ -3,6 +3,7 @@ const Model = require('./model');
 const DataModelHelper = require('../helpers/data-model');
 const OptionsHelper = require('../helpers/options');
 const PropertyHelper = require('../helpers/property');
+const { InvalidModelNameError } = require('../exceptions');
 
 const ModelNode = class {
   constructor(name, value, parentNode, model, options, arrayIndex) {
@@ -156,8 +157,12 @@ const ModelNode = class {
             try {
               parentModel = DataModelHelper.loadModel(fieldValueType, this.options.version);
             } catch (e) {
-              // loading model can fail if fieldValueType is not the name of a valid model (e.g. typo or null or undefined)
-              parentModel = null;
+              if (e instanceof InvalidModelNameError) {
+                // no parent model if name is invalid
+                parentModel = null;
+              } else {
+                throw e;
+              }
             }
             if (parentModel) {
               const parentNode = new this.constructor(
