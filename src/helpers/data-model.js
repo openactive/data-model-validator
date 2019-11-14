@@ -8,6 +8,8 @@ const {
   loadModel,
 } = require('@openactive/data-models');
 
+const { InvalidModelNameError } = require('../exceptions');
+
 const DataModelHelper = class {
   static getContext(version) {
     if (typeof version === 'undefined') {
@@ -59,12 +61,20 @@ const DataModelHelper = class {
 
   static loadModel(name, version) {
     if (typeof name === 'undefined') {
-      throw Error('Parameter "name" must be defined');
+      throw new InvalidModelNameError('Parameter "name" must be defined');
     }
     if (typeof version === 'undefined') {
       throw Error('Parameter "version" must be defined');
     }
-    return loadModel(name, version);
+    try {
+      return loadModel(name, version);
+    } catch (e) {
+      if (e.message.startsWith('Invalid model name')) {
+        throw new InvalidModelNameError('Parameter "name" must be a valid model name');
+      } else {
+        throw e;
+      }
+    }
   }
 };
 
