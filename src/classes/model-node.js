@@ -149,17 +149,20 @@ const ModelNode = class {
             && !(fieldValue instanceof Array)
             && fieldValue !== null
           ) {
-            const parentModel = DataModelHelper.loadModel(fieldValue.type, this.options.version);
-            if (parentModel) {
-              const parentNode = new this.constructor(
-                modelField.fieldName,
-                fieldValue,
-                this,
-                new Model(parentModel),
-                this.options,
-              );
-              if (this.canInheritFrom(parentNode)) {
-                return parentNode;
+            const fieldValueType = (fieldValue.type || fieldValue['@type']);
+            if (fieldValueType !== undefined) {
+              const parentModel = DataModelHelper.loadModel(fieldValueType, this.options.version);
+              if (parentModel) {
+                const parentNode = new this.constructor(
+                  modelField.fieldName,
+                  fieldValue,
+                  this,
+                  new Model(parentModel),
+                  this.options,
+                );
+                if (this.canInheritFrom(parentNode)) {
+                  return parentNode;
+                }
               }
             }
           }
