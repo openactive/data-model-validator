@@ -149,20 +149,26 @@ const ModelNode = class {
             && !(fieldValue instanceof Array)
             && fieldValue !== null
           ) {
+            // allow for data using @type instead of type
+            // because it's standard JSON-LD even in OA world expected to use the type shortcut
             const fieldValueType = (fieldValue.type || fieldValue['@type']);
-            if (fieldValueType !== undefined) {
-              const parentModel = DataModelHelper.loadModel(fieldValueType, this.options.version);
-              if (parentModel) {
-                const parentNode = new this.constructor(
-                  modelField.fieldName,
-                  fieldValue,
-                  this,
-                  new Model(parentModel),
-                  this.options,
-                );
-                if (this.canInheritFrom(parentNode)) {
-                  return parentNode;
-                }
+            let parentModel;
+            try {
+              parentModel = DataModelHelper.loadModel(fieldValueType, this.options.version);
+            } catch (e) {
+              // loading model can fail if fieldValueType is not the name of a valid model (e.g. typo or null or undefined)
+              parentModel = null;
+            }
+            if (parentModel) {
+              const parentNode = new this.constructor(
+                modelField.fieldName,
+                fieldValue,
+                this,
+                new Model(parentModel),
+                this.options,
+              );
+              if (this.canInheritFrom(parentNode)) {
+                return parentNode;
               }
             }
           }
