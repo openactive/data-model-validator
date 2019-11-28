@@ -36,7 +36,7 @@ describe('SessionCourseHasSubeventOrScheduleRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no errors if the eventSchedule or the subEvent of the event is set', () => {
+  it('should return no errors if the eventSchedule or the subEvent of the event is set', async () => {
     const dataItems = [
       {
         type: 'SessionSeries',
@@ -75,13 +75,13 @@ describe('SessionCourseHasSubeventOrScheduleRule', () => {
         null,
         models[data.type],
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
 
       expect(errors.length).toBe(0);
     }
   });
 
-  it('should return a failure if the eventSchedule and the subEvent of the event is not set', () => {
+  it('should return a failure if the eventSchedule and the subEvent of the event is not set', async () => {
     const dataItems = [
       {
         type: 'CourseInstance',
@@ -98,7 +98,7 @@ describe('SessionCourseHasSubeventOrScheduleRule', () => {
         null,
         models[data.type],
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
 
       expect(errors.length).toBe(1);
       for (const error of errors) {
@@ -108,7 +108,7 @@ describe('SessionCourseHasSubeventOrScheduleRule', () => {
     }
   });
 
-  it('should return a failure if the event\'s eventSchedule is not set and it\'s subEvent is an empty array', () => {
+  it('should return a failure if the event\'s eventSchedule is not set and it\'s subEvent is an empty array', async () => {
     const dataItems = [
       {
         type: 'CourseInstance',
@@ -127,7 +127,7 @@ describe('SessionCourseHasSubeventOrScheduleRule', () => {
         null,
         models[data.type],
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
 
       expect(errors.length).toBe(1);
       for (const error of errors) {

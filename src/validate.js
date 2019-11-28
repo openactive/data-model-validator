@@ -29,7 +29,7 @@ class ApplyRules {
     return modelObject;
   }
 
-  static applySubModelRules(rules, nodeToTest, field) {
+  static async applySubModelRules(rules, nodeToTest, field) {
     // parent, path
     let errors = [];
     let fieldsToTest = [];
@@ -90,7 +90,7 @@ class ApplyRules {
             currentFieldIndex,
           );
 
-          const subModelErrors = this.applyModelRules(
+          const subModelErrors = await this.applyModelRules(
             rules,
             newNodeToTest,
           );
@@ -102,23 +102,25 @@ class ApplyRules {
     return errors;
   }
 
-  static applyModelRules(rules, nodeToTest) {
+  static async applyModelRules(rules, nodeToTest) {
     let errors = [];
     for (const rule of rules) {
+      const newErrors = await rule.validate(nodeToTest);
       // Apply whole-model rule, and field-specific rules
-      errors = errors.concat(rule.validate(nodeToTest));
+      errors = errors.concat(newErrors);
     }
     for (const field in nodeToTest.value) {
       if (Object.prototype.hasOwnProperty.call(nodeToTest.value, field)) {
         // If this field is itself a model, apply that model's rules to it
-        errors = errors.concat(this.applySubModelRules(rules, nodeToTest, field));
+        const subModelErrors = await ApplyRules.applySubModelRules(rules, nodeToTest, field);
+        errors = errors.concat(subModelErrors);
       }
     }
     return errors;
   }
 }
 
-function validate(value, options) {
+async function validate(value, options) {
   let errors = [];
   let valueCopy = value;
 
@@ -132,7 +134,7 @@ function validate(value, options) {
   }
 
   for (const rule of rawRuleObjects) {
-    const response = rule.validate(valueCopy);
+    const response = await rule.validate(valueCopy);
     errors = errors.concat(response.errors);
     if (typeof response.data !== 'undefined') {
       valueCopy = response.data;
@@ -198,12 +200,11 @@ function validate(value, options) {
     );
 
     // Apply the rules
-    errors = errors.concat(
-      ApplyRules.applyModelRules(
-        coreRuleObjects,
-        nodeToTest,
-      ),
+    const modelErrors = await ApplyRules.applyModelRules(
+      coreRuleObjects,
+      nodeToTest,
     );
+    errors = errors.concat(modelErrors);
     index += 1;
   }
 

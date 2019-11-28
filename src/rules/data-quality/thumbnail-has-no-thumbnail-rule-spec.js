@@ -22,7 +22,7 @@ describe('ThumbnailHasNoThumbnailRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no error when a ImageObject\'s parent is not an ImageObject', () => {
+  it('should return no error when a ImageObject\'s parent is not an ImageObject', async () => {
     const data = {
       type: 'ImageObject',
       thumbnail: [
@@ -38,10 +38,10 @@ describe('ThumbnailHasNoThumbnailRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when a ImageObject\'s parent is an ImageObject, but it doesn\'t have a thumbnail', () => {
+  it('should return no error when a ImageObject\'s parent is an ImageObject, but it doesn\'t have a thumbnail', async () => {
     const parentData = {
       type: 'ImageObject',
       thumbnail: [
@@ -68,10 +68,10 @@ describe('ThumbnailHasNoThumbnailRule', () => {
       parentNode,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return an error when a ImageObject\'s parent is an ImageObject, and it has a thumbnail', () => {
+  it('should return an error when a ImageObject\'s parent is an ImageObject, and it has a thumbnail', async () => {
     const parentData = {
       type: 'ImageObject',
       thumbnail: [
@@ -108,7 +108,7 @@ describe('ThumbnailHasNoThumbnailRule', () => {
       parentNode,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.THUMBNAIL_HAS_NO_THUMBNAIL);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

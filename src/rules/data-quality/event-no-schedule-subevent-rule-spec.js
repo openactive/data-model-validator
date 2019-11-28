@@ -33,7 +33,7 @@ describe('EventNoScheduleSubeventRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no errors if there is no subEvent or eventSchedule set on the Event', () => {
+  it('should return no errors if there is no subEvent or eventSchedule set on the Event', async () => {
     const data = {
       type: 'Event',
       name: 'Test Event',
@@ -46,12 +46,12 @@ describe('EventNoScheduleSubeventRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return no errors if there is an subEvent or eventSchedule set on a subclass of Event', () => {
+  it('should return no errors if there is an subEvent or eventSchedule set on a subclass of Event', async () => {
     const data = {
       type: 'SessionSeries',
       name: 'Test Event',
@@ -68,12 +68,12 @@ describe('EventNoScheduleSubeventRule', () => {
       null,
       subModel,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return a warning if eventSchedule or subEvent is set on the Event', () => {
+  it('should return a warning if eventSchedule or subEvent is set on the Event', async () => {
     const dataItems = [
       {
         type: 'Event',
@@ -98,7 +98,7 @@ describe('EventNoScheduleSubeventRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
 
       expect(errors.length).toBe(1);
 

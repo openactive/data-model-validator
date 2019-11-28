@@ -24,7 +24,7 @@ describe('CountryCodeFormatRule', () => {
   });
 
   // ISO3166-1-ALPHA2
-  it('should return no error for an valid country code', () => {
+  it('should return no error for an valid country code', async () => {
     const values = [
       'GB',
       'CN',
@@ -41,11 +41,11 @@ describe('CountryCodeFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid country code', () => {
+  it('should return an error for an invalid country code', async () => {
     const values = [
       'UK',
       'BC',
@@ -64,13 +64,13 @@ describe('CountryCodeFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
-  it('should return an error for an invalid country code with namespace', () => {
+  it('should return an error for an invalid country code with namespace', async () => {
     const values = [
       'UK',
       'BC',
@@ -89,7 +89,7 @@ describe('CountryCodeFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

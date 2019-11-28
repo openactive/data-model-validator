@@ -16,7 +16,7 @@ describe('RruleFormatRule', () => {
   });
 
   // RFC 5545
-  it('should return no error for an valid byDay rrule', () => {
+  it('should return no error for an valid byDay rrule', async () => {
     const model = new Model({
       type: 'Schedule',
       fields: {
@@ -44,11 +44,11 @@ describe('RruleFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid byDay iCal value', () => {
+  it('should return an error for an invalid byDay iCal value', async () => {
     const model = new Model({
       type: 'Schedule',
       fields: {
@@ -78,13 +78,13 @@ describe('RruleFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
-  it('should return an error for an invalid byDay schema.org value', () => {
+  it('should return an error for an invalid byDay schema.org value', async () => {
     const model = new Model({
       type: 'Schedule',
       fields: {
@@ -112,7 +112,7 @@ describe('RruleFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

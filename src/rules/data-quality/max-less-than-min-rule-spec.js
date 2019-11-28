@@ -26,7 +26,7 @@ describe('MaxLessThenMinRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no error when the minValue is lower than the maxValue', () => {
+  it('should return no error when the minValue is lower than the maxValue', async () => {
     const data = {
       type: 'QuantitativeValue',
       minValue: 1,
@@ -39,10 +39,10 @@ describe('MaxLessThenMinRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when the minValue is lower than the maxValue in a namespaced field', () => {
+  it('should return no error when the minValue is lower than the maxValue in a namespaced field', async () => {
     const data = {
       type: 'QuantitativeValue',
       'schema:minValue': 1,
@@ -55,10 +55,10 @@ describe('MaxLessThenMinRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when the minValue is equal to the maxValue', () => {
+  it('should return no error when the minValue is equal to the maxValue', async () => {
     const data = {
       type: 'QuantitativeValue',
       minValue: 10,
@@ -71,10 +71,10 @@ describe('MaxLessThenMinRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when the minValue is set, but the maxValue isn\'t', () => {
+  it('should return no error when the minValue is set, but the maxValue isn\'t', async () => {
     const data = {
       type: 'QuantitativeValue',
       minValue: 1,
@@ -86,10 +86,10 @@ describe('MaxLessThenMinRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return an error when the minValue is greater than the maxValue', () => {
+  it('should return an error when the minValue is greater than the maxValue', async () => {
     const data = {
       type: 'QuantitativeValue',
       minValue: 10,
@@ -102,7 +102,7 @@ describe('MaxLessThenMinRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.MIN_VALUE_GREATER_THAN_MAX_VALUE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);

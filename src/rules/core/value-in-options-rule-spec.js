@@ -51,7 +51,7 @@ describe('ValueInOptionsRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no errors if the field value is in the options array', () => {
+  it('should return no errors if the field value is in the options array', async () => {
     const data = {
       type: 'Event',
       singleOption: 'GET',
@@ -63,12 +63,12 @@ describe('ValueInOptionsRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return a failure if the field value is not in the options array', () => {
+  it('should return a failure if the field value is not in the options array', async () => {
     const data = {
       type: 'Event',
       singleOption: 'DELETE',
@@ -80,7 +80,7 @@ describe('ValueInOptionsRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -88,7 +88,7 @@ describe('ValueInOptionsRule', () => {
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 
-  it('should return no errors if the field value is in the enum options array', () => {
+  it('should return no errors if the field value is in the enum options array', async () => {
     const data = {
       type: 'Event',
       eventStatus: 'https://schema.org/EventScheduled',
@@ -100,12 +100,12 @@ describe('ValueInOptionsRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return a failure if the field value is not in the enum options array', () => {
+  it('should return a failure if the field value is not in the enum options array', async () => {
     const data = {
       type: 'Event',
       eventStatus: 'https://schema.org/EventInvalid',
@@ -117,7 +117,7 @@ describe('ValueInOptionsRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -125,7 +125,7 @@ describe('ValueInOptionsRule', () => {
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 
-  it('should return no errors if the field value is in the options array when the value is an array', () => {
+  it('should return no errors if the field value is in the options array when the value is an array', async () => {
     const data = {
       type: 'Event',
       multipleOption: ['GET'],
@@ -137,12 +137,12 @@ describe('ValueInOptionsRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return a failure if the field value is not in the options array when the value is an array', () => {
+  it('should return a failure if the field value is not in the options array when the value is an array', async () => {
     const data = {
       type: 'Event',
       multipleOption: ['DELETE'],
@@ -154,7 +154,7 @@ describe('ValueInOptionsRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -162,7 +162,7 @@ describe('ValueInOptionsRule', () => {
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 
-  it('should return no errors if the field value is in the enum options array when the value is an array', () => {
+  it('should return no errors if the field value is in the enum options array when the value is an array', async () => {
     const data = {
       type: 'Event',
       dayOfWeek: ['https://schema.org/Sunday'],
@@ -174,12 +174,12 @@ describe('ValueInOptionsRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return a failure if the field value is not in the enum options array when the value is an array', () => {
+  it('should return a failure if the field value is not in the enum options array when the value is an array', async () => {
     const data = {
       type: 'Event',
       dayOfWeek: ['https://schema.org/Thirdday'],
@@ -191,7 +191,7 @@ describe('ValueInOptionsRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -199,7 +199,7 @@ describe('ValueInOptionsRule', () => {
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 
-  it('should return no errors if the field value in goodrelations is in the enum options array', () => {
+  it('should return no errors if the field value in goodrelations is in the enum options array', async () => {
     const data = {
       type: 'Offer',
       acceptedPaymentMethod: ['http://purl.org/goodrelations/v1#Cash'],
@@ -211,12 +211,12 @@ describe('ValueInOptionsRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return a failure if the field value in goodrelations is not in the enum options array', () => {
+  it('should return a failure if the field value in goodrelations is not in the enum options array', async () => {
     const data = {
       type: 'Offer',
       acceptedPaymentMethod: ['http://purl.org/goodrelations/v1#Invalid'],
@@ -228,7 +228,7 @@ describe('ValueInOptionsRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 

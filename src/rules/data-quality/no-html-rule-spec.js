@@ -26,7 +26,7 @@ describe('NoHtmlRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no error when no HTML is supplied in content', () => {
+  it('should return no error when no HTML is supplied in content', async () => {
     const data = {
       type: 'Event',
     };
@@ -45,11 +45,11 @@ describe('NoHtmlRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return no error when HTML is supplied in beta:formattedDescription', () => {
+  it('should return no error when HTML is supplied in beta:formattedDescription', async () => {
     const data = {
       type: 'Event',
     };
@@ -68,11 +68,11 @@ describe('NoHtmlRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return no error when no HTML is supplied in content in a namespaced field', () => {
+  it('should return no error when no HTML is supplied in content in a namespaced field', async () => {
     const data = {
       type: 'Event',
     };
@@ -91,11 +91,11 @@ describe('NoHtmlRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error when HTML is supplied in content', () => {
+  it('should return an error when HTML is supplied in content', async () => {
     const data = {
       type: 'Event',
     };
@@ -114,7 +114,7 @@ describe('NoHtmlRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.NO_HTML);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);

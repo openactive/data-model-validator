@@ -24,7 +24,7 @@ describe('CurrencyCodeFormatRule', () => {
   });
 
   // ISO4217-3LETTER
-  it('should return no error for an valid currency code', () => {
+  it('should return no error for an valid currency code', async () => {
     const values = [
       'GBP',
       'JPY',
@@ -41,11 +41,11 @@ describe('CurrencyCodeFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid currency code', () => {
+  it('should return an error for an invalid currency code', async () => {
     const values = [
       'XAA',
       'XAB',
@@ -62,13 +62,13 @@ describe('CurrencyCodeFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
-  it('should return an error for an invalid currency code with namespace', () => {
+  it('should return an error for an invalid currency code with namespace', async () => {
     const values = [
       'XAA',
       'XAB',
@@ -85,7 +85,7 @@ describe('CurrencyCodeFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

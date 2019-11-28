@@ -26,7 +26,7 @@ describe('ContextInRootNodeRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no errors if the correct context is in the root node', () => {
+  it('should return no errors if the correct context is in the root node', async () => {
     const dataItems = [
       {
         '@context': metaData.contextUrl,
@@ -45,13 +45,13 @@ describe('ContextInRootNodeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
 
       expect(errors.length).toBe(0);
     }
   });
 
-  it('should return a failure if the context is missing from the root node', () => {
+  it('should return a failure if the context is missing from the root node', async () => {
     const data = {
       type: 'Event',
     };
@@ -62,7 +62,7 @@ describe('ContextInRootNodeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -72,7 +72,7 @@ describe('ContextInRootNodeRule', () => {
     }
   });
 
-  it('should return no error if the context is missing and this isn\'t the root node', () => {
+  it('should return no error if the context is missing and this isn\'t the root node', async () => {
     const data = {
       type: 'Event',
     };
@@ -93,12 +93,12 @@ describe('ContextInRootNodeRule', () => {
       parentNode,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return a error if the context is present and this isn\'t the root node', () => {
+  it('should return a error if the context is present and this isn\'t the root node', async () => {
     const data = {
       '@context': metaData.contextUrl,
       type: 'Event',
@@ -120,7 +120,7 @@ describe('ContextInRootNodeRule', () => {
       parentNode,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -130,7 +130,7 @@ describe('ContextInRootNodeRule', () => {
     }
   });
 
-  it('should return an error if the context is present, but does not have OpenActive namespace as the first element', () => {
+  it('should return an error if the context is present, but does not have OpenActive namespace as the first element', async () => {
     const dataItems = [
       {
         '@context': 'https://example.org/ns',
@@ -149,7 +149,7 @@ describe('ContextInRootNodeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
 
       expect(errors.length).toBe(1);
 
@@ -160,7 +160,7 @@ describe('ContextInRootNodeRule', () => {
     }
   });
 
-  it('should return no error if the context is present, but contains non-url fields if the model declares its own type', () => {
+  it('should return no error if the context is present, but contains non-url fields if the model declares its own type', async () => {
     const data = {
       '@context': [metaData.contextUrl, {}],
       type: 'Event',
@@ -184,12 +184,12 @@ describe('ContextInRootNodeRule', () => {
       null,
       localModel,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return an error if the context is present, but contains non-url fields', () => {
+  it('should return an error if the context is present, but contains non-url fields', async () => {
     const data = {
       '@context': [metaData.contextUrl, {}],
       type: 'Event',
@@ -201,7 +201,7 @@ describe('ContextInRootNodeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 

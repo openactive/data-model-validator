@@ -15,7 +15,7 @@ class Rule {
     };
   }
 
-  validate(nodeToTest) {
+  async validate(nodeToTest) {
     let errors = [];
 
     if (!this.isValidationModeTargeted(nodeToTest.options.validationMode)) {
@@ -23,14 +23,16 @@ class Rule {
     }
 
     if (this.isModelTargeted(nodeToTest.model)) {
-      errors = errors.concat(this.validateModel(nodeToTest));
+      const modelErrors = this.validateModel(nodeToTest);
+      errors = errors.concat(modelErrors);
     }
     for (const field in nodeToTest.value) {
       if (
         Object.prototype.hasOwnProperty.call(nodeToTest.value, field)
         && this.isFieldTargeted(nodeToTest.model, field)
       ) {
-        errors = errors.concat(this.validateField(nodeToTest, field));
+        const fieldErrors = await this.validateField(nodeToTest, field);
+        errors = errors.concat(fieldErrors);
       }
     }
     return errors;
@@ -40,7 +42,7 @@ class Rule {
     throw Error('Model validation rule not implemented');
   }
 
-  validateField(/* node, field */) {
+  async validateField(/* node, field */) {
     throw Error('Field validation rule not implemented');
   }
 

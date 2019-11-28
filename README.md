@@ -22,7 +22,6 @@ $ npm install @openactive/data-model-validator
 ### Usage
 
 ```js
-
 const { validate } = require('@openactive/data-model-validator');
 
 const data = {
@@ -45,11 +44,10 @@ const data = {
 };
 
 // Check whether the JSON conforms to the Event model
-const result = validate(data);
+const result = await validate(data);
 
 // Returns:
 // [{category: 'conformance', type: 'missing_required_field', message: 'Required field is missing.', value: undefined, severity: 'failure', path: '$.context' }, ... ]
-
 ```
 
 ### Options
@@ -68,14 +66,14 @@ e.g.
 const { validate } = require('@openactive/data-model-validator');
 
 const data = {
-  // ...
+// ...
 };
 
 const options = {
-  loadRemoteJson: true
+loadRemoteJson: true
 };
 
-const result = validate(data, options);
+const result = await validate(data, options);
 ```
 
 #### remoteJsonCachePath
@@ -90,15 +88,15 @@ e.g.
 const { validate } = require('@openactive/data-model-validator');
 
 const data = {
-  // ...
+// ...
 };
 
 const options = {
-  loadRemoteJson: true,
-  remoteJsonCachePath: '/tmp'
+loadRemoteJson: true,
+remoteJsonCachePath: '/tmp'
 };
 
-const result = validate(data, options);
+const result = await validate(data, options);
 ```
 
 #### remoteJsonCacheTimeToLive
@@ -113,7 +111,7 @@ e.g.
 const { validate } = require('@openactive/data-model-validator');
 
 const data = {
-  // ...
+// ...
 };
 
 const options = {
@@ -122,7 +120,7 @@ const options = {
   remoteJsonCacheTimeToLive: 3600
 };
 
-const result = validate(data, options);
+const result = await validate(data, options);
 ```
 
 #### rpdeItemLimit
@@ -135,14 +133,14 @@ e.g.
 const { validate } = require('@openactive/data-model-validator');
 
 const feed = {
-  // ...
+// ...
 };
 
 const options = {
   rpdeItemLimit: 10
 };
 
-const result = validate(feed, options);
+const result = await validate(feed, options);
 ```
 
 #### schemaOrgSpecifications
@@ -183,7 +181,7 @@ const options = {
   ],
 };
 
-const result = validate(data, options);
+const result = await validate(data, options);
 ```
 
 #### type
@@ -204,7 +202,7 @@ const options = {
   type: 'Action'
 };
 
-const result = validate(model, options);
+const result = await validate(model, options);
 ```
 
 #### version
@@ -225,7 +223,8 @@ const options = {
   version: '2.0'
 };
 
-const result = validate(model, options);
+const result = await validate(model, options);
+}
 ```
 
 #### validationMode

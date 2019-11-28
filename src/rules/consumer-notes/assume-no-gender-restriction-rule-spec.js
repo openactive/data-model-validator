@@ -32,7 +32,7 @@ describe('AssumeNoGenderRestrictionRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no errors if the genderRestriction fields are valid', () => {
+  it('should return no errors if the genderRestriction fields are valid', async () => {
     const data = {
       type: 'Event',
       genderRestriction: 'https://openactive.io/Female',
@@ -44,12 +44,12 @@ describe('AssumeNoGenderRestrictionRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return no errors if the genderRestriction fields are valid', () => {
+  it('should return no errors if the genderRestriction fields are valid', async () => {
     const data = {
       type: 'Event',
       'oa:genderRestriction': 'https://openactive.io/Female',
@@ -61,12 +61,12 @@ describe('AssumeNoGenderRestrictionRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return a notice if the genderRestriction field is not set', () => {
+  it('should return a notice if the genderRestriction field is not set', async () => {
     const data = {
       type: 'Event',
     };
@@ -77,7 +77,7 @@ describe('AssumeNoGenderRestrictionRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -85,7 +85,7 @@ describe('AssumeNoGenderRestrictionRule', () => {
     expect(errors[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
   });
 
-  it('should return a notice if the genderRestriction field is not valid', () => {
+  it('should return a notice if the genderRestriction field is not valid', async () => {
     const data = {
       type: 'Event',
       genderRestriction: 'https://openactive.io/Invalid',
@@ -97,7 +97,7 @@ describe('AssumeNoGenderRestrictionRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 

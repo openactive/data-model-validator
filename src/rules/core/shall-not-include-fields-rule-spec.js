@@ -31,7 +31,7 @@ describe('ShallNotIncludeFieldsRule', () => {
   describe('when in a validation mode with shallNotInclude setting', () => {
     const options = new OptionsHelper({ validationMode: 'C1Request' });
 
-    it('should return no error when no shall not include fields part of data', () => {
+    it('should return no error when no shall not include fields part of data', async () => {
       const data = {
         type: 'Event',
       };
@@ -43,11 +43,11 @@ describe('ShallNotIncludeFieldsRule', () => {
         model,
         options,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     });
 
-    it('should return no error when shall not include fields present in data', () => {
+    it('should return no error when shall not include fields present in data', async () => {
       const data = {
         type: 'Event',
         duration: 1,
@@ -60,7 +60,7 @@ describe('ShallNotIncludeFieldsRule', () => {
         model,
         options,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -68,7 +68,7 @@ describe('ShallNotIncludeFieldsRule', () => {
   });
 
   describe('when no imperative config for validation mode', () => {
-    it('should not create errors', () => {
+    it('should not create errors', async () => {
       const data = {
         type: 'Event',
         duration: 1,
@@ -80,7 +80,7 @@ describe('ShallNotIncludeFieldsRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     });
   });

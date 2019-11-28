@@ -26,7 +26,7 @@ describe('NoPrefixOrNamespaceRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no errors if all fields are non-prefixed', () => {
+  it('should return no errors if all fields are non-prefixed', async () => {
     const data = {
       type: 'Event',
       name: 'An Event',
@@ -38,12 +38,12 @@ describe('NoPrefixOrNamespaceRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return no errors if all prefixed or namespaced fields are extensions', () => {
+  it('should return no errors if all prefixed or namespaced fields are extensions', async () => {
     const data = {
       type: 'Event',
       'ext:testField': 'An extension field',
@@ -56,12 +56,12 @@ describe('NoPrefixOrNamespaceRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return a warning if @type or @id are used', () => {
+  it('should return a warning if @type or @id are used', async () => {
     const data = {
       '@type': 'Event',
       '@id': 'http://example.org/event/1',
@@ -73,7 +73,7 @@ describe('NoPrefixOrNamespaceRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(2);
 
@@ -82,7 +82,7 @@ describe('NoPrefixOrNamespaceRule', () => {
       expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });
-  it('should return a warning if prefixed fields with aliases are used', () => {
+  it('should return a warning if prefixed fields with aliases are used', async () => {
     const data = {
       type: 'Event',
       id: 'http://example.org/event/1',
@@ -99,7 +99,7 @@ describe('NoPrefixOrNamespaceRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(2);
 
@@ -108,7 +108,7 @@ describe('NoPrefixOrNamespaceRule', () => {
       expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });
-  it('should return a warning if prefixed field values with aliases are used', () => {
+  it('should return a warning if prefixed field values with aliases are used', async () => {
     const data = {
       type: 'skos:Concept',
     };
@@ -119,7 +119,7 @@ describe('NoPrefixOrNamespaceRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -128,7 +128,7 @@ describe('NoPrefixOrNamespaceRule', () => {
       expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });
-  it('should return a warning if prefixed fields with namespaces are used', () => {
+  it('should return a warning if prefixed fields with namespaces are used', async () => {
     const data = {
       type: 'Event',
       id: 'http://example.org/event/1',
@@ -145,7 +145,7 @@ describe('NoPrefixOrNamespaceRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(2);
 
@@ -154,7 +154,7 @@ describe('NoPrefixOrNamespaceRule', () => {
       expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });
-  it('should return a warning if prefixed field values with namespaces are used', () => {
+  it('should return a warning if prefixed field values with namespaces are used', async () => {
     const data = {
       type: 'https://schema.org/Event',
     };
@@ -165,7 +165,7 @@ describe('NoPrefixOrNamespaceRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 

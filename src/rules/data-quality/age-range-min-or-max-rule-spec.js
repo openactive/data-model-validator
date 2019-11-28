@@ -22,7 +22,7 @@ describe('AgeRangeMinOrMaxRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no error when a minValue is specified', () => {
+  it('should return no error when a minValue is specified', async () => {
     const data = {
       type: 'Event',
       ageRange: {
@@ -37,10 +37,10 @@ describe('AgeRangeMinOrMaxRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when a minValue is specified in a namespaced field', () => {
+  it('should return no error when a minValue is specified in a namespaced field', async () => {
     const data = {
       type: 'Event',
       ageRange: {
@@ -55,10 +55,10 @@ describe('AgeRangeMinOrMaxRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when a maxValue is specified', () => {
+  it('should return no error when a maxValue is specified', async () => {
     const data = {
       type: 'Event',
       ageRange: {
@@ -73,10 +73,10 @@ describe('AgeRangeMinOrMaxRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return an error when no minValue or maxValue is set', () => {
+  it('should return an error when no minValue or maxValue is set', async () => {
     const data = {
       type: 'Event',
       ageRange: {
@@ -90,7 +90,7 @@ describe('AgeRangeMinOrMaxRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

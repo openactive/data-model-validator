@@ -24,7 +24,7 @@ describe('ValueIsRequiredContentRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no errors if the field value matches required content', () => {
+  it('should return no errors if the field value matches required content', async () => {
     const data = {
       type: 'Event',
       'schema:eventStatus': 'https://schema.org/EventScheduled',
@@ -36,12 +36,12 @@ describe('ValueIsRequiredContentRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return a failure if the field value does not match required content', () => {
+  it('should return a failure if the field value does not match required content', async () => {
     const data = {
       type: 'Event',
       eventStatus: 'https://schema.org/EventInvalid',
@@ -53,7 +53,7 @@ describe('ValueIsRequiredContentRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 

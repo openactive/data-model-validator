@@ -80,7 +80,7 @@ describe('RequiredOptionalFieldsRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no errors if required optional fields are present', () => {
+  it('should return no errors if required optional fields are present', async () => {
     const data = {
       '@context': 'https://openactive.io/',
       type: 'Event',
@@ -93,12 +93,12 @@ describe('RequiredOptionalFieldsRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return no errors if required optional fields are present with a namespace', () => {
+  it('should return no errors if required optional fields are present with a namespace', async () => {
     const data = {
       '@context': 'https://openactive.io/',
       type: 'Event',
@@ -111,12 +111,12 @@ describe('RequiredOptionalFieldsRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return a failure per option group if any required optional fields are missing', () => {
+  it('should return a failure per option group if any required optional fields are missing', async () => {
     const data = {
       '@context': 'https://openactive.io/',
       type: 'Event',
@@ -128,7 +128,7 @@ describe('RequiredOptionalFieldsRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -139,7 +139,7 @@ describe('RequiredOptionalFieldsRule', () => {
 
   describe('when validation mode is on with separate required fields', () => {
     const options = new OptionsHelper({ validationMode: 'C1Request' });
-    it('should return no errors if required optional fields are present', () => {
+    it('should return no errors if required optional fields are present', async () => {
       const data = {
         type: 'Event',
         endDate: '2018-01-27T12:00:00Z',
@@ -152,12 +152,12 @@ describe('RequiredOptionalFieldsRule', () => {
         model,
         options,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
 
       expect(errors.length).toBe(0);
     });
 
-    it('should return a failure per option group if any required optional fields are missing', () => {
+    it('should return a failure per option group if any required optional fields are missing', async () => {
       const data = {
         type: 'Event',
         startDate: '2018-01-27T12:00:00Z',
@@ -170,7 +170,7 @@ describe('RequiredOptionalFieldsRule', () => {
         model,
         options,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
 
       expect(errors.length).toBe(1);
 
@@ -181,7 +181,7 @@ describe('RequiredOptionalFieldsRule', () => {
   });
 
   describe('with inheritsTo properties', () => {
-    it('should respect required optional fields when inheritsTo is *', () => {
+    it('should respect required optional fields when inheritsTo is *', async () => {
       const modelObj = loadInheritanceModel();
       modelObj.fields.subEvent.inheritsTo = '*';
       const inheritanceModel = new Model(modelObj, 'latest');
@@ -201,7 +201,7 @@ describe('RequiredOptionalFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = rule.validate(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
       // Test the next node down
@@ -212,10 +212,10 @@ describe('RequiredOptionalFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const subEventErrors = rule.validate(subEventNodeToTest);
+      const subEventErrors = await rule.validate(subEventNodeToTest);
       expect(subEventErrors.length).toBe(0);
     });
-    it('should respect required optional fields when inheritsTo is set to include', () => {
+    it('should respect required optional fields when inheritsTo is set to include', async () => {
       const modelObj = loadInheritanceModel();
       modelObj.fields.subEvent.inheritsTo = {
         include: ['name'],
@@ -237,7 +237,7 @@ describe('RequiredOptionalFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = rule.validate(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
       // Test the next node down
@@ -248,10 +248,10 @@ describe('RequiredOptionalFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const subEventErrors = rule.validate(subEventNodeToTest);
+      const subEventErrors = await rule.validate(subEventNodeToTest);
       expect(subEventErrors.length).toBe(0);
     });
-    it('should respect required optional fields when inheritsTo is set to include (but not the field we want)', () => {
+    it('should respect required optional fields when inheritsTo is set to include (but not the field we want)', async () => {
       const modelObj = loadInheritanceModel();
       modelObj.fields.subEvent.inheritsTo = {
         include: ['id'],
@@ -273,7 +273,7 @@ describe('RequiredOptionalFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = rule.validate(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
       // Test the next node down
@@ -284,10 +284,10 @@ describe('RequiredOptionalFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const subEventErrors = rule.validate(subEventNodeToTest);
+      const subEventErrors = await rule.validate(subEventNodeToTest);
       expect(subEventErrors.length).toBe(1);
     });
-    it('should respect required optional fields when inheritsTo is set to exclude', () => {
+    it('should respect required optional fields when inheritsTo is set to exclude', async () => {
       const modelObj = loadInheritanceModel();
       modelObj.fields.subEvent.inheritsTo = {
         exclude: ['name'],
@@ -309,7 +309,7 @@ describe('RequiredOptionalFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = rule.validate(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
       // Test the next node down
@@ -320,10 +320,10 @@ describe('RequiredOptionalFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const subEventErrors = rule.validate(subEventNodeToTest);
+      const subEventErrors = await rule.validate(subEventNodeToTest);
       expect(subEventErrors.length).toBe(1);
     });
-    it('should respect required optional fields when inheritsTo is set to exclude (but not the field we want)', () => {
+    it('should respect required optional fields when inheritsTo is set to exclude (but not the field we want)', async () => {
       const modelObj = loadInheritanceModel();
       modelObj.fields.subEvent.inheritsTo = {
         exclude: ['id'],
@@ -345,7 +345,7 @@ describe('RequiredOptionalFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = rule.validate(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
       // Test the next node down
@@ -356,13 +356,13 @@ describe('RequiredOptionalFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const subEventErrors = rule.validate(subEventNodeToTest);
+      const subEventErrors = await rule.validate(subEventNodeToTest);
       expect(subEventErrors.length).toBe(0);
     });
   });
 
   describe('with inheritsFrom properties', () => {
-    it('should respect required optional fields when inheritsFrom is *', () => {
+    it('should respect required optional fields when inheritsFrom is *', async () => {
       const modelObj = loadInheritanceModel();
       modelObj.fields.superEvent.inheritsFrom = '*';
       const inheritanceModel = new Model(modelObj, 'latest');
@@ -383,7 +383,7 @@ describe('RequiredOptionalFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = rule.validate(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
       // Test the next node down
@@ -393,10 +393,10 @@ describe('RequiredOptionalFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const superEventErrors = rule.validate(superEventNodeToTest);
+      const superEventErrors = await rule.validate(superEventNodeToTest);
       expect(superEventErrors.length).toBe(0);
     });
-    it('should respect required optional fields when inheritsFrom is set to include', () => {
+    it('should respect required optional fields when inheritsFrom is set to include', async () => {
       const modelObj = loadInheritanceModel();
       modelObj.fields.superEvent.inheritsFrom = {
         include: ['name'],
@@ -419,7 +419,7 @@ describe('RequiredOptionalFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = rule.validate(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
       // Test the next node down - should be fine
@@ -429,10 +429,10 @@ describe('RequiredOptionalFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const superEventErrors = rule.validate(superEventNodeToTest);
+      const superEventErrors = await rule.validate(superEventNodeToTest);
       expect(superEventErrors.length).toBe(0);
     });
-    it('should respect required optional fields when inheritsFrom is set to include (but not the field we want)', () => {
+    it('should respect required optional fields when inheritsFrom is set to include (but not the field we want)', async () => {
       const modelObj = loadInheritanceModel();
       modelObj.fields.superEvent.inheritsFrom = {
         include: ['id'],
@@ -455,7 +455,7 @@ describe('RequiredOptionalFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = rule.validate(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(1);
 
       // Test the next node down should be fine
@@ -465,10 +465,10 @@ describe('RequiredOptionalFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const superEventErrors = rule.validate(superEventNodeToTest);
+      const superEventErrors = await rule.validate(superEventNodeToTest);
       expect(superEventErrors.length).toBe(0);
     });
-    it('should respect required optional fields when inheritsFrom is set to exclude', () => {
+    it('should respect required optional fields when inheritsFrom is set to exclude', async () => {
       const modelObj = loadInheritanceModel();
       modelObj.fields.superEvent.inheritsFrom = {
         exclude: ['name'],
@@ -491,7 +491,7 @@ describe('RequiredOptionalFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = rule.validate(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(1);
 
       // Test the next node down
@@ -501,10 +501,10 @@ describe('RequiredOptionalFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const superEventErrors = rule.validate(superEventNodeToTest);
+      const superEventErrors = await rule.validate(superEventNodeToTest);
       expect(superEventErrors.length).toBe(0);
     });
-    it('should respect required optional fields when inheritsFrom is set to exclude (but not the field we want)', () => {
+    it('should respect required optional fields when inheritsFrom is set to exclude (but not the field we want)', async () => {
       const modelObj = loadInheritanceModel();
       modelObj.fields.superEvent.inheritsFrom = {
         exclude: ['id'],
@@ -527,7 +527,7 @@ describe('RequiredOptionalFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = rule.validate(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
       // Test the next node down
@@ -538,7 +538,7 @@ describe('RequiredOptionalFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const superEventErrors = rule.validate(superEventNodeToTest);
+      const superEventErrors = await rule.validate(superEventNodeToTest);
       expect(superEventErrors.length).toBe(0);
     });
   });

@@ -26,7 +26,7 @@ describe('SessionSeriesScheduleTypeRule', () => {
     expect(isTargeted).toBe(false);
   });
 
-  it('should return no errors if the scheduledEventType of the eventSchedule of the SessionSeries is ScheduledSession', () => {
+  it('should return no errors if the scheduledEventType of the eventSchedule of the SessionSeries is ScheduledSession', async () => {
     const data = {
       type: 'SessionSeries',
       eventSchedule: [
@@ -43,11 +43,11 @@ describe('SessionSeriesScheduleTypeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
-  it('should return no errors if the type of the eventSchedule of the SessionSeries is PartialSchedule', () => {
+  it('should return no errors if the type of the eventSchedule of the SessionSeries is PartialSchedule', async () => {
     const data = {
       type: 'SessionSeries',
       eventSchedule: [
@@ -63,12 +63,12 @@ describe('SessionSeriesScheduleTypeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return no errors if the eventSchedule of the SessionSeries is not set', () => {
+  it('should return no errors if the eventSchedule of the SessionSeries is not set', async () => {
     const data = {
       type: 'SessionSeries',
     };
@@ -79,12 +79,12 @@ describe('SessionSeriesScheduleTypeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return a failure if the scheduledEventType of the eventSchedule of the SessionSeries is not ScheduledSession', () => {
+  it('should return a failure if the scheduledEventType of the eventSchedule of the SessionSeries is not ScheduledSession', async () => {
     const data = {
       type: 'SessionSeries',
       eventSchedule: [
@@ -101,7 +101,7 @@ describe('SessionSeriesScheduleTypeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 

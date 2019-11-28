@@ -23,7 +23,7 @@ describe('AssumeAgeRangeRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no notice when a complete ageRange is specified', () => {
+  it('should return no notice when a complete ageRange is specified', async () => {
     const data = {
       type: 'Event',
       ageRange: {
@@ -39,11 +39,11 @@ describe('AssumeAgeRangeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
 
-  it('should return no notice when a complete ageRange is specified with namespaces', () => {
+  it('should return no notice when a complete ageRange is specified with namespaces', async () => {
     const data = {
       type: 'Event',
       ageRange: {
@@ -59,11 +59,11 @@ describe('AssumeAgeRangeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
 
-  it('should return a notice when no ageRange is specified', () => {
+  it('should return a notice when no ageRange is specified', async () => {
     const data = {
       type: 'Event',
     };
@@ -74,12 +74,12 @@ describe('AssumeAgeRangeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.CONSUMER_ASSUME_AGE_RANGE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
   });
-  it('should return a notice when a minValue is specified', () => {
+  it('should return a notice when a minValue is specified', async () => {
     const data = {
       type: 'Event',
       ageRange: {
@@ -94,12 +94,12 @@ describe('AssumeAgeRangeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.CONSUMER_ASSUME_AGE_RANGE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
   });
-  it('should return a notice when a maxValue is specified', () => {
+  it('should return a notice when a maxValue is specified', async () => {
     const data = {
       type: 'Event',
       ageRange: {
@@ -114,12 +114,12 @@ describe('AssumeAgeRangeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.CONSUMER_ASSUME_AGE_RANGE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
   });
-  it('should return a notice when a minValue of 0 and no maxValue is set', () => {
+  it('should return a notice when a minValue of 0 and no maxValue is set', async () => {
     const data = {
       type: 'Event',
       ageRange: {
@@ -134,7 +134,7 @@ describe('AssumeAgeRangeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.CONSUMER_ASSUME_AGE_RANGE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);

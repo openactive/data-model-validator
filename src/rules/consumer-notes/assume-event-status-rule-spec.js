@@ -33,7 +33,7 @@ describe('AssumeEventStatusRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no errors if the eventStatus fields are valid', () => {
+  it('should return no errors if the eventStatus fields are valid', async () => {
     const data = {
       type: 'Event',
       eventStatus: 'https://schema.org/EventPostponed',
@@ -45,12 +45,12 @@ describe('AssumeEventStatusRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return no errors if the eventStatus fields are valid', () => {
+  it('should return no errors if the eventStatus fields are valid', async () => {
     const data = {
       type: 'Event',
       'schema:eventStatus': 'https://schema.org/EventPostponed',
@@ -62,12 +62,12 @@ describe('AssumeEventStatusRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
 
-  it('should return a notice if the eventStatus field is not set', () => {
+  it('should return a notice if the eventStatus field is not set', async () => {
     const data = {
       type: 'Event',
     };
@@ -78,7 +78,7 @@ describe('AssumeEventStatusRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -86,7 +86,7 @@ describe('AssumeEventStatusRule', () => {
     expect(errors[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
   });
 
-  it('should return a notice if the eventStatus field is not valid', () => {
+  it('should return a notice if the eventStatus field is not valid', async () => {
     const data = {
       type: 'Event',
       eventStatus: 'https://openactive.io/EventStatus',
@@ -98,7 +98,7 @@ describe('AssumeEventStatusRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 

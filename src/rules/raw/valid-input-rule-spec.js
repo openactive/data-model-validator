@@ -10,30 +10,30 @@ describe('ValidInputRule', () => {
     expect(rule.isFieldTargeted()).toBe(false);
   });
 
-  it('should return no error for valid input', () => {
+  it('should return no error for valid input', async () => {
     const data = {
       type: 'Event',
     };
 
-    const { errors } = rule.validate(data);
+    const { errors } = await rule.validate(data);
     expect(errors.length).toBe(0);
   });
 
-  it('should return a warning for an array input', () => {
+  it('should return a warning for an array input', async () => {
     const data = [
       {
         type: 'Event',
       },
     ];
 
-    const { errors } = rule.validate(data);
+    const { errors } = await rule.validate(data);
     expect(errors.length).toBe(1);
 
     expect(errors[0].type).toBe(ValidationErrorType.INVALID_JSON);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
   });
 
-  it('should return a failure for invalid input', () => {
+  it('should return a failure for invalid input', async () => {
     const dataItems = [
       'string',
       1,
@@ -42,7 +42,7 @@ describe('ValidInputRule', () => {
     ];
 
     for (const data of dataItems) {
-      const { errors } = rule.validate(data);
+      const { errors } = await rule.validate(data);
       expect(errors.length).toBe(1);
 
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_JSON);

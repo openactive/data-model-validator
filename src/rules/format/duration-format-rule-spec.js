@@ -16,7 +16,7 @@ describe('DurationFormatRule', () => {
   });
 
   // ISO8601Duration
-  it('should return no error for an valid duration', () => {
+  it('should return no error for an valid duration', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -45,11 +45,11 @@ describe('DurationFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid duration', () => {
+  it('should return an error for an invalid duration', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -76,13 +76,13 @@ describe('DurationFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
-  it('should return an error for an invalid duration with a namespace', () => {
+  it('should return an error for an invalid duration with a namespace', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
@@ -109,13 +109,13 @@ describe('DurationFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
-  it('should return an error for an invalid duration from an unknown Model', () => {
+  it('should return an error for an invalid duration from an unknown Model', async () => {
     const model = new Model({}, 'latest');
 
     const values = [
@@ -133,7 +133,7 @@ describe('DurationFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

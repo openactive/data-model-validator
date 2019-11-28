@@ -56,12 +56,12 @@ describe('ActivityInActivityListRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no error when an activity in the list is supplied', () => {
+  it('should return no error when an activity in the list is supplied', async () => {
     const data = {
       type: 'Event',
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: activityList,
@@ -93,16 +93,16 @@ describe('ActivityInActivityListRule', () => {
         model,
         options,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error when an activity not in the list is supplied', () => {
+  it('should return an error when an activity not in the list is supplied', async () => {
     const data = {
       type: 'Event',
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: activityList,
@@ -134,7 +134,7 @@ describe('ActivityInActivityListRule', () => {
         model,
         options,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(2);
       expect(errors[0].type).toBe(ValidationErrorType.USE_OFFICIAL_ACTIVITY_LIST);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
@@ -142,7 +142,7 @@ describe('ActivityInActivityListRule', () => {
       expect(errors[1].severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });
-  it('should return an error when an activity list URL does not exist', () => {
+  it('should return an error when an activity list URL does not exist', async () => {
     const data = {
       type: 'Event',
     };
@@ -156,7 +156,7 @@ describe('ActivityInActivityListRule', () => {
       },
     ];
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
       errorCode: JsonLoaderHelper.ERROR_NO_REMOTE,
       statusCode: 404,
       data: null,
@@ -175,7 +175,7 @@ describe('ActivityInActivityListRule', () => {
         model,
         options,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
       expect(errors.length).toBe(3);
       expect(errors[0].type).toBe(ValidationErrorType.USE_OFFICIAL_ACTIVITY_LIST);
@@ -186,12 +186,12 @@ describe('ActivityInActivityListRule', () => {
       expect(errors[2].severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });
-  it('should return an error when using an old Activity List URL', () => {
+  it('should return an error when using an old Activity List URL', async () => {
     const data = {
       type: 'Event',
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: activityList,
@@ -219,7 +219,7 @@ describe('ActivityInActivityListRule', () => {
         model,
         options,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
       expect(errors.length).toBe(2);
       expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);
@@ -228,7 +228,7 @@ describe('ActivityInActivityListRule', () => {
       expect(errors[1].severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });
-  it('should return an error when an activity list URL contains invalid JSON', () => {
+  it('should return an error when an activity list URL contains invalid JSON', async () => {
     const data = {
       type: 'Event',
     };
@@ -242,7 +242,7 @@ describe('ActivityInActivityListRule', () => {
       },
     ];
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
       errorCode: JsonLoaderHelper.ERROR_NO_REMOTE,
       statusCode: 200,
       data: null,
@@ -261,7 +261,7 @@ describe('ActivityInActivityListRule', () => {
         model,
         options,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
       expect(errors.length).toBe(3);
       expect(errors[0].type).toBe(ValidationErrorType.USE_OFFICIAL_ACTIVITY_LIST);

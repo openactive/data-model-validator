@@ -35,7 +35,7 @@ describe('LatLongFormatRule', () => {
   });
 
   // WGS84Latitude
-  it('should return no error for an valid latitude', () => {
+  it('should return no error for an valid latitude', async () => {
     const values = [
       90.000,
       -89.123456,
@@ -53,11 +53,11 @@ describe('LatLongFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid latitude', () => {
+  it('should return an error for an invalid latitude', async () => {
     const values = [
       90.000001,
       -100.0001,
@@ -73,13 +73,13 @@ describe('LatLongFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
-  it('should return an error for an invalid latitude with a namespace', () => {
+  it('should return an error for an invalid latitude with a namespace', async () => {
     const values = [
       90.000001,
       -100.0001,
@@ -95,7 +95,7 @@ describe('LatLongFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -103,7 +103,7 @@ describe('LatLongFormatRule', () => {
   });
 
   // WGS84Latitude
-  it('should return no error for an valid longitude', () => {
+  it('should return no error for an valid longitude', async () => {
     const values = [
       180.000,
       -179.123456,
@@ -121,11 +121,11 @@ describe('LatLongFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid longitude', () => {
+  it('should return an error for an invalid longitude', async () => {
     const values = [
       180.000001,
       -180.0001,
@@ -141,13 +141,13 @@ describe('LatLongFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
-  it('should return an error for an invalid longitude with a namespace', () => {
+  it('should return an error for an invalid longitude with a namespace', async () => {
     const values = [
       180.000001,
       -180.0001,
@@ -163,7 +163,7 @@ describe('LatLongFormatRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

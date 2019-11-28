@@ -45,7 +45,6 @@ module.exports = class RruleFormatRule extends Rule {
           }
         });
       } catch (e) {
-        // console.log(e);
         errors.push(
           this.createError(
             'default',

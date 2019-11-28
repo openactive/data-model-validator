@@ -26,7 +26,7 @@ describe('AvailableChannelForPrepaymentRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no error when payment is not set', () => {
+  it('should return no error when payment is not set', async () => {
     const data = {
       type: 'Offer',
     };
@@ -37,7 +37,7 @@ describe('AvailableChannelForPrepaymentRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
 
@@ -48,7 +48,7 @@ describe('AvailableChannelForPrepaymentRule', () => {
     describe(`when payment is ${prepayment}`, () => {
       const validAvailableChannelsForPrepayment = ['https://openactive.io/OpenBookingPrepayment', 'https://openactive.io/TelephonePrepayment', 'https://openactive.io/OnlinePrepayment'];
       for (const validChannel of validAvailableChannelsForPrepayment) {
-        it(`should return no error when availableChannel contains ${validChannel}`, () => {
+        it(`should return no error when availableChannel contains ${validChannel}`, async () => {
           const data = {
             type: 'Offer',
             prepayment,
@@ -61,12 +61,12 @@ describe('AvailableChannelForPrepaymentRule', () => {
             null,
             model,
           );
-          const errors = rule.validate(nodeToTest);
+          const errors = await rule.validate(nodeToTest);
           expect(errors.length).toBe(0);
         });
       }
 
-      it('should return an error when availableChannel does not contain a valid value', () => {
+      it('should return an error when availableChannel does not contain a valid value', async () => {
         const data = {
           type: 'Offer',
           prepayment,
@@ -79,7 +79,7 @@ describe('AvailableChannelForPrepaymentRule', () => {
           null,
           model,
         );
-        const errors = rule.validate(nodeToTest);
+        const errors = await rule.validate(nodeToTest);
         expect(errors.length).toBe(1);
         expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
         expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);

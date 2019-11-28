@@ -92,7 +92,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
     };
   }
 
-  validateField(node, field) {
+  async validateField(node, field) {
     const fieldValue = node.getValue(field);
     if (typeof fieldValue === 'undefined') {
       return [];
@@ -165,7 +165,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
             );
           }
           for (const listUrl of listUrls) {
-            const jsonResponse = JsonLoaderHelper.getFile(listUrl, node.options);
+            const jsonResponse = await JsonLoaderHelper.getFile(listUrl, node.options);
             if (
               jsonResponse.errorCode === JsonLoaderHelper.ERROR_NONE
               && typeof jsonResponse.data === 'object'

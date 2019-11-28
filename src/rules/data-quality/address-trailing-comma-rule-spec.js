@@ -38,7 +38,7 @@ describe('AddressTrailingCommaRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no error when an address has no trailing commas', () => {
+  it('should return no error when an address has no trailing commas', async () => {
     const data = {
       type: 'PostalAddress',
       streetAddress: '1, Test Road',
@@ -54,10 +54,10 @@ describe('AddressTrailingCommaRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return an error when an address has trailing commas', () => {
+  it('should return an error when an address has trailing commas', async () => {
     const data = {
       type: 'PostalAddress',
       streetAddress: '1, Test Road,',
@@ -73,14 +73,14 @@ describe('AddressTrailingCommaRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(5);
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.ADDRESS_HAS_TRAILING_COMMA);
       expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });
-  it('should return an error when an address has trailing commas in namespaced fields', () => {
+  it('should return an error when an address has trailing commas in namespaced fields', async () => {
     const data = {
       type: 'PostalAddress',
       'schema:streetAddress': '1, Test Road,',
@@ -96,7 +96,7 @@ describe('AddressTrailingCommaRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(5);
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.ADDRESS_HAS_TRAILING_COMMA);

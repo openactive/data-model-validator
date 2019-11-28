@@ -1,11 +1,11 @@
 const Rule = require('./rule');
 
 const RawRule = class extends Rule {
-  validate(json) {
+  async validate(json) {
     return this.validateRaw(json);
   }
 
-  validateRaw(/* json */) {
+  async validateRaw(/* json */) {
     throw Error('Raw JSON validation rule not implemented');
   }
 

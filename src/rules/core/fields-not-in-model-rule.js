@@ -132,7 +132,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
     return testNode;
   }
 
-  getContexts(node, field) {
+  async getContexts(node, field) {
     const rootNode = this.constructor.getRootJsonLdNode(node);
     let contexts = rootNode.getValue('@context');
     if (
@@ -154,7 +154,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
 
     for (const url of contexts) {
       if (typeof url === 'string' && url !== metaData.contextUrl) {
-        const jsonResponse = JsonLoaderHelper.getFile(url, node.options);
+        const jsonResponse = await JsonLoaderHelper.getFile(url, node.options);
         if (
           jsonResponse.errorCode === JsonLoaderHelper.ERROR_NONE
           && typeof jsonResponse.data === 'object'
@@ -166,7 +166,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
               let index = 0;
               for (const subContext of returnedContext['@context']) {
                 if (typeof subContext === 'string') {
-                  const subJsonResponse = JsonLoaderHelper.getFile(subContext, node.options);
+                  const subJsonResponse = await JsonLoaderHelper.getFile(subContext, node.options);
                   const subReturnedContext = subJsonResponse.data;
                   if (
                     typeof subReturnedContext['@context'] === 'object'
@@ -251,7 +251,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
     };
   }
 
-  validateField(node, field) {
+  async validateField(node, field) {
     // Don't do this check for models that we don't actually have a spec for
     if (!node.model.hasSpecification) {
       return [];
@@ -270,7 +270,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
       };
     } else if (!node.model.hasFieldInSpec(field)) {
       // Get prop values
-      const contextInfo = this.getContexts(node, field);
+      const contextInfo = await this.getContexts(node, field);
       errors = errors.concat(contextInfo.errors);
       const prop = PropertyHelper.getFullyQualifiedProperty(field, this.options.version, contextInfo.contexts);
       const metaData = DataModelHelper.getMetaData(this.options.version);

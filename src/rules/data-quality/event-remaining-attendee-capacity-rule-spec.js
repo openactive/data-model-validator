@@ -42,7 +42,7 @@ describe('EventRemainingAttendeeCapacityRule', () => {
   describe('when in a booking mode like C1Request', () => {
     const options = new OptionsHelper({ validationMode: 'C1Request' });
 
-    it('should return no error when remainingAttendeeCapacity is > 0', () => {
+    it('should return no error when remainingAttendeeCapacity is > 0', async () => {
       const data = {
         type: 'Event',
         remainigAttendeeCapacity: 1,
@@ -55,11 +55,11 @@ describe('EventRemainingAttendeeCapacityRule', () => {
         model,
         options,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     });
 
-    it('should return no error when remainingAttendeeCapacity is < 0', () => {
+    it('should return no error when remainingAttendeeCapacity is < 0', async () => {
       const data = {
         type: 'Event',
         remainigAttendeeCapacity: -1,
@@ -72,7 +72,7 @@ describe('EventRemainingAttendeeCapacityRule', () => {
         model,
         options,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

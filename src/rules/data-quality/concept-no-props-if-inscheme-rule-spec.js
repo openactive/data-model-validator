@@ -37,7 +37,7 @@ describe('ConceptNoPropsIfInSchemeRule', () => {
     expect(isTargeted).toBe(false);
   });
 
-  it('should return no error when inScheme is not specified', () => {
+  it('should return no error when inScheme is not specified', async () => {
     const data = {
       type: 'Concept',
       broader: ['http://example.org/concept/1'],
@@ -50,10 +50,10 @@ describe('ConceptNoPropsIfInSchemeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when both inScheme is specified in a namespaced field', () => {
+  it('should return no error when both inScheme is specified in a namespaced field', async () => {
     const data = {
       type: 'Concept',
       id: 'http://example.org/concept/1',
@@ -66,10 +66,10 @@ describe('ConceptNoPropsIfInSchemeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return no error when neither broader or narrower are specified', () => {
+  it('should return no error when neither broader or narrower are specified', async () => {
     const data = {
       type: 'Concept',
       inScheme: 'http://example.org/scheme/2',
@@ -81,10 +81,10 @@ describe('ConceptNoPropsIfInSchemeRule', () => {
       null,
       model,
     );
-    const errors = rule.validate(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return an error when an broader or narrower are set but inScheme is', () => {
+  it('should return an error when an broader or narrower are set but inScheme is', async () => {
     const dataItems = [
       {
         type: 'Concept',
@@ -115,7 +115,7 @@ describe('ConceptNoPropsIfInSchemeRule', () => {
         null,
         model,
       );
-      const errors = rule.validate(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.CONCEPT_NO_NON_CORE_PROPS);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
