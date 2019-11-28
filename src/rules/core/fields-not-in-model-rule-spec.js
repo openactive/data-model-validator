@@ -112,7 +112,7 @@ describe('FieldsNotInModelRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
@@ -150,7 +150,7 @@ describe('FieldsNotInModelRule', () => {
       },
     };
 
-    spyOn(JsonLoaderHelper, 'getFileAsync').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: customContext,
@@ -171,7 +171,7 @@ describe('FieldsNotInModelRule', () => {
       model,
       options,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
@@ -209,7 +209,7 @@ describe('FieldsNotInModelRule', () => {
       },
     };
 
-    spyOn(JsonLoaderHelper, 'getFileAsync').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: customContext,
@@ -230,7 +230,7 @@ describe('FieldsNotInModelRule', () => {
       model,
       options,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -274,7 +274,7 @@ describe('FieldsNotInModelRule', () => {
       '@id': 'http://example.org/ext#1.0',
     };
 
-    spyOn(JsonLoaderHelper, 'getFileAsync').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: customContext,
@@ -296,7 +296,7 @@ describe('FieldsNotInModelRule', () => {
       model,
       options,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
@@ -319,7 +319,7 @@ describe('FieldsNotInModelRule', () => {
       model,
       options,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -342,7 +342,7 @@ describe('FieldsNotInModelRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -366,7 +366,7 @@ describe('FieldsNotInModelRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(2);
 
@@ -393,7 +393,7 @@ describe('FieldsNotInModelRule', () => {
       model,
     );
 
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(4);
 
@@ -422,7 +422,7 @@ describe('FieldsNotInModelRule', () => {
       model,
     );
 
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 

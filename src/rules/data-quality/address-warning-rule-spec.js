@@ -45,7 +45,7 @@ describe('AddressWarningRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return no error when address is not set', async () => {
@@ -59,7 +59,7 @@ describe('AddressWarningRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
 
@@ -76,7 +76,7 @@ describe('AddressWarningRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.TYPE_LIMITS_USE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);

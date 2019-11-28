@@ -1,7 +1,7 @@
 const Rule = require('./rule');
 
 const RawRule = class extends Rule {
-  async validateAsync(json) {
+  async validate(json) {
     return this.validateRaw(json);
   }
 

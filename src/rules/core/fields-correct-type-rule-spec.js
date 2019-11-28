@@ -39,7 +39,7 @@ describe('FieldsCorrectTypeRule', () => {
       model,
     );
 
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return an error for an invalid boolean type', async () => {
@@ -64,7 +64,7 @@ describe('FieldsCorrectTypeRule', () => {
       model,
     );
 
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -102,7 +102,7 @@ describe('FieldsCorrectTypeRule', () => {
       model,
     );
 
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return an error for an invalid float type', async () => {
@@ -137,7 +137,7 @@ describe('FieldsCorrectTypeRule', () => {
       model,
     );
 
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(3);
 
     for (const error of errors) {
@@ -179,7 +179,7 @@ describe('FieldsCorrectTypeRule', () => {
       model,
     );
 
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return an error for an invalid integer type', async () => {
@@ -214,7 +214,7 @@ describe('FieldsCorrectTypeRule', () => {
       model,
     );
 
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(3);
 
     for (const error of errors) {
@@ -257,7 +257,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -293,7 +293,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -326,7 +326,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -362,7 +362,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -396,7 +396,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -429,7 +429,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -464,7 +464,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -498,7 +498,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -533,7 +533,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -567,7 +567,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -605,7 +605,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -637,7 +637,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -673,7 +673,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -713,7 +713,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -754,7 +754,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -857,7 +857,7 @@ describe('FieldsCorrectTypeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return an error for an invalid array type', async () => {
@@ -957,7 +957,7 @@ describe('FieldsCorrectTypeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(9);
 
     for (const error of errors) {
@@ -1029,7 +1029,7 @@ describe('FieldsCorrectTypeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(9);
 
     for (const error of errors) {
@@ -1081,7 +1081,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -1128,7 +1128,7 @@ describe('FieldsCorrectTypeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -1156,7 +1156,7 @@ describe('FieldsCorrectTypeRule', () => {
       model,
     );
 
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -1186,7 +1186,7 @@ describe('FieldsCorrectTypeRule', () => {
       model,
     );
 
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.UNSUPPORTED_VALUE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

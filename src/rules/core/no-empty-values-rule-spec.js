@@ -35,7 +35,7 @@ describe('NoEmptyValuesRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
@@ -55,7 +55,7 @@ describe('NoEmptyValuesRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(3);
 

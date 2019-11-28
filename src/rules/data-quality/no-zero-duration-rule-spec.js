@@ -34,7 +34,7 @@ describe('NoZeroDurationRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
 
@@ -50,7 +50,7 @@ describe('NoZeroDurationRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.NO_ZERO_DURATION);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -68,7 +68,7 @@ describe('NoZeroDurationRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.NO_ZERO_DURATION);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

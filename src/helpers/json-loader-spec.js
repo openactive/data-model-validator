@@ -18,7 +18,7 @@ describe('JsonLoaderHelper', () => {
         'Content-Type': 'application/ld+json',
       });
 
-    const response = await JsonLoaderHelper.getFileAsync(
+    const response = await JsonLoaderHelper.getFile(
       'https://openactive.io/activity-list',
       new OptionsHelper({
         loadRemoteJson: true,
@@ -37,7 +37,7 @@ describe('JsonLoaderHelper', () => {
         'Content-Type': 'application/ld+json',
       });
 
-    const response = await JsonLoaderHelper.getFileAsync(
+    const response = await JsonLoaderHelper.getFile(
       'https://openactive.io/activity-list',
       new OptionsHelper({
         loadRemoteJson: true,

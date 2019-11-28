@@ -37,7 +37,7 @@ describe('AgeRangeMinOrMaxRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return no error when a minValue is specified in a namespaced field', async () => {
@@ -55,7 +55,7 @@ describe('AgeRangeMinOrMaxRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return no error when a maxValue is specified', async () => {
@@ -73,7 +73,7 @@ describe('AgeRangeMinOrMaxRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return an error when no minValue or maxValue is set', async () => {
@@ -90,7 +90,7 @@ describe('AgeRangeMinOrMaxRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

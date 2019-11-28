@@ -54,7 +54,7 @@ describe('AddressTrailingCommaRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return an error when an address has trailing commas', async () => {
@@ -73,7 +73,7 @@ describe('AddressTrailingCommaRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(5);
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.ADDRESS_HAS_TRAILING_COMMA);
@@ -96,7 +96,7 @@ describe('AddressTrailingCommaRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(5);
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.ADDRESS_HAS_TRAILING_COMMA);

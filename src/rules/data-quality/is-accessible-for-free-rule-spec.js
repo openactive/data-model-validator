@@ -54,7 +54,7 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return no error when isAccessibleForFree is set to true with a zero offer in a namespaced field', async () => {
@@ -76,7 +76,7 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return no error when isAccessibleForFree is set to false with no zero offer', async () => {
@@ -98,7 +98,7 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return no error when isAccessibleForFree is not set with no zero offer', async () => {
@@ -119,7 +119,7 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
 
@@ -145,7 +145,7 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return no error when isAccessibleForFree is set to false with no parent zero offer', async () => {
@@ -170,7 +170,7 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return no error when isAccessibleForFree is not set with no parent zero offer', async () => {
@@ -194,7 +194,7 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
 
@@ -218,7 +218,7 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
@@ -241,7 +241,7 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
@@ -269,7 +269,7 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
@@ -295,7 +295,7 @@ describe('IsAccessibleForFreeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.MISSING_IS_ACCESSIBLE_FOR_FREE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);

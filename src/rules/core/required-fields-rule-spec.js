@@ -88,7 +88,7 @@ describe('RequiredFieldsRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
@@ -105,7 +105,7 @@ describe('RequiredFieldsRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(2);
 
@@ -136,7 +136,7 @@ describe('RequiredFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = await rule.validateAsync(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
       // Test the next node down
@@ -147,7 +147,7 @@ describe('RequiredFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const subEventErrors = await rule.validateAsync(subEventNodeToTest);
+      const subEventErrors = await rule.validate(subEventNodeToTest);
       expect(subEventErrors.length).toBe(0);
     });
     it('should respect required fields when inheritsTo is set to include', async () => {
@@ -172,7 +172,7 @@ describe('RequiredFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = await rule.validateAsync(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
       // Test the next node down
@@ -183,7 +183,7 @@ describe('RequiredFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const subEventErrors = await rule.validateAsync(subEventNodeToTest);
+      const subEventErrors = await rule.validate(subEventNodeToTest);
       expect(subEventErrors.length).toBe(0);
     });
     it('should respect required fields when inheritsTo is set to include (but not the field we want)', async () => {
@@ -208,7 +208,7 @@ describe('RequiredFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = await rule.validateAsync(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
       // Test the next node down
@@ -219,7 +219,7 @@ describe('RequiredFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const subEventErrors = await rule.validateAsync(subEventNodeToTest);
+      const subEventErrors = await rule.validate(subEventNodeToTest);
       expect(subEventErrors.length).toBe(1);
     });
     it('should respect required fields when inheritsTo is set to exclude', async () => {
@@ -244,7 +244,7 @@ describe('RequiredFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = await rule.validateAsync(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
       // Test the next node down
@@ -255,7 +255,7 @@ describe('RequiredFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const subEventErrors = await rule.validateAsync(subEventNodeToTest);
+      const subEventErrors = await rule.validate(subEventNodeToTest);
       expect(subEventErrors.length).toBe(1);
     });
     it('should respect required fields when inheritsTo is set to exclude (but not the field we want)', async () => {
@@ -280,7 +280,7 @@ describe('RequiredFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = await rule.validateAsync(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
       // Test the next node down
@@ -291,7 +291,7 @@ describe('RequiredFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const subEventErrors = await rule.validateAsync(subEventNodeToTest);
+      const subEventErrors = await rule.validate(subEventNodeToTest);
       expect(subEventErrors.length).toBe(0);
     });
   });
@@ -318,7 +318,7 @@ describe('RequiredFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = await rule.validateAsync(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
       // Test the next node down
@@ -328,7 +328,7 @@ describe('RequiredFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const superEventErrors = await rule.validateAsync(superEventNodeToTest);
+      const superEventErrors = await rule.validate(superEventNodeToTest);
       expect(superEventErrors.length).toBe(0);
     });
     it('should respect required fields when inheritsFrom is set to include', async () => {
@@ -354,7 +354,7 @@ describe('RequiredFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = await rule.validateAsync(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
       // Test the next node down - should be fine
@@ -364,7 +364,7 @@ describe('RequiredFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const superEventErrors = await rule.validateAsync(superEventNodeToTest);
+      const superEventErrors = await rule.validate(superEventNodeToTest);
       expect(superEventErrors.length).toBe(0);
     });
     it('should respect required fields when inheritsFrom is set to include (but not the field we want)', async () => {
@@ -390,7 +390,7 @@ describe('RequiredFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = await rule.validateAsync(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(1);
 
       // Test the next node down should be fine
@@ -400,7 +400,7 @@ describe('RequiredFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const superEventErrors = await rule.validateAsync(superEventNodeToTest);
+      const superEventErrors = await rule.validate(superEventNodeToTest);
       expect(superEventErrors.length).toBe(0);
     });
     it('should respect required fields when inheritsFrom is set to exclude', async () => {
@@ -426,7 +426,7 @@ describe('RequiredFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = await rule.validateAsync(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(1);
 
       // Test the next node down
@@ -436,7 +436,7 @@ describe('RequiredFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const superEventErrors = await rule.validateAsync(superEventNodeToTest);
+      const superEventErrors = await rule.validate(superEventNodeToTest);
       expect(superEventErrors.length).toBe(0);
     });
     it('should respect required fields when inheritsFrom is set to exclude (but not the field we want)', async () => {
@@ -462,7 +462,7 @@ describe('RequiredFieldsRule', () => {
         null,
         inheritanceModel,
       );
-      const rootErrors = await rule.validateAsync(rootNodeToTest);
+      const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
       // Test the next node down
@@ -473,7 +473,7 @@ describe('RequiredFieldsRule', () => {
         rootNodeToTest,
         inheritanceModel,
       );
-      const superEventErrors = await rule.validateAsync(superEventNodeToTest);
+      const superEventErrors = await rule.validate(superEventNodeToTest);
       expect(superEventErrors.length).toBe(0);
     });
   });

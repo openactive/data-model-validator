@@ -14,7 +14,7 @@ class Rule {
     };
   }
 
-  async validateAsync(nodeToTest) {
+  async validate(nodeToTest) {
     let errors = [];
     if (this.isModelTargeted(nodeToTest.model)) {
       const modelErrors = this.validateModel(nodeToTest);

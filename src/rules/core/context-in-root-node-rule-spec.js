@@ -45,7 +45,7 @@ describe('ContextInRootNodeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
 
       expect(errors.length).toBe(0);
     }
@@ -62,7 +62,7 @@ describe('ContextInRootNodeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -93,7 +93,7 @@ describe('ContextInRootNodeRule', () => {
       parentNode,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
@@ -120,7 +120,7 @@ describe('ContextInRootNodeRule', () => {
       parentNode,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 
@@ -149,7 +149,7 @@ describe('ContextInRootNodeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
 
       expect(errors.length).toBe(1);
 
@@ -184,7 +184,7 @@ describe('ContextInRootNodeRule', () => {
       null,
       localModel,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(0);
   });
@@ -201,7 +201,7 @@ describe('ContextInRootNodeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
 

@@ -41,7 +41,7 @@ describe('CurrencyCodeFormatRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -62,7 +62,7 @@ describe('CurrencyCodeFormatRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -85,7 +85,7 @@ describe('CurrencyCodeFormatRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_FORMAT);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

@@ -61,7 +61,7 @@ describe('ActivityInActivityListRule', () => {
       type: 'Event',
     };
 
-    spyOn(JsonLoaderHelper, 'getFileAsync').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: activityList,
@@ -93,7 +93,7 @@ describe('ActivityInActivityListRule', () => {
         model,
         options,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -102,7 +102,7 @@ describe('ActivityInActivityListRule', () => {
       type: 'Event',
     };
 
-    spyOn(JsonLoaderHelper, 'getFileAsync').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: activityList,
@@ -134,7 +134,7 @@ describe('ActivityInActivityListRule', () => {
         model,
         options,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(2);
       expect(errors[0].type).toBe(ValidationErrorType.USE_OFFICIAL_ACTIVITY_LIST);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
@@ -156,7 +156,7 @@ describe('ActivityInActivityListRule', () => {
       },
     ];
 
-    spyOn(JsonLoaderHelper, 'getFileAsync').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
       errorCode: JsonLoaderHelper.ERROR_NO_REMOTE,
       statusCode: 404,
       data: null,
@@ -175,8 +175,8 @@ describe('ActivityInActivityListRule', () => {
         model,
         options,
       );
-      const errors = await rule.validateAsync(nodeToTest);
-      expect(JsonLoaderHelper.getFileAsync).toHaveBeenCalled();
+      const errors = await rule.validate(nodeToTest);
+      expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
       expect(errors.length).toBe(3);
       expect(errors[0].type).toBe(ValidationErrorType.USE_OFFICIAL_ACTIVITY_LIST);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
@@ -191,7 +191,7 @@ describe('ActivityInActivityListRule', () => {
       type: 'Event',
     };
 
-    spyOn(JsonLoaderHelper, 'getFileAsync').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: activityList,
@@ -219,8 +219,8 @@ describe('ActivityInActivityListRule', () => {
         model,
         options,
       );
-      const errors = await rule.validateAsync(nodeToTest);
-      expect(JsonLoaderHelper.getFileAsync).toHaveBeenCalled();
+      const errors = await rule.validate(nodeToTest);
+      expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
       expect(errors.length).toBe(2);
       expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
@@ -242,7 +242,7 @@ describe('ActivityInActivityListRule', () => {
       },
     ];
 
-    spyOn(JsonLoaderHelper, 'getFileAsync').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
       errorCode: JsonLoaderHelper.ERROR_NO_REMOTE,
       statusCode: 200,
       data: null,
@@ -261,8 +261,8 @@ describe('ActivityInActivityListRule', () => {
         model,
         options,
       );
-      const errors = await rule.validateAsync(nodeToTest);
-      expect(JsonLoaderHelper.getFileAsync).toHaveBeenCalled();
+      const errors = await rule.validate(nodeToTest);
+      expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
       expect(errors.length).toBe(3);
       expect(errors[0].type).toBe(ValidationErrorType.USE_OFFICIAL_ACTIVITY_LIST);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);

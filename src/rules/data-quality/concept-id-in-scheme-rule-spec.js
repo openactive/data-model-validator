@@ -45,7 +45,7 @@ describe('ConceptIdInSchemeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return no error when both id and inScheme are specified in a namespaced field', async () => {
@@ -61,7 +61,7 @@ describe('ConceptIdInSchemeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return no error when neither id or inScheme are specified', async () => {
@@ -75,7 +75,7 @@ describe('ConceptIdInSchemeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return an error when an id but no inScheme is set', async () => {
@@ -90,7 +90,7 @@ describe('ConceptIdInSchemeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.CONCEPT_ID_AND_IN_SCHEME_TOGETHER);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
@@ -107,7 +107,7 @@ describe('ConceptIdInSchemeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.CONCEPT_ID_AND_IN_SCHEME_TOGETHER);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);

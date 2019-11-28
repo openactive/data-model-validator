@@ -50,7 +50,7 @@ describe('ConceptNoPropsIfInSchemeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return no error when both inScheme is specified in a namespaced field', async () => {
@@ -66,7 +66,7 @@ describe('ConceptNoPropsIfInSchemeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return no error when neither broader or narrower are specified', async () => {
@@ -81,7 +81,7 @@ describe('ConceptNoPropsIfInSchemeRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return an error when an broader or narrower are set but inScheme is', async () => {
@@ -115,7 +115,7 @@ describe('ConceptNoPropsIfInSchemeRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.CONCEPT_NO_NON_CORE_PROPS);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);

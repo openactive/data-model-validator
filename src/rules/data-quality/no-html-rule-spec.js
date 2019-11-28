@@ -45,7 +45,7 @@ describe('NoHtmlRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -68,7 +68,7 @@ describe('NoHtmlRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -91,7 +91,7 @@ describe('NoHtmlRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(0);
     }
   });
@@ -114,7 +114,7 @@ describe('NoHtmlRule', () => {
         null,
         model,
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.NO_HTML);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);

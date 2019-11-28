@@ -22,7 +22,7 @@ $ npm install @openactive/data-model-validator
 ### Usage
 
 ```js
-const { validateAsync } = require('@openactive/data-model-validator');
+const { validate } = require('@openactive/data-model-validator');
 
 async function run() {
   const data = {
@@ -45,30 +45,12 @@ async function run() {
   };
 
   // Check whether the JSON conforms to the Event model
-  const result = await validateAsync(data);
+  const result = await validate(data);
 
   // Returns:
   // [{category: 'conformance', type: 'missing_required_field', message: 'Required field is missing.', value: undefined, severity: 'failure', path: '$.context' }, ... ]
 }
 ```
-
-### Async or Sync
-
-Validator performs I/O operations when running including fetching from `@context` URLs (see option: `loadRemoteJson`) and caching to file system (see option: `remoteJsonCachePath`). It does these in order to provide greater degree of validation certainty as well as performance gains for multiple re-runs.
-
-Validator provides three functions that can do validation:
-
-- `validateAsync` - Validator runs I/O actions asynchronously and returns the result in a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises)
-- `validateSync` - Validator runs I/O actions synchronously and doesn't return a promise
-- `validate` - This is just an alias of `validateSync` for backwards compatibility
-
-These can all be accessed from the index:
-
-```js
-const { validateAsync } = require('@openactive/data-model-validator');
-```
-
-**It is recommended to use `validateAsync`** - especially for an application that accepts multiple requests - as it will unblock the event loop to be free to run other code concurrently.
 
 ### Options
 
@@ -83,7 +65,7 @@ Whether to load remote JSON documents. For example, remote `@context` definition
 e.g.
 
 ```js
-const { validateAsync } = require('@openactive/data-model-validator');
+const { validate } = require('@openactive/data-model-validator');
 
 async function run() {
   const data = {
@@ -94,7 +76,7 @@ async function run() {
     loadRemoteJson: true
   };
 
-  const result = await validateAsync(data, options);
+  const result = await validate(data, options);
 }
 ```
 
@@ -107,7 +89,7 @@ Used in conjunction with `loadRemoteJson`. If set, allows the JSON loader to cac
 e.g.
 
 ```js
-const { validateAsync } = require('@openactive/data-model-validator');
+const { validate } = require('@openactive/data-model-validator');
 
 async function run() {
   const data = {
@@ -119,7 +101,7 @@ async function run() {
     remoteJsonCachePath: '/tmp'
   };
 
-  const result = await validateAsync(data, options);
+  const result = await validate(data, options);
 }
 ```
 
@@ -132,7 +114,7 @@ Used in conjunction with `loadRemoteJson` and `remoteJsonCachePath`. It sets the
 e.g.
 
 ```js
-const { validateAsync } = require('@openactive/data-model-validator');
+const { validate } = require('@openactive/data-model-validator');
 
 async function run() {
   const data = {
@@ -145,7 +127,7 @@ async function run() {
     remoteJsonCacheTimeToLive: 3600
   };
 
-  const result = await validateAsync(data, options);
+  const result = await validate(data, options);
 }
 ```
 
@@ -156,7 +138,7 @@ A limit of the number of RPDE `"updated"` data items to validate. It is helpful 
 e.g.
 
 ```js
-const { validateAsync } = require('@openactive/data-model-validator');
+const { validate } = require('@openactive/data-model-validator');
 
 async function run() {
   const feed = {
@@ -167,7 +149,7 @@ async function run() {
     rpdeItemLimit: 10
   };
 
-  const result = await validateAsync(feed, options);
+  const result = await validate(feed, options);
 }
 ```
 
@@ -178,7 +160,7 @@ An array of schema.org specifications in `JSON-LD` format. For example, see http
 e.g.
 
 ```js
-const { validateAsync } = require('@openactive/data-model-validator');
+const { validate } = require('@openactive/data-model-validator');
 
 async function run() {
   const data = {
@@ -210,7 +192,7 @@ async function run() {
     ],
   };
 
-  const result = await validateAsync(data, options);
+  const result = await validate(data, options);
 }
 ```
 
@@ -221,7 +203,7 @@ The validator will detect the type of the model being validated from the `type` 
 e.g.
 
 ```js
-const { validateAsync } = require('@openactive/data-model-validator');
+const { validate } = require('@openactive/data-model-validator');
 
 async function run() {
   const model = {
@@ -233,7 +215,7 @@ async function run() {
     type: 'Action'
   };
 
-  const result = await validateAsync(model, options);
+  const result = await validate(model, options);
 }
 ```
 
@@ -244,7 +226,7 @@ The version of the specification to validate against. If not provided, this will
 e.g.
 
 ```js
-const { validateAsync } = require('@openactive/data-model-validator');
+const { validate } = require('@openactive/data-model-validator');
 
 async function run() {
   const model = {
@@ -256,7 +238,7 @@ async function run() {
     version: '2.0'
   };
 
-  const result = await validateAsync(model, options);
+  const result = await validate(model, options);
 }
 ```
 

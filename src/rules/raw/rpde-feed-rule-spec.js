@@ -16,7 +16,7 @@ describe('RpdeFeedRule', () => {
       type: 'Event',
     };
 
-    const { errors } = await rule.validateAsync(data);
+    const { errors } = await rule.validate(data);
     expect(errors.length).toBe(0);
   });
 
@@ -37,7 +37,7 @@ describe('RpdeFeedRule', () => {
       license: 'https://creativecommons.org/licenses/by/4.0/',
     };
 
-    const { errors } = await rule.validateAsync(data);
+    const { errors } = await rule.validate(data);
     expect(errors.length).toBe(1);
 
     expect(errors[0].type).toBe(ValidationErrorType.FOUND_RPDE_FEED);
@@ -84,7 +84,7 @@ describe('RpdeFeedRule', () => {
     });
     const ruleWithOptions = new RpdeFeedRule(options);
 
-    const { data, errors } = await ruleWithOptions.validateAsync(feed);
+    const { data, errors } = await ruleWithOptions.validate(feed);
     expect(errors.length).toBe(1);
 
     expect(errors[0].type).toBe(ValidationErrorType.FOUND_RPDE_FEED);

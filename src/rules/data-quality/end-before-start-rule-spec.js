@@ -39,7 +39,7 @@ describe('EndBeforeStartRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return no error when the startDate is before the endDate in a namespaced field', async () => {
@@ -55,7 +55,7 @@ describe('EndBeforeStartRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return no error when the startDate is set, but the endDate isn\'t', async () => {
@@ -70,7 +70,7 @@ describe('EndBeforeStartRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
   it('should return an error when the startDate is after the endDate', async () => {
@@ -86,7 +86,7 @@ describe('EndBeforeStartRule', () => {
       null,
       model,
     );
-    const errors = await rule.validateAsync(nodeToTest);
+    const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
     expect(errors[0].type).toBe(ValidationErrorType.START_DATE_AFTER_END_DATE);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

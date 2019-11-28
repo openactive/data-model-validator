@@ -15,7 +15,7 @@ describe('ValidInputRule', () => {
       type: 'Event',
     };
 
-    const { errors } = await rule.validateAsync(data);
+    const { errors } = await rule.validate(data);
     expect(errors.length).toBe(0);
   });
 
@@ -26,7 +26,7 @@ describe('ValidInputRule', () => {
       },
     ];
 
-    const { errors } = await rule.validateAsync(data);
+    const { errors } = await rule.validate(data);
     expect(errors.length).toBe(1);
 
     expect(errors[0].type).toBe(ValidationErrorType.INVALID_JSON);
@@ -42,7 +42,7 @@ describe('ValidInputRule', () => {
     ];
 
     for (const data of dataItems) {
-      const { errors } = await rule.validateAsync(data);
+      const { errors } = await rule.validate(data);
       expect(errors.length).toBe(1);
 
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_JSON);

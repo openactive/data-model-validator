@@ -29,7 +29,7 @@ class ApplyRules {
     return modelObject;
   }
 
-  static async applySubModelRulesAsync(rules, nodeToTest, field) {
+  static async applySubModelRules(rules, nodeToTest, field) {
     // parent, path
     let errors = [];
     let fieldsToTest = [];
@@ -90,7 +90,7 @@ class ApplyRules {
             currentFieldIndex,
           );
 
-          const subModelErrors = await this.applyModelRulesAsync(
+          const subModelErrors = await this.applyModelRules(
             rules,
             newNodeToTest,
           );
@@ -102,17 +102,17 @@ class ApplyRules {
     return errors;
   }
 
-  static async applyModelRulesAsync(rules, nodeToTest) {
+  static async applyModelRules(rules, nodeToTest) {
     let errors = [];
     for (const rule of rules) {
-      const newErrors = await rule.validateAsync(nodeToTest);
+      const newErrors = await rule.validate(nodeToTest);
       // Apply whole-model rule, and field-specific rules
       errors = errors.concat(newErrors);
     }
     for (const field in nodeToTest.value) {
       if (Object.prototype.hasOwnProperty.call(nodeToTest.value, field)) {
         // If this field is itself a model, apply that model's rules to it
-        const subModelErrors = await ApplyRules.applySubModelRulesAsync(rules, nodeToTest, field);
+        const subModelErrors = await ApplyRules.applySubModelRules(rules, nodeToTest, field);
         errors = errors.concat(subModelErrors);
       }
     }
@@ -120,7 +120,7 @@ class ApplyRules {
   }
 }
 
-async function validateAsync(value, options) {
+async function validate(value, options) {
   let errors = [];
   let valueCopy = value;
 
@@ -134,7 +134,7 @@ async function validateAsync(value, options) {
   }
 
   for (const rule of rawRuleObjects) {
-    const response = await rule.validateAsync(valueCopy);
+    const response = await rule.validate(valueCopy);
     errors = errors.concat(response.errors);
     if (typeof response.data !== 'undefined') {
       valueCopy = response.data;
@@ -200,7 +200,7 @@ async function validateAsync(value, options) {
     );
 
     // Apply the rules
-    const modelErrors = await ApplyRules.applyModelRulesAsync(
+    const modelErrors = await ApplyRules.applyModelRules(
       coreRuleObjects,
       nodeToTest,
     );
@@ -216,6 +216,6 @@ function isRpdeFeed(data) {
 }
 
 module.exports = {
-  validateAsync,
+  validate,
   isRpdeFeed,
 };

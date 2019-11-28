@@ -162,7 +162,7 @@ function getOptionsOrDefault(options) {
  * @param {string} url
  * @returns {Object} File object
  */
-function getFileAsyncNoLoadRemote(url) {
+function getFileNoLoadRemote(url) {
   const { exists, value: fromCache } = getFromInMemoryCacheIfExists(url);
   if (exists) {
     return fromCache;
@@ -174,7 +174,7 @@ function getFileAsyncNoLoadRemote(url) {
  * @param {string} url
  * @returns {Promise<Object>} File object
  */
-async function getFileAsyncLoadRemote(url) {
+async function getFileLoadRemote(url) {
   {
     const { exists, value: fromCache } = getFromInMemoryCacheIfExists(url);
     if (exists) {
@@ -195,7 +195,7 @@ async function getFileAsyncLoadRemote(url) {
  * @param {Object} options
  * @returns {Object}
  */
-async function getFileAsyncLoadRemoteAndCacheToFs(url, options) {
+async function getFileLoadRemoteAndCacheToFs(url, options) {
   {
     const { exists, value: fromCache } = getFromInMemoryCacheIfExists(url);
     if (exists) {
@@ -232,14 +232,14 @@ class JsonLoaderHelper {
    * @param {Object} options
    * @returns {Promise<Object>} File object
    */
-  static async getFileAsync(url, options) {
+  static async getFile(url, options) {
     const localOptions = getOptionsOrDefault(options);
     if (!localOptions.loadRemoteJson) {
-      return getFileAsyncNoLoadRemote(url);
+      return getFileNoLoadRemote(url);
     } if (localOptions.remoteJsonCachePath) {
-      return getFileAsyncLoadRemoteAndCacheToFs(url, options);
+      return getFileLoadRemoteAndCacheToFs(url, options);
     }
-    return getFileAsyncLoadRemote(url);
+    return getFileLoadRemote(url);
   }
 }
 

@@ -1,5 +1,5 @@
 const nock = require('nock');
-const { validateAsync } = require('./validate');
+const { validate } = require('./validate');
 const ValidationErrorSeverity = require('./errors/validation-error-severity');
 const ValidationErrorType = require('./errors/validation-error-type');
 const DataModelHelper = require('./helpers/data-model');
@@ -215,11 +215,11 @@ describe('validate', () => {
     nock.enableNetConnect();
   });
 
-  describe('validateAsync()', () => {
+  describe('validate()', () => {
     it('should return a failure if passed an invalid model', async () => {
       const data = {};
 
-      const result = await validateAsync(data, new OptionsHelper({ type: 'InvalidModel' }));
+      const result = await validate(data, new OptionsHelper({ type: 'InvalidModel' }));
 
       expect(result.length).toBe(2);
       expect(result[0].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
@@ -233,14 +233,14 @@ describe('validate', () => {
       const data = {};
 
       await expectAsync(
-        validateAsync(data),
+        validate(data),
       ).not.toBeRejected();
     });
 
     it('should return a warning if an array is passed to validate', async () => {
       const data = [];
 
-      const result = await validateAsync(data, options);
+      const result = await validate(data, options);
 
       expect(result.length).toBe(1);
       expect(result[0].type).toBe(ValidationErrorType.INVALID_JSON);
@@ -250,7 +250,7 @@ describe('validate', () => {
     it('should return a failure if a non-object is passed to validate', async () => {
       const data = 'bad_data';
 
-      const result = await validateAsync(data, options);
+      const result = await validate(data, options);
 
       expect(result.length).toBe(1);
       expect(result[0].type).toBe(ValidationErrorType.INVALID_JSON);
@@ -260,7 +260,7 @@ describe('validate', () => {
     it('should return no errors for a valid Event', async () => {
       const event = Object.assign({}, validEvent);
 
-      const result = await validateAsync(event, options);
+      const result = await validate(event, options);
 
       expect(result.length).toBe(0);
     });
@@ -280,7 +280,7 @@ describe('validate', () => {
       delete event.name;
       delete event.ageRange;
 
-      const result = await validateAsync(event, options);
+      const result = await validate(event, options);
 
       expect(result.length).toBe(3);
 
@@ -296,7 +296,7 @@ describe('validate', () => {
 
       delete event.location.address.addressRegion;
 
-      const result = await validateAsync(event, options);
+      const result = await validate(event, options);
 
       expect(result.length).toBe(1);
 
@@ -318,7 +318,7 @@ describe('validate', () => {
 
       delete event.ageRange;
 
-      const result = await validateAsync(event, options);
+      const result = await validate(event, options);
 
       expect(result.length).toBe(2);
 
@@ -338,7 +338,7 @@ describe('validate', () => {
         },
       };
 
-      const result = await validateAsync(data, options);
+      const result = await validate(data, options);
 
       expect(result.length).toBe(4);
 
@@ -405,7 +405,7 @@ describe('validate', () => {
         ],
       };
 
-      const result = await validateAsync(place, options);
+      const result = await validate(place, options);
 
       expect(result.length).toBe(1);
 
@@ -461,7 +461,7 @@ describe('validate', () => {
         ],
       };
 
-      const result = await validateAsync(place, options);
+      const result = await validate(place, options);
 
       expect(result.length).toBe(2);
 
@@ -481,7 +481,7 @@ describe('validate', () => {
         'beta:distance': null,
       };
 
-      const result = await validateAsync(data, options);
+      const result = await validate(data, options);
       expect(typeof result).toBe('object');
     });
 
@@ -492,7 +492,7 @@ describe('validate', () => {
         category: [null, null],
       };
 
-      const result = await validateAsync(data, options);
+      const result = await validate(data, options);
       expect(typeof result).toBe('object');
     });
 
@@ -501,7 +501,7 @@ describe('validate', () => {
 
       event.leader = [event.leader];
 
-      const result = await validateAsync(event, options);
+      const result = await validate(event, options);
 
       expect(result.length).toBe(1);
 
@@ -517,7 +517,7 @@ describe('validate', () => {
         '@value': event.name,
       };
 
-      const result = await validateAsync(event, options);
+      const result = await validate(event, options);
 
       expect(result.length).toBe(1);
 
@@ -541,7 +541,7 @@ describe('validate', () => {
         license: 'https://creativecommons.org/licenses/by/4.0/',
       };
 
-      const result = await validateAsync(feed, options);
+      const result = await validate(feed, options);
 
       expect(result.length).toBe(1);
       expect(result[0].type).toBe(ValidationErrorType.FOUND_RPDE_FEED);

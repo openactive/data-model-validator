@@ -165,7 +165,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
             );
           }
           for (const listUrl of listUrls) {
-            const jsonResponse = await JsonLoaderHelper.getFileAsync(listUrl, node.options);
+            const jsonResponse = await JsonLoaderHelper.getFile(listUrl, node.options);
             if (
               jsonResponse.errorCode === JsonLoaderHelper.ERROR_NONE
               && typeof jsonResponse.data === 'object'

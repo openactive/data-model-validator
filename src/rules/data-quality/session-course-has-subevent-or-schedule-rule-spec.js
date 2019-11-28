@@ -75,7 +75,7 @@ describe('SessionCourseHasSubeventOrScheduleRule', () => {
         null,
         models[data.type],
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
 
       expect(errors.length).toBe(0);
     }
@@ -98,7 +98,7 @@ describe('SessionCourseHasSubeventOrScheduleRule', () => {
         null,
         models[data.type],
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
 
       expect(errors.length).toBe(1);
       for (const error of errors) {
@@ -127,7 +127,7 @@ describe('SessionCourseHasSubeventOrScheduleRule', () => {
         null,
         models[data.type],
       );
-      const errors = await rule.validateAsync(nodeToTest);
+      const errors = await rule.validate(nodeToTest);
 
       expect(errors.length).toBe(1);
       for (const error of errors) {
