@@ -242,6 +242,29 @@ async function run() {
 }
 ```
 
+#### validationMode
+
+Provides context as to how the data under validation is expected to be used and therefore some validation rules may or may not apply.
+For example, OrderQuotes only have a customer attribute in the C2 phase and beyond of booking (so not in C1Request or C1Response nor any more generic published open data usage).
+
+e.g. To only apply rules that are suitable for data used in a booking flow phase like C2Request:
+
+```js
+const { validate, ValidationMode } = require('@openactive/data-model-validator');
+
+const model = {
+  type: 'CustomAction'
+  // ...
+};
+
+const options = {
+  validationMode: 'C2Request'
+  // ...
+};
+
+const result = validate(model, options);
+```
+
 ## Development
 
 ### Getting started

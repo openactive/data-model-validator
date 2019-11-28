@@ -3,6 +3,7 @@ const Model = require('./model');
 const DataModelHelper = require('../helpers/data-model');
 const OptionsHelper = require('../helpers/options');
 const PropertyHelper = require('../helpers/property');
+const { InvalidModelNameError } = require('../exceptions');
 
 const ModelNode = class {
   constructor(name, value, parentNode, model, options, arrayIndex) {
@@ -149,7 +150,20 @@ const ModelNode = class {
             && !(fieldValue instanceof Array)
             && fieldValue !== null
           ) {
-            const parentModel = DataModelHelper.loadModel(fieldValue.type, this.options.version);
+            // allow for data using @type instead of type
+            // because it's standard JSON-LD even in OA world expected to use the type shortcut
+            const fieldValueType = (fieldValue.type || fieldValue['@type']);
+            let parentModel;
+            try {
+              parentModel = DataModelHelper.loadModel(fieldValueType, this.options.version);
+            } catch (e) {
+              if (e instanceof InvalidModelNameError) {
+                // no parent model if name is invalid
+                parentModel = null;
+              } else {
+                throw e;
+              }
+            }
             if (parentModel) {
               const parentNode = new this.constructor(
                 modelField.fieldName,

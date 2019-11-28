@@ -13,12 +13,12 @@ describe('LatLongFormatRule', () => {
       latitude: {
         fieldName: 'latitude',
         sameAs: 'https://schema.org/latitude',
-        requiredType: 'https://schema.org/Float',
+        requiredType: 'https://schema.org/Number',
       },
       longitude: {
         fieldName: 'longitude',
         sameAs: 'https://schema.org/longitude',
-        requiredType: 'https://schema.org/Float',
+        requiredType: 'https://schema.org/Number',
       },
     },
   }, 'latest');

@@ -24,7 +24,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           message: 'Invalid type, expected {{expectedType}} but found {{foundType}}.{{examples}}',
           sampleValues: {
             expectedType: this.constructor.getHumanReadableType('https://schema.org/Text'),
-            foundType: this.constructor.getHumanReadableType('https://schema.org/Float'),
+            foundType: this.constructor.getHumanReadableType('https://schema.org/Number'),
             examples: this.constructor.makeExamples('property', ['https://schema.org/Text'], this.options.version),
           },
           category: ValidationErrorCategory.CONFORMANCE,
@@ -60,7 +60,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           message: 'Invalid type, expected one of {{expectedTypes}} but found {{foundType}}.{{examples}}',
           sampleValues: {
             expectedTypes: this.constructor.makeExpectedTypeList(['https://schema.org/Text', 'ArrayOf#https://schema.org/Text', '#Concept', 'ArrayOf#Concept']),
-            foundType: this.constructor.getHumanReadableType('https://schema.org/Float'),
+            foundType: this.constructor.getHumanReadableType('https://schema.org/Number'),
             examples: this.constructor.makeExamples('property', ['https://schema.org/Text', 'ArrayOf#https://schema.org/Text', '#Concept', 'ArrayOf#Concept'], this.options.version),
           },
           category: ValidationErrorCategory.CONFORMANCE,
@@ -91,7 +91,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     switch (type) {
       case 'https://schema.org/Text':
         return `[\`string${plural}\`](${type})`;
-      case 'https://schema.org/Float':
+      case 'https://schema.org/Number':
         return `[\`float${plural}\`](${type})`;
       case 'https://schema.org/Boolean':
         return `[\`boolean${plural}\`](${type})`;
@@ -135,7 +135,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       case 'https://schema.org/Text':
         example = `${prefix}"example string"`;
         break;
-      case 'https://schema.org/Float':
+      case 'https://schema.org/Number':
         example = `${prefix}1.234`;
         break;
       case 'https://schema.org/Boolean':

@@ -3,6 +3,7 @@ const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
+const OptionsHelper = require('../../helpers/options');
 
 describe('RequiredOptionalFieldsRule', () => {
   const model = new Model({
@@ -18,6 +19,21 @@ describe('RequiredOptionalFieldsRule', () => {
         ],
       },
     ],
+    validationMode: {
+      C1Request: 'request',
+    },
+    imperativeConfiguration: {
+      request: {
+        requiredOptions: [
+          {
+            options: [
+              'duration',
+              'endDate',
+            ],
+          },
+        ],
+      },
+    },
   }, 'latest');
   model.hasSpecification = true;
 
@@ -119,6 +135,49 @@ describe('RequiredOptionalFieldsRule', () => {
     expect(errors[0].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
     expect(errors[0].path).toBe('$["startDate","schedule"]');
+  });
+
+  describe('when validation mode is on with separate required fields', () => {
+    const options = new OptionsHelper({ validationMode: 'C1Request' });
+    it('should return no errors if required optional fields are present', async () => {
+      const data = {
+        type: 'Event',
+        endDate: '2018-01-27T12:00:00Z',
+      };
+
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+        options,
+      );
+      const errors = await rule.validate(nodeToTest);
+
+      expect(errors.length).toBe(0);
+    });
+
+    it('should return a failure per option group if any required optional fields are missing', async () => {
+      const data = {
+        type: 'Event',
+        startDate: '2018-01-27T12:00:00Z',
+      };
+
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+        options,
+      );
+      const errors = await rule.validate(nodeToTest);
+
+      expect(errors.length).toBe(1);
+
+      expect(errors[0].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+      expect(errors[0].path).toBe('$["duration","endDate"]');
+    });
   });
 
   describe('with inheritsTo properties', () => {

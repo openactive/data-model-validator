@@ -290,10 +290,8 @@ module.exports = class FieldsNotInModelRule extends Rule {
           let graphResponse;
           for (const context of contextInfo.contexts) {
             let model;
-            if (
-              typeof node.model.derivedFrom !== 'undefined'
-              && node.model.derivedFrom !== null
-            ) {
+            // Use derivedFrom to infer model namespace
+            if (typeof node.model.derivedFrom === 'string') {
               model = node.model.derivedFrom;
             } else {
               model = `${metaData.openActivePrefix}:${node.model.type}`;
@@ -347,12 +345,13 @@ module.exports = class FieldsNotInModelRule extends Rule {
         if (prop.prefix === 'schema') {
           fieldToTest = prop.label;
         }
-        if (typeof node.model.derivedFrom !== 'undefined' && node.model.derivedFrom !== null) {
+        // Use baseSchemaClass to indicate the most relevant schema.org base class within which to search for properties
+        if (typeof node.model.baseSchemaClass === 'string') {
           for (const spec of node.options.schemaOrgSpecifications) {
             const graphResponse = GraphHelper.isPropertyInClass(
               spec,
               `schema:${fieldToTest}`,
-              node.model.derivedFrom,
+              node.model.baseSchemaClass,
               node.options.version,
             );
             if (graphResponse.code === GraphHelper.PROPERTY_FOUND) {

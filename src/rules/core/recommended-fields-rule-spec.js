@@ -3,6 +3,7 @@ const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
+const OptionsHelper = require('../../helpers/options');
 
 describe('RecommendedFieldsRule', () => {
   const model = new Model({
@@ -11,6 +12,16 @@ describe('RecommendedFieldsRule', () => {
       'description',
       'name',
     ],
+    validationMode: {
+      C1Request: 'request',
+    },
+    imperativeConfiguration: {
+      request: {
+        recommendedFields: [
+          'duration',
+        ],
+      },
+    },
   }, 'latest');
   model.hasSpecification = true;
 
@@ -88,6 +99,50 @@ describe('RecommendedFieldsRule', () => {
       expect(error.type).toBe(ValidationErrorType.MISSING_RECOMMENDED_FIELD);
       expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
     }
+  });
+
+  describe('when validation mode is on with separate required fields', () => {
+    const options = new OptionsHelper({ validationMode: 'C1Request' });
+
+    it('should return no errors if all required fields are present', async () => {
+      const data = {
+        type: 'Event',
+        duration: 'PT1H30M',
+      };
+
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+        options,
+      );
+      const errors = await rule.validate(nodeToTest);
+
+      expect(errors.length).toBe(0);
+    });
+
+    it('should return a warning per field if any required fields are missing', async () => {
+      const data = {
+        type: 'Event',
+      };
+
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+        options,
+      );
+      const errors = await rule.validate(nodeToTest);
+
+      expect(errors.length).toBe(1);
+
+      for (const error of errors) {
+        expect(error.type).toBe(ValidationErrorType.MISSING_RECOMMENDED_FIELD);
+        expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
+      }
+    });
   });
 
   describe('with inheritsTo properties', () => {

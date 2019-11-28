@@ -70,22 +70,22 @@ describe('FieldsCorrectTypeRule', () => {
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 
-  // Float
-  it('should return no error for an valid float type', async () => {
+  // Number (Decimal)
+  it('should return no error for an valid number type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'https://schema.org/Float',
+          requiredType: 'https://schema.org/Number',
         },
         field2: {
           fieldName: 'field2',
-          requiredType: 'https://schema.org/Float',
+          requiredType: 'https://schema.org/Number',
         },
         field3: {
           fieldName: 'field3',
-          requiredType: 'https://schema.org/Float',
+          requiredType: 'https://schema.org/Number',
         },
       },
     }, 'latest');
@@ -105,21 +105,21 @@ describe('FieldsCorrectTypeRule', () => {
     const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
   });
-  it('should return an error for an invalid float type', async () => {
+  it('should return an error for an invalid number type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'https://schema.org/Float',
+          requiredType: 'https://schema.org/Number',
         },
         field2: {
           fieldName: 'field2',
-          requiredType: 'https://schema.org/Float',
+          requiredType: 'https://schema.org/Number',
         },
         field3: {
           fieldName: 'field3',
-          requiredType: 'https://schema.org/Float',
+          requiredType: 'https://schema.org/Number',
         },
       },
     }, 'latest');
@@ -768,9 +768,9 @@ describe('FieldsCorrectTypeRule', () => {
           fieldName: 'integer_array',
           requiredType: 'ArrayOf#https://schema.org/Integer',
         },
-        float_array: {
-          fieldName: 'float_array',
-          requiredType: 'ArrayOf#https://schema.org/Float',
+        number_array: {
+          fieldName: 'number_array',
+          requiredType: 'ArrayOf#https://schema.org/Number',
         },
         boolean_array: {
           fieldName: 'boolean_array',
@@ -809,7 +809,7 @@ describe('FieldsCorrectTypeRule', () => {
         1,
         2,
       ],
-      float_array: [
+      number_array: [
         1.3,
         2,
       ],
@@ -868,9 +868,9 @@ describe('FieldsCorrectTypeRule', () => {
           fieldName: 'integer_array',
           requiredType: 'ArrayOf#https://schema.org/Integer',
         },
-        float_array: {
-          fieldName: 'float_array',
-          requiredType: 'ArrayOf#https://schema.org/Float',
+        number_array: {
+          fieldName: 'number_array',
+          requiredType: 'ArrayOf#https://schema.org/Number',
         },
         boolean_array: {
           fieldName: 'boolean_array',
@@ -881,7 +881,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'ArrayOf#https://schema.org/URL',
         },
         date_array: {
-          fieldName: 'float_array',
+          fieldName: 'number_array',
           requiredType: 'ArrayOf#https://schema.org/Date',
         },
         datetime_array: {
@@ -893,7 +893,7 @@ describe('FieldsCorrectTypeRule', () => {
           requiredType: 'ArrayOf#https://schema.org/Duration',
         },
         text_array: {
-          fieldName: 'float_array',
+          fieldName: 'number_array',
           requiredType: 'ArrayOf#https://schema.org/Text',
         },
         model_array: {
@@ -909,7 +909,7 @@ describe('FieldsCorrectTypeRule', () => {
         1.3,
         2.4,
       ],
-      float_array: [
+      number_array: [
         true,
         false,
       ],
@@ -973,9 +973,9 @@ describe('FieldsCorrectTypeRule', () => {
           fieldName: 'integer_array',
           requiredType: 'ArrayOf#https://schema.org/Integer',
         },
-        float_array: {
-          fieldName: 'float_array',
-          requiredType: 'ArrayOf#https://schema.org/Float',
+        number_array: {
+          fieldName: 'number_array',
+          requiredType: 'ArrayOf#https://schema.org/Number',
         },
         boolean_array: {
           fieldName: 'boolean_array',
@@ -1011,7 +1011,7 @@ describe('FieldsCorrectTypeRule', () => {
 
     const data = {
       integer_array: 1,
-      float_array: 1.3,
+      number_array: 1.3,
       boolean_array: true,
       url_array: 'http://www.example.com',
       date_array: '2018-01-01',

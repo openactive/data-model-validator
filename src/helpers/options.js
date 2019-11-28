@@ -30,6 +30,10 @@ const OptionsHelper = class {
   get version() {
     return this.options.version || 'latest';
   }
+
+  get validationMode() {
+    return this.options.validationMode || 'RPDEFeed';
+  }
 };
 
 module.exports = OptionsHelper;

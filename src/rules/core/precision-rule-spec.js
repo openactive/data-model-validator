@@ -14,13 +14,13 @@ describe('PrecisionRule', () => {
         fieldName: 'latitude',
         minDecimalPlaces: 3,
         sameAs: 'https://schema.org/latitude',
-        requiredType: 'https://schema.org/Float',
+        requiredType: 'https://schema.org/Number',
       },
       price: {
         fieldName: 'price',
         maxDecimalPlaces: 2,
         sameAs: 'https://schema.org/price',
-        requiredType: 'https://schema.org/Float',
+        requiredType: 'https://schema.org/Number',
       },
     },
   }, 'latest');

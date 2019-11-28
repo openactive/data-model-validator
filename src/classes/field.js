@@ -75,7 +75,7 @@ const Field = class {
       if (typeof example === 'object') {
         renderedExample = JSON.stringify(example, null, 2);
       } else {
-        const isNotString = requiredType && (requiredType.indexOf('Integer') > -1 || requiredType.indexOf('Float') > -1 || requiredType.indexOf('Boolean') > -1);
+        const isNotString = requiredType && (requiredType.indexOf('Integer') > -1 || requiredType.indexOf('Number') > -1 || requiredType.indexOf('Boolean') > -1);
         renderedExample = isNotString ? `${example}` : `"${example}"`;
       }
       return `${prefix || ''}\`\`\`\n${fieldName ? `"${fieldName}": ` : ''}${renderedExample}\n\`\`\``;
@@ -111,27 +111,27 @@ const Field = class {
       return 'https://schema.org/Boolean';
     }
     if (typeof (data) === 'number') {
-      returnType = 'https://schema.org/Float';
+      returnType = 'https://schema.org/Number';
       if (
         /^-?[0-9]+([eE]-?[0-9]+)?$/.test(String(data))
                 && data % 1 === 0
       ) {
         returnType = 'https://schema.org/Integer';
       }
-      // If the type above isn't in the possible types, but Float is,
-      // just cast as Float
+      // If the type above isn't in the possible types, but Number (Decimal) is,
+      // just cast as Number (Decimal)
       if (
         inArray
         && possibleTypes.indexOf(`ArrayOf#${returnType}`) < 0
-        && possibleTypes.indexOf('ArrayOf#https://schema.org/Float') >= 0
+        && possibleTypes.indexOf('ArrayOf#https://schema.org/Number') >= 0
       ) {
-        returnType = 'https://schema.org/Float';
+        returnType = 'https://schema.org/Number';
       } else if (
         !inArray
         && possibleTypes.indexOf(returnType) < 0
-        && possibleTypes.indexOf('https://schema.org/Float') >= 0
+        && possibleTypes.indexOf('https://schema.org/Number') >= 0
       ) {
-        returnType = 'https://schema.org/Float';
+        returnType = 'https://schema.org/Number';
       }
       return returnType;
     }
@@ -347,7 +347,7 @@ Field.canBeTypeOfMapping = {
   'https://schema.org/DateTime': 'https://schema.org/Text',
   'https://schema.org/Duration': 'https://schema.org/Text',
   'https://schema.org/Time': 'https://schema.org/Text',
-  'https://schema.org/Integer': 'https://schema.org/Float',
+  'https://schema.org/Integer': 'https://schema.org/Number',
   'https://schema.org/URL': 'https://schema.org/Text',
   'https://schema.org/urlTemplate': 'https://schema.org/Text',
 };

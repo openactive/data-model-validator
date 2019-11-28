@@ -78,7 +78,5 @@ typings/
 # OSX
 .DS_Store
 
-# VS Code
-
-.vscode/*
-!.vscode/launch.json
+# IDE
+.vscode
