@@ -24,32 +24,30 @@ $ npm install @openactive/data-model-validator
 ```js
 const { validate } = require('@openactive/data-model-validator');
 
-async function run() {
-  const data = {
-    '@context': 'https://www.openactive.io/ns/oa.jsonld',
-    type: 'Event',
-    name: 'Tai chi Class',
-    url: 'http://www.example.org/events/1',
-    startDate: '2017-03-22T20:00:00',
-    activity: 'Tai Chi',
-    location: {
-      type: 'Place',
-      name: 'ExampleCo Gym',
-      address: {
-        type: 'PostalAddress',
-        streetAddress: '1 High Street',
-        addressLocality: 'Bristol',
-        postalCode: 'BS1 4SD'
-      }
+const data = {
+  '@context': 'https://www.openactive.io/ns/oa.jsonld',
+  type: 'Event',
+  name: 'Tai chi Class',
+  url: 'http://www.example.org/events/1',
+  startDate: '2017-03-22T20:00:00',
+  activity: 'Tai Chi',
+  location: {
+    type: 'Place',
+    name: 'ExampleCo Gym',
+    address: {
+      type: 'PostalAddress',
+      streetAddress: '1 High Street',
+      addressLocality: 'Bristol',
+      postalCode: 'BS1 4SD'
     }
-  };
+  }
+};
 
-  // Check whether the JSON conforms to the Event model
-  const result = await validate(data);
+// Check whether the JSON conforms to the Event model
+const result = await validate(data);
 
-  // Returns:
-  // [{category: 'conformance', type: 'missing_required_field', message: 'Required field is missing.', value: undefined, severity: 'failure', path: '$.context' }, ... ]
-}
+// Returns:
+// [{category: 'conformance', type: 'missing_required_field', message: 'Required field is missing.', value: undefined, severity: 'failure', path: '$.context' }, ... ]
 ```
 
 ### Options
@@ -67,17 +65,15 @@ e.g.
 ```js
 const { validate } = require('@openactive/data-model-validator');
 
-async function run() {
-  const data = {
-    // ...
-  };
+const data = {
+// ...
+};
 
-  const options = {
-    loadRemoteJson: true
-  };
+const options = {
+loadRemoteJson: true
+};
 
-  const result = await validate(data, options);
-}
+const result = await validate(data, options);
 ```
 
 #### remoteJsonCachePath
@@ -91,18 +87,16 @@ e.g.
 ```js
 const { validate } = require('@openactive/data-model-validator');
 
-async function run() {
-  const data = {
-    // ...
-  };
+const data = {
+// ...
+};
 
-  const options = {
-    loadRemoteJson: true,
-    remoteJsonCachePath: '/tmp'
-  };
+const options = {
+loadRemoteJson: true,
+remoteJsonCachePath: '/tmp'
+};
 
-  const result = await validate(data, options);
-}
+const result = await validate(data, options);
 ```
 
 #### remoteJsonCacheTimeToLive
@@ -116,19 +110,17 @@ e.g.
 ```js
 const { validate } = require('@openactive/data-model-validator');
 
-async function run() {
-  const data = {
-    // ...
-  };
+const data = {
+// ...
+};
 
-  const options = {
-    loadRemoteJson: true,
-    remoteJsonCachePath: '/tmp',
-    remoteJsonCacheTimeToLive: 3600
-  };
+const options = {
+  loadRemoteJson: true,
+  remoteJsonCachePath: '/tmp',
+  remoteJsonCacheTimeToLive: 3600
+};
 
-  const result = await validate(data, options);
-}
+const result = await validate(data, options);
 ```
 
 #### rpdeItemLimit
@@ -140,17 +132,15 @@ e.g.
 ```js
 const { validate } = require('@openactive/data-model-validator');
 
-async function run() {
-  const feed = {
-    // ...
-  };
+const feed = {
+// ...
+};
 
-  const options = {
-    rpdeItemLimit: 10
-  };
+const options = {
+  rpdeItemLimit: 10
+};
 
-  const result = await validate(feed, options);
-}
+const result = await validate(feed, options);
 ```
 
 #### schemaOrgSpecifications
@@ -162,38 +152,36 @@ e.g.
 ```js
 const { validate } = require('@openactive/data-model-validator');
 
-async function run() {
-  const data = {
-    // ...
-  };
+const data = {
+  // ...
+};
 
-  const options = {
-    schemaOrgSpecifications: [
-      {
-        '@context': {
-          rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-          rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
-          xsd: 'http://www.w3.org/2001/XMLSchema#',
-        },
-        '@graph': [
-          {
-            '@id': 'http://schema.org/CafeOrCoffeeShop',
-            '@type': 'rdfs:Class',
-            'rdfs:comment': 'A cafe or coffee shop.',
-            'rdfs:label': 'CafeOrCoffeeShop',
-            'rdfs:subClassOf': {
-              '@id': 'http://schema.org/FoodEstablishment'
-            },
-          },
-          // ...
-        ],
-        '@id': 'http://schema.org/#3.4',
+const options = {
+  schemaOrgSpecifications: [
+    {
+      '@context': {
+        rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+        rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+        xsd: 'http://www.w3.org/2001/XMLSchema#',
       },
-    ],
-  };
+      '@graph': [
+        {
+          '@id': 'http://schema.org/CafeOrCoffeeShop',
+          '@type': 'rdfs:Class',
+          'rdfs:comment': 'A cafe or coffee shop.',
+          'rdfs:label': 'CafeOrCoffeeShop',
+          'rdfs:subClassOf': {
+            '@id': 'http://schema.org/FoodEstablishment'
+          },
+        },
+        // ...
+      ],
+      '@id': 'http://schema.org/#3.4',
+    },
+  ],
+};
 
-  const result = await validate(data, options);
-}
+const result = await validate(data, options);
 ```
 
 #### type
@@ -205,18 +193,16 @@ e.g.
 ```js
 const { validate } = require('@openactive/data-model-validator');
 
-async function run() {
-  const model = {
-    type: 'CustomAction'
-    // ...
-  };
+const model = {
+  type: 'CustomAction'
+  // ...
+};
 
-  const options = {
-    type: 'Action'
-  };
+const options = {
+  type: 'Action'
+};
 
-  const result = await validate(model, options);
-}
+const result = await validate(model, options);
 ```
 
 #### version
@@ -228,17 +214,16 @@ e.g.
 ```js
 const { validate } = require('@openactive/data-model-validator');
 
-async function run() {
-  const model = {
-    type: 'CustomAction'
-    // ...
-  };
+const model = {
+  type: 'CustomAction'
+  // ...
+};
 
-  const options = {
-    version: '2.0'
-  };
+const options = {
+  version: '2.0'
+};
 
-  const result = await validate(model, options);
+const result = await validate(model, options);
 }
 ```
 
