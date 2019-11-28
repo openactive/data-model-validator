@@ -18,10 +18,10 @@
         "exceptMethods": [
           "isFieldTargeted",
           "isModelTargeted",
-          "validateRawSync",
+          "validateRaw",
           "validateModel",
           "validateField",
-          "validateFieldSync"
+          "validateField"
         ]
       }
     ],

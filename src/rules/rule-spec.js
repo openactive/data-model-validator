@@ -30,12 +30,12 @@ describe('Rule', () => {
     expect(doValidate).toThrow();
   });
 
-  it('should throw if trying to validate a field', () => {
+  it('should throw if trying to validate a field', async () => {
     const data = {};
     const field = 'field';
-    function doValidate() {
-      rule.validateField(data, field, model, null);
+    async function doValidate() {
+      return rule.validateField(data, field, model, null);
     }
-    expect(doValidate).toThrow();
+    await expectAsync(doValidate()).toBeRejected();
   });
 });

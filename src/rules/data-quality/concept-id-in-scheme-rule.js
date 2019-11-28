@@ -33,7 +33,7 @@ module.exports = class ConceptIdInSchemeRule extends Rule {
     };
   }
 
-  validateFieldSync(node, field) {
+  validateField(node, field) {
     const prop = PropertyHelper.getFullyQualifiedProperty(field, node.options.version);
     const otherField = prop.alias === 'id' ? 'inScheme' : 'id';
     const errors = [];

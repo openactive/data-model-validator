@@ -26,7 +26,7 @@ module.exports = class ValueInOptionsRule extends Rule {
     };
   }
 
-  validateFieldSync(node, field) {
+  validateField(node, field) {
     // Don't do this check for models that we don't actually have a spec for
     if (!node.model.hasSpecification) {
       return [];

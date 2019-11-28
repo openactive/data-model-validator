@@ -39,7 +39,7 @@ module.exports = class TimeFormatRule extends Rule {
     };
   }
 
-  validateFieldSync(node, field) {
+  validateField(node, field) {
     const errors = [];
     let fieldObj;
     if (node.model.hasSpecification) {

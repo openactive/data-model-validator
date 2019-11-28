@@ -30,7 +30,7 @@ module.exports = class CountryCodeFormatRule extends Rule {
     };
   }
 
-  validateFieldSync(node, field) {
+  validateField(node, field) {
     const fieldObj = node.model.getField(field);
     if (typeof fieldObj === 'undefined') {
       return [];

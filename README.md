@@ -65,7 +65,7 @@ Validator provides three functions that can do validation:
 These can all be accessed from the index:
 
 ```js
-const { validateAsync, validateSync, validate } = require('@openactive/data-model-validator');
+const { validateAsync } = require('@openactive/data-model-validator');
 ```
 
 **It is recommended to use `validateAsync`** - especially for an application that accepts multiple requests - as it will unblock the event loop to be free to run other code concurrently.

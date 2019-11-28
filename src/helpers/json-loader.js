@@ -3,7 +3,6 @@ const util = require('util');
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
-const RequestHelper = require('./request');
 const OptionsHelper = require('./options');
 
 const promisifiedFs = {
@@ -238,97 +237,12 @@ class JsonLoaderHelper {
     if (!localOptions.loadRemoteJson) {
       return getFileAsyncNoLoadRemote(url);
     } if (localOptions.remoteJsonCachePath) {
-      return await getFileAsyncLoadRemoteAndCacheToFs(url, options);
+      return getFileAsyncLoadRemoteAndCacheToFs(url, options);
     }
-    return await getFileAsyncLoadRemote(url);
-  }
-
-  /**
-   * Get file from either a local cache or a remote URL.
-   * This function uses synchronous IO calls.
-   *
-   * @deprecated since version 1.2.0. Use JsonLoaderHelper.getFileAsync() instead.
-   *
-   * @param {string} url
-   * @param {Options} options
-   * @returns {Object} File object
-   */
-  static getFileSync(url, options) {
-    const hash = crypto.createHash('sha256');
-    hash.update(url);
-    const hashKey = hash.digest('hex');
-
-    if (typeof CACHE[hashKey] !== 'undefined') {
-      return CACHE[hashKey];
-    }
-
-    let localOptions = options;
-    if (typeof localOptions !== 'object' || localOptions === null) {
-      localOptions = new OptionsHelper();
-    }
-    if (!localOptions.loadRemoteJson) {
-      return {
-        errorCode: JsonLoaderHelper.ERROR_NO_REMOTE,
-        statusCode: 0,
-        data: null,
-        url,
-        contentType: null,
-        fetchTime: (new Date()).valueOf(),
-      };
-    }
-    let cacheFile = null;
-    if (localOptions.remoteJsonCachePath) {
-      cacheFile = path.join(localOptions.remoteJsonCachePath, `${hashKey}.json`);
-      if (fs.existsSync(cacheFile)) {
-        let json;
-        try {
-          json = JSON.parse(
-            fs.readFileSync(cacheFile),
-          );
-        } catch (e) {
-          json = null;
-        }
-        if (
-          typeof json === 'object'
-          && json !== null
-          && ((new Date()).valueOf() - json.fetchTime) < localOptions.remoteJsonCacheTimeToLive
-        ) {
-          CACHE[hashKey] = json;
-          return json;
-        }
-      }
-    }
-    const returnObject = {
-      errorCode: JsonLoaderHelper.ERROR_NONE,
-      data: null,
-      statusCode: null,
-      url,
-      exception: null,
-      contentType: null,
-      fetchTime: (new Date()).valueOf(),
-    };
-    try {
-      const response = RequestHelper.get(url, { accept: 'application/ld+json' });
-      const { headers } = response;
-
-      returnObject.contentType = headers['content-type'];
-      returnObject.statusCode = response.statusCode;
-
-      if (response.statusCode !== 200) {
-        returnObject.errorCode = JsonLoaderHelper.ERROR_NO_REMOTE;
-      } else {
-        returnObject.data = JSON.parse(response.body);
-      }
-    } catch (err) {
-      returnObject.exception = err;
-      returnObject.errorCode = JsonLoaderHelper.ERROR_NO_REMOTE;
-    }
-    if (cacheFile) {
-      fs.writeFile(cacheFile, JSON.stringify(returnObject), () => {});
-    }
-    return returnObject;
+    return getFileAsyncLoadRemote(url);
   }
 }
+
 JsonLoaderHelper.ERROR_NONE = ERROR_NONE;
 JsonLoaderHelper.ERROR_NO_REMOTE = ERROR_NO_REMOTE;
 

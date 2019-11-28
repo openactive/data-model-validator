@@ -25,30 +25,7 @@ class Rule {
         Object.prototype.hasOwnProperty.call(nodeToTest.value, field)
         && this.isFieldTargeted(nodeToTest.model, field)
       ) {
-        const fieldErrors = await this.validateFieldAsync(nodeToTest, field);
-        errors = errors.concat(fieldErrors);
-      }
-    }
-    return errors;
-  }
-
-  /**
-   * @deprecated since version 1.2.0, since it uses synchronous IO
-   *   (https://nodejs.org/en/docs/guides/blocking-vs-non-blocking/#comparing-code). Use
-   *   validateAsync() instead
-   */
-  validateSync(nodeToTest) {
-    let errors = [];
-    if (this.isModelTargeted(nodeToTest.model)) {
-      const modelErrors = this.validateModel(nodeToTest);
-      errors = errors.concat(modelErrors);
-    }
-    for (const field in nodeToTest.value) {
-      if (
-        Object.prototype.hasOwnProperty.call(nodeToTest.value, field)
-        && this.isFieldTargeted(nodeToTest.model, field)
-      ) {
-        const fieldErrors = this.validateFieldSync(nodeToTest, field);
+        const fieldErrors = await this.validateField(nodeToTest, field);
         errors = errors.concat(fieldErrors);
       }
     }
@@ -59,17 +36,8 @@ class Rule {
     throw Error('Model validation rule not implemented');
   }
 
-  /**
-   * @deprecated since version 1.2.0, since it uses synchronous IO
-   *   (https://nodejs.org/en/docs/guides/blocking-vs-non-blocking/#comparing-code). Use
-   *   validateFieldAsync() instead
-   */
-  validateFieldSync(/* node, field */) {
+  async validateField(/* node, field */) {
     throw Error('Field validation rule not implemented');
-  }
-
-  async validateFieldAsync(node, field) {
-    return this.validateFieldSync(node, field);
   }
 
   createError(testKey, extra = {}, messageValues = undefined) {

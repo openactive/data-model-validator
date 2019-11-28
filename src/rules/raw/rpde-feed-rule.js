@@ -32,7 +32,7 @@ module.exports = class RpdeFeedRule extends RawRule {
     };
   }
 
-  validateRawSync(data) {
+  validateRaw(data) {
     const errors = [];
 
     const dataCopy = data;

@@ -23,7 +23,7 @@ module.exports = class AddressTrailingCommaRule extends Rule {
     };
   }
 
-  validateFieldSync(node, field) {
+  validateField(node, field) {
     const errors = [];
     const fieldValue = node.getValue(field);
     if (

@@ -4,7 +4,7 @@
  */
 const defaultRules = require('./rules');
 const {
-  validateAsync, validateSync, validate, isRpdeFeed,
+  validateAsync, isRpdeFeed,
 } = require('./validate');
 const Rule = require('./rules/rule');
 const ValidationError = require('./errors/validation-error');
@@ -18,8 +18,6 @@ function createValidator() {
     isRpdeFeed,
     Rule,
     validateAsync,
-    validateSync,
-    validate,
     ValidationError,
     ValidationErrorCategory,
     ValidationErrorType,

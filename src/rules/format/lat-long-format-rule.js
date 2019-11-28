@@ -29,7 +29,7 @@ module.exports = class LatLongFormatRule extends Rule {
     };
   }
 
-  validateFieldSync(node, field) {
+  validateField(node, field) {
     const errors = [];
     const fieldObj = node.model.getField(field);
     if (typeof fieldObj === 'undefined') {

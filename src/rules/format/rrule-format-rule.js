@@ -27,7 +27,7 @@ module.exports = class RruleFormatRule extends Rule {
     };
   }
 
-  validateFieldSync(node, field) {
+  validateField(node, field) {
     const errors = [];
     if (!node.model.hasSpecification) {
       return [];

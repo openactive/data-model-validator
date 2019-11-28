@@ -22,7 +22,7 @@ module.exports = class DurationFormatRule extends Rule {
     };
   }
 
-  validateFieldSync(node, field) {
+  validateField(node, field) {
     const errors = [];
     let fieldObj;
     if (node.model.hasSpecification) {
