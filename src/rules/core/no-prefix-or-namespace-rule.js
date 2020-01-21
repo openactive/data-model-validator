@@ -89,6 +89,7 @@ module.exports = class NoPrefixOrNamespaceRule extends Rule {
       && prop.namespace === null
       && prop.prefix === null
       && field !== prop.alias
+      && false // Note this rule is temporarily disabled
     ) {
       testKey = 'typeAndId';
       messageValues = {
