@@ -23,20 +23,20 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@openactive/data-models": "^2.0.0",
+    "@openactive/data-models": "^2.0.14",
+    "axios": "^0.18.0",
     "currency-codes": "^1.5.1",
     "jsonpath": "^1.0.2",
     "moment": "^2.24.0",
     "rrule": "^2.6.2",
     "sync-request": "^6.1.0",
     "uritemplate": "^0.3.4",
-    "validator": "^10.11.0",
-    "axios": "^0.18.0"
+    "validator": "^10.11.0"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.1",
-    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-import": "^2.19.1",
     "jasmine": "^3.5.0",
     "nock": "^10.0.6"
   },
