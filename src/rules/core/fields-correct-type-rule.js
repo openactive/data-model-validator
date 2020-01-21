@@ -92,7 +92,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       case 'https://schema.org/Text':
         return `[\`string${plural}\`](${type})`;
       case 'https://schema.org/Number':
-        return `[\`float${plural}\`](${type})`;
+        return `[\`decimal${plural}\`](${type})`;
       case 'https://schema.org/Boolean':
         return `[\`boolean${plural}\`](${type})`;
       case 'https://schema.org/Integer':
