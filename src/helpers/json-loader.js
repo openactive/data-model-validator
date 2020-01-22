@@ -5,11 +5,6 @@ const path = require('path');
 const axios = require('axios');
 const OptionsHelper = require('./options');
 
-const promisifiedFs = {
-  readFile: util.promisify(fs.readFile),
-  writeFile: util.promisify(fs.writeFile),
-};
-
 const ERROR_NONE = 'error_none';
 const ERROR_NO_REMOTE = 'error_no_remote';
 let CACHE = {};
@@ -98,7 +93,7 @@ async function getFromFsCacheIfExists(baseCachePath, url) {
   const cachePath = getFsCachePath(baseCachePath, url);
   let rawCacheContents;
   try {
-    rawCacheContents = await promisifiedFs.readFile(cachePath);
+    rawCacheContents = await util.promisify(fs.readFile)(cachePath);
   } catch (error) {
     // Probably just doesn't exist
     return { exists: false };
@@ -112,7 +107,7 @@ async function getFromFsCacheIfExists(baseCachePath, url) {
 
 async function saveToFsCache(baseCachePath, url, fileObject) {
   const cachePath = getFsCachePath(baseCachePath, url);
-  await promisifiedFs.writeFile(cachePath, JSON.stringify(fileObject));
+  await util.promisify(fs.writeFile)(cachePath, JSON.stringify(fileObject));
 }
 
 /**
