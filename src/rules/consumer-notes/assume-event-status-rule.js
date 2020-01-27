@@ -7,6 +7,14 @@ module.exports = class AssumeEventStatusRule extends Rule {
   constructor(options) {
     super(options);
     this.targetModels = ['Event', 'CourseInstance', 'EventSeries', 'HeadlineEvent', 'ScheduledSession', 'SessionSeries'];
+    this.targetValidationModes = [
+      'RPDEFeed',
+      'BookableRPDEFeed',
+      'C1Response',
+      'C2Response',
+      'PResponse',
+      'BResponse',
+    ];
     this.meta = {
       name: 'AssumeEventStatusRule',
       description: 'Generates a notice for how data consumers wil interpret an Event without a valid eventStatus.',

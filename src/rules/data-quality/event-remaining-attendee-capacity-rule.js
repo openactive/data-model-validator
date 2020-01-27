@@ -6,18 +6,16 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 module.exports = class EventRemainingAttendeeCapacityRule extends Rule {
   constructor(options) {
     super(options);
-    this.targetFields = { Event: ['remainigAttendeeCapacity'] };
+    this.targetFields = { Event: ['remainingAttendeeCapacity'] };
     this.targetValidationModes = [
-      'C1Request',
       'C1Response',
-      'C2Request',
       'C2Response',
-      'BRequest',
+      'PResponse',
       'BResponse',
     ];
     this.meta = {
       name: 'EventRemainingAttendeeCapacityRule',
-      description: 'Validates that the remainigAttendeeCapacity of an Event is greater than or equal to 0',
+      description: 'Validates that the remainingAttendeeCapacity of an Event is greater than or equal to 0',
       tests: {
         default: {
           description: 'Raises a failure if the remainingAttendeeCapacity of an Event is not greater than or equal to 0',

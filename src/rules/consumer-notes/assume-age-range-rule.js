@@ -7,6 +7,14 @@ module.exports = class AssumeAgeRangeRule extends Rule {
   constructor(options) {
     super(options);
     this.targetModels = ['Event', 'CourseInstance', 'EventSeries', 'HeadlineEvent', 'ScheduledSession', 'SessionSeries'];
+    this.targetValidationModes = [
+      'RPDEFeed',
+      'BookableRPDEFeed',
+      'C1Response',
+      'C2Response',
+      'PResponse',
+      'BResponse',
+    ];
     this.meta = {
       name: 'AssumeAgeRangeRule',
       description: 'Generates a notice for various ageRange combinations on Event.',

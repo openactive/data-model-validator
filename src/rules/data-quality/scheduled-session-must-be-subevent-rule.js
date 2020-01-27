@@ -7,6 +7,14 @@ module.exports = class ScheduledSessionMustBeSubeventRule extends Rule {
   constructor(options) {
     super(options);
     this.targetModels = ['ScheduledSession'];
+    this.targetValidationModes = [
+      'RPDEFeed',
+      'BookableRPDEFeed',
+      'C1Response',
+      'C2Response',
+      'PResponse',
+      'BResponse',
+    ];
     this.meta = {
       name: 'ScheduledSessionMustBeSubeventRule',
       description: 'Validates that a ScheduledSession is referenced from a subEvent.',

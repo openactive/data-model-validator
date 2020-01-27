@@ -21,7 +21,7 @@ describe('ShallNotIncludeFieldsRule', () => {
       },
     },
     fields: {
-      remainigAttendeeCapacity: {
+      remainingAttendeeCapacity: {
         fieldName: 'remainingAttendeeCapacity',
         requiredType: 'https://schema.org/Integer',
       },

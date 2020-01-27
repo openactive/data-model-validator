@@ -11,20 +11,20 @@ describe('EventRemainingAttendeeCapacityRule', () => {
   const model = new Model({
     type: 'Event',
     fields: {
-      remainigAttendeeCapacity: {
+      remainingAttendeeCapacity: {
         fieldName: 'remainingAttendeeCapacity',
         requiredType: 'https://schema.org/Integer',
       },
     },
   }, 'latest');
 
-  it('should target remainigAttendeeCapacity fields', () => {
-    const isTargeted = rule.isFieldTargeted(model, 'remainigAttendeeCapacity');
+  it('should target remainingAttendeeCapacity fields', () => {
+    const isTargeted = rule.isFieldTargeted(model, 'remainingAttendeeCapacity');
     expect(isTargeted).toBe(true);
   });
 
   describe('isValidationModeTargeted', () => {
-    const modesToTest = ['C1Request', 'C1Response', 'C2Request', 'C2Response', 'BRequest', 'BResponse'];
+    const modesToTest = ['C1Response', 'C2Response', 'PResponse', 'BResponse'];
 
     for (const mode of modesToTest) {
       it(`should target ${mode}`, () => {
@@ -39,13 +39,13 @@ describe('EventRemainingAttendeeCapacityRule', () => {
     });
   });
 
-  describe('when in a booking mode like C1Request', () => {
-    const options = new OptionsHelper({ validationMode: 'C1Request' });
+  describe('when in a booking mode like C1Response', () => {
+    const options = new OptionsHelper({ validationMode: 'C1Response' });
 
     it('should return no error when remainingAttendeeCapacity is > 0', async () => {
       const data = {
         type: 'Event',
-        remainigAttendeeCapacity: 1,
+        remainingAttendeeCapacity: 1,
       };
 
       const nodeToTest = new ModelNode(
@@ -62,7 +62,7 @@ describe('EventRemainingAttendeeCapacityRule', () => {
     it('should return no error when remainingAttendeeCapacity is < 0', async () => {
       const data = {
         type: 'Event',
-        remainigAttendeeCapacity: -1,
+        remainingAttendeeCapacity: -1,
       };
 
       const nodeToTest = new ModelNode(

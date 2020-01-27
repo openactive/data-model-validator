@@ -7,6 +7,14 @@ module.exports = class AssumeNoGenderRestrictionRule extends Rule {
   constructor(options) {
     super(options);
     this.targetModels = ['Event', 'CourseInstance', 'EventSeries', 'HeadlineEvent', 'ScheduledSession', 'SessionSeries'];
+    this.targetValidationModes = [
+      'RPDEFeed',
+      'BookableRPDEFeed',
+      'C1Response',
+      'C2Response',
+      'PResponse',
+      'BResponse',
+    ];
     this.meta = {
       name: 'AssumeNoGenderRestrictionRule',
       description: 'Generates a notice for how data consumers will interpret an Event without a valid genderRestriction.',
