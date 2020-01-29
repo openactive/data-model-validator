@@ -59,6 +59,9 @@ module.exports = {
     require('./consumer-notes/assume-no-gender-restriction-rule'),
     require('./consumer-notes/assume-age-range-rule'),
     require('./consumer-notes/assume-event-status-rule'),
+
+    // Notes on the data consumer
+    require('./booking/booking-root-type-correct-rule'),
   ],
 };
 
