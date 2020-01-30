@@ -43,7 +43,7 @@ module.exports = class BookingRootTypeErrorRule extends Rule {
     if (node.parentNode === null || !node.parentNode.model.isJsonLd) {
       if (node.model.type === 'OpenBookingError') {
         testKey = 'rootTypeTooGeneric';
-      } else if (node.model.subClassGraph.indexOf('OpenBookingError') === -1) {
+      } else if (node.model.subClassGraph.indexOf('#OpenBookingError') === -1) {
         testKey = 'rootTypeNotAnError';
       }
     }

@@ -27,7 +27,7 @@ describe('BookingRootTypeErrorRule', () => {
   it('should return no errors if the correct type is in the root node', async () => {
     const model = new Model({
       type: 'UnknownOrderError',
-      subClassGraph: ['OpenBookingError'],
+      subClassGraph: ['#OpenBookingError'],
     }, 'latest');
 
     const data = {
