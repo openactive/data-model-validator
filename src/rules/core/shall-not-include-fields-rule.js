@@ -13,7 +13,11 @@ module.exports = class ShallNotIncludeFieldsRule extends Rule {
       description: 'Validates that fields that there are no fields that should not be included',
       tests: {
         default: {
-          message: 'Cannot include fields that are listed in the ShallNodeInclude specification for the given validation mode',
+          message: 'The property `{{field}}` must not be present in `{{model}}` in this validation mode.',
+          sampleValues: {
+            field: 'name',
+            model: 'Event',
+          },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC,
@@ -34,6 +38,10 @@ module.exports = class ShallNotIncludeFieldsRule extends Rule {
             {
               value: node.getValue(field),
               path: node.getPath(field),
+            },
+            {
+              field,
+              model: node.model.type,
             },
           ),
         );
