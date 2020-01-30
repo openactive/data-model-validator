@@ -19,6 +19,8 @@ module.exports = class BookingRootTypeCorrectRule extends Rule {
       'BResponse',
       'OrderProposalPatch',
       'OrderPatch',
+      'OrdersFeed',
+      'OrderStatus',
     ];
     this.meta = {
       name: 'BookingRootTypeCorrectRule',
@@ -41,6 +43,20 @@ module.exports = class BookingRootTypeCorrectRule extends Rule {
         order: {
           description: 'Validates that the root node is of type Order.',
           message: 'B requests and responses, and Order Cancellation requests, must be of type `Order`.',
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.WRONG_BASE_TYPE,
+        },
+        ordersFeed: {
+          description: 'Validates that the root node of items in an Orders Feed are of type Order or OrderProposal.',
+          message: 'Items in an Orders Feed must be of type `Order` or `OrderProposal`.',
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.WRONG_BASE_TYPE,
+        },
+        orderStatus: {
+          description: 'Validates that the root node of items in an Order Status response are of type Order, OrderProposal, or OrderQuote.',
+          message: 'Order Status responses must be of type `Order`, `OrderProposal` or `OrderQuote`.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.WRONG_BASE_TYPE,
@@ -84,6 +100,14 @@ module.exports = class BookingRootTypeCorrectRule extends Rule {
       } else if (expectedType[node.options.validationMode] === 'Order') {
         if (node.model.type !== 'Order') {
           testKey = 'order';
+        }
+      } else if (node.options.validationMode === 'OrdersFeed') {
+        if (!['Order', 'OrderProposal'].includes(node.model.type)) {
+          testKey = 'ordersFeed';
+        }
+      } else if (node.options.validationMode === 'OrderStatus') {
+        if (!['Order', 'OrderProposal', 'OrderQuote'].includes(node.model.type)) {
+          testKey = 'orderStatus';
         }
       }
     }

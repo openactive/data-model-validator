@@ -44,6 +44,24 @@ describe('BookingRootTypeCorrectRule', () => {
           type: 'Order',
         }, 'latest'),
       },
+      {
+        validationMode: 'OrdersFeed',
+        data: {
+          type: 'Order',
+        },
+        model: new Model({
+          type: 'Order',
+        }, 'latest'),
+      },
+      {
+        validationMode: 'OrderStatus',
+        data: {
+          type: 'Order',
+        },
+        model: new Model({
+          type: 'Order',
+        }, 'latest'),
+      },
     ];
 
     for (const dataItem of dataItems) {
@@ -79,6 +97,24 @@ describe('BookingRootTypeCorrectRule', () => {
         },
         model: new Model({
           type: 'OrderQuote',
+        }, 'latest'),
+      },
+      {
+        validationMode: 'OrdersFeed',
+        data: {
+          type: 'OrderQuote',
+        },
+        model: new Model({
+          type: 'OrderQuote',
+        }, 'latest'),
+      },
+      {
+        validationMode: 'OrderStatus',
+        data: {
+          type: 'Event',
+        },
+        model: new Model({
+          type: 'Event',
         }, 'latest'),
       },
     ];
