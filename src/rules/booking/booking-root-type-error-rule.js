@@ -16,7 +16,7 @@ module.exports = class BookingRootTypeErrorRule extends Rule {
       tests: {
         rootTypeTooGeneric: {
           description: 'Generates a warning if OpenBookingError is used instead of one of its subclasses.',
-          message: 'OpenBookingError should not be used for most cases. It is recommended to use one of its subclasses instead.',
+          message: 'OpenBookingError should not be used for most cases. Try using one of its more specific subclasses instead.',
           category: ValidationErrorCategory.SUGGESTION,
           severity: ValidationErrorSeverity.WARNING,
           type: ValidationErrorType.WRONG_BASE_TYPE,
@@ -43,7 +43,7 @@ module.exports = class BookingRootTypeErrorRule extends Rule {
     if (node.parentNode === null || !node.parentNode.model.isJsonLd) {
       if (node.model.type === 'OpenBookingError') {
         testKey = 'rootTypeTooGeneric';
-      } else if (!Array.isArray(node.model.subClassGraph) || node.model.subClassGraph.indexOf('OpenBookingError') === -1) {
+      } else if (node.model.subClassGraph.indexOf('OpenBookingError') === -1) {
         testKey = 'rootTypeNotAnError';
       }
     }
