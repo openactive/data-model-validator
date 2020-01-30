@@ -17,7 +17,7 @@ module.exports = class BookingRootTypeErrorRule extends Rule {
         rootTypeTooGeneric: {
           description: 'Generates a warning if OpenBookingError is used instead of one of its subclasses.',
           message: 'OpenBookingError should not be used for most cases. Try using one of its more specific subclasses instead.',
-          category: ValidationErrorCategory.SUGGESTION,
+          category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.WARNING,
           type: ValidationErrorType.WRONG_BASE_TYPE,
         },
