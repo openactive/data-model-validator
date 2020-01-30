@@ -6,7 +6,6 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 const OptionsHelper = require('../../helpers/options');
 
 describe('BookingRootTypeCorrectRule', () => {
-  let model;
   let rule;
 
   beforeEach(() => {
@@ -14,8 +13,8 @@ describe('BookingRootTypeCorrectRule', () => {
   });
 
   it('should target models of any type', () => {
-    model = new Model({
-      type: 'OrderQuote',
+    const model = new Model({
+      type: 'Event',
       inSpec: [
         '@context',
       ],
@@ -98,7 +97,7 @@ describe('BookingRootTypeCorrectRule', () => {
       expect(errors.length).toBe(1);
 
       for (const error of errors) {
-        expect(error.type).toBe(ValidationErrorType.INVALID_TYPE);
+        expect(error.type).toBe(ValidationErrorType.WRONG_BASE_TYPE);
         expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
       }
     }

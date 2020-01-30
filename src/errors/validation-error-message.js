@@ -32,6 +32,7 @@ const ValidationErrorMessage = {
   [ValidationErrorType.THUMBNAIL_HAS_NO_THUMBNAIL]: 'The thumbnail of an ImageObject cannot have its own thumbnail.',
   [ValidationErrorType.USE_FIELD_ALIASES]: 'Fields with aliases defined in @context should be submitted with their alias name.',
   [ValidationErrorType.FOUND_RPDE_FEED]: 'The JSON you have submitted appears to be an RPDE feed.',
+  [ValidationErrorType.WRONG_BASE_TYPE]: 'The base type you have used does not match the validation mode.',
 };
 
 module.exports = ValidationErrorMessage;

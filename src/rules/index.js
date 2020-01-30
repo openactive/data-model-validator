@@ -62,6 +62,7 @@ module.exports = {
 
     // Notes on the data consumer
     require('./booking/booking-root-type-correct-rule'),
+    require('./booking/booking-root-type-error-rule'),
   ],
 };
 
