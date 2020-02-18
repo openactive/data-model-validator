@@ -45,24 +45,42 @@ const Model = class {
   }
 
   getImperativeConfiguration(validationMode) {
-    if (
-      typeof this.validationMode === 'object'
-      && typeof this.validationMode[validationMode] === 'string'
-    ) {
-      return this.imperativeConfiguration[this.validationMode[validationMode]];
-    }
-    return undefined;
+    if (!this.validationMode) return undefined;
+    if (!this.imperativeConfiguration) return undefined;
+
+    const imperativeConfigName = this.validationMode[validationMode];
+
+    if (!imperativeConfigName) return undefined;
+
+    return this.imperativeConfiguration[imperativeConfigName];
   }
 
-  getRequiredFields(validationMode) {
-    let fields;
+  getImperativeConfigurationWithContext(validationMode, containingFieldName) {
+    if (!this.validationMode) return undefined;
+    if (!this.imperativeConfigurationWithContext) return undefined;
+
+    const contextualImperativeConfigName = this.validationMode[validationMode];
+
+    if (!contextualImperativeConfigName) return undefined;
+
+    const contextualImperativeConfigs = this.imperativeConfigurationWithContext[contextualImperativeConfigName];
+
+    if (!contextualImperativeConfigs) return undefined;
+
+    const contextualImperativeConfig = contextualImperativeConfigs[containingFieldName];
+
+    return contextualImperativeConfig;
+  }
+
+  getRequiredFields(validationMode, containingFieldName) {
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
-    if (typeof specificImperativeConfiguration === 'object') {
-      fields = specificImperativeConfiguration.requiredFields;
-    } else {
-      fields = this.data.requiredFields;
-    }
-    return fields || [];
+
+    if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.requiredFields) return specificContextualImperativeConfiguration.requiredFields;
+
+    if (specificImperativeConfiguration && specificImperativeConfiguration.requiredFields) return specificImperativeConfiguration.requiredFields;
+
+    return this.data.requiredFields || [];
   }
 
   hasRequiredField(field) {
@@ -161,6 +179,10 @@ const Model = class {
 
   get imperativeConfiguration() {
     return this.data.imperativeConfiguration;
+  }
+
+  get imperativeConfigurationWithContext() {
+    return this.data.imperativeConfigurationWithContext;
   }
 };
 

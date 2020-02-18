@@ -32,8 +32,8 @@ module.exports = class RequiredFieldsRule extends Rule {
       return [];
     }
     const errors = [];
-
-    for (const field of node.model.getRequiredFields(node.options.validationMode)) {
+    const requiredFields = node.model.getRequiredFields(node.options.validationMode, node.name);
+    for (const field of requiredFields) {
       const testValue = node.getValueWithInheritance(field);
       const example = node.model.getRenderedExample(field);
       if (typeof testValue === 'undefined') {
