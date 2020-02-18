@@ -14,12 +14,27 @@ describe('RecommendedFieldsRule', () => {
     ],
     validationMode: {
       C1Request: 'request',
+      C1Response: 'response',
     },
     imperativeConfiguration: {
       request: {
         recommendedFields: [
           'duration',
         ],
+      },
+    },
+    imperativeConfigurationWithContext: {
+      response: {
+        wedding: {
+          recommendedFields: [
+            'barTab',
+          ],
+        },
+        dinner: {
+          recommendedFields: [
+            'dressCode',
+          ],
+        },
       },
     },
   }, 'latest');
@@ -104,7 +119,7 @@ describe('RecommendedFieldsRule', () => {
   describe('when validation mode is on with separate required fields', () => {
     const options = new OptionsHelper({ validationMode: 'C1Request' });
 
-    it('should return no errors if all required fields are present', async () => {
+    it('should return no errors if all recommended fields are present', async () => {
       const data = {
         type: 'Event',
         duration: 'PT1H30M',
@@ -122,13 +137,57 @@ describe('RecommendedFieldsRule', () => {
       expect(errors.length).toBe(0);
     });
 
-    it('should return a warning per field if any required fields are missing', async () => {
+    it('should return a warning per field if any recommended fields are missing', async () => {
       const data = {
         type: 'Event',
       };
 
       const nodeToTest = new ModelNode(
         '$',
+        data,
+        null,
+        model,
+        options,
+      );
+      const errors = await rule.validate(nodeToTest);
+
+      expect(errors.length).toBe(1);
+
+      for (const error of errors) {
+        expect(error.type).toBe(ValidationErrorType.MISSING_RECOMMENDED_FIELD);
+        expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
+      }
+    });
+  });
+
+  describe('when there is a context-specific imperative config', () => {
+    const options = new OptionsHelper({ validationMode: 'C1Response' });
+
+    it('should return no errors if all recommended fields are present', async () => {
+      const data = {
+        type: 'Event',
+        barTab: 300,
+      };
+
+      const nodeToTest = new ModelNode(
+        'wedding',
+        data,
+        null,
+        model,
+        options,
+      );
+      const errors = await rule.validate(nodeToTest);
+
+      expect(errors.length).toBe(0);
+    });
+
+    it('should return a warning per field if any recommended fields are missing', async () => {
+      const data = {
+        type: 'Event',
+      };
+
+      const nodeToTest = new ModelNode(
+        'wedding',
         data,
         null,
         model,

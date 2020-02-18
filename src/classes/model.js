@@ -98,15 +98,15 @@ const Model = class {
     return options || [];
   }
 
-  getRecommendedFields(validationMode) {
-    let fields;
+  getRecommendedFields(validationMode, containingFieldName) {
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
-    if (typeof specificImperativeConfiguration === 'object') {
-      fields = specificImperativeConfiguration.recommendedFields;
-    } else {
-      fields = this.data.recommendedFields;
-    }
-    return fields || [];
+
+    if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.recommendedFields) return specificContextualImperativeConfiguration.recommendedFields;
+
+    if (specificImperativeConfiguration && specificImperativeConfiguration.recommendedFields) return specificImperativeConfiguration.recommendedFields;
+
+    return this.data.recommendedFields || [];
   }
 
   getShallNotIncludeFields(validationMode) {
