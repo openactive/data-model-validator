@@ -87,15 +87,15 @@ const Model = class {
     return PropertyHelper.arrayHasField(this.requiredFields, field, this.version);
   }
 
-  getRequiredOptions(validationMode) {
-    let options;
+  getRequiredOptions(validationMode, containingFieldName) {
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
-    if (typeof specificImperativeConfiguration === 'object') {
-      options = specificImperativeConfiguration.requiredOptions;
-    } else {
-      options = this.data.requiredOptions;
-    }
-    return options || [];
+
+    if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.requiredOptions) return specificContextualImperativeConfiguration.requiredOptions;
+
+    if (specificImperativeConfiguration && specificImperativeConfiguration.requiredOptions) return specificImperativeConfiguration.requiredOptions;
+
+    return this.data.requiredOptions || [];
   }
 
   getRecommendedFields(validationMode, containingFieldName) {

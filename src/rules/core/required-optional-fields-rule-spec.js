@@ -21,6 +21,7 @@ describe('RequiredOptionalFieldsRule', () => {
     ],
     validationMode: {
       C1Request: 'request',
+      C1Response: 'response',
     },
     imperativeConfiguration: {
       request: {
@@ -32,6 +33,30 @@ describe('RequiredOptionalFieldsRule', () => {
             ],
           },
         ],
+      },
+    },
+    imperativeConfigurationWithContext: {
+      response: {
+        wedding: {
+          requiredOptions: [
+            {
+              options: [
+                'church',
+                'registerOffice',
+              ],
+            },
+          ],
+        },
+        dinner: {
+          requiredOptions: [
+            {
+              options: [
+                'starter',
+                'pudding',
+              ],
+            },
+          ],
+        },
       },
     },
   }, 'latest');
@@ -177,6 +202,49 @@ describe('RequiredOptionalFieldsRule', () => {
       expect(errors[0].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
       expect(errors[0].path).toBe('$["duration","endDate"]');
+    });
+  });
+
+  describe('when there is a context-specific imperative config', () => {
+    const options = new OptionsHelper({ validationMode: 'C1Response' });
+
+    it('should return no errors if required optional fields are present', async () => {
+      const data = {
+        type: 'Event',
+        church: 'Holy Trinity',
+      };
+
+      const nodeToTest = new ModelNode(
+        'wedding',
+        data,
+        null,
+        model,
+        options,
+      );
+      const errors = await rule.validate(nodeToTest);
+
+      expect(errors.length).toBe(0);
+    });
+
+    it('should return a failure per option group if any required optional fields are missing', async () => {
+      const data = {
+        type: 'Event',
+      };
+
+      const nodeToTest = new ModelNode(
+        'wedding',
+        data,
+        null,
+        model,
+        options,
+      );
+      const errors = await rule.validate(nodeToTest);
+
+      expect(errors.length).toBe(1);
+
+      expect(errors[0].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+      expect(errors[0].path).toBe('$.wedding["church","registerOffice"]');
     });
   });
 
