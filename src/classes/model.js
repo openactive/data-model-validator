@@ -109,12 +109,14 @@ const Model = class {
     return this.data.recommendedFields || [];
   }
 
-  getShallNotIncludeFields(validationMode) {
+  getShallNotIncludeFields(validationMode, containingFieldName) {
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
-    if (typeof specificImperativeConfiguration === 'object') {
-      const fields = specificImperativeConfiguration.shallNotInclude;
-      return fields || [];
-    }
+
+    if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.shallNotInclude) return specificContextualImperativeConfiguration.shallNotInclude;
+
+    if (specificImperativeConfiguration && specificImperativeConfiguration.shallNotInclude) return specificImperativeConfiguration.shallNotInclude;
+
     return undefined; // there are no default shallNotInclude fields
   }
 
