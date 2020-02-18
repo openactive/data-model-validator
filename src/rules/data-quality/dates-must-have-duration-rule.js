@@ -7,6 +7,10 @@ module.exports = class DatesMustHaveDurationRule extends Rule {
   constructor(options) {
     super(options);
     this.targetModels = ['Event', 'CourseInstance', 'EventSeries', 'HeadlineEvent', 'ScheduledSession', 'SessionSeries', 'Schedule', 'Slot'];
+    this.targetValidationModes = [
+      'RPDEFeed',
+      'BookableRPDEFeed',
+    ];
     this.meta = {
       name: 'DatesMustHaveDurationRule',
       description: 'Validates that a duration is supplied where both startDate and endDate are given in an Event or Schedule.',

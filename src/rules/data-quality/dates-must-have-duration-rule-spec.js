@@ -3,9 +3,12 @@ const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
+const OptionsHelper = require('../../helpers/options');
 
 describe('DatesMustHaveDurationRule', () => {
   const rule = new DatesMustHaveDurationRule();
+
+  const options = new OptionsHelper({ validationMode: 'RPDEFeed' });
 
   const model = new Model({
     type: 'Event',
@@ -43,6 +46,7 @@ describe('DatesMustHaveDurationRule', () => {
       data,
       null,
       model,
+      options,
     );
     const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
@@ -60,6 +64,7 @@ describe('DatesMustHaveDurationRule', () => {
       data,
       null,
       model,
+      options,
     );
     const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(0);
@@ -76,6 +81,7 @@ describe('DatesMustHaveDurationRule', () => {
       data,
       null,
       model,
+      options,
     );
     const errors = await rule.validate(nodeToTest);
     expect(errors.length).toBe(1);
