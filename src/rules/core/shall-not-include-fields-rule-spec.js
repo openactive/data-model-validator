@@ -12,12 +12,27 @@ describe('ShallNotIncludeFieldsRule', () => {
     type: 'Event',
     validationMode: {
       C1Request: 'request',
+      C1Response: 'response',
     },
     imperativeConfiguration: {
       request: {
         shallNotInclude: [
           'duration',
         ],
+      },
+    },
+    imperativeConfigurationWithContext: {
+      response: {
+        wedding: {
+          shallNotInclude: [
+            'price',
+          ],
+        },
+        dinner: {
+          shallNotInclude: [
+            'barTab',
+          ],
+        },
       },
     },
     fields: {
@@ -47,7 +62,7 @@ describe('ShallNotIncludeFieldsRule', () => {
       expect(errors.length).toBe(0);
     });
 
-    it('should return no error when shall not include fields present in data', async () => {
+    it('should return failures when shall not include fields present in data', async () => {
       const data = {
         type: 'Event',
         duration: 1,
@@ -61,6 +76,47 @@ describe('ShallNotIncludeFieldsRule', () => {
         options,
       );
       const errors = await rule.validate(nodeToTest);
+      expect(errors.length).toBe(1);
+      expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    });
+  });
+
+  describe('when there is a context-specific imperative config', () => {
+    const options = new OptionsHelper({ validationMode: 'C1Response' });
+
+    it('should return no error when shall not include fields present in data', async () => {
+      const data = {
+        type: 'Event',
+      };
+
+      const nodeToTest = new ModelNode(
+        'wedding',
+        data,
+        null,
+        model,
+        options,
+      );
+      const errors = await rule.validate(nodeToTest);
+
+      expect(errors.length).toBe(0);
+    });
+
+    it('should return failures when shall not include fields present in data', async () => {
+      const data = {
+        type: 'Event',
+        price: 10000,
+      };
+
+      const nodeToTest = new ModelNode(
+        'wedding',
+        data,
+        null,
+        model,
+        options,
+      );
+      const errors = await rule.validate(nodeToTest);
+
       expect(errors.length).toBe(1);
       expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);

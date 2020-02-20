@@ -29,7 +29,7 @@ module.exports = class ShallNotIncludeFieldsRule extends Rule {
   validateField(node, field) {
     const errors = [];
 
-    const shallNots = node.model.getShallNotIncludeFields(node.options.validationMode);
+    const shallNots = node.model.getShallNotIncludeFields(node.options.validationMode, node.name);
     if (typeof shallNots !== 'undefined') {
       if (PropertyHelper.arrayHasField(shallNots, field, node.model.version)) {
         errors.push(

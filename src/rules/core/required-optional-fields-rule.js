@@ -33,8 +33,8 @@ module.exports = class RequiredOptionalFieldsRule extends Rule {
       return [];
     }
     const errors = [];
-
-    for (const option of node.model.getRequiredOptions(node.options.validationMode)) {
+    const requiredOptions = node.model.getRequiredOptions(node.options.validationMode, node.name);
+    for (const option of requiredOptions) {
       if (typeof (option.options) !== 'undefined'
           && option.options instanceof Array
       ) {
