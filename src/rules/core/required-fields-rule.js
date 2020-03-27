@@ -53,7 +53,7 @@ module.exports = class RequiredFieldsRule extends Rule {
         eventAttendanceMode === 'https://schema.org/OnlineEventAttendanceMode'
         && field === 'location'
       ) {
-        if (testValue !== 'undefined') {
+        if (typeof testValue !== 'undefined') {
           errors.push(
             this.createError(
               'onlineOnly',
