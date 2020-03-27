@@ -39,6 +39,7 @@ const ValidationErrorType = {
   EVENT_REQUIRING_BOOKING_MUST_HAVE_VALID_OFFER: 'event_requiring_booking_must_have_valid_offer',
   TYPE_LIMITS_USE: 'type_limits_use',
   WRONG_BASE_TYPE: 'wrong_base_type',
+  FIELD_NOT_ALLOWED: 'field_not_allowed',
 };
 
 module.exports = Object.freeze(ValidationErrorType);

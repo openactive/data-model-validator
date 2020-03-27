@@ -22,6 +22,16 @@ module.exports = class RequiredFieldsRule extends Rule {
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.MISSING_REQUIRED_FIELD,
         },
+        onlineOnly: {
+          message: 'Property `{{field}}` must not be included in `{{model}}` for online-only events. Please use `beta:affiliatedLocation` instead of `location`.',
+          sampleValues: {
+            field: 'description',
+            model: 'Event',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.FIELD_NOT_ALLOWED,
+        },
       },
     };
   }
@@ -36,7 +46,31 @@ module.exports = class RequiredFieldsRule extends Rule {
     for (const field of node.model.getRequiredFields(node.options.validationMode)) {
       const testValue = node.getValueWithInheritance(field);
       const example = node.model.getRenderedExample(field);
-      if (typeof testValue === 'undefined') {
+
+      // *** Virtual Events must exclude location ***
+      const eventAttendanceMode = node.getValueWithInheritance('eventAttendanceMode');
+      if (
+        eventAttendanceMode === 'https://schema.org/OnlineEventAttendanceMode'
+        && field === 'location'
+      ) {
+        if (testValue !== 'undefined') {
+          errors.push(
+            this.createError(
+              'onlineOnly',
+              {
+                value: testValue,
+                path: node.getPath(field),
+              },
+              {
+                field,
+                model: node.model.type,
+              },
+            ),
+          );
+        }
+
+      // Otherwise specified constraints apply
+      } else if (typeof testValue === 'undefined') {
         errors.push(
           this.createError(
             'default',
