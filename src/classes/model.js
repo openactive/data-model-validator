@@ -45,58 +45,78 @@ const Model = class {
   }
 
   getImperativeConfiguration(validationMode) {
-    if (
-      typeof this.validationMode === 'object'
-      && typeof this.validationMode[validationMode] === 'string'
-    ) {
-      return this.imperativeConfiguration[this.validationMode[validationMode]];
-    }
-    return undefined;
+    if (!this.validationMode) return undefined;
+    if (!this.imperativeConfiguration) return undefined;
+
+    const imperativeConfigName = this.validationMode[validationMode];
+
+    if (!imperativeConfigName) return undefined;
+
+    return this.imperativeConfiguration[imperativeConfigName];
   }
 
-  getRequiredFields(validationMode) {
-    let fields;
+  getImperativeConfigurationWithContext(validationMode, containingFieldName) {
+    if (!this.validationMode) return undefined;
+    if (!this.imperativeConfigurationWithContext) return undefined;
+
+    const contextualImperativeConfigName = this.validationMode[validationMode];
+
+    if (!contextualImperativeConfigName) return undefined;
+
+    const contextualImperativeConfigs = this.imperativeConfigurationWithContext[contextualImperativeConfigName];
+
+    if (!contextualImperativeConfigs) return undefined;
+
+    const contextualImperativeConfig = contextualImperativeConfigs[containingFieldName];
+
+    return contextualImperativeConfig;
+  }
+
+  getRequiredFields(validationMode, containingFieldName) {
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
-    if (typeof specificImperativeConfiguration === 'object') {
-      fields = specificImperativeConfiguration.requiredFields;
-    } else {
-      fields = this.data.requiredFields;
-    }
-    return fields || [];
+
+    if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.requiredFields) return specificContextualImperativeConfiguration.requiredFields;
+
+    if (specificImperativeConfiguration && specificImperativeConfiguration.requiredFields) return specificImperativeConfiguration.requiredFields;
+
+    return this.data.requiredFields || [];
   }
 
   hasRequiredField(field) {
     return PropertyHelper.arrayHasField(this.requiredFields, field, this.version);
   }
 
-  getRequiredOptions(validationMode) {
-    let options;
+  getRequiredOptions(validationMode, containingFieldName) {
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
-    if (typeof specificImperativeConfiguration === 'object') {
-      options = specificImperativeConfiguration.requiredOptions;
-    } else {
-      options = this.data.requiredOptions;
-    }
-    return options || [];
+
+    if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.requiredOptions) return specificContextualImperativeConfiguration.requiredOptions;
+
+    if (specificImperativeConfiguration && specificImperativeConfiguration.requiredOptions) return specificImperativeConfiguration.requiredOptions;
+
+    return this.data.requiredOptions || [];
   }
 
-  getRecommendedFields(validationMode) {
-    let fields;
+  getRecommendedFields(validationMode, containingFieldName) {
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
-    if (typeof specificImperativeConfiguration === 'object') {
-      fields = specificImperativeConfiguration.recommendedFields;
-    } else {
-      fields = this.data.recommendedFields;
-    }
-    return fields || [];
+
+    if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.recommendedFields) return specificContextualImperativeConfiguration.recommendedFields;
+
+    if (specificImperativeConfiguration && specificImperativeConfiguration.recommendedFields) return specificImperativeConfiguration.recommendedFields;
+
+    return this.data.recommendedFields || [];
   }
 
-  getShallNotIncludeFields(validationMode) {
+  getShallNotIncludeFields(validationMode, containingFieldName) {
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
-    if (typeof specificImperativeConfiguration === 'object') {
-      const fields = specificImperativeConfiguration.shallNotInclude;
-      return fields || [];
-    }
+
+    if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.shallNotInclude) return specificContextualImperativeConfiguration.shallNotInclude;
+
+    if (specificImperativeConfiguration && specificImperativeConfiguration.shallNotInclude) return specificImperativeConfiguration.shallNotInclude;
+
     return undefined; // there are no default shallNotInclude fields
   }
 
@@ -161,6 +181,10 @@ const Model = class {
 
   get imperativeConfiguration() {
     return this.data.imperativeConfiguration;
+  }
+
+  get imperativeConfigurationWithContext() {
+    return this.data.imperativeConfigurationWithContext;
   }
 };
 
