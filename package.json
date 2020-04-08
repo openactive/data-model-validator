@@ -24,12 +24,11 @@
   "license": "MIT",
   "dependencies": {
     "@openactive/data-models": "^2.0.64",
-    "axios": "^0.18.0",
+    "axios": "^0.19.2",
     "currency-codes": "^1.5.1",
     "jsonpath": "^1.0.2",
     "moment": "^2.24.0",
     "rrule": "^2.6.2",
-    "sync-request": "^6.1.0",
     "uritemplate": "^0.3.4",
     "validator": "^10.11.0"
   },
