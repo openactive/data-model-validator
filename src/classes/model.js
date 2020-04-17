@@ -117,7 +117,7 @@ const Model = class {
 
     if (specificImperativeConfiguration && specificImperativeConfiguration.shallNotInclude) return specificImperativeConfiguration.shallNotInclude;
 
-    return undefined; // there are no default shallNotInclude fields
+    return this.data.shallNotInclude || [];
   }
 
   hasRecommendedField(field) {
