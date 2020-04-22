@@ -145,7 +145,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         example = `${prefix}1234`;
         break;
       case 'https://schema.org/Date':
-        example = `${prefix}"2017-03-04Z"`;
+        example = `${prefix}"2017-03-04"`;
         break;
       case 'https://schema.org/DateTime':
         example = `${prefix}"2017-03-04T20:15:00Z"`;

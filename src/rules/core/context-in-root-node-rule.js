@@ -35,6 +35,13 @@ module.exports = class ContextInRootNodeRule extends Rule {
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
         },
+        oaNotInRightPlaceForDatasetSite: {
+          description: `Validates that the @context contains the schema.org context (${metaData.namespaces.schema}) and OpenActive context (${metaData.contextUrl}) as the first and second elements in an array, respectively.`,
+          message: `For a Dataset Site, the \`@context\` property must be present in the root object and contain the schema.org context ("${metaData.namespaces.schema}") and OpenActive context ("${metaData.contextUrl}") as the first and second elements in an array, respectively.\n\nFor example:\n\n\`\`\`\n{\n  "@context": [\n    "${metaData.namespaces.schema}",\n    "${metaData.contextUrl}"\n  ],\n  "type": "Event"\n}\n\`\`\``,
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
+        },
         type: {
           description: 'Validates that the context is a url or an array or urls.',
           message: `Whilst JSON-LD supports inline context objects, for use in OpenActive the \`@context\` property must contain a URL or array of URLs, with each URL pointing to a published context.\n\nThe \`@context\` property must also contain the OpenActive context ("${metaData.contextUrl}") as the first element in this array.`,
@@ -66,7 +73,16 @@ module.exports = class ContextInRootNodeRule extends Rule {
         ],
       }, node.options.version);
 
-      if (typeof fieldValue === 'undefined') {
+      if (node.options.validationMode === 'DatasetSite') {
+        if (
+          typeof fieldValue !== 'object'
+          || !(fieldValue instanceof Array)
+          || fieldValue[0] !== metaData.namespaces.schema
+          || fieldValue[1] !== metaData.contextUrl
+        ) {
+          testKey = 'oaNotInRightPlaceForDatasetSite';
+        }
+      } else if (typeof fieldValue === 'undefined') {
         testKey = 'noContext';
       } else if (
         (typeof fieldObj === 'undefined' || fieldObj === null)
