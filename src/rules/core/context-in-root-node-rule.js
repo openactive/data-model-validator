@@ -44,14 +44,14 @@ module.exports = class ContextInRootNodeRule extends Rule {
         },
         contextIncorrectForDataCatalog: {
           description: `For a DataCatalog, validates that the @context contains only the schema.org context (${metaData.namespaces.schema}) as a string.`,
-          message: `For a \`DataCatalog\`, the \`@context\` property must be present in the root object and must contain the schema.org context (${metaData.namespaces.schema}) as a string.\n\nFor example:\n\n\`\`\`\n{\n  "@context": "${metaData.namespaces.schema}",\n  "type": "DataCatalog"\n}\n\`\`\``,
+          message: `For a \`DataCatalog\`, the \`@context\` property must be present in the root object and must contain the schema.org context (\`"${metaData.namespaces.schema}"\`) as a string.\n\nFor example:\n\n\`\`\`\n{\n  "@context": "${metaData.namespaces.schema}",\n  "type": "DataCatalog"\n}\n\`\`\``,
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
         },
         contextIncorrectForDataCatalogCollection: {
           description: `For a DataCatalogCollection, validates that the @context contains only the OpenActive context ("${metaData.contextUrl}") as a string.`,
-          message: `For a \`DataCatalogCollection\`, the \`@context\` property must be present in the root object and must contain the OpenActive context ("${metaData.contextUrl}") as a string.\n\nFor example:\n\n\`\`\`\n{\n  "@context": "${metaData.contextUrl}",\n  "type": "DataCatalogCollection"\n}\n\`\`\``,
+          message: `For a \`DataCatalogCollection\`, the \`@context\` property must be present in the root object and must contain the OpenActive context (\`"${metaData.contextUrl}"\`) as a string.\n\nFor example:\n\n\`\`\`\n{\n  "@context": "${metaData.contextUrl}",\n  "type": "DataCatalogCollection"\n}\n\`\`\``,
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
