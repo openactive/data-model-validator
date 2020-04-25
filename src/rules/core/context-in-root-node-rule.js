@@ -49,13 +49,6 @@ module.exports = class ContextInRootNodeRule extends Rule {
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
         },
-        contextIncorrectForDataCatalogCollection: {
-          description: `For a DataCatalogCollection, validates that the @context contains only the OpenActive context ("${metaData.contextUrl}") as a string.`,
-          message: `For a \`DataCatalogCollection\`, the \`@context\` property must be present in the root object and must contain the OpenActive context (\`"${metaData.contextUrl}"\`) as a string.\n\nFor example:\n\n\`\`\`\n{\n  "@context": "${metaData.contextUrl}",\n  "type": "DataCatalogCollection"\n}\n\`\`\``,
-          category: ValidationErrorCategory.CONFORMANCE,
-          severity: ValidationErrorSeverity.FAILURE,
-          type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
-        },
         type: {
           description: 'Validates that the context is a url or an array or urls.',
           message: `Whilst JSON-LD supports inline context objects, for use in OpenActive the \`@context\` property must contain a URL or array of URLs, with each URL pointing to a published context.\n\nThe \`@context\` property must also contain the OpenActive context (\`"${metaData.contextUrl}"\`) as the first element in this array.`,
@@ -98,21 +91,10 @@ module.exports = class ContextInRootNodeRule extends Rule {
         }
       } else if (node.options.validationMode === 'DataCatalog') {
         if (
-          node.model.type === 'DataCatalog'
-          && (
-            typeof fieldValue !== 'string'
-            || fieldValue !== metaData.namespaces.schema
-          )
+          typeof fieldValue !== 'string'
+          || fieldValue !== metaData.namespaces.schema
         ) {
           testKey = 'contextIncorrectForDataCatalog';
-        } else if (
-          node.model.type === 'DataCatalogCollection'
-          && (
-            typeof fieldValue !== 'string'
-            || fieldValue !== metaData.contextUrl
-          )
-        ) {
-          testKey = 'contextIncorrectForDataCatalogCollection';
         }
       } else if (typeof fieldValue === 'undefined') {
         testKey = 'noContext';
