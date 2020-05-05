@@ -78,7 +78,7 @@ const Field = class {
         const isNotString = requiredType && (requiredType.indexOf('Integer') > -1 || requiredType.indexOf('Number') > -1 || requiredType.indexOf('Boolean') > -1);
         renderedExample = isNotString ? `${example}` : `"${example}"`;
       }
-      return `${prefix || ''}\`\`\`\n${fieldName ? `"${fieldName}": ` : ''}${renderedExample}\n\`\`\``;
+      return `${prefix || ''}\`\`\`\n${fieldName ? `"${PropertyHelper.convertFieldNameToJsonLd(fieldName)}": ` : ''}${renderedExample}\n\`\`\``;
     }
     return undefined;
   }

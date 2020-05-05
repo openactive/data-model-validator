@@ -2,6 +2,7 @@ const Rule = require('../rule');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
+const PropertyHelper = require('../../helpers/property');
 
 module.exports = class RecommendedFieldsRule extends Rule {
   constructor(options) {
@@ -47,7 +48,7 @@ module.exports = class RecommendedFieldsRule extends Rule {
               path: node.getPath(field),
             },
             {
-              field,
+              field: PropertyHelper.convertFieldNameToJsonLd(field),
               model: node.model.type,
               example: example ? `\n\nA full example looks like this:\n\n${example}` : '',
             },

@@ -40,7 +40,7 @@ module.exports = class ShallNotIncludeFieldsRule extends Rule {
               path: node.getPath(field),
             },
             {
-              field,
+              field: PropertyHelper.convertFieldNameToJsonLd(field),
               model: node.model.type,
             },
           ),

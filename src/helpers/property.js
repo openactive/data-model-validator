@@ -24,6 +24,13 @@ const PropertyHelper = class {
     return keyChecks.indexOf(data) >= 0;
   }
 
+  static convertFieldNameToJsonLd(fieldName) {
+    if (fieldName === 'type' || fieldName === 'id') {
+      return `@${fieldName}`;
+    }
+    return fieldName;
+  }
+
   static arrayHasField(data, property, version) {
     if (
       typeof data !== 'object'

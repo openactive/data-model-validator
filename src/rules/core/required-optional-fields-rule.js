@@ -2,6 +2,7 @@ const Rule = require('../rule');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
+const PropertyHelper = require('../../helpers/property');
 
 module.exports = class RequiredOptionalFieldsRule extends Rule {
   constructor(options) {
@@ -57,7 +58,7 @@ module.exports = class RequiredOptionalFieldsRule extends Rule {
                 path: node.getPath(option.options),
               },
               {
-                optionalFields: `\`${option.options.join('`, `')}\``,
+                optionalFields: `\`${option.options.map(PropertyHelper.convertFieldNameToJsonLd).join('`, `')}\``,
                 message: option.description && option.description.length > 0 ? `\n\n${option.description.join('\n\n')}` : '',
                 qualifier: option.oneOf ? 'exactly' : 'at least',
                 model: node.model.type,
