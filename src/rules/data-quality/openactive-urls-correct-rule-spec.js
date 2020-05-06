@@ -79,27 +79,27 @@ describe('OpenactiveUrlsCorrectRule', () => {
   it('should return an error if the context is present, but contains a field not matching the correct scheme / domain', async () => {
     const dataItems = [
       {
-        '@context': 'https://www.openactive.io/ns/oa.jsonld',
+        '@context': 'https://www.openactive.io/',
         type: 'Event',
       },
       {
-        '@context': ['https://www.openactive.io/ns/oa.jsonld'],
+        '@context': ['https://www.openactive.io/'],
         type: 'Event',
       },
       {
-        '@context': 'http://www.openactive.io/ns/oa.jsonld',
+        '@context': 'http://www.openactive.io/',
         type: 'Event',
       },
       {
-        '@context': ['http://www.openactive.io/ns/oa.jsonld'],
+        '@context': ['http://www.openactive.io/'],
         type: 'Event',
       },
       {
-        '@context': 'http://openactive.io/ns/oa.jsonld',
+        '@context': 'http://openactive.io/',
         type: 'Event',
       },
       {
-        '@context': ['http://openactive.io/ns/oa.jsonld'],
+        '@context': ['http://openactive.io/'],
         type: 'Event',
       },
     ];

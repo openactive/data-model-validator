@@ -7,7 +7,7 @@ The OpenActive data model validator library.
 
 ## Introduction
 
-This library allows developers to validate JSON models to the latest [OpenActive Modelling Opportunity Data](https://www.openactive.io/modelling-opportunity-data/) specification.
+This library allows developers to validate JSON models to the latest [OpenActive Modelling Opportunity Data](https://openactive.io/modelling-opportunity-data/) specification.
 
 ## Using in your application
 
@@ -25,7 +25,7 @@ $ npm install @openactive/data-model-validator
 const { validate } = require('@openactive/data-model-validator');
 
 const data = {
-  '@context': 'https://www.openactive.io/ns/oa.jsonld',
+  '@context': 'https://openactive.io/',
   type: 'Event',
   name: 'Tai chi Class',
   url: 'http://www.example.org/events/1',

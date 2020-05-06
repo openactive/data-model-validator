@@ -17,14 +17,14 @@ module.exports = class FieldsNotInModelRule extends Rule {
       tests: {
         invalidExperimental: {
           description: 'Raises a notice if experimental properties are detected, but have no definition in the @context.',
-          message: 'No definition for this extension property could be found. Extension properties must be described by a published JSON-LD definition, which must be referred to in the `@context`. Please check that you have a published context defined, and that this property is defined within it.\n\nFor more information about extension properties, see the [extension properties guide](https://www.openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
+          message: 'No definition for this extension property could be found. Extension properties must be described by a published JSON-LD definition, which must be referred to in the `@context`. Please check that you have a published context defined, and that this property is defined within it.\n\nFor more information about extension properties, see the [extension properties guide](https://openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.NOTICE,
           type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
         },
         invalidExperimentalNotInDomain: {
           description: 'Raises a notice if experimental properties are detected, but have no definition in the @context.',
-          message: 'A definition for this extension property was found, but it has not been included in the correct object type. Please check the spelling of this property and ensure that you are using it within the correct object `"type"`.\n\nThe types allowed for this property are:\n\n{{domains}}\n\nFor more information about extension properties, see the [extension properties guide](https://www.openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
+          message: 'A definition for this extension property was found, but it has not been included in the correct object type. Please check the spelling of this property and ensure that you are using it within the correct object `"type"`.\n\nThe types allowed for this property are:\n\n{{domains}}\n\nFor more information about extension properties, see the [extension properties guide](https://openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
           sampleValues: {
             domains: '<ul><li>https://schema.org/Place</li></ul>',
           },
@@ -34,7 +34,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
         },
         invalidExperimentalDomainNotFound: {
           description: 'Raises a notice if experimental properties are detected, but have no definition in the @context.',
-          message: 'A definition for this extension property was found, but a check could not be performed to assess whether it has been included in the correct object `"type"`.\n\nFor more information about extension properties, see the [extension properties guide](https://www.openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
+          message: 'A definition for this extension property was found, but a check could not be performed to assess whether it has been included in the correct object `"type"`.\n\nFor more information about extension properties, see the [extension properties guide](https://openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.NOTICE,
           type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
@@ -51,7 +51,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
           type: ValidationErrorType.FILE_NOT_FOUND,
         },
         extensionInvalid: {
-          message: 'Could not validate `{{field}}` property because the `"@context"` value `"{{context}}"` did not return a valid JSON response. Please check that it contains a JSON document in the format described in [the specification](https://www.openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).\n\nAdditionally, please check the `"@context"` property in the root object to ensure all values are valid.\n\nThe correct way to reference the OpenActive contexts is using these URLs:\n\n <ul><li>`"https://openactive.io/"` (always required)</li><li>`"https://openactive.io/ns-beta"` (only required if using `beta:` properties)</li></ul>',
+          message: 'Could not validate `{{field}}` property because the `"@context"` value `"{{context}}"` did not return a valid JSON response. Please check that it contains a JSON document in the format described in [the specification](https://openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).\n\nAdditionally, please check the `"@context"` property in the root object to ensure all values are valid.\n\nThe correct way to reference the OpenActive contexts is using these URLs:\n\n <ul><li>`"https://openactive.io/"` (always required)</li><li>`"https://openactive.io/ns-beta"` (only required if using `beta:` properties)</li></ul>',
           sampleValues: {
             context: 'https://openactive.io/ns-beta',
             field: 'actor',
@@ -101,7 +101,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
         },
         notInSpec: {
           description: 'Raises a warning for properties that aren\'t in the OpenActive specification, and that aren\'t caught by other rules.',
-          message: 'This property is not defined in the OpenActive specification. Data publishers are encouraged to publish as many data properties as possible, and for those that don\'t match the specification, to use [extension properties](https://www.openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).\n\nFor example:\n\n```\n{\n  "ext:{{field}}": "my custom data"\n}\n```\n\nIf you are trying to use a recognised property, please check the spelling and ensure that you are using it within the correct object `"type"`. Otherwise if you are trying to add your own property, simply rename it to `ext:{{field}}`.',
+          message: 'This property is not defined in the OpenActive specification. Data publishers are encouraged to publish as many data properties as possible, and for those that don\'t match the specification, to use [extension properties](https://openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).\n\nFor example:\n\n```\n{\n  "ext:{{field}}": "my custom data"\n}\n```\n\nIf you are trying to use a recognised property, please check the spelling and ensure that you are using it within the correct object `"type"`. Otherwise if you are trying to add your own property, simply rename it to `ext:{{field}}`.',
           sampleValues: {
             field: 'myCustomPropertyName',
           },

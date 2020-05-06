@@ -12,14 +12,14 @@ module.exports = class ValidInputRule extends RawRule {
       tests: {
         noArray: {
           description: 'Generates a warning if the JSON submission is an array.',
-          message: 'Arrays are not supported for validation. Please only submit single objects for validation: either an object conforming to the [Modelling Specification](https://www.openactive.io/modelling-opportunity-data/), or an [RPDE](https://www.openactive.io/realtime-paged-data-exchange/) feed root object.',
+          message: 'Arrays are not supported for validation. Please only submit single objects for validation: either an object conforming to the [Modelling Specification](https://openactive.io/modelling-opportunity-data/), or an [RPDE](https://openactive.io/realtime-paged-data-exchange/) feed root object.',
           category: ValidationErrorCategory.INTERNAL,
           severity: ValidationErrorSeverity.WARNING,
           type: ValidationErrorType.INVALID_JSON,
         },
         noInvalid: {
           description: 'Generates an error if the submission is not a valid JSON object.',
-          message: 'Only objects are supported for validation. Please only submit single objects for validation: either an object conforming to the [Modelling Specification](https://www.openactive.io/modelling-opportunity-data/), or an [RPDE](https://www.openactive.io/realtime-paged-data-exchange/) feed root object.',
+          message: 'Only objects are supported for validation. Please only submit single objects for validation: either an object conforming to the [Modelling Specification](https://openactive.io/modelling-opportunity-data/), or an [RPDE](https://openactive.io/realtime-paged-data-exchange/) feed root object.',
           category: ValidationErrorCategory.INTERNAL,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.INVALID_JSON,

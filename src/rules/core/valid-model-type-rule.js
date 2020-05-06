@@ -39,7 +39,7 @@ module.exports = class ValidModelTypeRule extends Rule {
           type: ValidationErrorType.MISSING_REQUIRED_FIELD,
         },
         noExperimental: {
-          message: 'Type `{{type}}` is not recognised by the validator, as it is not part of the [Modelling Opportunity Data specification](https://www.openactive.io/modelling-opportunity-data/) or schema.org, and cannot be checked for validity.',
+          message: 'Type `{{type}}` is not recognised by the validator, as it is not part of the [Modelling Opportunity Data specification](https://openactive.io/modelling-opportunity-data/) or schema.org, and cannot be checked for validity.',
           sampleValues: {
             type: 'CreativeWork',
           },

@@ -65,7 +65,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
           type: ValidationErrorType.FILE_NOT_FOUND,
         },
         listInvalid: {
-          message: 'Activity list `"{{list}}"` did not return a valid JSON response. Please check that it contains a JSON document in the format described in [the specification](https://www.openactive.io/modelling-opportunity-data/#describing-activity-lists-code-skos-conceptscheme-code-and-physical-activity-code-skos-concept-code-).',
+          message: 'Activity list `"{{list}}"` did not return a valid JSON response. Please check that it contains a JSON document in the format described in [the specification](https://openactive.io/modelling-opportunity-data/#describing-activity-lists-code-skos-conceptscheme-code-and-physical-activity-code-skos-concept-code-).',
           sampleValues: {
             list: 'https://openactive.io/activity-list',
           },
