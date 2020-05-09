@@ -274,10 +274,10 @@ describe('FieldsCorrectTypeRule', () => {
     model.hasSpecification = true;
 
     const values = [
-      'http://10.1.1.1',
+      'ftp://10.1.1.1',
       'http://1.1.1.1.1',
-      'http://127.0.0.1',
-      'http://localhost/',
+      'http://a',
+      '//example.com/',
       true,
       27,
       {},
