@@ -3,6 +3,7 @@ const util = require('util');
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
+const writeFileAtomic = require('write-file-atomic');
 const OptionsHelper = require('./options');
 
 const ERROR_NONE = 'error_none';
@@ -107,7 +108,7 @@ async function getFromFsCacheIfExists(baseCachePath, url) {
 
 async function saveToFsCache(baseCachePath, url, fileObject) {
   const cachePath = getFsCachePath(baseCachePath, url);
-  await util.promisify(fs.writeFile)(cachePath, JSON.stringify(fileObject));
+  await writeFileAtomic(cachePath, JSON.stringify(fileObject), { chown: false, mode: false });
 }
 
 /**
