@@ -108,7 +108,7 @@ async function getFromFsCacheIfExists(baseCachePath, url) {
 
 async function saveToFsCache(baseCachePath, url, fileObject) {
   const cachePath = getFsCachePath(baseCachePath, url);
-  await writeFileAtomic(cachePath, JSON.stringify(fileObject), { chown: false, mode: false });
+  await writeFileAtomic(cachePath, JSON.stringify(fileObject), { chown: false });
 }
 
 /**
