@@ -196,7 +196,7 @@ describe('FieldsNotInModelRule', () => {
 
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED);
-      expect(error.severity).toBe(ValidationErrorSeverity.NOTICE);
+      expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
 
@@ -357,7 +357,7 @@ describe('FieldsNotInModelRule', () => {
 
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED);
-      expect(error.severity).toBe(ValidationErrorSeverity.NOTICE);
+      expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
 

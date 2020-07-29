@@ -19,12 +19,29 @@ module.exports = class FieldsNotInModelRule extends Rule {
           description: 'Raises a notice if experimental properties are detected, but have no definition in the @context.',
           message: 'No definition for this extension property could be found. Extension properties must be described by a published JSON-LD definition, which must be referred to in the `@context`. Please check that you have a published context defined, and that this property is defined within it.\n\nFor more information about extension properties, see the [extension properties guide](https://openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
           category: ValidationErrorCategory.CONFORMANCE,
-          severity: ValidationErrorSeverity.NOTICE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
+        },
+        invalidBeta: {
+          description: 'Raises a notice if unrecognised Beta properties are detected.',
+          message: 'No definition for this `beta` property could be found. Please check that your `@context` includes `"https://openactive.io/ns-beta"` [as shown in this example](https://openactive.io/ns-beta/#example-use), and then check the property name exactly matches one in the list of available `beta:` properties in the [Beta Namespace](https://openactive.io/ns-beta/#namespace).\n\nIf you would like to define a custom property that is not covered by `beta:`, consider using an extension property. For more information about extension properties, see the [extension properties guide](https://openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
         },
         invalidExperimentalNotInDomain: {
           description: 'Raises a notice if experimental properties are detected, but have no definition in the @context.',
-          message: 'A definition for this extension property was found, but it has not been included in the correct object type. Please check the spelling of this property and ensure that you are using it within the correct object `"type"`.\n\nThe types allowed for this property are:\n\n{{domains}}\n\nFor more information about extension properties, see the [extension properties guide](https://openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
+          message: 'A definition for this extension property was found, but it has not been included in the correct object type. Please check the spelling of this property and ensure that you are using it within the correct object `"@type"`.\n\nThe types allowed for this property are:\n\n{{domains}}\n\nFor more information about extension properties, see the [extension properties guide](https://openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
+          sampleValues: {
+            domains: '<ul><li>https://schema.org/Place</li></ul>',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
+        },
+        invalidBetaNotInDomain: {
+          description: 'Raises a notice if Beta properties are detected, but are included in the wrong type',
+          message: 'A definition for this `beta` property was found, but it has not been included in the correct object type. Please check the spelling of this property and ensure that you are using it within the correct object `"@type"`.\n\nThe types allowed for this property are:\n\n{{domains}}\n\nIf you would like to use this `beta:` property for a type other than those listed, please find the relevant GitHub issue in the [Beta Namespace](https://openactive.io/ns-beta/#namespace) and make your request known.',
           sampleValues: {
             domains: '<ul><li>https://schema.org/Place</li></ul>',
           },
@@ -284,7 +301,11 @@ module.exports = class FieldsNotInModelRule extends Rule {
           prop.namespace === null
           && prop.prefix === null
         ) {
-          testKey = 'invalidExperimental';
+          if (field.substring(0, 5) === 'beta:') {
+            testKey = 'invalidBeta';
+          } else {
+            testKey = 'invalidExperimental';
+          }
         } else {
           // We should see if this field is even allowed in this model
           let isDefined = false;
@@ -319,10 +340,18 @@ module.exports = class FieldsNotInModelRule extends Rule {
             switch (graphResponse.code) {
               case GraphHelper.PROPERTY_NOT_FOUND:
               default:
-                testKey = 'invalidExperimental';
+                if (field.substring(0, 5) === 'beta:') {
+                  testKey = 'invalidBeta';
+                } else {
+                  testKey = 'invalidExperimental';
+                }
                 break;
               case GraphHelper.PROPERTY_NOT_IN_DOMAIN:
-                testKey = 'invalidExperimentalNotInDomain';
+                if (field.substring(0, 5) === 'beta:') {
+                  testKey = 'invalidBetaNotInDomain';
+                } else {
+                  testKey = 'invalidExperimentalNotInDomain';
+                }
                 messageValues = {
                   domains: `<ul><li>${graphResponse.data.join('</li><li>')}</li></ul>`,
                 };
