@@ -19,10 +19,6 @@ const OptionsHelper = class {
     return this.options.rpdeItemLimit;
   }
 
-  get schemaOrgSpecifications() {
-    return this.options.schemaOrgSpecifications || [];
-  }
-
   get type() {
     return this.options.type;
   }

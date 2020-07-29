@@ -259,6 +259,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
   }
 
   async validateField(node, field) {
+    const schemaOrgVocab = DataModelHelper.getSchemaOrgVocab();
     // Don't do this check for models that we don't actually have a spec for
     if (!node.model.hasSpecification) {
       return [];
@@ -308,7 +309,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
               field,
               model,
               node.options.version,
-              [oaContext, ...node.options.schemaOrgSpecifications],
+              [oaContext, schemaOrgVocab],
             );
             if (graphResponse.code === GraphHelper.PROPERTY_FOUND) {
               isDefined = true;
@@ -354,7 +355,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
         }
         // Use baseSchemaClass to indicate the most relevant schema.org base class within which to search for properties
         if (typeof node.model.baseSchemaClass === 'string') {
-          for (const spec of node.options.schemaOrgSpecifications) {
+          for (const spec of [schemaOrgVocab]) {
             const graphResponse = GraphHelper.isPropertyInClass(
               spec,
               `schema:${fieldToTest}`,
@@ -372,8 +373,6 @@ module.exports = class FieldsNotInModelRule extends Rule {
           messageValues = {
             field: prop.label,
           };
-        } else if (node.options.schemaOrgSpecifications === []) {
-          testKey = 'noAccessToSchema';
         } else {
           testKey = 'notInSpec';
           messageValues = {

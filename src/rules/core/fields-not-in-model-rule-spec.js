@@ -27,47 +27,6 @@ describe('FieldsNotInModelRule', () => {
   }, 'latest');
   model.hasSpecification = true;
 
-  const schemaOrgSpec = {
-    '@context': {
-      rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-      rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
-      xsd: 'http://www.w3.org/2001/XMLSchema#',
-    },
-    '@graph': [
-      {
-        '@id': 'https://schema.org/Event',
-        '@type': 'rdfs:Class',
-        'http://www.w3.org/2002/07/owl#equivalentClass': {
-          '@id': 'http://purl.org/dc/dcmitype/Event',
-        },
-        'rdfs:comment': 'An event happening at a certain time and location, such as a concert, lecture, or festival. Ticketing information may be added via the <a class="localLink" href="https://schema.org/offers">offers</a> property. Repeated events may be structured as separate Event objects.',
-        'rdfs:label': 'Event',
-        'rdfs:subClassOf': {
-          '@id': 'https://schema.org/Thing',
-        },
-      },
-      {
-        '@id': 'https://schema.org/Thing',
-        '@type': 'rdfs:Class',
-        'rdfs:comment': 'The most generic type of item.',
-        'rdfs:label': 'Thing',
-      },
-      {
-        '@id': 'https://schema.org/alternateName',
-        '@type': 'rdf:Property',
-        'https://schema.org/domainIncludes': {
-          '@id': 'https://schema.org/Thing',
-        },
-        'https://schema.org/rangeIncludes': {
-          '@id': 'https://schema.org/Text',
-        },
-        'rdfs:comment': 'An alias for the item.',
-        'rdfs:label': 'alternateName',
-      },
-    ],
-    '@id': 'https://schema.org/#3.4',
-  };
-
   const rule = new FieldsNotInModelRule();
 
   it('should target fields of any type', () => {
@@ -287,7 +246,6 @@ describe('FieldsNotInModelRule', () => {
 
     const options = new OptionsHelper({
       loadRemoteJson: true,
-      schemaOrgSpecifications: [schemaOrgSpec],
     });
 
     const nodeToTest = new ModelNode(
@@ -310,7 +268,6 @@ describe('FieldsNotInModelRule', () => {
     };
 
     const options = new OptionsHelper({
-      schemaOrgSpecifications: [schemaOrgSpec],
     });
 
     const nodeToTest = new ModelNode(
