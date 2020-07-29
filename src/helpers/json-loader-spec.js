@@ -33,7 +33,7 @@ describe('JsonLoaderHelper', () => {
   it('should follow the link header of a JSON file', async () => {
     // This ensures that schema.org is supported
     // See https://github.com/schemaorg/schemaorg/issues/2578 for reference
-    const scope = nock('https://schema.org')
+    const scope = nock('https://openactive.io')
       .get('/')
       .reply(200, {}, {
         'Content-Type': 'application/ld+json',
@@ -45,7 +45,7 @@ describe('JsonLoaderHelper', () => {
       });
 
     const response = await JsonLoaderHelper.getFile(
-      'https://schema.org/',
+      'https://openactive.io/',
       new OptionsHelper({
         loadRemoteJson: true,
       }),
