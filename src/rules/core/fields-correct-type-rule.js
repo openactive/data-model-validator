@@ -107,8 +107,6 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         return `[\`string${plural}\` containing an ISO 8601 Duration](${type})`;
       case 'https://schema.org/URL':
         return `[\`string${plural}\` containing a url](${type})`;
-      case 'https://schema.org/urlTemplate':
-        return `[\`string${plural}\` containing a urlTemplate](${type})`;
       default:
         return `\`${type.replace(/^#/, '')}\``;
     }
@@ -158,9 +156,6 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         break;
       case 'https://schema.org/URL':
         example = `${prefix}"https://www.example.org/"`;
-        break;
-      case 'https://schema.org/urlTemplate':
-        example = `${prefix}"https://www.example.org/{startDate}/{endDate}"`;
         break;
       default:
         if (PropertyHelper.isEnum(readableType, version)) {

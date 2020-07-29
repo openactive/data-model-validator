@@ -300,14 +300,14 @@ describe('FieldsCorrectTypeRule', () => {
     }
   });
 
-  // urlTemplate
-  it('should return no error for an valid urlTemplate type', async () => {
+  // URL Template
+  it('should return no error for an valid Text type for a URL Template', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'https://schema.org/urlTemplate',
+          requiredType: 'https://schema.org/Text',
         },
       },
     }, 'latest');
@@ -330,26 +330,20 @@ describe('FieldsCorrectTypeRule', () => {
       expect(errors.length).toBe(0);
     }
   });
-  it('should return an error for an invalid urlTemplate type', async () => {
+  it('should return an error for a URL Template used for a URL type', async () => {
     const model = new Model({
       type: 'Event',
       fields: {
         field: {
           fieldName: 'field',
-          requiredType: 'https://schema.org/urlTemplate',
+          requiredType: 'https://schema.org/URL',
         },
       },
     }, 'latest');
     model.hasSpecification = true;
 
     const values = [
-      'http://10.1.1.1',
-      'http://1.1.1.1.1',
-      'http://127.0.0.1',
-      'http://localhost/',
-      true,
-      27,
-      {},
+      'http://{domain}/{?query*}',
     ];
 
     for (const value of values) {

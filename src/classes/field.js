@@ -171,7 +171,7 @@ const Field = class {
             }
           }
           if (isUrlTemplate) {
-            returnType = 'https://schema.org/urlTemplate';
+            returnType = 'https://schema.org/Text';
           } else if (this.constructor.URL_REGEX.test(data)) {
             returnType = 'https://schema.org/URL';
           }
@@ -381,7 +381,6 @@ Field.canBeTypeOfMapping = {
   'https://schema.org/Time': 'https://schema.org/Text',
   'https://schema.org/Integer': 'https://schema.org/Number',
   'https://schema.org/URL': 'https://schema.org/Text',
-  'https://schema.org/urlTemplate': 'https://schema.org/Text',
 };
 
 module.exports = Field;
