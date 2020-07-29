@@ -41,7 +41,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
         },
         invalidBetaNotInDomain: {
           description: 'Raises a notice if Beta properties are detected, but are included in the wrong type',
-          message: 'A definition for this `beta` property was found, but it has not been included in the correct object type. Please check the spelling of this property and ensure that you are using it within the correct object `"@type"`.\n\nThe types allowed for this property are:\n\n{{domains}}\n\nIf you would like to use this `beta:` property for a type other than those listed, please find the relevant GitHub issue in the [Beta Namespace](https://openactive.io/ns-beta/#namespace) and make your request known.',
+          message: 'A definition for this `beta` property was found, but it has not been included in the correct object type. Please check the spelling of this property and ensure that you are using it within the correct object `"@type"`.\n\nThe types allowed for this property are:\n\n{{domains}}\n\nIf you would like to use this `beta:` property for a type other than those listed, please find the relevant proposal\'s GitHub issue in the [Beta Namespace](https://openactive.io/ns-beta/#namespace) and make your request known.',
           sampleValues: {
             domains: '<ul><li>https://schema.org/Place</li></ul>',
           },
