@@ -1,6 +1,6 @@
 {
   "name": "@openactive/data-model-validator",
-  "version": "2.0.31",
+  "version": "2.0.32",
   "description": "A library to allow a developer to validate a JSON document against the OpenActive Modelling Opportunity Specification",
   "homepage": "https://openactive.io",
   "author": "OpenActive Community <hello@openactive.io>",
