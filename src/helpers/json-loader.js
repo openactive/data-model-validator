@@ -131,7 +131,7 @@ async function getFromRemoteUrl(url) {
     const regex = /<(.*)>; rel="alternate"; type="application\/ld\+json"/;
     if (typeof response.headers.link === 'string') {
       const match = response.headers.link.match(regex);
-      if (match.length === 2) {
+      if (match !== null) {
         const { origin } = new URL(url);
         const linkUrl = match[1];
         response = await axios.get(origin + linkUrl, {
