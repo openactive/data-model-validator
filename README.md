@@ -145,7 +145,7 @@ const result = await validate(feed, options);
 
 #### schemaOrgSpecifications
 
-An array of schema.org specifications in `JSON-LD` format. For example, see https://schema.org/version/latest/schema.jsonld
+An array of schema.org specifications in `JSON-LD` format. For example, see https://schema.org/version/latest/schemaorg-current-https.jsonld
 
 e.g.
 
