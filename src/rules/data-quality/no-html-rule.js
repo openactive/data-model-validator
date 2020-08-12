@@ -1,3 +1,8 @@
+const striptags = require('striptags');
+const { AllHtmlEntities } = require('html-entities');
+
+const entities = new AllHtmlEntities();
+
 const Rule = require('../rule');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
@@ -12,9 +17,15 @@ module.exports = class NoHtmlRule extends Rule {
       description: 'Validates that a text property doesn\'t contain HTML.',
       tests: {
         default: {
-          message: 'HTML should be stripped from all data before publishing.',
+          message: 'HTML must be stripped from all data before publishing, except for the value of the [`beta:formattedDescription`](https://openactive.io/ns-beta/#formattedDescription) property.',
           category: ValidationErrorCategory.DATA_QUALITY,
-          severity: ValidationErrorSeverity.WARNING,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.NO_HTML,
+        },
+        descriptionIncludesHtml: {
+          message: 'HTML must be stripped from any value of the `description` property. Consider using [`beta:formattedDescription`](https://openactive.io/ns-beta/#formattedDescription) **in addition** to the `description` property to expose this raw HTML.',
+          category: ValidationErrorCategory.DATA_QUALITY,
+          severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.NO_HTML,
         },
       },
@@ -22,8 +33,7 @@ module.exports = class NoHtmlRule extends Rule {
   }
 
   static isHTML(str) {
-    // Source: https://stackoverflow.com/a/15459273
-    return /<(?=.*? .*?\/ ?>|br|hr|input|!--|wbr)[a-z]+.*?>|<([a-z]+).*?<\/\1>/i.test(str);
+    return entities.decode(striptags(str)).trim() !== str.trim();
   }
 
   validateField(node, field) {
@@ -38,7 +48,7 @@ module.exports = class NoHtmlRule extends Rule {
     if (this.constructor.isHTML(fieldValue)) {
       errors.push(
         this.createError(
-          'default',
+          field === 'description' ? 'descriptionIncludesHtml' : 'default',
           {
             value: fieldValue,
             path: node.getPath(field),
