@@ -29,7 +29,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
             activity: 'Touch Football',
           },
           category: ValidationErrorCategory.DATA_QUALITY,
-          severity: ValidationErrorSeverity.WARNING,
+          severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST,
         },
         noPrefLabelMatch: {
@@ -83,9 +83,9 @@ module.exports = class ActivityInActivityListRule extends Rule {
           type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
         },
         useOfficialActivityList: {
-          message: 'To ensure your data gets used by the largest number of apps and websites, it is recommended that you align your activities with the official [OpenActive activity list](https://openactive.io/activity-list).`',
+          message: 'To ensure that your data gets used by the largest number of apps and websites, you must align your activities with the official [OpenActive activity list](https://openactive.io/activity-list).`',
           category: ValidationErrorCategory.DATA_QUALITY,
-          severity: ValidationErrorSeverity.WARNING,
+          severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.USE_OFFICIAL_ACTIVITY_LIST,
         },
       },
