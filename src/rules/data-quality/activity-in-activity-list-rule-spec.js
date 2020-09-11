@@ -137,9 +137,9 @@ describe('ActivityInActivityListRule', () => {
       const errors = await rule.validate(nodeToTest);
       expect(errors.length).toBe(2);
       expect(errors[0].type).toBe(ValidationErrorType.USE_OFFICIAL_ACTIVITY_LIST);
-      expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
       expect(errors[1].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
-      expect(errors[1].severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(errors[1].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
   it('should return an error when an activity list URL does not exist', async () => {
@@ -179,11 +179,11 @@ describe('ActivityInActivityListRule', () => {
       expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
       expect(errors.length).toBe(3);
       expect(errors[0].type).toBe(ValidationErrorType.USE_OFFICIAL_ACTIVITY_LIST);
-      expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
       expect(errors[1].type).toBe(ValidationErrorType.FILE_NOT_FOUND);
       expect(errors[1].severity).toBe(ValidationErrorSeverity.FAILURE);
       expect(errors[2].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
-      expect(errors[2].severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(errors[2].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
   it('should return an error when using an old Activity List URL', async () => {
@@ -225,7 +225,7 @@ describe('ActivityInActivityListRule', () => {
       expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
       expect(errors[1].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
-      expect(errors[1].severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(errors[1].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
   it('should return an error when an activity list URL contains invalid JSON', async () => {
@@ -265,11 +265,11 @@ describe('ActivityInActivityListRule', () => {
       expect(JsonLoaderHelper.getFile).toHaveBeenCalled();
       expect(errors.length).toBe(3);
       expect(errors[0].type).toBe(ValidationErrorType.USE_OFFICIAL_ACTIVITY_LIST);
-      expect(errors[0].severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
       expect(errors[1].type).toBe(ValidationErrorType.FILE_NOT_FOUND);
       expect(errors[1].severity).toBe(ValidationErrorSeverity.FAILURE);
       expect(errors[2].type).toBe(ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST);
-      expect(errors[2].severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(errors[2].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
 });
