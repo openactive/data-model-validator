@@ -124,22 +124,18 @@ const ModelNode = class {
       this.model.inSpec.indexOf(field) >= 0
       && this.parentNode !== null
       && this.canInheritFrom(this.parentNode)
-    ) {
       // Does our property allow us to inherit?
-      if (
-        typeof this.parentNode.model.fields[this.cleanName] !== 'undefined'
-        && typeof this.parentNode.model.fields[this.cleanName].inheritsTo !== 'undefined'
-      ) {
-        if (
-          this.constructor.checkInheritRule(
-            this.parentNode.model.fields[this.cleanName].inheritsTo,
-            field,
-          )
-        ) {
-          return this.parentNode;
-        }
-      }
-    } else if (typeof this.model.fields === 'object' && this.model.fields !== null) {
+      && typeof this.parentNode.model.fields[this.cleanName] !== 'undefined'
+      && typeof this.parentNode.model.fields[this.cleanName].inheritsTo !== 'undefined'
+      && this.constructor.checkInheritRule(
+        this.parentNode.model.fields[this.cleanName].inheritsTo,
+        field,
+      )
+    ) {
+      return this.parentNode;
+    }
+
+    if (typeof this.model.fields === 'object' && this.model.fields !== null) {
       for (const fieldKey in this.model.fields) {
         if (Object.prototype.hasOwnProperty.call(this.model.fields, fieldKey)) {
           const modelField = this.model.fields[fieldKey];

@@ -241,7 +241,9 @@ describe('RequiredFieldsRule', () => {
         name: 'Test Event',
         type: 'Event',
         subEvent: [{
-          type: 'Event',
+          subEvent: [{
+            type: 'Event',
+          }],
         }],
       };
 
@@ -255,11 +257,11 @@ describe('RequiredFieldsRule', () => {
       const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
-      // Test the next node down
+      // Test the deepest node
       // The subEvent should inherit the parent node name, and not error
       const subEventNodeToTest = new ModelNode(
         'subEvent',
-        data.subEvent[0],
+        data.subEvent[0].subEvent[0],
         rootNodeToTest,
         inheritanceModel,
       );
@@ -277,7 +279,9 @@ describe('RequiredFieldsRule', () => {
         name: 'Test Event',
         type: 'Event',
         subEvent: [{
-          type: 'Event',
+          subEvent: [{
+            type: 'Event',
+          }],
         }],
       };
 
@@ -291,11 +295,11 @@ describe('RequiredFieldsRule', () => {
       const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
-      // Test the next node down
+      // Test the deepest node
       // The subEvent should inherit the parent node name, and not error
       const subEventNodeToTest = new ModelNode(
         'subEvent',
-        data.subEvent[0],
+        data.subEvent[0].subEvent[0],
         rootNodeToTest,
         inheritanceModel,
       );
@@ -313,7 +317,9 @@ describe('RequiredFieldsRule', () => {
         name: 'Test Event',
         type: 'Event',
         subEvent: [{
-          type: 'Event',
+          subEvent: [{
+            type: 'Event',
+          }],
         }],
       };
 
@@ -327,11 +333,11 @@ describe('RequiredFieldsRule', () => {
       const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
-      // Test the next node down
+      // Test the deepest node
       // The subEvent should inherit the parent node name, and not error
       const subEventNodeToTest = new ModelNode(
         'subEvent',
-        data.subEvent[0],
+        data.subEvent[0].subEvent[0],
         rootNodeToTest,
         inheritanceModel,
       );
@@ -349,7 +355,9 @@ describe('RequiredFieldsRule', () => {
         name: 'Test Event',
         type: 'Event',
         subEvent: [{
-          type: 'Event',
+          subEvent: [{
+            type: 'Event',
+          }],
         }],
       };
 
@@ -363,11 +371,11 @@ describe('RequiredFieldsRule', () => {
       const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
-      // Test the next node down
+      // Test the deepest node
       // The subEvent should inherit the parent node name, and not error
       const subEventNodeToTest = new ModelNode(
         'subEvent',
-        data.subEvent[0],
+        data.subEvent[0].subEvent[0],
         rootNodeToTest,
         inheritanceModel,
       );
@@ -385,7 +393,9 @@ describe('RequiredFieldsRule', () => {
         name: 'Test Event',
         type: 'Event',
         subEvent: [{
-          type: 'Event',
+          subEvent: [{
+            type: 'Event',
+          }],
         }],
       };
 
@@ -399,11 +409,11 @@ describe('RequiredFieldsRule', () => {
       const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
-      // Test the next node down
+      // Test the deepest node
       // The subEvent should inherit the parent node name, and not error
       const subEventNodeToTest = new ModelNode(
         'subEvent',
-        data.subEvent[0],
+        data.subEvent[0].subEvent[0],
         rootNodeToTest,
         inheritanceModel,
       );
@@ -423,7 +433,10 @@ describe('RequiredFieldsRule', () => {
         type: 'Event',
         superEvent: {
           type: 'Event',
-          name: 'Test Event',
+          superEvent: {
+            type: 'Event',
+            name: 'Test Event',
+          },
         },
       };
 
@@ -459,7 +472,10 @@ describe('RequiredFieldsRule', () => {
         type: 'Event',
         superEvent: {
           type: 'Event',
-          name: 'Test Event',
+          superEvent: {
+            type: 'Event',
+            name: 'Test Event',
+          },
         },
       };
 
@@ -474,10 +490,10 @@ describe('RequiredFieldsRule', () => {
       const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
-      // Test the next node down - should be fine
+      // Test the deepest node - should be fine
       const superEventNodeToTest = new ModelNode(
         'superEvent',
-        data.superEvent,
+        data.superEvent.superEvent,
         rootNodeToTest,
         inheritanceModel,
       );
@@ -495,7 +511,10 @@ describe('RequiredFieldsRule', () => {
         type: 'Event',
         superEvent: {
           type: 'Event',
-          name: 'Test Event',
+          superEvent: {
+            type: 'Event',
+            name: 'Test Event',
+          },
         },
       };
 
@@ -510,10 +529,10 @@ describe('RequiredFieldsRule', () => {
       const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(1);
 
-      // Test the next node down should be fine
+      // Test the deepest node should be fine
       const superEventNodeToTest = new ModelNode(
         'superEvent',
-        data.superEvent,
+        data.superEvent.superEvent,
         rootNodeToTest,
         inheritanceModel,
       );
@@ -531,7 +550,10 @@ describe('RequiredFieldsRule', () => {
         type: 'Event',
         superEvent: {
           type: 'Event',
-          name: 'Test Event',
+          superEvent: {
+            type: 'Event',
+            name: 'Test Event',
+          },
         },
       };
 
@@ -546,10 +568,10 @@ describe('RequiredFieldsRule', () => {
       const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(1);
 
-      // Test the next node down
+      // Test the deepest node
       const superEventNodeToTest = new ModelNode(
         'superEvent',
-        data.superEvent,
+        data.superEvent.superEvent,
         rootNodeToTest,
         inheritanceModel,
       );
@@ -567,7 +589,10 @@ describe('RequiredFieldsRule', () => {
         type: 'Event',
         superEvent: {
           type: 'Event',
-          name: 'Test Event',
+          superEvent: {
+            type: 'Event',
+            name: 'Test Event',
+          },
         },
       };
 
@@ -582,11 +607,234 @@ describe('RequiredFieldsRule', () => {
       const rootErrors = await rule.validate(rootNodeToTest);
       expect(rootErrors.length).toBe(0);
 
-      // Test the next node down
+      // Test the deepest node
       // The superEvent should be fine
       const superEventNodeToTest = new ModelNode(
         'superEvent',
+        data.superEvent.superEvent,
+        rootNodeToTest,
+        inheritanceModel,
+      );
+      const superEventErrors = await rule.validate(superEventNodeToTest);
+      expect(superEventErrors.length).toBe(0);
+    });
+  });
+
+
+  describe('with inheritsTo and inheritsFrom properties', () => {
+    it('should respect required fields when inheritsFrom is *', async () => {
+      const modelObj = loadInheritanceModel();
+      modelObj.fields.superEvent.inheritsFrom = '*';
+      const inheritanceModel = new Model(modelObj);
+      inheritanceModel.hasSpecification = true;
+      const data = {
+        type: 'Event',
+        superEvent: {
+          type: 'Event',
+          superEvent: {
+            type: 'Event',
+            name: 'Test Event',
+          },
+        },
+        subEvent: [{
+          subEvent: [{
+            type: 'Event',
+          }],
+        }],
+      };
+
+      // Test the top-level node first
+      // The superEvent should be inherited, and not error
+      const rootNodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        inheritanceModel,
+      );
+      const rootErrors = await rule.validate(rootNodeToTest);
+      expect(rootErrors.length).toBe(0);
+
+      // Test the next node down
+      const superEventNodeToTest = new ModelNode(
+        'superEvent',
         data.superEvent,
+        rootNodeToTest,
+        inheritanceModel,
+      );
+      const superEventErrors = await rule.validate(superEventNodeToTest);
+      expect(superEventErrors.length).toBe(0);
+    });
+    it('should respect required fields when inheritsFrom is set to include', async () => {
+      const modelObj = loadInheritanceModel();
+      modelObj.fields.superEvent.inheritsFrom = {
+        include: ['name'],
+      };
+      const inheritanceModel = new Model(modelObj, 'latest');
+      inheritanceModel.hasSpecification = true;
+      const data = {
+        type: 'Event',
+        superEvent: {
+          type: 'Event',
+          superEvent: {
+            type: 'Event',
+            name: 'Test Event',
+          },
+        },
+        subEvent: [{
+          subEvent: [{
+            type: 'Event',
+          }],
+        }],
+      };
+
+      // Test the top-level node first
+      // The superEvent should be inherited, and not error
+      const rootNodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        inheritanceModel,
+      );
+      const rootErrors = await rule.validate(rootNodeToTest);
+      expect(rootErrors.length).toBe(0);
+
+      // Test the deepest node - should be fine
+      const superEventNodeToTest = new ModelNode(
+        'superEvent',
+        data.superEvent.superEvent,
+        rootNodeToTest,
+        inheritanceModel,
+      );
+      const superEventErrors = await rule.validate(superEventNodeToTest);
+      expect(superEventErrors.length).toBe(0);
+    });
+    it('should respect required fields when inheritsFrom is set to include (but not the field we want)', async () => {
+      const modelObj = loadInheritanceModel();
+      modelObj.fields.superEvent.inheritsFrom = {
+        include: ['id'],
+      };
+      const inheritanceModel = new Model(modelObj, 'latest');
+      inheritanceModel.hasSpecification = true;
+      const data = {
+        type: 'Event',
+        superEvent: {
+          type: 'Event',
+          superEvent: {
+            type: 'Event',
+            name: 'Test Event',
+          },
+        },
+        subEvent: [{
+          subEvent: [{
+            type: 'Event',
+          }],
+        }],
+      };
+
+      // Test the top-level node first
+      // The superEvent should not be inherited, so should error
+      const rootNodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        inheritanceModel,
+      );
+      const rootErrors = await rule.validate(rootNodeToTest);
+      expect(rootErrors.length).toBe(1);
+
+      // Test the deepest node should be fine
+      const superEventNodeToTest = new ModelNode(
+        'superEvent',
+        data.superEvent.superEvent,
+        rootNodeToTest,
+        inheritanceModel,
+      );
+      const superEventErrors = await rule.validate(superEventNodeToTest);
+      expect(superEventErrors.length).toBe(0);
+    });
+    it('should respect required fields when inheritsFrom is set to exclude', async () => {
+      const modelObj = loadInheritanceModel();
+      modelObj.fields.superEvent.inheritsFrom = {
+        exclude: ['name'],
+      };
+      const inheritanceModel = new Model(modelObj, 'latest');
+      inheritanceModel.hasSpecification = true;
+      const data = {
+        type: 'Event',
+        superEvent: {
+          type: 'Event',
+          superEvent: {
+            type: 'Event',
+            name: 'Test Event',
+          },
+        },
+        subEvent: [{
+          subEvent: [{
+            type: 'Event',
+          }],
+        }],
+      };
+
+      // Test the top-level node first
+      // The superEvent should not be inherited by the parent node, and error
+      const rootNodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        inheritanceModel,
+      );
+      const rootErrors = await rule.validate(rootNodeToTest);
+      expect(rootErrors.length).toBe(1);
+
+      // Test the deepest node
+      const superEventNodeToTest = new ModelNode(
+        'superEvent',
+        data.superEvent.superEvent,
+        rootNodeToTest,
+        inheritanceModel,
+      );
+      const superEventErrors = await rule.validate(superEventNodeToTest);
+      expect(superEventErrors.length).toBe(0);
+    });
+    it('should respect required fields when inheritsFrom is set to exclude (but not the field we want)', async () => {
+      const modelObj = loadInheritanceModel();
+      modelObj.fields.superEvent.inheritsFrom = {
+        exclude: ['id'],
+      };
+      const inheritanceModel = new Model(modelObj, 'latest');
+      inheritanceModel.hasSpecification = true;
+      const data = {
+        type: 'Event',
+        superEvent: {
+          type: 'Event',
+          superEvent: {
+            type: 'Event',
+            name: 'Test Event',
+          },
+        },
+        subEvent: [{
+          subEvent: [{
+            type: 'Event',
+          }],
+        }],
+      };
+
+      // Test the top-level node first, it should inherit the superEvent
+      // node name, and not error
+      const rootNodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        inheritanceModel,
+      );
+      const rootErrors = await rule.validate(rootNodeToTest);
+      expect(rootErrors.length).toBe(0);
+
+      // Test the deepest node
+      // The superEvent should be fine
+      const superEventNodeToTest = new ModelNode(
+        'superEvent',
+        data.superEvent.superEvent,
         rootNodeToTest,
         inheritanceModel,
       );
