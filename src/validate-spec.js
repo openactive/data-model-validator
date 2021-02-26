@@ -69,7 +69,7 @@ describe('validate', () => {
           endDate: '2017-03-22T21:00:00Z',
           offers: [{
             id: 'http://example.org/offer/1',
-            ageRange: {
+            ageRestriction: {
               type: 'QuantitativeValue',
               minValue: 18,
               maxValue: 65,
@@ -90,7 +90,7 @@ describe('validate', () => {
           endDate: '2017-03-29T21:00:00Z',
           offers: [{
             id: 'http://example.org/offer/1',
-            ageRange: {
+            ageRestriction: {
               type: 'QuantitativeValue',
               minValue: 18,
               maxValue: 65,
@@ -155,7 +155,7 @@ describe('validate', () => {
           type: 'OpeningHoursSpecification',
           opens: '07:00',
           closes: '21:00',
-          dayOfWeek: 'https://schema.org/Monday',
+          dayOfWeek: ['https://schema.org/Monday'],
         }],
         amenityFeature: [
           {
@@ -167,7 +167,7 @@ describe('validate', () => {
       },
       offers: [{
         id: 'http://example.org/offer/1',
-        ageRange: {
+        ageRestriction: {
           type: 'QuantitativeValue',
           minValue: 18,
           maxValue: 65,
@@ -392,7 +392,7 @@ describe('validate', () => {
           type: 'OpeningHoursSpecification',
           opens: '07:00',
           closes: '21:00',
-          dayOfWeek: 'https://schema.org/Monday',
+          dayOfWeek: ['https://schema.org/Monday'],
         }],
         amenityFeature: [
           {
@@ -447,7 +447,7 @@ describe('validate', () => {
           type: 'OpeningHoursSpecification',
           opens: '07:00',
           closes: '21:00',
-          dayOfWeek: 'https://schema.org/Monday',
+          dayOfWeek: ['https://schema.org/Monday'],
         }],
         amenityFeature: [
           {
