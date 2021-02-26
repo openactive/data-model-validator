@@ -1,0 +1,23 @@
+name: npm test
+
+on:
+  pull_request:
+    branches: [ master ]
+  repository_dispatch:
+    types: [data-models-update]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - name: Install
+      run: npm install
+    - name: Test
+      run: npm test
