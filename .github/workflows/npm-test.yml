@@ -3,6 +3,8 @@ name: npm test
 on:
   pull_request:
     branches: [ master ]
+  repository_dispatch:
+    types: [data-models-update]
 
 jobs:
   test:
