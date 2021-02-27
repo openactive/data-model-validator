@@ -12,14 +12,24 @@ module.exports = class NoPrefixOrNamespaceRule extends Rule {
       name: 'NoPrefixOrNamespaceRule',
       description: 'Validates that properties that are aliased in the @context are not submitted in their unaliased form.',
       tests: {
-        typeAndId: {
-          description: 'Validates that @type and @id are submitted as @type and @id, not using the deprecated alias of type and id.',
-          message: '`@{{field}}` should always be used as the name of this property.',
+        typeAndIdFailure: {
+          description: 'Validates that @type and @id are submitted as @type and @id, not using the deprecated aliases of type and id, for bookable data.',
+          message: '`@{{field}}` should always be used as the name of this property, as the use of `id` and `type` is now deprecated.',
           sampleValues: {
             field: 'type',
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.USE_FIELD_ALIASES,
+        },
+        typeAndIdWarning: {
+          description: 'Warns if @type and @id are submitted using the deprecated aliases type and id in non-bookable data.',
+          message: '`@{{field}}` should always be used as the name of this property, as the use of `id` and `type` is now deprecated.',
+          sampleValues: {
+            field: 'type',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.WARNING,
           type: ValidationErrorType.USE_FIELD_ALIASES,
         },
         noNamespace: {
@@ -92,7 +102,7 @@ module.exports = class NoPrefixOrNamespaceRule extends Rule {
       && (prop.alias === 'type' || prop.alias === 'id')
       && field !== `@${prop.alias}`
     ) {
-      testKey = 'typeAndId';
+      testKey = node.options.validationMode === 'RPDEFeed' ? 'typeAndIdWarning' : 'typeAndIdFailure';
       messageValues = {
         field: prop.alias,
       };
