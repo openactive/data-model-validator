@@ -61,12 +61,10 @@ describe('NoPrefixOrNamespaceRule', () => {
     expect(errors.length).toBe(0);
   });
 
-  // TODO: Fix this to return a warning if 'type' or 'id' are used (as this was designed to warn for '@type' or '@id').
-  // Note that this will likely require wider changes
-  it('should not return a warning if @type or @id are used', async () => {
+  it('should return an error if type or id are used', async () => {
     const data = {
-      '@type': 'Event',
-      '@id': 'http://example.org/event/1',
+      type: 'Event',
+      id: 'http://example.org/event/1',
     };
 
     const nodeToTest = new ModelNode(
@@ -77,14 +75,12 @@ describe('NoPrefixOrNamespaceRule', () => {
     );
     const errors = await rule.validate(nodeToTest);
 
-    expect(errors.length).toBe(0); // Was .toBe(2)
+    expect(errors.length).toBe(2);
 
-    /*
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.USE_FIELD_ALIASES);
-      expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
     }
-    */
   });
   it('should return a warning if prefixed fields with aliases are used', async () => {
     const data = {
@@ -114,7 +110,7 @@ describe('NoPrefixOrNamespaceRule', () => {
   });
   it('should return a warning if prefixed field values with aliases are used', async () => {
     const data = {
-      type: 'skos:Concept',
+      '@type': 'skos:Concept',
     };
 
     const nodeToTest = new ModelNode(
@@ -160,7 +156,7 @@ describe('NoPrefixOrNamespaceRule', () => {
   });
   it('should return a warning if prefixed field values with namespaces are used', async () => {
     const data = {
-      type: 'https://schema.org/Event',
+      '@type': 'https://schema.org/Event',
     };
 
     const nodeToTest = new ModelNode(

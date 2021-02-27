@@ -31,7 +31,7 @@ describe('validate', () => {
       genderRestriction: 'https://openactive.io/NoRestriction',
       activity: [
         {
-          id: 'https://openactive.io/activity-list#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
+          '@id': 'https://openactive.io/activity-list#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
           prefLabel: 'Tai Chi',
           '@type': 'Concept',
           inScheme: 'https://openactive.io/activity-list',
@@ -39,7 +39,7 @@ describe('validate', () => {
       ],
       category: [
         {
-          id: 'https://openactive.io/activity-list#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
+          '@id': 'https://openactive.io/activity-list#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
           prefLabel: 'Holistic Classes',
           '@type': 'Concept',
           inScheme: 'https://openactive.io/activity-list',
@@ -403,7 +403,7 @@ describe('validate', () => {
           {
             name: 'My Place',
             value: true,
-            type: 'ext:MyPlace',
+            '@type': 'ext:MyPlace',
           },
         ],
       };
@@ -459,7 +459,7 @@ describe('validate', () => {
           {
             name: 'My Place',
             value: true,
-            type: 'ext:MyPlace',
+            '@type': 'ext:MyPlace',
           },
         ],
       };

@@ -13,13 +13,13 @@ module.exports = class NoPrefixOrNamespaceRule extends Rule {
       description: 'Validates that properties that are aliased in the @context are not submitted in their unaliased form.',
       tests: {
         typeAndId: {
-          description: 'Validates that @type and @id are submitted as type and id.',
-          message: 'OpenActive.io maps the JSON-LD property `@{{field}}` to `{{field}}`, so `{{field}}` should always be used as the name of this property.',
+          description: 'Validates that @type and @id are submitted as @type and @id, not using the deprecated alias of type and id.',
+          message: '`@{{field}}` should always be used as the name of this property.',
           sampleValues: {
             field: 'type',
           },
           category: ValidationErrorCategory.CONFORMANCE,
-          severity: ValidationErrorSeverity.WARNING,
+          severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.USE_FIELD_ALIASES,
         },
         noNamespace: {
@@ -85,11 +85,12 @@ module.exports = class NoPrefixOrNamespaceRule extends Rule {
     const prop = PropertyHelper.getFullyQualifiedProperty(field, node.options.version);
 
     if (
-      prop.alias !== null
+      node.model.isJsonLd
+      && prop.alias !== null
       && prop.namespace === null
       && prop.prefix === null
-      && field !== prop.alias
-      && false // Note this rule is temporarily disabled
+      && (prop.alias === 'type' || prop.alias === 'id')
+      && field !== `@${prop.alias}`
     ) {
       testKey = 'typeAndId';
       messageValues = {
