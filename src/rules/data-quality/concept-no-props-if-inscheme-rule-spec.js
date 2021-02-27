@@ -56,7 +56,7 @@ describe('ConceptNoPropsIfInSchemeRule', () => {
   it('should return no error when both inScheme is specified in a namespaced field', async () => {
     const data = {
       type: 'Concept',
-      id: 'http://example.org/concept/1',
+      '@id': 'http://example.org/concept/1',
       'skos:inScheme': 'http://example.org/scheme/2',
     };
 

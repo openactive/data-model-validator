@@ -39,7 +39,7 @@ describe('FieldsNotInModelRule', () => {
       '@context': 'https://openactive.io/',
       type: 'Event',
       activity: {
-        id: 'https://example.com/reference/activities#Speedball',
+        '@id': 'https://example.com/reference/activities#Speedball',
         inScheme: 'https://example.com/reference/activities',
         prefLabel: 'Speedball',
         type: 'Concept',
@@ -58,7 +58,7 @@ describe('FieldsNotInModelRule', () => {
           longitude: -0.2369088977575302,
           type: 'GeoCoordinates',
         },
-        id: 'https://example.com/locations/1234ABCD',
+        '@id': 'https://example.com/locations/1234ABCD',
         identifier: '1234ABCD',
         name: 'Raynes Park High School',
         telephone: '01253 473934',
@@ -366,7 +366,7 @@ describe('FieldsNotInModelRule', () => {
       type: 'Event',
       offer: {
         type: 'Offer',
-        id: 'http://example.org/offer/1',
+        '@id': 'http://example.org/offer/1',
         name: 'Free Offer',
         price: 0.00,
         priceCurrency: 'GBP',

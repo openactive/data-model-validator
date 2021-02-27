@@ -89,7 +89,7 @@ describe('NoPrefixOrNamespaceRule', () => {
   it('should return a warning if prefixed fields with aliases are used', async () => {
     const data = {
       type: 'Event',
-      id: 'http://example.org/event/1',
+      '@id': 'http://example.org/event/1',
       'schema:name': 'Event Name',
       'oa:ageRange': {
         type: 'QuantitativeValue',
@@ -135,7 +135,7 @@ describe('NoPrefixOrNamespaceRule', () => {
   it('should return a warning if prefixed fields with namespaces are used', async () => {
     const data = {
       type: 'Event',
-      id: 'http://example.org/event/1',
+      '@id': 'http://example.org/event/1',
       'https://schema.org/name': 'Event Name',
       'https://openactive.io/ageRange': {
         type: 'QuantitativeValue',

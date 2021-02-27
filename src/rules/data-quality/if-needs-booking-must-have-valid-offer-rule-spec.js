@@ -50,7 +50,7 @@ describe('IfNeedsBookingMustHaveValidOfferRule', () => {
         offers: [
           {
             type: 'Offer',
-            id: 'https://example.org/offer/1',
+            '@id': 'https://example.org/offer/1',
           },
         ],
       },

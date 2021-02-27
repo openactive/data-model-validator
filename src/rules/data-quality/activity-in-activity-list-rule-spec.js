@@ -24,7 +24,7 @@ describe('ActivityInActivityListRule', () => {
 
   const activityList = {
     '@context': 'https://openactive.io/',
-    '@id': 'https://openactive.io/activity-list',
+    id: 'https://openactive.io/activity-list',
     title: 'OpenActive Activity List',
     description: 'This document describes the OpenActive standard activity list.',
     type: 'ConceptScheme',

@@ -40,7 +40,7 @@ describe('IsAccessibleForFreeRule', () => {
       type: 'Event',
       offers: [{
         type: 'Offer',
-        id: 'http://example.org/offer/1',
+        '@id': 'http://example.org/offer/1',
         name: 'Free Offer',
         price: 0.00,
         priceCurrency: 'GBP',
@@ -62,7 +62,7 @@ describe('IsAccessibleForFreeRule', () => {
       type: 'Event',
       'schema:offers': [{
         type: 'Offer',
-        id: 'http://example.org/offer/1',
+        '@id': 'http://example.org/offer/1',
         name: 'Free Offer',
         price: 0.00,
         priceCurrency: 'GBP',
@@ -84,7 +84,7 @@ describe('IsAccessibleForFreeRule', () => {
       type: 'Event',
       offers: [{
         type: 'Offer',
-        id: 'http://example.org/offer/1',
+        '@id': 'http://example.org/offer/1',
         name: 'Unfree Offer',
         price: 10.00,
         priceCurrency: 'GBP',
@@ -106,7 +106,7 @@ describe('IsAccessibleForFreeRule', () => {
       type: 'Event',
       offers: [{
         type: 'Offer',
-        id: 'http://example.org/offer/1',
+        '@id': 'http://example.org/offer/1',
         name: 'Unfree Offer',
         price: 10.00,
         priceCurrency: 'GBP',
@@ -130,7 +130,7 @@ describe('IsAccessibleForFreeRule', () => {
         type: 'Event',
         offers: [{
           type: 'Offer',
-          id: 'http://example.org/offer/1',
+          '@id': 'http://example.org/offer/1',
           name: 'Free Offer',
           price: 0.00,
           priceCurrency: 'GBP',
@@ -155,7 +155,7 @@ describe('IsAccessibleForFreeRule', () => {
         type: 'Event',
         offers: [{
           type: 'Offer',
-          id: 'http://example.org/offer/1',
+          '@id': 'http://example.org/offer/1',
           name: 'Unfree Offer',
           price: 10.00,
           priceCurrency: 'GBP',
@@ -180,7 +180,7 @@ describe('IsAccessibleForFreeRule', () => {
         type: 'Event',
         offers: [{
           type: 'Offer',
-          id: 'http://example.org/offer/1',
+          '@id': 'http://example.org/offer/1',
           name: 'Unfree Offer',
           price: 10.00,
           priceCurrency: 'GBP',
@@ -204,7 +204,7 @@ describe('IsAccessibleForFreeRule', () => {
       type: 'Event',
       offers: [{
         type: 'Offer',
-        id: 'http://example.org/offer/1',
+        '@id': 'http://example.org/offer/1',
         name: 'Free Offer',
         price: 0.00,
         priceCurrency: 'GBP',
@@ -228,7 +228,7 @@ describe('IsAccessibleForFreeRule', () => {
       type: 'Event',
       offers: [{
         type: 'Offer',
-        id: 'http://example.org/offer/1',
+        '@id': 'http://example.org/offer/1',
         name: 'Free Offer',
         price: 0.00,
         priceCurrency: 'GBP',
@@ -254,7 +254,7 @@ describe('IsAccessibleForFreeRule', () => {
         type: 'Event',
         offers: [{
           type: 'Offer',
-          id: 'http://example.org/offer/1',
+          '@id': 'http://example.org/offer/1',
           name: 'Free Offer',
           price: 0.00,
           priceCurrency: 'GBP',
@@ -281,7 +281,7 @@ describe('IsAccessibleForFreeRule', () => {
         type: 'Event',
         offers: [{
           type: 'Offer',
-          id: 'http://example.org/offer/1',
+          '@id': 'http://example.org/offer/1',
           name: 'Free Offer',
           price: 0.00,
           priceCurrency: 'GBP',

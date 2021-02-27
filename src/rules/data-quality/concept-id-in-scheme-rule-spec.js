@@ -35,7 +35,7 @@ describe('ConceptIdInSchemeRule', () => {
   it('should return no error when both id and inScheme are specified', async () => {
     const data = {
       type: 'Concept',
-      id: 'http://example.org/concept/1',
+      '@id': 'http://example.org/concept/1',
       inScheme: 'http://example.org/scheme/2',
     };
 
@@ -51,7 +51,7 @@ describe('ConceptIdInSchemeRule', () => {
   it('should return no error when both id and inScheme are specified in a namespaced field', async () => {
     const data = {
       type: 'Concept',
-      id: 'http://example.org/concept/1',
+      '@id': 'http://example.org/concept/1',
       'skos:inScheme': 'http://example.org/scheme/2',
     };
 
@@ -81,7 +81,7 @@ describe('ConceptIdInSchemeRule', () => {
   it('should return an error when an id but no inScheme is set', async () => {
     const data = {
       type: 'Concept',
-      id: 'http://example.org/concept/1',
+      '@id': 'http://example.org/concept/1',
     };
 
     const nodeToTest = new ModelNode(

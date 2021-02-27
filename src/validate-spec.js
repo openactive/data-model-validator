@@ -15,7 +15,7 @@ describe('validate', () => {
     metaData = DataModelHelper.getMetaData('latest');
     validEvent = {
       '@context': metaData.contextUrl,
-      id: 'http://www.example.org/events/1',
+      '@id': 'http://www.example.org/events/1',
       type: 'SessionSeries',
       name: 'Tai chi Class',
       description: 'A Tai chi class',
@@ -63,12 +63,12 @@ describe('validate', () => {
       subEvent: [
         {
           type: 'ScheduledSession',
-          id: 'http://www.example.org/events/12',
+          '@id': 'http://www.example.org/events/12',
           url: 'http://www.example.org/events/12',
           startDate: '2017-03-22T20:00:00Z',
           endDate: '2017-03-22T21:00:00Z',
           offers: [{
-            id: 'http://example.org/offer/1',
+            '@id': 'http://example.org/offer/1',
             ageRestriction: {
               type: 'QuantitativeValue',
               minValue: 18,
@@ -84,12 +84,12 @@ describe('validate', () => {
         },
         {
           type: 'ScheduledSession',
-          id: 'http://www.example.org/events/13',
+          '@id': 'http://www.example.org/events/13',
           url: 'http://www.example.org/events/13',
           startDate: '2017-03-29T20:00:00Z',
           endDate: '2017-03-29T21:00:00Z',
           offers: [{
-            id: 'http://example.org/offer/1',
+            '@id': 'http://example.org/offer/1',
             ageRestriction: {
               type: 'QuantitativeValue',
               minValue: 18,
@@ -105,7 +105,7 @@ describe('validate', () => {
         },
       ],
       organizer: {
-        id: 'http://www.example.org',
+        '@id': 'http://www.example.org',
         type: 'Organization',
         name: 'Example Co',
         url: 'http://www.example.org',
@@ -120,7 +120,7 @@ describe('validate', () => {
         },
       },
       leader: [{
-        id: 'http://www.example.org/person/1',
+        '@id': 'http://www.example.org/person/1',
         type: 'Person',
         name: 'Joe Bloggs',
       }],
@@ -128,7 +128,7 @@ describe('validate', () => {
         'Beginner',
       ],
       location: {
-        id: 'http://www.example.org/locations/gym',
+        '@id': 'http://www.example.org/locations/gym',
         type: 'Place',
         name: 'ExampleCo Gym',
         description: 'ExampleCo\'s main gym',
@@ -166,7 +166,7 @@ describe('validate', () => {
         ],
       },
       offers: [{
-        id: 'http://example.org/offer/1',
+        '@id': 'http://example.org/offer/1',
         ageRestriction: {
           type: 'QuantitativeValue',
           minValue: 18,
@@ -182,7 +182,7 @@ describe('validate', () => {
     };
     activityList = {
       '@context': 'https://openactive.io/',
-      '@id': 'https://openactive.io/activity-list',
+      id: 'https://openactive.io/activity-list',
       title: 'OpenActive Activity List',
       description: 'This document describes the OpenActive standard activity list.',
       type: 'ConceptScheme',
@@ -365,7 +365,7 @@ describe('validate', () => {
     it('should cope with flexible model types', async () => {
       const place = {
         '@context': metaData.contextUrl,
-        id: 'http://www.example.org/locations/gym',
+        '@id': 'http://www.example.org/locations/gym',
         type: 'Place',
         name: 'ExampleCo Gym',
         description: 'ExampleCo\'s main gym',
@@ -420,7 +420,7 @@ describe('validate', () => {
     it('should cope with arrays of flexible model types mixed with invalid elements', async () => {
       const place = {
         '@context': metaData.contextUrl,
-        id: 'http://www.example.org/locations/gym',
+        '@id': 'http://www.example.org/locations/gym',
         type: 'Place',
         name: 'ExampleCo Gym',
         description: 'ExampleCo\'s main gym',
