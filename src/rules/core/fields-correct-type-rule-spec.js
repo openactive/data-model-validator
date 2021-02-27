@@ -653,7 +653,7 @@ describe('FieldsCorrectTypeRule', () => {
 
     const values = [
       {
-        type: 'Schedule',
+        '@type': 'Schedule',
       },
     ];
 
@@ -688,11 +688,11 @@ describe('FieldsCorrectTypeRule', () => {
       27,
       {},
       {
-        type: 'Person',
+        '@type': 'Person',
       },
       [
         {
-          type: 'Schedule',
+          '@type': 'Schedule',
         },
       ],
     ];
@@ -727,7 +727,7 @@ describe('FieldsCorrectTypeRule', () => {
 
     const values = [
       {
-        type: 'Place',
+        '@type': 'Place',
         amenityFeature: [
           {
             type: 'ext:MyLocation',
@@ -1013,7 +1013,7 @@ describe('FieldsCorrectTypeRule', () => {
       duration_array: 'PT30M',
       text_array: 'Lorem ipsum',
       model_array: {
-        type: 'Schedule',
+        '@type': 'Schedule',
       },
     };
 
@@ -1054,11 +1054,11 @@ describe('FieldsCorrectTypeRule', () => {
 
     const values = [
       {
-        type: 'Schedule',
+        '@type': 'Schedule',
       },
       [
         {
-          type: 'Person',
+          '@type': 'Person',
         },
       ],
       'http://example.com/',
@@ -1103,11 +1103,11 @@ describe('FieldsCorrectTypeRule', () => {
       27,
       {},
       {
-        type: 'Person',
+        '@type': 'Person',
       },
       [
         {
-          type: 'Schedule',
+          '@type': 'Schedule',
         },
       ],
     ];

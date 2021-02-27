@@ -39,7 +39,7 @@ describe('ConceptNoPropsIfInSchemeRule', () => {
 
   it('should return no error when inScheme is not specified', async () => {
     const data = {
-      type: 'Concept',
+      '@type': 'Concept',
       broader: ['http://example.org/concept/1'],
       narrower: ['http://example.org/scheme/2'],
     };
@@ -55,7 +55,7 @@ describe('ConceptNoPropsIfInSchemeRule', () => {
   });
   it('should return no error when both inScheme is specified in a namespaced field', async () => {
     const data = {
-      type: 'Concept',
+      '@type': 'Concept',
       '@id': 'http://example.org/concept/1',
       'skos:inScheme': 'http://example.org/scheme/2',
     };
@@ -71,7 +71,7 @@ describe('ConceptNoPropsIfInSchemeRule', () => {
   });
   it('should return no error when neither broader or narrower are specified', async () => {
     const data = {
-      type: 'Concept',
+      '@type': 'Concept',
       inScheme: 'http://example.org/scheme/2',
     };
 

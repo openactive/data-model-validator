@@ -29,7 +29,7 @@ describe('BookingRootTypeCorrectRule', () => {
       {
         validationMode: 'C1Response',
         data: {
-          type: 'OrderQuote',
+          '@type': 'OrderQuote',
         },
         model: new Model({
           type: 'OrderQuote',
@@ -38,7 +38,7 @@ describe('BookingRootTypeCorrectRule', () => {
       {
         validationMode: 'BResponse',
         data: {
-          type: 'Order',
+          '@type': 'Order',
         },
         model: new Model({
           type: 'Order',
@@ -47,7 +47,7 @@ describe('BookingRootTypeCorrectRule', () => {
       {
         validationMode: 'OrdersFeed',
         data: {
-          type: 'Order',
+          '@type': 'Order',
         },
         model: new Model({
           type: 'Order',
@@ -56,7 +56,7 @@ describe('BookingRootTypeCorrectRule', () => {
       {
         validationMode: 'OrderStatus',
         data: {
-          type: 'Order',
+          '@type': 'Order',
         },
         model: new Model({
           type: 'Order',
@@ -84,7 +84,7 @@ describe('BookingRootTypeCorrectRule', () => {
       {
         validationMode: 'C1Response',
         data: {
-          type: 'Order',
+          '@type': 'Order',
         },
         model: new Model({
           type: 'Order',
@@ -93,7 +93,7 @@ describe('BookingRootTypeCorrectRule', () => {
       {
         validationMode: 'BResponse',
         data: {
-          type: 'OrderQuote',
+          '@type': 'OrderQuote',
         },
         model: new Model({
           type: 'OrderQuote',
@@ -102,7 +102,7 @@ describe('BookingRootTypeCorrectRule', () => {
       {
         validationMode: 'OrdersFeed',
         data: {
-          type: 'OrderQuote',
+          '@type': 'OrderQuote',
         },
         model: new Model({
           type: 'OrderQuote',
@@ -111,7 +111,7 @@ describe('BookingRootTypeCorrectRule', () => {
       {
         validationMode: 'OrderStatus',
         data: {
-          type: 'Event',
+          '@type': 'Event',
         },
         model: new Model({
           type: 'Event',

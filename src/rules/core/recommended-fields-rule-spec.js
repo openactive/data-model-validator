@@ -78,7 +78,7 @@ describe('RecommendedFieldsRule', () => {
   it('should return no errors if all recommended fields are present', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
       name: 'Tai chi Class',
       'schema:description': 'A class about Tai Chi',
     };
@@ -97,7 +97,7 @@ describe('RecommendedFieldsRule', () => {
   it('should return a warning per field if any recommended fields are missing', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
     };
 
     const nodeToTest = new ModelNode(
@@ -121,7 +121,7 @@ describe('RecommendedFieldsRule', () => {
 
     it('should return no errors if all recommended fields are present', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         duration: 'PT1H30M',
       };
 
@@ -139,7 +139,7 @@ describe('RecommendedFieldsRule', () => {
 
     it('should return a warning per field if any recommended fields are missing', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
       };
 
       const nodeToTest = new ModelNode(
@@ -165,7 +165,7 @@ describe('RecommendedFieldsRule', () => {
 
     it('should return no errors if all recommended fields are present', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         barTab: 300,
       };
 
@@ -183,7 +183,7 @@ describe('RecommendedFieldsRule', () => {
 
     it('should return a warning per field if any recommended fields are missing', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
       };
 
       const nodeToTest = new ModelNode(
@@ -212,9 +212,9 @@ describe('RecommendedFieldsRule', () => {
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
-        type: 'Event',
+        '@type': 'Event',
         subEvent: [{
-          type: 'Event',
+          '@type': 'Event',
         }],
       };
 
@@ -248,9 +248,9 @@ describe('RecommendedFieldsRule', () => {
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
-        type: 'Event',
+        '@type': 'Event',
         subEvent: [{
-          type: 'Event',
+          '@type': 'Event',
         }],
       };
 
@@ -284,9 +284,9 @@ describe('RecommendedFieldsRule', () => {
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
-        type: 'Event',
+        '@type': 'Event',
         subEvent: [{
-          type: 'Event',
+          '@type': 'Event',
         }],
       };
 
@@ -320,9 +320,9 @@ describe('RecommendedFieldsRule', () => {
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
-        type: 'Event',
+        '@type': 'Event',
         subEvent: [{
-          type: 'Event',
+          '@type': 'Event',
         }],
       };
 
@@ -356,9 +356,9 @@ describe('RecommendedFieldsRule', () => {
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
-        type: 'Event',
+        '@type': 'Event',
         subEvent: [{
-          type: 'Event',
+          '@type': 'Event',
         }],
       };
 
@@ -392,9 +392,9 @@ describe('RecommendedFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           name: 'Test Event',
         },
       };
@@ -428,9 +428,9 @@ describe('RecommendedFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           name: 'Test Event',
         },
       };
@@ -464,9 +464,9 @@ describe('RecommendedFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           name: 'Test Event',
         },
       };
@@ -500,9 +500,9 @@ describe('RecommendedFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           name: 'Test Event',
         },
       };
@@ -536,9 +536,9 @@ describe('RecommendedFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           name: 'Test Event',
         },
       };

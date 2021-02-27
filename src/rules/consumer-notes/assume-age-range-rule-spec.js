@@ -25,9 +25,9 @@ describe('AssumeAgeRangeRule', () => {
 
   it('should return no notice when a complete ageRange is specified', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       ageRange: {
-        type: 'QuantitativeValue',
+        '@type': 'QuantitativeValue',
         minValue: 18,
         maxValue: 25,
       },
@@ -45,9 +45,9 @@ describe('AssumeAgeRangeRule', () => {
 
   it('should return no notice when a complete ageRange is specified with namespaces', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       ageRange: {
-        type: 'QuantitativeValue',
+        '@type': 'QuantitativeValue',
         'schema:minValue': 18,
         'schema:maxValue': 25,
       },
@@ -65,7 +65,7 @@ describe('AssumeAgeRangeRule', () => {
 
   it('should return a notice when no ageRange is specified', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
     };
 
     const nodeToTest = new ModelNode(
@@ -81,9 +81,9 @@ describe('AssumeAgeRangeRule', () => {
   });
   it('should return a notice when a minValue is specified', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       ageRange: {
-        type: 'QuantitativeValue',
+        '@type': 'QuantitativeValue',
         minValue: 1,
       },
     };
@@ -101,9 +101,9 @@ describe('AssumeAgeRangeRule', () => {
   });
   it('should return a notice when a maxValue is specified', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       ageRange: {
-        type: 'QuantitativeValue',
+        '@type': 'QuantitativeValue',
         maxValue: 1,
       },
     };
@@ -121,9 +121,9 @@ describe('AssumeAgeRangeRule', () => {
   });
   it('should return a notice when a minValue of 0 and no maxValue is set', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       ageRange: {
-        type: 'QuantitativeValue',
+        '@type': 'QuantitativeValue',
         minValue: 0,
       },
     };

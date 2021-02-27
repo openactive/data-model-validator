@@ -26,7 +26,7 @@ describe('CurrencyIfNonZeroPriceRule', () => {
 
   it('should return no errors if the Offer has a price of zero', async () => {
     const data = {
-      type: 'Offer',
+      '@type': 'Offer',
       price: 0,
     };
 
@@ -43,7 +43,7 @@ describe('CurrencyIfNonZeroPriceRule', () => {
 
   it('should return no errors if the Offer has a non-zero price, but has a currency set', async () => {
     const data = {
-      type: 'Offer',
+      '@type': 'Offer',
       price: 5,
       priceCurrency: 'GBP',
     };
@@ -62,7 +62,7 @@ describe('CurrencyIfNonZeroPriceRule', () => {
   it('should return an error if the Offer has a non-zero price, and has no currency set', async () => {
     const dataItems = [
       {
-        type: 'Offer',
+        '@type': 'Offer',
         price: 5,
       },
     ];

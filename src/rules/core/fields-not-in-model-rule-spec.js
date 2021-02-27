@@ -37,12 +37,12 @@ describe('FieldsNotInModelRule', () => {
   it('should return no errors if all fields are in the spec', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
       activity: {
         '@id': 'https://example.com/reference/activities#Speedball',
         inScheme: 'https://example.com/reference/activities',
         prefLabel: 'Speedball',
-        type: 'Concept',
+        '@type': 'Concept',
       },
       location: {
         address: {
@@ -50,19 +50,19 @@ describe('FieldsNotInModelRule', () => {
           addressRegion: 'London',
           postalCode: 'NW5 3DU',
           streetAddress: 'Raynes Park High School, 46A West Barnes Lane',
-          type: 'PostalAddress',
+          '@type': 'PostalAddress',
         },
         description: 'Raynes Park High School in London',
         geo: {
           latitude: 51.4034423828125,
           longitude: -0.2369088977575302,
-          type: 'GeoCoordinates',
+          '@type': 'GeoCoordinates',
         },
         '@id': 'https://example.com/locations/1234ABCD',
         identifier: '1234ABCD',
         name: 'Raynes Park High School',
         telephone: '01253 473934',
-        type: 'Place',
+        '@type': 'Place',
       },
     };
 
@@ -83,7 +83,7 @@ describe('FieldsNotInModelRule', () => {
         'https://openactive.io/',
         'http://example.org/ext/1.0/schema.jsonld',
       ],
-      type: 'Event',
+      '@type': 'Event',
       'ext:myCustomProperty': 'foo',
     };
 
@@ -142,7 +142,7 @@ describe('FieldsNotInModelRule', () => {
         'https://openactive.io/',
         'http://example.org/ext/1.0/schema.jsonld',
       ],
-      type: 'Event',
+      '@type': 'Event',
       'ext:myInvalidCustomProperty': 'foo',
     };
 
@@ -206,7 +206,7 @@ describe('FieldsNotInModelRule', () => {
         'https://openactive.io/',
         'http://example.org/ext/1.0/schema.jsonld',
       ],
-      type: 'Event',
+      '@type': 'Event',
       'ext:customName': 'Custom Event',
     };
 
@@ -263,7 +263,7 @@ describe('FieldsNotInModelRule', () => {
   it('should return a warning per field if any fields are not in the spec, but are in schema.org', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
       alternateName: 'Alternate Event',
     };
 
@@ -290,7 +290,7 @@ describe('FieldsNotInModelRule', () => {
   it('should return a failure per field if any fields are not allowed in the spec', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
       disallowed_field: 'This field is disallowed by the spec',
     };
 
@@ -313,7 +313,7 @@ describe('FieldsNotInModelRule', () => {
   it('should return a failure per field if any fields are not in the spec', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
       invalid_field: 'This field is not in the spec',
       another_invalid_field: 'This field is also not in the spec',
     };
@@ -337,7 +337,7 @@ describe('FieldsNotInModelRule', () => {
   it('should return a notice per field if any extension fields are present', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
       'beta:experimental_field': 'This field is experimental',
       'beta:another_experimental_field': 'This field is also experimental',
       'Ext:an_extended_field': 'This field extends the OA spec',
@@ -363,9 +363,9 @@ describe('FieldsNotInModelRule', () => {
 
   it('should return a failure per field if a field is a typo', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       offer: {
-        type: 'Offer',
+        '@type': 'Offer',
         '@id': 'http://example.org/offer/1',
         name: 'Free Offer',
         price: 0.00,

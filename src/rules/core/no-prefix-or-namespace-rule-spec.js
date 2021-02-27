@@ -28,7 +28,7 @@ describe('NoPrefixOrNamespaceRule', () => {
 
   it('should return no errors if all fields are non-prefixed', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       name: 'An Event',
     };
 
@@ -45,7 +45,7 @@ describe('NoPrefixOrNamespaceRule', () => {
 
   it('should return no errors if all prefixed or namespaced fields are extensions', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       'ext:testField': 'An extension field',
       'http://ext.example.org/anotherTestField': 'Another extension field',
     };
@@ -88,11 +88,11 @@ describe('NoPrefixOrNamespaceRule', () => {
   });
   it('should return a warning if prefixed fields with aliases are used', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       '@id': 'http://example.org/event/1',
       'schema:name': 'Event Name',
       'oa:ageRange': {
-        type: 'QuantitativeValue',
+        '@type': 'QuantitativeValue',
         minValue: 0,
       },
     };
@@ -134,11 +134,11 @@ describe('NoPrefixOrNamespaceRule', () => {
   });
   it('should return a warning if prefixed fields with namespaces are used', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       '@id': 'http://example.org/event/1',
       'https://schema.org/name': 'Event Name',
       'https://openactive.io/ageRange': {
-        type: 'QuantitativeValue',
+        '@type': 'QuantitativeValue',
         minValue: 0,
       },
     };

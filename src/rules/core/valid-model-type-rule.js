@@ -41,7 +41,7 @@ module.exports = class ValidModelTypeRule extends Rule {
         noExperimental: {
           message: 'Type `{{type}}` is not recognised by the validator, as it is not part of the [Modelling Opportunity Data specification](https://openactive.io/modelling-opportunity-data/) or schema.org, and cannot be checked for validity.',
           sampleValues: {
-            type: 'CreativeWork',
+            '@type': 'CreativeWork',
           },
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.SUGGESTION,

@@ -31,7 +31,7 @@ describe('ValidModelTypeRule', () => {
 
   it('should return no errors if there is a type we recognise', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
     };
     model.hasSpecification = true;
 
@@ -72,7 +72,7 @@ describe('ValidModelTypeRule', () => {
     const parentNode = new ModelNode(
       '$',
       {
-        type: 'Event',
+        '@type': 'Event',
         subEvent: data,
       },
       null,
@@ -106,7 +106,7 @@ describe('ValidModelTypeRule', () => {
     const parentNode = new ModelNode(
       '$',
       {
-        type: 'Event',
+        '@type': 'Event',
       },
       null,
       model,
@@ -130,7 +130,7 @@ describe('ValidModelTypeRule', () => {
 
   it('should return a tip if the type is present, but we don\'t recognise the model', async () => {
     const data = {
-      type: 'OutsideSpec',
+      '@type': 'OutsideSpec',
     };
 
     const nodeToTest = new ModelNode(

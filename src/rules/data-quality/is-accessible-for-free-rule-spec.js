@@ -37,9 +37,9 @@ describe('IsAccessibleForFreeRule', () => {
   // No error
   it('should return no error when isAccessibleForFree is set to true with a zero offer', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       offers: [{
-        type: 'Offer',
+        '@type': 'Offer',
         '@id': 'http://example.org/offer/1',
         name: 'Free Offer',
         price: 0.00,
@@ -59,9 +59,9 @@ describe('IsAccessibleForFreeRule', () => {
   });
   it('should return no error when isAccessibleForFree is set to true with a zero offer in a namespaced field', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       'schema:offers': [{
-        type: 'Offer',
+        '@type': 'Offer',
         '@id': 'http://example.org/offer/1',
         name: 'Free Offer',
         price: 0.00,
@@ -81,9 +81,9 @@ describe('IsAccessibleForFreeRule', () => {
   });
   it('should return no error when isAccessibleForFree is set to false with no zero offer', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       offers: [{
-        type: 'Offer',
+        '@type': 'Offer',
         '@id': 'http://example.org/offer/1',
         name: 'Unfree Offer',
         price: 10.00,
@@ -103,9 +103,9 @@ describe('IsAccessibleForFreeRule', () => {
   });
   it('should return no error when isAccessibleForFree is not set with no zero offer', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       offers: [{
-        type: 'Offer',
+        '@type': 'Offer',
         '@id': 'http://example.org/offer/1',
         name: 'Unfree Offer',
         price: 10.00,
@@ -125,11 +125,11 @@ describe('IsAccessibleForFreeRule', () => {
 
   it('should return no error when isAccessibleForFree is set to true with a parent zero offer', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       superEvent: {
-        type: 'Event',
+        '@type': 'Event',
         offers: [{
-          type: 'Offer',
+          '@type': 'Offer',
           '@id': 'http://example.org/offer/1',
           name: 'Free Offer',
           price: 0.00,
@@ -150,11 +150,11 @@ describe('IsAccessibleForFreeRule', () => {
   });
   it('should return no error when isAccessibleForFree is set to false with no parent zero offer', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       superEvent: {
-        type: 'Event',
+        '@type': 'Event',
         offers: [{
-          type: 'Offer',
+          '@type': 'Offer',
           '@id': 'http://example.org/offer/1',
           name: 'Unfree Offer',
           price: 10.00,
@@ -175,11 +175,11 @@ describe('IsAccessibleForFreeRule', () => {
   });
   it('should return no error when isAccessibleForFree is not set with no parent zero offer', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       superEvent: {
-        type: 'Event',
+        '@type': 'Event',
         offers: [{
-          type: 'Offer',
+          '@type': 'Offer',
           '@id': 'http://example.org/offer/1',
           name: 'Unfree Offer',
           price: 10.00,
@@ -201,9 +201,9 @@ describe('IsAccessibleForFreeRule', () => {
   // Error
   it('should return an error when isAccessibleForFree is set to false with a zero offer', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       offers: [{
-        type: 'Offer',
+        '@type': 'Offer',
         '@id': 'http://example.org/offer/1',
         name: 'Free Offer',
         price: 0.00,
@@ -225,9 +225,9 @@ describe('IsAccessibleForFreeRule', () => {
   });
   it('should return an error when isAccessibleForFree is not set with a zero offer', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       offers: [{
-        type: 'Offer',
+        '@type': 'Offer',
         '@id': 'http://example.org/offer/1',
         name: 'Free Offer',
         price: 0.00,
@@ -249,11 +249,11 @@ describe('IsAccessibleForFreeRule', () => {
 
   it('should return an error when isAccessibleForFree is set to false with a parent zero offer', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       superEvent: {
-        type: 'Event',
+        '@type': 'Event',
         offers: [{
-          type: 'Offer',
+          '@type': 'Offer',
           '@id': 'http://example.org/offer/1',
           name: 'Free Offer',
           price: 0.00,
@@ -276,11 +276,11 @@ describe('IsAccessibleForFreeRule', () => {
   });
   it('should return an error when isAccessibleForFree is not set with a parent zero offer', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       superEvent: {
-        type: 'Event',
+        '@type': 'Event',
         offers: [{
-          type: 'Offer',
+          '@type': 'Offer',
           '@id': 'http://example.org/offer/1',
           name: 'Free Offer',
           price: 0.00,

@@ -13,7 +13,7 @@ describe('RpdeFeedRule', () => {
 
   it('should return no notices for input that isn\'t an RPDE feed', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
     };
 
     const { errors } = await rule.validate(data);
@@ -28,7 +28,7 @@ describe('RpdeFeedRule', () => {
           kind: 'session',
           state: 'updated',
           data: {
-            type: 'Event',
+            '@type': 'Event',
           },
           modified: 1533177378657,
         },
@@ -52,7 +52,7 @@ describe('RpdeFeedRule', () => {
           kind: 'session',
           state: 'updated',
           data: {
-            type: 'Event',
+            '@type': 'Event',
           },
           modified: 1533177378657,
         },
@@ -61,7 +61,7 @@ describe('RpdeFeedRule', () => {
           kind: 'session',
           state: 'updated',
           data: {
-            type: 'Event',
+            '@type': 'Event',
           },
           modified: 1533177378657,
         },
@@ -70,7 +70,7 @@ describe('RpdeFeedRule', () => {
           kind: 'session',
           state: 'updated',
           data: {
-            type: 'Event',
+            '@type': 'Event',
           },
           modified: 1533177378657,
         },

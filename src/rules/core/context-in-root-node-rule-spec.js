@@ -30,11 +30,11 @@ describe('ContextInRootNodeRule', () => {
     const dataItems = [
       {
         '@context': metaData.contextUrl,
-        type: 'Event',
+        '@type': 'Event',
       },
       {
         '@context': [metaData.contextUrl],
-        type: 'Event',
+        '@type': 'Event',
       },
     ];
 
@@ -53,7 +53,7 @@ describe('ContextInRootNodeRule', () => {
 
   it('should return a failure if the context is missing from the root node', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
     };
 
     const nodeToTest = new ModelNode(
@@ -74,13 +74,13 @@ describe('ContextInRootNodeRule', () => {
 
   it('should return no error if the context is missing and this isn\'t the root node', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
     };
 
     const parentNode = new ModelNode(
       '$',
       {
-        type: 'Event',
+        '@type': 'Event',
         subEvent: data,
       },
       null,
@@ -101,7 +101,7 @@ describe('ContextInRootNodeRule', () => {
   it('should return a error if the context is present and this isn\'t the root node', async () => {
     const data = {
       '@context': metaData.contextUrl,
-      type: 'Event',
+      '@type': 'Event',
     };
 
     const parentNode = new ModelNode(
@@ -134,11 +134,11 @@ describe('ContextInRootNodeRule', () => {
     const dataItems = [
       {
         '@context': 'https://example.org/ns',
-        type: 'Event',
+        '@type': 'Event',
       },
       {
         '@context': ['https://example.org/ns', metaData.contextUrl],
-        type: 'Event',
+        '@type': 'Event',
       },
     ];
 
@@ -163,7 +163,7 @@ describe('ContextInRootNodeRule', () => {
   it('should return no error if the context is present, but contains non-url fields if the model declares its own type', async () => {
     const data = {
       '@context': [metaData.contextUrl, {}],
-      type: 'Event',
+      '@type': 'Event',
     };
 
     const localModel = new Model({
@@ -192,7 +192,7 @@ describe('ContextInRootNodeRule', () => {
   it('should return an error if the context is present, but contains non-url fields', async () => {
     const data = {
       '@context': [metaData.contextUrl, {}],
-      type: 'Event',
+      '@type': 'Event',
     };
 
     const nodeToTest = new ModelNode(

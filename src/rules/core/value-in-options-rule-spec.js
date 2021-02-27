@@ -53,7 +53,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return no errors if the field value is in the options array', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       singleOption: 'GET',
     };
 
@@ -70,7 +70,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return a failure if the field value is not in the options array', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       singleOption: 'DELETE',
     };
 
@@ -90,7 +90,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return no errors if the field value is in the enum options array', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       eventStatus: 'https://schema.org/EventScheduled',
     };
 
@@ -107,7 +107,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return a failure if the field value is not in the enum options array', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       eventStatus: 'https://schema.org/EventInvalid',
     };
 
@@ -127,7 +127,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return no errors if the field value is in the options array when the value is an array', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       multipleOption: ['GET'],
     };
 
@@ -144,7 +144,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return a failure if the field value is not in the options array when the value is an array', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       multipleOption: ['DELETE'],
     };
 
@@ -164,7 +164,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return no errors if the field value is in the enum options array when the value is an array', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       dayOfWeek: ['https://schema.org/Sunday'],
     };
 
@@ -181,7 +181,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return a failure if the field value is not in the enum options array when the value is an array', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       dayOfWeek: ['https://schema.org/Thirdday'],
     };
 
@@ -201,7 +201,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return no errors if the field value in goodrelations is in the enum options array', async () => {
     const data = {
-      type: 'Offer',
+      '@type': 'Offer',
       acceptedPaymentMethod: ['http://purl.org/goodrelations/v1#Cash'],
     };
 
@@ -218,7 +218,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return a failure if the field value in goodrelations is not in the enum options array', async () => {
     const data = {
-      type: 'Offer',
+      '@type': 'Offer',
       acceptedPaymentMethod: ['http://purl.org/goodrelations/v1#Invalid'],
     };
 

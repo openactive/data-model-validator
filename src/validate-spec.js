@@ -16,7 +16,7 @@ describe('validate', () => {
     validEvent = {
       '@context': metaData.contextUrl,
       '@id': 'http://www.example.org/events/1',
-      type: 'SessionSeries',
+      '@type': 'SessionSeries',
       name: 'Tai chi Class',
       description: 'A Tai chi class',
       duration: 'PT1H',
@@ -24,7 +24,7 @@ describe('validate', () => {
       url: 'http://www.example.org/events/1',
       startDate: '2017-03-22T20:00:00Z',
       ageRange: {
-        type: 'QuantitativeValue',
+        '@type': 'QuantitativeValue',
         minValue: 18,
         maxValue: 60,
       },
@@ -33,7 +33,7 @@ describe('validate', () => {
         {
           id: 'https://openactive.io/activity-list#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
           prefLabel: 'Tai Chi',
-          type: 'Concept',
+          '@type': 'Concept',
           inScheme: 'https://openactive.io/activity-list',
         },
       ],
@@ -41,28 +41,28 @@ describe('validate', () => {
         {
           id: 'https://openactive.io/activity-list#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
           prefLabel: 'Holistic Classes',
-          type: 'Concept',
+          '@type': 'Concept',
           inScheme: 'https://openactive.io/activity-list',
         },
       ],
       programme: {
-        type: 'Brand',
+        '@type': 'Brand',
         name: 'Play Ball!',
         url: 'http://example.org/brand/play-ball',
         description: 'Something about a ball',
         logo: {
-          type: 'ImageObject',
+          '@type': 'ImageObject',
           url: 'http://example.com/static/image/speedball_large.jpg',
         },
       },
       eventStatus: 'https://schema.org/EventScheduled',
       image: [{
-        type: 'ImageObject',
+        '@type': 'ImageObject',
         url: 'http://www.example.org/logo.png',
       }],
       subEvent: [
         {
-          type: 'ScheduledSession',
+          '@type': 'ScheduledSession',
           '@id': 'http://www.example.org/events/12',
           url: 'http://www.example.org/events/12',
           startDate: '2017-03-22T20:00:00Z',
@@ -70,12 +70,12 @@ describe('validate', () => {
           offers: [{
             '@id': 'http://example.org/offer/1',
             ageRestriction: {
-              type: 'QuantitativeValue',
+              '@type': 'QuantitativeValue',
               minValue: 18,
               maxValue: 65,
             },
             url: 'http://example.org/offer/1',
-            type: 'Offer',
+            '@type': 'Offer',
             name: 'Single session',
             price: 5,
             priceCurrency: 'GBP',
@@ -83,7 +83,7 @@ describe('validate', () => {
           remainingAttendeeCapacity: 10,
         },
         {
-          type: 'ScheduledSession',
+          '@type': 'ScheduledSession',
           '@id': 'http://www.example.org/events/13',
           url: 'http://www.example.org/events/13',
           startDate: '2017-03-29T20:00:00Z',
@@ -91,12 +91,12 @@ describe('validate', () => {
           offers: [{
             '@id': 'http://example.org/offer/1',
             ageRestriction: {
-              type: 'QuantitativeValue',
+              '@type': 'QuantitativeValue',
               minValue: 18,
               maxValue: 65,
             },
             url: 'http://example.org/offer/1',
-            type: 'Offer',
+            '@type': 'Offer',
             name: 'Single session',
             price: 5,
             priceCurrency: 'GBP',
@@ -106,7 +106,7 @@ describe('validate', () => {
       ],
       organizer: {
         '@id': 'http://www.example.org',
-        type: 'Organization',
+        '@type': 'Organization',
         name: 'Example Co',
         url: 'http://www.example.org',
         description: 'Example organizer',
@@ -115,13 +115,13 @@ describe('validate', () => {
           'http://www.example.org/facebook',
         ],
         logo: {
-          type: 'ImageObject',
+          '@type': 'ImageObject',
           url: 'http://www.example.org/logo.png',
         },
       },
       leader: [{
         '@id': 'http://www.example.org/person/1',
-        type: 'Person',
+        '@type': 'Person',
         name: 'Joe Bloggs',
       }],
       level: [
@@ -129,16 +129,16 @@ describe('validate', () => {
       ],
       location: {
         '@id': 'http://www.example.org/locations/gym',
-        type: 'Place',
+        '@type': 'Place',
         name: 'ExampleCo Gym',
         description: 'ExampleCo\'s main gym',
         image: [{
-          type: 'ImageObject',
+          '@type': 'ImageObject',
           url: 'http://www.example.org/gym.png',
         }],
         url: 'http://www.example.org/locations/gym',
         address: {
-          type: 'PostalAddress',
+          '@type': 'PostalAddress',
           streetAddress: '1 High Street',
           addressLocality: 'Bristol',
           addressRegion: 'Bristol',
@@ -149,10 +149,10 @@ describe('validate', () => {
         geo: {
           latitude: 51.4034423828125,
           longitude: -0.2369088977575302,
-          type: 'GeoCoordinates',
+          '@type': 'GeoCoordinates',
         },
         openingHoursSpecification: [{
-          type: 'OpeningHoursSpecification',
+          '@type': 'OpeningHoursSpecification',
           opens: '07:00',
           closes: '21:00',
           dayOfWeek: ['https://schema.org/Monday'],
@@ -161,19 +161,19 @@ describe('validate', () => {
           {
             name: 'Changing Facilities',
             value: true,
-            type: 'ChangingFacilities',
+            '@type': 'ChangingFacilities',
           },
         ],
       },
       offers: [{
         '@id': 'http://example.org/offer/1',
         ageRestriction: {
-          type: 'QuantitativeValue',
+          '@type': 'QuantitativeValue',
           minValue: 18,
           maxValue: 65,
         },
         url: 'http://example.org/offer/1',
-        type: 'Offer',
+        '@type': 'Offer',
         name: 'Single session',
         price: 5,
         priceCurrency: 'GBP',
@@ -185,12 +185,12 @@ describe('validate', () => {
       id: 'https://openactive.io/activity-list',
       title: 'OpenActive Activity List',
       description: 'This document describes the OpenActive standard activity list.',
-      type: 'ConceptScheme',
+      '@type': 'ConceptScheme',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       concept: [
         {
           id: 'https://openactive.io/activity-list#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
-          type: 'Concept',
+          '@type': 'Concept',
           prefLabel: 'Tai Chi',
           definition: 'Tai chi combines deep breathing and relaxation with slow and gentle movements.',
           broader: 'https://openactive.io/activity-list#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
@@ -219,7 +219,7 @@ describe('validate', () => {
     it('should return a failure if passed an invalid model', async () => {
       const data = {};
 
-      const result = await validate(data, new OptionsHelper({ type: 'InvalidModel' }));
+      const result = await validate(data, new OptionsHelper({ '@type': 'InvalidModel' }));
 
       expect(result.length).toBe(2);
       expect(result[0].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
@@ -312,7 +312,7 @@ describe('validate', () => {
         validEvent,
         {
           'https://openactive.io/ageRange': {
-            type: 'QuantitativeValue',
+            '@type': 'QuantitativeValue',
             minValue: 60,
             maxValue: 18,
           },
@@ -331,13 +331,13 @@ describe('validate', () => {
 
     it('should check submodels of a model even if we don\'t know what type it is', async () => {
       const data = {
-        type: 'UnknownType',
+        '@type': 'UnknownType',
         geo: {
           latitude: 51.4034423828125,
-          type: 'GeoCoordinates',
+          '@type': 'GeoCoordinates',
         },
         location: {
-          type: 'SafariPark',
+          '@type': 'SafariPark',
         },
       };
 
@@ -366,16 +366,16 @@ describe('validate', () => {
       const place = {
         '@context': metaData.contextUrl,
         '@id': 'http://www.example.org/locations/gym',
-        type: 'Place',
+        '@type': 'Place',
         name: 'ExampleCo Gym',
         description: 'ExampleCo\'s main gym',
         image: [{
-          type: 'ImageObject',
+          '@type': 'ImageObject',
           url: 'http://www.example.org/gym.png',
         }],
         url: 'http://www.example.org/locations/gym',
         address: {
-          type: 'PostalAddress',
+          '@type': 'PostalAddress',
           streetAddress: '1 High Street',
           addressLocality: 'Bristol',
           addressRegion: 'Bristol',
@@ -386,10 +386,10 @@ describe('validate', () => {
         geo: {
           latitude: 51.4034423828125,
           longitude: -0.2369088977575302,
-          type: 'GeoCoordinates',
+          '@type': 'GeoCoordinates',
         },
         openingHoursSpecification: [{
-          type: 'OpeningHoursSpecification',
+          '@type': 'OpeningHoursSpecification',
           opens: '07:00',
           closes: '21:00',
           dayOfWeek: ['https://schema.org/Monday'],
@@ -398,7 +398,7 @@ describe('validate', () => {
           {
             name: 'Changing Facilities',
             value: true,
-            type: 'ChangingFacilities',
+            '@type': 'ChangingFacilities',
           },
           {
             name: 'My Place',
@@ -421,16 +421,16 @@ describe('validate', () => {
       const place = {
         '@context': metaData.contextUrl,
         '@id': 'http://www.example.org/locations/gym',
-        type: 'Place',
+        '@type': 'Place',
         name: 'ExampleCo Gym',
         description: 'ExampleCo\'s main gym',
         image: [{
-          type: 'ImageObject',
+          '@type': 'ImageObject',
           url: 'http://www.example.org/gym.png',
         }],
         url: 'http://www.example.org/locations/gym',
         address: {
-          type: 'PostalAddress',
+          '@type': 'PostalAddress',
           streetAddress: '1 High Street',
           addressLocality: 'Bristol',
           addressRegion: 'Bristol',
@@ -441,10 +441,10 @@ describe('validate', () => {
         geo: {
           latitude: 51.4034423828125,
           longitude: -0.2369088977575302,
-          type: 'GeoCoordinates',
+          '@type': 'GeoCoordinates',
         },
         openingHoursSpecification: [{
-          type: 'OpeningHoursSpecification',
+          '@type': 'OpeningHoursSpecification',
           opens: '07:00',
           closes: '21:00',
           dayOfWeek: ['https://schema.org/Monday'],
@@ -453,7 +453,7 @@ describe('validate', () => {
           {
             name: 'Changing Facilities',
             value: true,
-            type: 'ChangingRooms',
+            '@type': 'ChangingRooms',
           },
           'An invalid array element',
           {
@@ -480,7 +480,7 @@ describe('validate', () => {
     it('should not throw if a property of value null is passed', async () => {
       const data = {
         '@context': metaData.contextUrl,
-        type: 'Event',
+        '@type': 'Event',
         'beta:distance': null,
       };
 
@@ -491,7 +491,7 @@ describe('validate', () => {
     it('should not throw if a property of value null is passed', async () => {
       const data = {
         '@context': metaData.contextUrl,
-        type: 'Event',
+        '@type': 'Event',
         category: [null, null],
       };
 

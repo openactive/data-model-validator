@@ -35,7 +35,7 @@ describe('EventNoScheduleSubeventRule', () => {
 
   it('should return no errors if there is no subEvent or eventSchedule set on the Event', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       name: 'Test Event',
 
     };
@@ -53,11 +53,11 @@ describe('EventNoScheduleSubeventRule', () => {
 
   it('should return no errors if there is an subEvent or eventSchedule set on a subclass of Event', async () => {
     const data = {
-      type: 'SessionSeries',
+      '@type': 'SessionSeries',
       name: 'Test Event',
       subEvent: [
         {
-          type: 'Event',
+          '@type': 'Event',
         },
       ],
     };
@@ -76,16 +76,16 @@ describe('EventNoScheduleSubeventRule', () => {
   it('should return a warning if eventSchedule or subEvent is set on the Event', async () => {
     const dataItems = [
       {
-        type: 'Event',
+        '@type': 'Event',
         eventSchedule: {
           instanceType: 'Event',
         },
       },
       {
-        type: 'Event',
+        '@type': 'Event',
         subEvent: [
           {
-            type: 'Event',
+            '@type': 'Event',
           },
         ],
       },

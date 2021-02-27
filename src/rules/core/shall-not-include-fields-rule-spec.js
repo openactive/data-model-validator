@@ -48,7 +48,7 @@ describe('ShallNotIncludeFieldsRule', () => {
 
     it('should return no error when no shall not include fields part of data', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
       };
 
       const nodeToTest = new ModelNode(
@@ -64,7 +64,7 @@ describe('ShallNotIncludeFieldsRule', () => {
 
     it('should return failures when shall not include fields present in data', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         duration: 1,
       };
 
@@ -87,7 +87,7 @@ describe('ShallNotIncludeFieldsRule', () => {
 
     it('should return no error when shall not include fields present in data', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
       };
 
       const nodeToTest = new ModelNode(
@@ -104,7 +104,7 @@ describe('ShallNotIncludeFieldsRule', () => {
 
     it('should return failures when shall not include fields present in data', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         price: 10000,
       };
 
@@ -126,7 +126,7 @@ describe('ShallNotIncludeFieldsRule', () => {
   describe('when no imperative config for validation mode', () => {
     it('should not create errors', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         duration: 1,
       };
 

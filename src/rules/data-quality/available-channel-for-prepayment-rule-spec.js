@@ -28,7 +28,7 @@ describe('AvailableChannelForPrepaymentRule', () => {
 
   it('should return no error when payment is not set', async () => {
     const data = {
-      type: 'Offer',
+      '@type': 'Offer',
     };
 
     const nodeToTest = new ModelNode(
@@ -50,7 +50,7 @@ describe('AvailableChannelForPrepaymentRule', () => {
       for (const validChannel of validAvailableChannelsForPrepayment) {
         it(`should return no error when availableChannel contains ${validChannel}`, async () => {
           const data = {
-            type: 'Offer',
+            '@type': 'Offer',
             prepayment,
             availableChannel: [validChannel, invalidChannel],
           };
@@ -68,7 +68,7 @@ describe('AvailableChannelForPrepaymentRule', () => {
 
       it('should return an error when availableChannel does not contain a valid value', async () => {
         const data = {
-          type: 'Offer',
+          '@type': 'Offer',
           prepayment,
           availableChannel: [invalidChannel],
         };

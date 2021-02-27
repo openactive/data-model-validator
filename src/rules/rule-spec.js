@@ -3,7 +3,7 @@ const Model = require('../classes/model');
 
 describe('Rule', () => {
   const model = new Model({
-    type: 'Event',
+    '@type': 'Event',
     requiredFields: [
       '@context',
       'activity',

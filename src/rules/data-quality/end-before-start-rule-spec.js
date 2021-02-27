@@ -28,7 +28,7 @@ describe('EndBeforeStartRule', () => {
 
   it('should return no error when the startDate is before the endDate', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       startDate: '2017-09-06T09:00:00Z',
       endDate: '2018-01-15T09:00:00+01:00',
     };
@@ -44,7 +44,7 @@ describe('EndBeforeStartRule', () => {
   });
   it('should return no error when the startDate is before the endDate in a namespaced field', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       'schema:startDate': '2017-09-06T09:00:00Z',
       'schema:endDate': '2018-01-15T09:00:00+01:00',
     };
@@ -60,7 +60,7 @@ describe('EndBeforeStartRule', () => {
   });
   it('should return no error when the startDate is set, but the endDate isn\'t', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       startDate: '2017-09-06T09:00:00Z',
     };
 
@@ -75,7 +75,7 @@ describe('EndBeforeStartRule', () => {
   });
   it('should return an error when the startDate is after the endDate', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       startDate: '2017-09-06T09:00:00Z',
       endDate: '2017-01-15T09:00:00Z',
     };

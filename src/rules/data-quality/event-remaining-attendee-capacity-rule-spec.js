@@ -44,7 +44,7 @@ describe('EventRemainingAttendeeCapacityRule', () => {
 
     it('should return no error when remainingAttendeeCapacity is > 0', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         remainingAttendeeCapacity: 1,
       };
 
@@ -61,7 +61,7 @@ describe('EventRemainingAttendeeCapacityRule', () => {
 
     it('should return no error when remainingAttendeeCapacity is < 0', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         remainingAttendeeCapacity: -1,
       };
 

@@ -35,7 +35,7 @@ describe('DatesMustHaveDurationRule', () => {
 
   it('should return no error when a duration is supplied with a startDate and endDate', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       startDate: '2017-09-06T09:00:00Z',
       endDate: '2017-09-06T10:00:00Z',
       duration: 'PT1H',
@@ -53,7 +53,7 @@ describe('DatesMustHaveDurationRule', () => {
   });
   it('should return no error when a duration is supplied with a startDate and endDate in namespaced field', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       startDate: '2017-09-06T09:00:00Z',
       endDate: '2017-09-06T10:00:00Z',
       'schema:duration': 'PT1H',
@@ -71,7 +71,7 @@ describe('DatesMustHaveDurationRule', () => {
   });
   it('should return an error when no duration is supplied with a startDate and endDate', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       startDate: '2017-09-06T09:00:00Z',
       endDate: '2017-01-15T09:00:00Z',
     };

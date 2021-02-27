@@ -28,7 +28,7 @@ describe('MaxLessThenMinRule', () => {
 
   it('should return no error when the minValue is lower than the maxValue', async () => {
     const data = {
-      type: 'QuantitativeValue',
+      '@type': 'QuantitativeValue',
       minValue: 1,
       maxValue: 10,
     };
@@ -44,7 +44,7 @@ describe('MaxLessThenMinRule', () => {
   });
   it('should return no error when the minValue is lower than the maxValue in a namespaced field', async () => {
     const data = {
-      type: 'QuantitativeValue',
+      '@type': 'QuantitativeValue',
       'schema:minValue': 1,
       'schema:maxValue': 10,
     };
@@ -60,7 +60,7 @@ describe('MaxLessThenMinRule', () => {
   });
   it('should return no error when the minValue is equal to the maxValue', async () => {
     const data = {
-      type: 'QuantitativeValue',
+      '@type': 'QuantitativeValue',
       minValue: 10,
       maxValue: 10,
     };
@@ -76,7 +76,7 @@ describe('MaxLessThenMinRule', () => {
   });
   it('should return no error when the minValue is set, but the maxValue isn\'t', async () => {
     const data = {
-      type: 'QuantitativeValue',
+      '@type': 'QuantitativeValue',
       minValue: 1,
     };
 
@@ -91,7 +91,7 @@ describe('MaxLessThenMinRule', () => {
   });
   it('should return an error when the minValue is greater than the maxValue', async () => {
     const data = {
-      type: 'QuantitativeValue',
+      '@type': 'QuantitativeValue',
       minValue: 10,
       maxValue: 1,
     };

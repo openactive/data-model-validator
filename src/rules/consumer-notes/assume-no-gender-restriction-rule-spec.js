@@ -34,7 +34,7 @@ describe('AssumeNoGenderRestrictionRule', () => {
 
   it('should return no errors if the genderRestriction fields are valid', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       genderRestriction: 'https://openactive.io/Female',
     };
 
@@ -51,7 +51,7 @@ describe('AssumeNoGenderRestrictionRule', () => {
 
   it('should return no errors if the genderRestriction fields are valid', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       'oa:genderRestriction': 'https://openactive.io/Female',
     };
 
@@ -68,7 +68,7 @@ describe('AssumeNoGenderRestrictionRule', () => {
 
   it('should return a notice if the genderRestriction field is not set', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
     };
 
     const nodeToTest = new ModelNode(
@@ -87,7 +87,7 @@ describe('AssumeNoGenderRestrictionRule', () => {
 
   it('should return a notice if the genderRestriction field is not valid', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       genderRestriction: 'https://openactive.io/Invalid',
     };
 

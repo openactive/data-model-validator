@@ -108,7 +108,7 @@ describe('RequiredOptionalFieldsRule', () => {
   it('should return no errors if required optional fields are present', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
       startDate: '2018-01-27T12:00:00Z',
     };
 
@@ -126,7 +126,7 @@ describe('RequiredOptionalFieldsRule', () => {
   it('should return no errors if required optional fields are present with a namespace', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
       'schema:startDate': '2018-01-27T12:00:00Z',
     };
 
@@ -144,7 +144,7 @@ describe('RequiredOptionalFieldsRule', () => {
   it('should return a failure per option group if any required optional fields are missing', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
     };
 
     const nodeToTest = new ModelNode(
@@ -166,7 +166,7 @@ describe('RequiredOptionalFieldsRule', () => {
     const options = new OptionsHelper({ validationMode: 'C1Request' });
     it('should return no errors if required optional fields are present', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         endDate: '2018-01-27T12:00:00Z',
       };
 
@@ -184,7 +184,7 @@ describe('RequiredOptionalFieldsRule', () => {
 
     it('should return a failure per option group if any required optional fields are missing', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         startDate: '2018-01-27T12:00:00Z',
       };
 
@@ -210,7 +210,7 @@ describe('RequiredOptionalFieldsRule', () => {
 
     it('should return no errors if required optional fields are present', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         church: 'Holy Trinity',
       };
 
@@ -228,7 +228,7 @@ describe('RequiredOptionalFieldsRule', () => {
 
     it('should return a failure per option group if any required optional fields are missing', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
       };
 
       const nodeToTest = new ModelNode(
@@ -256,9 +256,9 @@ describe('RequiredOptionalFieldsRule', () => {
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
-        type: 'Event',
+        '@type': 'Event',
         subEvent: [{
-          type: 'Event',
+          '@type': 'Event',
         }],
       };
 
@@ -292,9 +292,9 @@ describe('RequiredOptionalFieldsRule', () => {
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
-        type: 'Event',
+        '@type': 'Event',
         subEvent: [{
-          type: 'Event',
+          '@type': 'Event',
         }],
       };
 
@@ -328,9 +328,9 @@ describe('RequiredOptionalFieldsRule', () => {
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
-        type: 'Event',
+        '@type': 'Event',
         subEvent: [{
-          type: 'Event',
+          '@type': 'Event',
         }],
       };
 
@@ -364,9 +364,9 @@ describe('RequiredOptionalFieldsRule', () => {
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
-        type: 'Event',
+        '@type': 'Event',
         subEvent: [{
-          type: 'Event',
+          '@type': 'Event',
         }],
       };
 
@@ -400,9 +400,9 @@ describe('RequiredOptionalFieldsRule', () => {
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
-        type: 'Event',
+        '@type': 'Event',
         subEvent: [{
-          type: 'Event',
+          '@type': 'Event',
         }],
       };
 
@@ -436,9 +436,9 @@ describe('RequiredOptionalFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           name: 'Test Event',
         },
       };
@@ -472,9 +472,9 @@ describe('RequiredOptionalFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           name: 'Test Event',
         },
       };
@@ -508,9 +508,9 @@ describe('RequiredOptionalFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           name: 'Test Event',
         },
       };
@@ -544,9 +544,9 @@ describe('RequiredOptionalFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           name: 'Test Event',
         },
       };
@@ -580,9 +580,9 @@ describe('RequiredOptionalFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           name: 'Test Event',
         },
       };

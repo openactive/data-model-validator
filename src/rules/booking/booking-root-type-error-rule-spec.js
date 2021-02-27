@@ -31,7 +31,7 @@ describe('BookingRootTypeErrorRule', () => {
     }, 'latest');
 
     const data = {
-      type: 'UnknownOrderError',
+      '@type': 'UnknownOrderError',
     };
 
     const options = new OptionsHelper({ validationMode: 'OpenBookingError' });
@@ -53,7 +53,7 @@ describe('BookingRootTypeErrorRule', () => {
     }, 'latest');
 
     const data = {
-      type: 'Event',
+      '@type': 'Event',
     };
 
     const options = new OptionsHelper({ validationMode: 'OpenBookingError' });
@@ -80,7 +80,7 @@ describe('BookingRootTypeErrorRule', () => {
     }, 'latest');
 
     const data = {
-      type: 'OpenBookingError',
+      '@type': 'OpenBookingError',
     };
 
     const options = new OptionsHelper({ validationMode: 'OpenBookingError' });

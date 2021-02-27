@@ -26,16 +26,16 @@ const { validate } = require('@openactive/data-model-validator');
 
 const data = {
   '@context': 'https://openactive.io/',
-  type: 'Event',
+  '@type': 'Event',
   name: 'Tai chi Class',
   url: 'http://www.example.org/events/1',
   startDate: '2017-03-22T20:00:00',
   activity: 'Tai Chi',
   location: {
-    type: 'Place',
+    '@type': 'Place',
     name: 'ExampleCo Gym',
     address: {
-      type: 'PostalAddress',
+      '@type': 'PostalAddress',
       streetAddress: '1 High Street',
       addressLocality: 'Bristol',
       postalCode: 'BS1 4SD'
@@ -154,12 +154,12 @@ e.g.
 const { validate } = require('@openactive/data-model-validator');
 
 const model = {
-  type: 'CustomAction'
+  '@type': 'CustomAction'
   // ...
 };
 
 const options = {
-  type: 'Action'
+  '@type': 'Action'
 };
 
 const result = await validate(model, options);
@@ -175,7 +175,7 @@ e.g.
 const { validate } = require('@openactive/data-model-validator');
 
 const model = {
-  type: 'CustomAction'
+  '@type': 'CustomAction'
   // ...
 };
 
@@ -198,7 +198,7 @@ e.g. To only apply rules that are suitable for data used in a booking flow phase
 const { validate, ValidationMode } = require('@openactive/data-model-validator');
 
 const model = {
-  type: 'CustomAction'
+  '@type': 'CustomAction'
   // ...
 };
 
