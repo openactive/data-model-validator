@@ -13,13 +13,13 @@ module.exports = class ValidModelTypeRule extends Rule {
       description: 'Validates that objects are submitted with a recognised type.',
       tests: {
         noType: {
-          message: 'Please add a `type` property to this JSON object.\n\nFor example:\n\n```\n{\n  "type": "Event"\n}\n```',
+          message: 'Please add an `@type` property to this JSON object.\n\nFor example:\n\n```\n{\n  "@type": "Event"\n}\n```',
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.MISSING_REQUIRED_FIELD,
         },
         noTypeWithHint: {
-          message: 'Objects in `{{field}}` must be of type `{{typeHint}}`. Please amend the property to `"type": "{{typeHint}}"` in the object to allow for further validation.\n\nFor example:\n\n```\n"{{field}}": {\n  "type": "{{typeHint}}"\n}\n```',
+          message: 'Objects in `{{field}}` must be of type `{{typeHint}}`. Please amend the property to `"@type": "{{typeHint}}"` in the object to allow for further validation.\n\nFor example:\n\n```\n"{{field}}": {\n  "@type": "{{typeHint}}"\n}\n```',
           sampleValues: {
             field: 'activity',
             typeHint: 'Concept',
@@ -29,7 +29,7 @@ module.exports = class ValidModelTypeRule extends Rule {
           type: ValidationErrorType.MISSING_REQUIRED_FIELD,
         },
         noTypeWithArrayHint: {
-          message: 'Objects in `{{field}}` must be of type `{{typeHint}}`. Please amend the property to `"type": "{{typeHint}}"` in the object to allow for further validation.\n\nFor example:\n\n```\n"{{field}}": [\n  {\n    "type": "{{typeHint}}"\n  }\n]\n```',
+          message: 'Objects in `{{field}}` must be of type `{{typeHint}}`. Please amend the property to `"@type": "{{typeHint}}"` in the object to allow for further validation.\n\nFor example:\n\n```\n"{{field}}": [\n  {\n    "@type": "{{typeHint}}"\n  }\n]\n```',
           sampleValues: {
             field: 'activity',
             typeHint: 'Concept',

@@ -12,7 +12,7 @@ module.exports = class CurrencyIfNonZeroPriceRule extends Rule {
       description: 'Validates that a priceCurrency is set if an Offer\'s price is non-zero.',
       tests: {
         default: {
-          message: 'A `priceCurrency` is required on an `Offer` containing a non-zero `price`.\n\nYou can fix this by setting a `priceCurrency` field on this `Offer`.\n\ne.g.\n\n```\n{\n  "type": "{{model}}",\n  "price": {{price}},\n  "priceCurrency": "GBP"\n}\n```',
+          message: 'A `priceCurrency` is required on an `Offer` containing a non-zero `price`.\n\nYou can fix this by setting a `priceCurrency` field on this `Offer`.\n\ne.g.\n\n```\n{\n  "@type": "{{model}}",\n  "price": {{price}},\n  "priceCurrency": "GBP"\n}\n```',
           sampleValues: {
             model: 'Offer',
             price: 5,

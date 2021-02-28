@@ -24,7 +24,7 @@ module.exports = class ConceptIdInSchemeRule extends Rule {
         },
         activity: {
           description: 'Validates that both id and inScheme are set on Concept if one of them is set in an activity list.',
-          message: 'When using an activity list via `inScheme`, `id` must also be included to reference the Concept in the activity list.\n\n`id` must not be set without reference to an activity list.\n\nAn example referece to an activity list is below:\n\n```\n"activity": [\n  {\n    "type": "Concept",\n    "id": "https://openactive.io/activity-list#72ddb2dc-7d75-424e-880a-d90eabe91381",\n    "inScheme": "https://openactive.io/activity-list",\n    "prefLabel": "Running"\n  }\n]\n```',
+          message: 'When using an activity list via `inScheme`, `id` must also be included to reference the Concept in the activity list.\n\n`id` must not be set without reference to an activity list.\n\nAn example reference to an activity list is below:\n\n```\n"activity": [\n  {\n    "@type": "Concept",\n    "id": "https://openactive.io/activity-list#72ddb2dc-7d75-424e-880a-d90eabe91381",\n    "inScheme": "https://openactive.io/activity-list",\n    "prefLabel": "Running"\n  }\n]\n```',
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.WARNING,
           type: ValidationErrorType.CONCEPT_ID_AND_IN_SCHEME_TOGETHER,

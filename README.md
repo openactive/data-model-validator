@@ -146,7 +146,7 @@ const result = await validate(feed, options);
 
 #### type
 
-The validator will detect the type of the model being validated from the `type` property. You can override this by providing a type option.
+The validator will detect the type of the model being validated from the `@type` property. You can override this by providing a `type` option.
 
 e.g.
 
@@ -154,12 +154,12 @@ e.g.
 const { validate } = require('@openactive/data-model-validator');
 
 const model = {
-  '@type': 'CustomAction'
+  type: 'CustomAction'
   // ...
 };
 
 const options = {
-  '@type': 'Action'
+  type: 'Action'
 };
 
 const result = await validate(model, options);
@@ -175,7 +175,7 @@ e.g.
 const { validate } = require('@openactive/data-model-validator');
 
 const model = {
-  '@type': 'CustomAction'
+  type: 'CustomAction'
   // ...
 };
 
@@ -198,7 +198,7 @@ e.g. To only apply rules that are suitable for data used in a booking flow phase
 const { validate, ValidationMode } = require('@openactive/data-model-validator');
 
 const model = {
-  '@type': 'CustomAction'
+  type: 'CustomAction'
   // ...
 };
 

@@ -51,7 +51,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
         },
         invalidExperimentalDomainNotFound: {
           description: 'Raises a notice if experimental properties are detected, but have no definition in the @context.',
-          message: 'A definition for this extension property was found, but a check could not be performed to assess whether it has been included in the correct object `"type"`.\n\nFor more information about extension properties, see the [extension properties guide](https://openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
+          message: 'A definition for this extension property was found, but a check could not be performed to assess whether it has been included in the correct object `"@type"`.\n\nFor more information about extension properties, see the [extension properties guide](https://openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.NOTICE,
           type: ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED,
@@ -118,7 +118,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
         },
         notInSpec: {
           description: 'Raises a error for properties that aren\'t in the OpenActive specification, and that aren\'t caught by other rules.',
-          message: 'This property is not defined in the OpenActive specification. Data publishers are encouraged to publish as many data properties as possible, and for those that don\'t match the specification, to use [extension properties](https://openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).\n\nFor example:\n\n```\n{\n  "ext:{{field}}": "my custom data"\n}\n```\n\nIf you are trying to use a recognised property, please check the spelling and ensure that you are using it within the correct object `"type"`. Otherwise if you are trying to add your own property, simply rename it to `ext:{{field}}`.',
+          message: 'This property is not defined in the OpenActive specification. Data publishers are encouraged to publish as many data properties as possible, and for those that don\'t match the specification, to use [extension properties](https://openactive.io/modelling-opportunity-data/EditorsDraft/#defining-and-using-custom-namespaces).\n\nFor example:\n\n```\n{\n  "ext:{{field}}": "my custom data"\n}\n```\n\nIf you are trying to use a recognised property, please check the spelling and ensure that you are using it within the correct object `"@type"`. Otherwise if you are trying to add your own property, simply rename it to `ext:{{field}}`.',
           sampleValues: {
             field: 'myCustomPropertyName',
           },

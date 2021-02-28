@@ -162,7 +162,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           const allowedOptions = PropertyHelper.getEnumOptions(readableType, version);
           example = `${prefix}"${allowedOptions[0]}"`;
         } else {
-          example = `${prefix}{\n${prefix}  "type": "${readableType.replace(/^#/, '')}"\n${prefix}}`;
+          example = `${prefix}{\n${prefix}  "@type": "${readableType.replace(/^#/, '')}"\n${prefix}}`;
         }
         break;
     }

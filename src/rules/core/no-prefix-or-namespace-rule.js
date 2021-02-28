@@ -14,7 +14,7 @@ module.exports = class NoPrefixOrNamespaceRule extends Rule {
       tests: {
         typeAndIdFailure: {
           description: 'Validates that @type and @id are submitted as @type and @id, not using the deprecated aliases of type and id, for bookable data.',
-          message: '`@{{field}}` should always be used as the name of this property, as the use of `id` and `type` is now deprecated.',
+          message: 'The property name `@{{field}}` must always be used instead of `{{field}}`, as the use of `id` and `type` is now deprecated.',
           sampleValues: {
             field: 'type',
           },
@@ -24,7 +24,7 @@ module.exports = class NoPrefixOrNamespaceRule extends Rule {
         },
         typeAndIdWarning: {
           description: 'Warns if @type and @id are submitted using the deprecated aliases type and id in non-bookable data.',
-          message: '`@{{field}}` should always be used as the name of this property, as the use of `id` and `type` is now deprecated.',
+          message: 'The property name `@{{field}}` should always be used instead of `{{field}}`, as the use of `id` and `type` is now deprecated.',
           sampleValues: {
             field: 'type',
           },
