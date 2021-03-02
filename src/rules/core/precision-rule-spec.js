@@ -10,12 +10,6 @@ describe('PrecisionRule', () => {
   const model = new Model({
     type: 'Precision',
     fields: {
-      latitude: {
-        fieldName: 'latitude',
-        minDecimalPlaces: 3,
-        sameAs: 'https://schema.org/latitude',
-        requiredType: 'https://schema.org/Number',
-      },
       price: {
         fieldName: 'price',
         maxDecimalPlaces: 2,
@@ -27,60 +21,15 @@ describe('PrecisionRule', () => {
   model.hasSpecification = true;
 
   it('should target any field', () => {
-    const isTargeted = rule.isFieldTargeted(model, 'latitude');
+    const isTargeted = rule.isFieldTargeted(model, 'price');
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no error for a value above a minDecimalPlaces threshold', async () => {
+  it('should return no error for a value with the correct number of decimal places', async () => {
     const values = [
-      -89.123456,
-      5.01123,
-      70.445234,
-    ];
-
-    for (const value of values) {
-      const data = {
-        latitude: value,
-      };
-      const nodeToTest = new ModelNode(
-        '$',
-        data,
-        null,
-        model,
-      );
-      const errors = await rule.validate(nodeToTest);
-      expect(errors.length).toBe(0);
-    }
-  });
-  it('should return an error for a value below a minDecimalPlaces threshold', async () => {
-    const values = [
-      90.120,
-      -100.1,
-      110,
-    ];
-
-    for (const value of values) {
-      const data = {
-        latitude: value,
-      };
-      const nodeToTest = new ModelNode(
-        '$',
-        data,
-        null,
-        model,
-      );
-      const errors = await rule.validate(nodeToTest);
-      expect(errors.length).toBe(1);
-      expect(errors[0].type).toBe(ValidationErrorType.INVALID_PRECISION);
-      expect(errors[0].severity).toBe(ValidationErrorSeverity.SUGGESTION);
-    }
-  });
-
-  it('should return no error for a value below a maxDecimalPlaces threshold', async () => {
-    const values = [
-      10,
-      10.50,
-      9.99,
+      -89.12,
+      0.01,
+      70.44,
     ];
 
     for (const value of values) {
@@ -97,6 +46,7 @@ describe('PrecisionRule', () => {
       expect(errors.length).toBe(0);
     }
   });
+
   it('should return an error for a value above a maxDecimalPlaces threshold', async () => {
     const values = [
       90.995,
