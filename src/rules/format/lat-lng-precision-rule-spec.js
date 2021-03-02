@@ -18,7 +18,7 @@ describe('LatLngPrecisionRule', () => {
       },
       longitude: {
         fieldName: 'longitude',
-        maxDecimalPlaces: 2,
+        minDecimalPlaces: 2,
         sameAs: 'https://schema.org/longitude',
         requiredType: 'https://schema.org/Number',
       },
@@ -69,6 +69,7 @@ describe('LatLngPrecisionRule', () => {
     for (const value of values) {
       const data = {
         latitude: value,
+        longitude: value,
       };
       const nodeToTest = new ModelNode(
         '$',
@@ -77,9 +78,11 @@ describe('LatLngPrecisionRule', () => {
         model,
       );
       const errors = await rule.validate(nodeToTest);
-      expect(errors.length).toBe(1);
+      expect(errors.length).toBe(2);
       expect(errors[0].type).toBe(ValidationErrorType.INVALID_PRECISION);
       expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+      expect(errors[1].type).toBe(ValidationErrorType.INVALID_PRECISION);
+      expect(errors[1].severity).toBe(ValidationErrorSeverity.FAILURE);
     }
   });
 });
