@@ -12,6 +12,16 @@ module.exports = class PrecisionRule extends Rule {
       name: 'PrecisionRule',
       description: 'Validates that all properties are to the correct number of decimal places.',
       tests: {
+        belowMinimum: {
+          description: 'Raises a suggestion if a number\'s precision is below the minimum number of decimal places suggested for a property.',
+          message: 'The value of this property should have at least {{minDecimalPlaces}} decimal places. Note that this notice will also appear when trailing zeros have been truncated.',
+          sampleValues: {
+            minDecimalPlaces: 3,
+          },
+          category: ValidationErrorCategory.DATA_QUALITY,
+          severity: ValidationErrorSeverity.SUGGESTION,
+          type: ValidationErrorType.INVALID_PRECISION,
+        },
         aboveMaximum: {
           description: 'Raises a warning if a number\'s precision is above the maximum number of decimal places required for a property.',
           message: 'The value of this property must not exceed {{maxDecimalPlaces}} decimal places.',
@@ -45,6 +55,23 @@ module.exports = class PrecisionRule extends Rule {
       return [];
     }
 
+    if (
+      typeof fieldObj.minDecimalPlaces !== 'undefined'
+      && PrecisionHelper.getPrecision(fieldValue) < fieldObj.minDecimalPlaces
+    ) {
+      errors.push(
+        this.createError(
+          'belowMinimum',
+          {
+            value: fieldValue,
+            path: node.getPath(field),
+          },
+          {
+            minDecimalPlaces: fieldObj.minDecimalPlaces,
+          },
+        ),
+      );
+    }
     if (typeof fieldObj.maxDecimalPlaces !== 'undefined'
       && PrecisionHelper.getPrecision(fieldValue) > fieldObj.maxDecimalPlaces
     ) {
