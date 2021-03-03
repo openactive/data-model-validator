@@ -19,14 +19,14 @@ module.exports = class ScheduledSessionDatetimeFormatRule extends Rule {
       tests: {
         startDate: {
           description: 'Raises a failure if a ScheduledSession startDate is in the incorrect format.',
-          message: 'startDate Datetime must be expressed as ISO 8601 format datetimes with a trailing definition of timezone. For example, `"2018-08-01T10:51:02Z"` or `"2018-08-01T10:51:02+01:00"`.\n\nFor more information, see [the specification](https://www.w3.org/2017/08/realtime-paged-data-exchange/#date-and-time-formats).',
+          message: 'ScheduledSession startDate must be expressed as ISO 8601 format datetimes with a trailing definition of timezone. For example, `"2018-08-01T10:51:02Z"` or `"2018-08-01T10:51:02+01:00"`.\n\nFor more information, see [the specification](https://www.w3.org/2017/08/realtime-paged-data-exchange/#date-and-time-formats).',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.INVALID_FORMAT,
         },
         endDate: {
           description: 'Raises a failure if a ScheduledSession endDate is in the incorrect format.',
-          message: 'endDate Datetime must be expressed as ISO 8601 format datetimes with a trailing definition of timezone. For example, `"2018-08-01T10:51:02Z"` or `"2018-08-01T10:51:02+01:00"`.\n\nFor more information, see [the specification](https://www.w3.org/2017/08/realtime-paged-data-exchange/#date-and-time-formats).',
+          message: 'ScheduledSession endDate must be expressed as ISO 8601 format datetimes with a trailing definition of timezone. For example, `"2018-08-01T10:51:02Z"` or `"2018-08-01T10:51:02+01:00"`.\n\nFor more information, see [the specification](https://www.w3.org/2017/08/realtime-paged-data-exchange/#date-and-time-formats).',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.INVALID_FORMAT,
