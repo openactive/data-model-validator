@@ -1,4 +1,3 @@
-const UriTemplate = require('uritemplate');
 const DataModelHelper = require('../helpers/data-model');
 const PropertyHelper = require('../helpers/property');
 
@@ -162,15 +161,7 @@ const Field = class {
         if (!isEnum) {
           // Is this a URL template?
           // This processes most strings... so could be a bit intensive
-          const template = UriTemplate.parse(data);
-          let isUrlTemplate = false;
-          for (const expression of template.expressions) {
-            if (expression.constructor.name === 'VariableExpression') {
-              isUrlTemplate = true;
-              break;
-            }
-          }
-          if (isUrlTemplate) {
+          if (PropertyHelper.isUrlTemplate(data)) {
             returnType = 'https://schema.org/Text';
           } else if (this.constructor.URL_REGEX.test(data)) {
             returnType = 'https://schema.org/URL';

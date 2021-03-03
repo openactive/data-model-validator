@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const UriTemplate = require('uritemplate');
 const DataModelHelper = require('./data-model');
 
 const PropertyHelper = class {
@@ -181,6 +182,20 @@ const PropertyHelper = class {
       }
     }
     return keyChecks;
+  }
+
+  static isUrlTemplate(data) {
+    try {
+      const template = UriTemplate.parse(data);
+      for (const expression of template.expressions) {
+        if (expression.constructor.name === 'VariableExpression') {
+          return true;
+        }
+      }
+    } catch (e) {
+      return false;
+    }
+    return false;
   }
 
   static clearCache() {
