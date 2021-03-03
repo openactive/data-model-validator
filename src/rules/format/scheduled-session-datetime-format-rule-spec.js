@@ -36,6 +36,7 @@ describe('ScheduledSessionDatetimeFormatRule', () => {
     model.hasSpecification = true;
     const values = [
       '2017-09-06T09:00:00Z',
+      '2018-08-01T10:51:02+01:00',
     ];
 
     for (const value of values) {
