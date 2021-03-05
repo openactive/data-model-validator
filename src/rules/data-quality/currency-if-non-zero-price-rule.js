@@ -6,7 +6,7 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 module.exports = class CurrencyIfNonZeroPriceRule extends Rule {
   constructor(options) {
     super(options);
-    this.targetModels = ['Offer'];
+    this.targetModels = ['TaxChargeSpecification', 'PriceSpecification', 'Offer', 'OfferOverride'];
     this.meta = {
       name: 'CurrencyIfNonZeroPriceRule',
       description: 'Validates that a priceCurrency is set if an Offer\'s price is non-zero.',
