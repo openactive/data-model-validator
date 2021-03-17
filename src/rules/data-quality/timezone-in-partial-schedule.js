@@ -1,5 +1,4 @@
 const Rule = require('../rule');
-// const PropertyHelper = require('../../helpers/property');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
