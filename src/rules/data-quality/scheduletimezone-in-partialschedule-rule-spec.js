@@ -1,4 +1,4 @@
-const TimezoneInPartialSchedule = require('./scheduletimezone-in-partial-schedule-rule');
+const TimezoneInPartialSchedule = require('./scheduletimezone-in-partialschedule-rule');
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
 const ValidationErrorType = require('../../errors/validation-error-type');
