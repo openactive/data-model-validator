@@ -1,4 +1,4 @@
-const RepeatCountIsPositiveInteger = require('./repeatcount-is-positive-integer');
+const RepeatCountIsPositiveInteger = require('./repeatcount-format-rule');
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
 const ValidationErrorType = require('../../errors/validation-error-type');
