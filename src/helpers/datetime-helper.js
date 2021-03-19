@@ -1,9 +1,11 @@
 function getDateTime(dateString, timeString) {
-  let fullString = dateString;
   if (typeof timeString !== 'undefined') {
-    fullString = `${fullString}T${timeString}`;
+    return Date(`${dateString}T${timeString}`);
   }
-  return new Date(fullString);
+  if (typeof dateString !== 'undefined') {
+    return new Date(dateString);
+  }
+  return undefined;
 }
 
-export default getDateTime;
+module.exports = getDateTime;

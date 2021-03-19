@@ -1,6 +1,7 @@
 const { RRule } = require('rrule');
 const Rule = require('../rule');
 const getFrequency = require('../../helpers/frequency-converter');
+const getDateTime = require('../../helpers/datetime-helper');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -16,10 +17,14 @@ module.exports = class ValidRecurrenceRule extends Rule {
       tests: {
         default: {
           message:
-            'scheduleTimezone must be present when startTime or endTime are present',
+            'Schedule must contains the correct information to generate a valid iCal recurrence rule.',
           sampleValues: {
-            field: 'scheduleTimezone',
-            allowedValues: 'Europe/London',
+            startTime: '08:30',
+            endTime: '09:30',
+            startDate: '2021-03-19',
+            repeatFrequency: 'P1W',
+            count: 10,
+            scheduleTimezone: 'Europe/London',
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -34,10 +39,15 @@ module.exports = class ValidRecurrenceRule extends Rule {
     const byDay = node.getValue('byDay');
     const byMonth = node.getValue('byMonth');
     const byMonthDay = node.getValue('byMonthDay');
-    const dtStart = node.getValue('dtStart');
-    const until = node.getValue('until');
+    const startTime = node.getValue('dtStart');
+    const endTime = node.getValue('endTime');
+    const startDate = node.getValue('startDate');
+    const endDate = node.getValue('endDate');
     const count = node.getValue('count');
     const scheduleTimezone = node.getValue('scheduleTimezone');
+
+    const dtStart = getDateTime(startDate, startTime);
+    const dtEnd = getDateTime(endDate, endTime);
 
     const rruleOptions = { freq, interval }; // this is the only required one
     if (typeof byDay !== 'undefined') {
@@ -52,8 +62,8 @@ module.exports = class ValidRecurrenceRule extends Rule {
     if (typeof dtStart !== 'undefined') {
       rruleOptions.dtstart = dtStart;
     }
-    if (typeof until !== 'undefined') {
-      rruleOptions.until = until;
+    if (typeof dtEnd !== 'undefined') {
+      rruleOptions.until = dtEnd;
     }
     if (typeof count !== 'undefined') {
       rruleOptions.count = count;
