@@ -9,7 +9,6 @@ function getFrequency(repeatFrequency) {
     // eg. that only one of the periods will be set: only day, or only month, etc
     // Doesn't bother with minutes or seconds
     // Returns {frequency, interval}
-    // Returns interval 1 by default except in special cases
     if (frequency.hours() === 1) {
       return { freq: RRule.HOURLY, interval: 1 };
     }
@@ -29,7 +28,7 @@ function getFrequency(repeatFrequency) {
       return { freq: RRule.YEARLY, interval: 1 };
     }
   }
-  return { freq: false, interval: false };
+  return { freq: undefined, interval: undefined };
 }
 
 module.exports = getFrequency;
