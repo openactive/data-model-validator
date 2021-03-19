@@ -55,6 +55,10 @@ const Field = class {
     return this.data.maxDecimalPlaces;
   }
 
+  get minValueInclusive() {
+    return this.data.minValueInclusive;
+  }
+
   get standard() {
     return this.data.standard;
   }
