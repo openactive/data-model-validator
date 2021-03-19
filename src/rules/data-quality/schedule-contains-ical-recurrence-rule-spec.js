@@ -1,9 +1,8 @@
-// const { Frequency } = require('rrule');
 const ValidRecurrenceRule = require('./schedule-contains-ical-recurrence-rule');
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
-// const ValidationErrorType = require('../../errors/validation-error-type');
-// const ValidationErrorSeverity = require('../../errors/validation-error-severity');
+const ValidationErrorType = require('../../errors/validation-error-type');
+const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 
 describe('ValidRecurrenceRule', () => {
   const rule = new ValidRecurrenceRule();
@@ -77,6 +76,10 @@ describe('ValidRecurrenceRule', () => {
     const errors = await rule.validate(nodeToTest);
 
     expect(errors.length).toBe(1);
+    for (const error of errors) {
+      expect(error.type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
+      expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
   });
 
   it('should not return errors when there are sufficent properties to build a valid recurrence rule', async () => {

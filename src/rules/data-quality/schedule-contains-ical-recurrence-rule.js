@@ -73,7 +73,6 @@ module.exports = class ValidRecurrenceRule extends Rule {
     }
 
     const errors = [];
-    // const rruleSet = new RRule.RRuleSet();
     try {
       new RRule(rruleOptions); // eslint-disable-line no-new
     } catch (error) {
