@@ -6,18 +6,20 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 
 describe('RepeatCountIsPositiveInteger', () => {
   const rule = new RepeatCountIsPositiveInteger();
+
   const model = new Model({
     type: 'Schedule',
     fields: {
       repeatCount: {
         fieldName: 'repeatCount',
+        minValueInclusive: 1,
         requiredType: 'https://schema.org/Integer',
       },
     },
   }, 'latest');
 
   it('should target Schedule model', () => {
-    const isTargeted = rule.isModelTargeted(model);
+    const isTargeted = rule.isFieldTargeted(model, 'repeatCount');
     expect(isTargeted).toBe(true);
   });
 

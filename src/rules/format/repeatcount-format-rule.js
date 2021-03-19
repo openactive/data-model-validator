@@ -6,7 +6,7 @@ const ValidationErrorSeverity = require('../../errors/validation-error-severity'
 module.exports = class RepeatCountIsPositiveInteger extends Rule {
   constructor(options) {
     super(options);
-    this.targetModels = ['Schedule', 'PartialSchedule'];
+    this.targetFields = { Schedule: 'repeatCount', PartialSchedule: 'repeatCount' };
     this.meta = {
       name: 'RepeatCountIsPositiveInteger',
       description: 'Validates that repeatCount is a positive integer',
@@ -25,23 +25,24 @@ module.exports = class RepeatCountIsPositiveInteger extends Rule {
     };
   }
 
-  validateModel(node) {
-    const repeatCount = node.getValue('repeatCount');
+  validateField(node, field) {
+    const fieldObj = node.model.getField(field);
+    const fieldValue = node.getValue(field);
 
-    if (typeof repeatCount === 'undefined'
-    ) {
+    if (typeof fieldValue !== 'number') {
       return [];
     }
+
     const errors = [];
 
-    if (repeatCount < 1
-      || repeatCount % 1 !== 0) {
+    if (typeof fieldObj.minValueInclusive !== 'undefined'
+      && (fieldValue < fieldObj.minValueInclusive || fieldValue % 1 !== 0)) {
       errors.push(
         this.createError(
           'default',
           {
-            repeatCount,
-            path: node.getPath('repeatCount'),
+            fieldValue,
+            path: node.getPath(field),
           },
         ),
       );

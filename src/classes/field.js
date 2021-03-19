@@ -63,6 +63,10 @@ const Field = class {
     return this.data.allowReferencing;
   }
 
+  get minValueInclusive() {
+    return this.data.minValueInclusive;
+  }
+
   get standard() {
     return this.data.standard;
   }
