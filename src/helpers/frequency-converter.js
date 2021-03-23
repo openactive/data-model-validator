@@ -28,7 +28,7 @@ function getFrequency(repeatFrequency) {
       return { freq: RRule.YEARLY, interval: 1 };
     }
   }
-  return { freq: undefined, interval: undefined };
+  return { freq: undefined, interval: 1 };
 }
 
 module.exports = getFrequency;
