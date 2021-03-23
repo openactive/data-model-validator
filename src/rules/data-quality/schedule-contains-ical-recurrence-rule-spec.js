@@ -82,6 +82,34 @@ describe('ValidRecurrenceRule', () => {
     }
   });
 
+  it('should return errors when there are insufficent properties to build a valid recurrence rule', async () => {
+    const data = {
+      '@type': 'Schedule',
+      startTime: '08:30',
+      endTime: '09:30',
+      endDate: '2021-03-26',
+      startDate: '2021-03-19',
+      repeatFrequency: 'P1W',
+      count: 10000,
+      scheduleTimezone: 'Europe/London',
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+
+    const errors = await rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
+    for (const error of errors) {
+      expect(error.type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
+      expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
+  });
+
   it('should not return errors when there are sufficent properties to build a valid recurrence rule', async () => {
     const data = {
       '@type': 'Schedule',

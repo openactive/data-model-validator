@@ -30,19 +30,45 @@ module.exports = class ValidRecurrenceRule extends Rule {
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.MISSING_REQUIRED_FIELD,
         },
+        dtStart: {
+          message:
+            'The recurrence rule must contain a startDate, startTime, and scheduledTimezone to generate the schedule.',
+          sampleValues: {
+            startTime: '08:30',
+            startDate: '2021-03-19',
+            scheduleTimezone: 'Europe/London',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.MISSING_REQUIRED_FIELD,
+        },
+        duration: {
+          message:
+            'The recurrence rule must contain a duration, or an endTime to generate the schedule.',
+          sampleValues: {
+            duration: '08:30',
+            endTime: '2021-03-19',
+            scheduleTimezone: 'Europe/London',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.MISSING_REQUIRED_FIELD,
+        },
       },
     };
   }
 
   validateModel(node) {
+    const errors = [];
+
     const { freq, interval } = getFrequency(node.getValue('repeatFrequency'));
     const byDay = node.getValue('byDay');
     const byMonth = node.getValue('byMonth');
     const byMonthDay = node.getValue('byMonthDay');
-    const startTime = node.getValue('dtStart');
-    const endTime = node.getValue('endTime');
     const startDate = node.getValue('startDate');
+    const startTime = node.getValue('startTime');
     const endDate = node.getValue('endDate');
+    const endTime = node.getValue('endTime');
     const count = node.getValue('count');
     const scheduleTimezone = node.getValue('scheduleTimezone');
 
@@ -50,6 +76,32 @@ module.exports = class ValidRecurrenceRule extends Rule {
     const dtEnd = getDateTime(endDate, endTime);
 
     const rruleOptions = { freq, interval }; // this is the only required one
+
+    if (typeof startDate === 'undefined'
+        && typeof startTime === 'undefined'
+        && typeof scheduleTimezone === 'undefined') {
+      errors.push(
+        this.createError('dtStart', {
+          value: undefined,
+          path: node,
+        }),
+      );
+    } else {
+      rruleOptions.dtstart = dtStart;
+    }
+
+    if ((typeof endTime === 'undefined')
+        || typeof duration === 'undefined') {
+      errors.push(
+        this.createError('duration', {
+          value: undefined,
+          path: node,
+        }),
+      );
+    } else {
+      
+    }
+
     if (typeof byDay !== 'undefined') {
       rruleOptions.byweekday = byDay;
     }
@@ -72,7 +124,8 @@ module.exports = class ValidRecurrenceRule extends Rule {
       rruleOptions.tzid = scheduleTimezone;
     }
 
-    const errors = [];
+    console.info(rruleOptions);
+
     try {
       new RRule(rruleOptions); // eslint-disable-line no-new
     } catch (error) {
@@ -86,4 +139,6 @@ module.exports = class ValidRecurrenceRule extends Rule {
 
     return errors;
   }
+
+  
 };
