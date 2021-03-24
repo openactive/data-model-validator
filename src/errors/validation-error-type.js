@@ -41,6 +41,7 @@ const ValidationErrorType = {
   WRONG_BASE_TYPE: 'wrong_base_type',
   FIELD_NOT_ALLOWED: 'field_not_allowed',
   BELOW_MIN_VALUE_INCLUSIVE: 'BELOW_MIN_VALUE_INCLUSIVE',
+  URI_TEMPLATE_MISSING_PLACEHOLDER: 'uri_template_missing_placeholder',
 };
 
 module.exports = Object.freeze(ValidationErrorType);
