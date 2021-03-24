@@ -40,6 +40,7 @@ const ValidationErrorType = {
   TYPE_LIMITS_USE: 'type_limits_use',
   WRONG_BASE_TYPE: 'wrong_base_type',
   FIELD_NOT_ALLOWED: 'field_not_allowed',
+  URI_TEMPLATE_MISSING_PLACEHOLDER: 'uri_template_missing_placeholder',
 };
 
 module.exports = Object.freeze(ValidationErrorType);
