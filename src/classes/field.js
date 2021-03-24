@@ -59,6 +59,10 @@ const Field = class {
     return this.data.minValueInclusive;
   }
 
+  get valueConstraint() {
+    return this.data.valueConstraint;
+  }
+
   get standard() {
     return this.data.standard;
   }
