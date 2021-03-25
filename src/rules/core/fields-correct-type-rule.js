@@ -283,6 +283,8 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
               examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample()),
             };
           }
+        } else if (fieldObj.allowReferencing && fieldObj.detectType(fieldValue) === 'https://schema.org/URL') {
+          // Do nothing, as referencing via a URL that matches an @id elsewhere is allowed
         } else {
           testKey = 'singleType';
           messageValues = {

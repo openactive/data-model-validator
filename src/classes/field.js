@@ -55,6 +55,10 @@ const Field = class {
     return this.data.maxDecimalPlaces;
   }
 
+  get allowReferencing() {
+    return this.data.allowReferencing;
+  }
+
   get standard() {
     return this.data.standard;
   }
