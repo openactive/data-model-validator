@@ -40,6 +40,7 @@ const ValidationErrorType = {
   TYPE_LIMITS_USE: 'type_limits_use',
   WRONG_BASE_TYPE: 'wrong_base_type',
   FIELD_NOT_ALLOWED: 'field_not_allowed',
+  BELOW_MIN_VALUE_INCLUSIVE: 'BELOW_MIN_VALUE_INCLUSIVE',
 };
 
 module.exports = Object.freeze(ValidationErrorType);
