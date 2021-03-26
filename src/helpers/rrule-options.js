@@ -18,8 +18,6 @@ function generateRRuleOptions(node) {
     exceptDate: node.getValue('exceptDate'),
   };
 
-  console.info(properties.startDate, properties.startTime);
-
   const dtStart = getDateTime(properties.startDate, properties.startTime);
   const dtEnd = getDateTime(properties.endDate, properties.endTime);
 
