@@ -4,6 +4,7 @@ const generateRRuleOptions = require('../../helpers/rrule-options');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
+const getScheduleProperties = require('../../helpers/schedule-properties');
 
 module.exports = class ExceptDatesAreInSchedule extends Rule {
   constructor(options) {
@@ -37,7 +38,8 @@ module.exports = class ExceptDatesAreInSchedule extends Rule {
   validateModel(node) {
     const errors = [];
 
-    const { rruleOptions, properties } = generateRRuleOptions(node);
+    const properties = getScheduleProperties(node);
+    const rruleOptions = generateRRuleOptions(properties);
 
     if (typeof properties.exceptDate === 'undefined') {
       return [];

@@ -1,6 +1,7 @@
 const { RRule } = require('rrule');
 const Rule = require('../rule');
 const generateRRuleOptions = require('../../helpers/rrule-options');
+const getScheduleProperties = require('../../helpers/schedule-properties');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -48,7 +49,8 @@ module.exports = class ValidRecurrenceRule extends Rule {
   validateModel(node) {
     const errors = [];
 
-    const { rruleOptions, properties } = generateRRuleOptions(node);
+    const properties = getScheduleProperties(node);
+    const rruleOptions = generateRRuleOptions(properties);
 
     if (typeof properties.startDate === 'undefined'
         || typeof properties.startTime === 'undefined'
