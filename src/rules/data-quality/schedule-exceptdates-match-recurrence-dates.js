@@ -1,7 +1,6 @@
 const { RRule } = require('rrule');
 const Rule = require('../rule');
-const getFrequency = require('../../helpers/frequency-converter');
-const getDateTime = require('../../helpers/datetime-helper');
+const generateRRuleOptions = require('../../helpers/rrule-options');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -38,54 +37,17 @@ module.exports = class ExceptDatesAreInSchedule extends Rule {
   validateModel(node) {
     const errors = [];
 
-    const { freq, interval } = getFrequency(node.getValue('repeatFrequency'));
-    const byDay = node.getValue('byDay');
-    const byMonth = node.getValue('byMonth');
-    const byMonthDay = node.getValue('byMonthDay');
-    const startDate = node.getValue('startDate');
-    const startTime = node.getValue('startTime');
-    const endDate = node.getValue('endDate');
-    const endTime = node.getValue('endTime');
-    const count = node.getValue('count');
-    const scheduleTimezone = node.getValue('scheduleTimezone');
-    const exceptDate = node.getValue('exceptDate');
+    const { rruleOptions, properties } = generateRRuleOptions(node);
 
-    if (typeof exceptDate === 'undefined') {
+    if (typeof properties.exceptDate === 'undefined') {
       return [];
-    }
-
-    const dtStart = getDateTime(startDate, startTime);
-    const dtEnd = getDateTime(endDate, endTime);
-
-    const rruleOptions = { freq, interval }; // this is the only required one
-
-    if (typeof dtStart !== 'undefined') {
-      rruleOptions.dtstart = dtStart;
-    }
-    if (typeof byDay !== 'undefined') {
-      rruleOptions.byweekday = byDay;
-    }
-    if (typeof byMonth !== 'undefined') {
-      rruleOptions.bymonth = byMonth;
-    }
-    if (typeof byMonthDay !== 'undefined') {
-      rruleOptions.bymonthday = byMonthDay;
-    }
-    if (typeof dtEnd !== 'undefined') {
-      rruleOptions.until = dtEnd;
-    }
-    if (typeof count !== 'undefined') {
-      rruleOptions.count = count;
-    }
-    if (typeof scheduleTimezone !== 'undefined') {
-      rruleOptions.tzid = scheduleTimezone;
     }
 
     try {
       const rule = new RRule(rruleOptions);
       const allEvents = rule.all();
       const simplifiedAllEvents = allEvents.map(event => event.getTime());
-      for (const date of exceptDate) {
+      for (const date of properties.exceptDate) {
         const simplifiedDate = new Date(date).getTime();
         if (!simplifiedAllEvents.includes(simplifiedDate)) {
           errors.push(

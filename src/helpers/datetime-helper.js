@@ -1,5 +1,5 @@
 function getDateTime(dateString, timeString) {
-  if (typeof timeString !== 'undefined') {
+  if (typeof dateString !== 'undefined' && typeof timeString !== 'undefined') {
     return new Date(`${dateString}T${timeString}`);
   }
   if (typeof dateString !== 'undefined') {
