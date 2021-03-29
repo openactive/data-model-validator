@@ -50,7 +50,7 @@ module.exports = class ValueInOptionsRule extends Rule {
       && typeof fieldObj !== 'undefined'
     ) {
       let isInOptions = true;
-      let cannotBeArray = false;
+      let isArrayButCannotBeArray = false;
       let allowedOptions;
       let testType;
       const possibleTypes = fieldObj.getAllPossibleTypes();
@@ -76,19 +76,19 @@ module.exports = class ValueInOptionsRule extends Rule {
           for (const value of fieldValue) {
             if (allowedOptions.indexOf(value) < 0) {
               isInOptions = false;
-              cannotBeArray = false;
+              isArrayButCannotBeArray = false;
               singleFieldValue = value;
               break;
             }
           }
         } else if (fieldValue instanceof Array && !fieldObj.canBeArray()) {
-          cannotBeArray = true;
+          isArrayButCannotBeArray = true;
         } else if (allowedOptions.indexOf(fieldValue) < 0) {
           isInOptions = false;
         }
       }
 
-      if (cannotBeArray) {
+      if (isArrayButCannotBeArray) {
         errors.push(
           this.createError(
             'fieldArray',
