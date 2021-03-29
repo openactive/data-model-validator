@@ -28,6 +28,7 @@ describe('MinValueInclusiveRule', () => {
     const values = [
       89.12345,
       89,
+      4.1,
     ];
 
     for (const value of values) {
@@ -60,9 +61,9 @@ describe('MinValueInclusiveRule', () => {
 
   it('should return an error for a value below a minValueInclusive constraint', async () => {
     const values = [
-      1,
       -100.1,
       -100,
+      -3.9,
     ];
 
     for (const value of values) {
