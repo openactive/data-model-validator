@@ -24,7 +24,7 @@ describe('MinValueInclusiveRule', () => {
     expect(isTargeted).toBe(true);
   });
 
-  it('should return no errors for a value above minValueInclusive constraint', async () => {
+  it('should return no errors for a value greater than minValueInclusive constraint', async () => {
     const values = [
       89.12345,
       89,

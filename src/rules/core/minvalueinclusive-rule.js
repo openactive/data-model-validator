@@ -13,7 +13,7 @@ module.exports = class MinValueInclusiveRule extends Rule {
       tests: {
         belowMinimum: {
           description: 'Raises a failure if the value is below the associated minValueInclusive property.',
-          message: 'The value of this property should be above or equal to {{minValueInclusive}}.',
+          message: 'The value of this property should be greater than or equal to {{minValueInclusive}}.',
           sampleValues: {
             minValueInclusive: 4,
           },
