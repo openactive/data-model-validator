@@ -40,6 +40,15 @@ describe('ValueInOptionsRule', () => {
           'HEAD',
         ],
       },
+      genderRestriction: {
+        fieldName: 'genderRestriction',
+        requiredType: 'https://schema.org/Text',
+        options: [
+          'https://openactive.io/NoRestriction',
+          'https://openactive.io/MaleOnly',
+          'https://openactive.io/FemaleOnly',
+        ],
+      },
     },
   }, 'latest');
   model.hasSpecification = true;
@@ -233,6 +242,30 @@ describe('ValueInOptionsRule', () => {
     expect(errors.length).toBe(1);
 
     expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+  });
+
+  it('should return a different error message if the field value is an array', async () => {
+    const data = {
+      '@type': 'Offer',
+      genderRestriction: [
+        'https://openactive.io/NoRestriction',
+        'https://openactive.io/MaleOnly',
+        'https://openactive.io/FemaleOnly',
+      ],
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = await rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
+
+    expect(errors[0].message).toBe('This property cannot be an array. Must be one of:\n\n{{allowedValues}}.');
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 });
