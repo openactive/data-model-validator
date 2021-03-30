@@ -105,6 +105,8 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         return `[\`string${plural}\` containing an ISO 8601 Time](${type})`;
       case 'https://schema.org/Duration':
         return `[\`string${plural}\` containing an ISO 8601 Duration](${type})`;
+      case 'https://schema.org/Property':
+        return `[\`string${plural}\` containing the URL of a property](${type}) from the [OpenActive](https://openactive.io/ns) or [schema.org](https://schema.org/) vocabularies`;
       case 'https://schema.org/URL':
         return `[\`string${plural}\` containing a url](${type})`;
       default:
@@ -153,6 +155,9 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         break;
       case 'https://schema.org/Duration':
         example = `${prefix}"PT30M"`;
+        break;
+      case 'https://schema.org/Property':
+        example = `${prefix}"https://schema.org/givenName"`;
         break;
       case 'https://schema.org/URL':
         example = `${prefix}"https://www.example.org/"`;
