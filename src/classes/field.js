@@ -167,6 +167,8 @@ const Field = class {
           // This processes most strings... so could be a bit intensive
           if (PropertyHelper.isUrlTemplate(data)) {
             returnType = 'https://schema.org/Text';
+          } else if (DataModelHelper.getProperties(this.version).has(data)) {
+            returnType = 'https://schema.org/Property';
           } else if (this.constructor.URL_REGEX.test(data)) {
             returnType = 'https://schema.org/URL';
           }

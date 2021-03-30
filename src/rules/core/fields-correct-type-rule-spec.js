@@ -363,6 +363,69 @@ describe('FieldsCorrectTypeRule', () => {
     }
   });
 
+  // Property
+  it('should return no error for recognised property @id used for a Property type', async () => {
+    const model = new Model({
+      type: 'Event',
+      fields: {
+        field: {
+          fieldName: 'field',
+          requiredType: 'https://schema.org/Property',
+        },
+      },
+    }, 'latest');
+    model.hasSpecification = true;
+    const values = [
+      'https://schema.org/name',
+    ];
+
+    for (const value of values) {
+      const data = {
+        field: value,
+      };
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = await rule.validate(nodeToTest);
+      expect(errors.length).toBe(0);
+    }
+  });
+  it('should return an error for unrecognised property @id used for a Property type', async () => {
+    const model = new Model({
+      type: 'Event',
+      fields: {
+        field: {
+          fieldName: 'field',
+          requiredType: 'https://schema.org/Property',
+        },
+      },
+    }, 'latest');
+    model.hasSpecification = true;
+
+    const values = [
+      'https://schema.org/notaproperty',
+    ];
+
+    for (const value of values) {
+      const data = {
+        field: value,
+      };
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = await rule.validate(nodeToTest);
+      expect(errors.length).toBe(1);
+      expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
+  });
+
   // Date
   it('should return no error for an valid date type', async () => {
     const model = new Model({
