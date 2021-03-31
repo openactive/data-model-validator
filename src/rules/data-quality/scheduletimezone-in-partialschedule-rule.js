@@ -9,10 +9,10 @@ module.exports = class TimezoneInPartialSchedule extends Rule {
     this.targetModels = ['PartialSchedule'];
     this.meta = {
       name: 'TimezoneInPartialSchedule',
-      description: 'Validates that scheduleTimezone is present when startTime or endTime are present.',
+      description: 'Validates that `scheduleTimezone` is present when `startTime` or `endTime` are present.',
       tests: {
         default: {
-          message: 'scheduleTimezone must be present when startTime or endTime are present',
+          message: '`scheduleTimezone` must be present when `startTime` or `endTime` are present',
           sampleValues: {
             field: 'scheduleTimezone',
             allowedValues: 'Europe/London',
