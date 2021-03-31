@@ -86,7 +86,7 @@ describe('ExceptDatesAreInSchedule', () => {
 
     expect(errors.length).toBe(1);
     for (const error of errors) {
-      expect(error.type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
+      expect(error.type).toBe(ValidationErrorType.EXCEPTION_DATES_NOT_IN_SCHEDULE);
       expect(error.severity).toBe(ValidationErrorSeverity.WARNING);
     }
   });

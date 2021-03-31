@@ -42,6 +42,7 @@ const ValidationErrorType = {
   FIELD_NOT_ALLOWED: 'field_not_allowed',
   BELOW_MIN_VALUE_INCLUSIVE: 'below_min_value_inclusive',
   URI_TEMPLATE_MISSING_PLACEHOLDER: 'uri_template_missing_placeholder',
+  EXCEPTION_DATES_NOT_IN_SCHEDULE: 'exception_dates_not_in_schedule',
 };
 
 module.exports = Object.freeze(ValidationErrorType);

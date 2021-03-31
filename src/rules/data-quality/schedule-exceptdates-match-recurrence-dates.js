@@ -24,7 +24,7 @@ module.exports = class ExceptDatesAreInSchedule extends Rule {
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.WARNING,
-          type: ValidationErrorType.MISSING_REQUIRED_FIELD,
+          type: ValidationErrorType.EXCEPTION_DATES_NOT_IN_SCHEDULE,
         },
       },
     };
