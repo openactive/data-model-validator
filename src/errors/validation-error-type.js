@@ -43,6 +43,7 @@ const ValidationErrorType = {
   BELOW_MIN_VALUE_INCLUSIVE: 'below_min_value_inclusive',
   URI_TEMPLATE_MISSING_PLACEHOLDER: 'uri_template_missing_placeholder',
   EXCEPTION_DATES_NOT_IN_SCHEDULE: 'exception_dates_not_in_schedule',
+  INVALID_SCHEDULE_EVENT_TYPE: 'invalid_schedule_event_type',
 };
 
 module.exports = Object.freeze(ValidationErrorType);
