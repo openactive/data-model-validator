@@ -63,7 +63,7 @@ module.exports = class ScheduleEventTypeIsEventSubclass extends Rule {
       errorCondition = 'modelIsNotEventSubClass';
     }
 
-    if (errorCondition === 'modelIsNotEventSubClass') {
+    if (errorCondition) {
       errors.push(
         this.createError(
           errorCondition,
@@ -73,8 +73,6 @@ module.exports = class ScheduleEventTypeIsEventSubclass extends Rule {
           },
         ),
       );
-    } else {
-      return [];
     }
 
     return errors;

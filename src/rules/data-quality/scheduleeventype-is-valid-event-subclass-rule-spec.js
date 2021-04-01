@@ -91,7 +91,7 @@ describe('ScheduleEventTypeIsEventSubclass', () => {
     }
   });
 
-  it('should return errors if scheduleEventType does not have a subClassGraph', async () => {
+  it('should not errors if scheduleEventType does not have a subClassGraph', async () => {
     const model = new Model({
       type: 'Schedule',
       subClassGraph: ['#Event'],
