@@ -94,6 +94,10 @@ module.exports = class ValueInOptionsRule extends Rule {
             'fieldArray',
             {
               value: singleFieldValue,
+              path: node.getPath(field),
+            },
+            {
+              value: singleFieldValue,
               allowedValues: `<ul><li>\`"${allowedOptions.join('"`</li><li>`"')}"\`</li></ul>`,
             },
           ),

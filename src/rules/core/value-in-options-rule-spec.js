@@ -265,7 +265,7 @@ describe('ValueInOptionsRule', () => {
 
     expect(errors.length).toBe(1);
 
-    expect(errors[0].message).toBe('This property cannot be an array. Must be one of:\n\n{{allowedValues}}.');
+    expect(errors[0].message).toContain('This property cannot be an array. Must be one of:');
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 });
