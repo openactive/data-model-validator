@@ -1,10 +1,8 @@
 const getDateTime = require('./datetime-helper');
 
 function generateRRuleOptions(properties) {
-  const toRruleDate = (date, time) => getDateTime('UTC', date, time);
-
-  const dtStart = toRruleDate(properties.startDate, properties.startTime);
-  const dtEnd = toRruleDate(properties.endDate, properties.endTime);
+  const dtStart = getDateTime('UTC', properties.startDate, properties.startTime);
+  const dtEnd = getDateTime('UTC', properties.endDate, properties.endTime);
 
   const rruleOptions = {};
 
