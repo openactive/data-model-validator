@@ -1,9 +1,8 @@
-function getDateTime(dateString, timeString) {
+const { DateTime } = require('luxon');
+
+function getDateTime(ianaTimezone, dateString, timeString) {
   if (typeof dateString !== 'undefined' && typeof timeString !== 'undefined') {
-    return new Date(`${dateString}T${timeString}`);
-  }
-  if (typeof dateString !== 'undefined') {
-    return new Date(dateString);
+    return DateTime.fromISO(`${dateString}T${timeString}`, { zone: ianaTimezone }).toJSDate();
   }
   return undefined;
 }

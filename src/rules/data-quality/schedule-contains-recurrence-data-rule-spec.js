@@ -100,7 +100,7 @@ describe('ValidRecurrenceRule', () => {
 
     const errors = await rule.validate(nodeToTest);
 
-    expect(errors.length).toBe(1);
+    expect(errors.length).toBe(2);
     for (const error of errors) {
       expect(error.type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
       expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
