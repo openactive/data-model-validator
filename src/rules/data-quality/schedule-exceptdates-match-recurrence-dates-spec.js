@@ -94,11 +94,22 @@ describe('ExceptDatesAreInSchedule', () => {
   it('should not return errors when the exceptDate is within the recurrence rule schedule', async () => {
     const data = {
       '@type': 'Schedule',
-      startDate: '2021-03-19',
-      startTime: '08:30',
+      startDate: '2021-02-18',
+      startTime: '07:30',
+      count: 20,
       repeatFrequency: 'P1W',
-      count: 10,
-      exceptDate: ['2021-03-26T08:30:00Z'],
+      exceptDate: [
+        '2021-02-18T07:30:00.000Z',
+        '2021-02-25T07:30:00.000Z',
+        '2021-03-04T07:30:00.000Z',
+        '2021-03-11T07:30:00.000Z',
+        '2021-03-18T07:30:00.000Z',
+        '2021-03-25T07:30:00.000Z',
+        '2021-04-01T06:30:00.000Z',
+        '2021-04-08T06:30:00.000Z',
+        '2021-04-15T06:30:00.000Z',
+        '2021-04-22T06:30:00.000Z',
+      ],
       scheduleTimezone: 'Europe/London',
     };
 
