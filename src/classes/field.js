@@ -63,6 +63,10 @@ const Field = class {
     return this.data.allowReferencing;
   }
 
+  get valueConstraint() {
+    return this.data.valueConstraint;
+  }
+
   get standard() {
     return this.data.standard;
   }
