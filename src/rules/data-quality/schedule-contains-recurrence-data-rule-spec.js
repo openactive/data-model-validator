@@ -87,7 +87,7 @@ describe('ValidRecurrenceRule', () => {
       '@type': 'Schedule',
       startDate: '2021-03-19',
       repeatFrequency: 'P1W',
-      count: 10000,
+      count: 1,
       scheduleTimezone: 'Europe/London',
     };
 
