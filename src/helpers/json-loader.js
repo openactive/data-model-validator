@@ -108,7 +108,19 @@ async function getFromFsCacheIfExists(baseCachePath, url) {
 
 async function saveToFsCache(baseCachePath, url, fileObject) {
   const cachePath = getFsCachePath(baseCachePath, url);
-  await writeFileAtomic(cachePath, JSON.stringify(fileObject), { chown: false });
+  try {
+    await writeFileAtomic(cachePath, JSON.stringify(fileObject), { chown: false });
+  } catch (error) {
+    if (error.message.indexOf('EPERM: operation not permitted, rename') !== -1) {
+      // Ignore EPERM error on Windows when multiple processes try to write the same file
+      // https://github.com/npm/write-file-atomic/issues/28
+      // If there's contention when saving this file, it is likely that one of the other instances of the
+      // validator is currently writing to the same file with the same contents, and therefore the cache
+      // file will be written successfully by the other instance, and this error can simply be ignored
+    } else {
+      throw error;
+    }
+  }
 }
 
 /**
