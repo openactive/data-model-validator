@@ -63,6 +63,10 @@ const Field = class {
     return this.data.allowReferencing;
   }
 
+  get valueConstraint() {
+    return this.data.valueConstraint;
+  }
+
   get standard() {
     return this.data.standard;
   }
@@ -168,8 +172,7 @@ const Field = class {
         }
         if (!isEnum) {
           // Is this a URL template?
-          // This processes most strings... so could be a bit intensive
-          if (PropertyHelper.isUrlTemplate(data)) {
+          if (this.valueConstraint === 'UriTemplate' && PropertyHelper.isUrlTemplate(data)) {
             returnType = 'https://schema.org/Text';
           } else if (DataModelHelper.getProperties(this.version).has(data)) {
             returnType = 'https://schema.org/Property';
