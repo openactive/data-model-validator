@@ -360,13 +360,14 @@ Field.URL_REGEX = new RegExp(
       + '(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))'
     + '|'
       // host & domain names, may end with dot
-      // may not contain dots (e.g localhost)
+      // can be replaced by a shortest alternative
+      // (?![-_])(?:[-\\w\\u00a1-\\uffff]{0,63}[^-_]\\.)+
       + '(?:'
         + '(?:'
           + '[a-z0-9\\u00a1-\\uffff]'
           + '[a-z0-9\\u00a1-\\uffff_-]{0,62}'
         + ')?'
-        + '[a-z0-9\\u00a1-\\uffff]\\.?'
+        + '[a-z0-9\\u00a1-\\uffff]\\.'
       + ')+'
       // TLD identifier name, may end with dot
       + '(?:[a-z\\u00a1-\\uffff]{2,}\\.?)'
