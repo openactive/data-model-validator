@@ -42,6 +42,7 @@ const ValidationErrorType = {
   FIELD_NOT_ALLOWED: 'field_not_allowed',
   BELOW_MIN_VALUE_INCLUSIVE: 'below_min_value_inclusive',
   VALUE_OUTWITH_CONSTRAINT: 'value_outwith_constraint',
+  INVALID_ID: 'invalid_id',
 };
 
 module.exports = Object.freeze(ValidationErrorType);

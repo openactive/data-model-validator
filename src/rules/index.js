@@ -22,6 +22,7 @@ module.exports = {
     require('./core/context-in-root-node-rule'),
     require('./core/valueconstraint-rule'),
     require('./core/minvalueinclusive-rule'),
+    require('./core/id-rule'),
 
     // Formatting rules
     require('./format/duration-format-rule'),

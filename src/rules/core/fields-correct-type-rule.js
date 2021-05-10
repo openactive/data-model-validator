@@ -288,7 +288,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
               examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample()),
             };
           }
-        } else if (fieldObj.allowReferencing && fieldObj.detectType(fieldValue) === 'https://schema.org/URL') {
+        } else if (fieldObj.allowReferencing && PropertyHelper.isUrl(fieldValue)) {
           // Do nothing, as referencing via a URL that matches an @id elsewhere is allowed
           // Don't do literally nothing as this still runs this.createError with undefined, instead return empty
           return [];

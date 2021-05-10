@@ -38,7 +38,7 @@ module.exports = class MinValueInclusiveRule extends Rule {
 
     // Get the field object
     const fieldObj = node.model.getField(field);
-    const fieldValue = node.getMappedValue(field);
+    const fieldValue = node.getValue(field);
 
     if (typeof fieldValue !== 'number') {
       return [];

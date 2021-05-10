@@ -39,10 +39,11 @@ module.exports = class ValueConstraintRule extends Rule {
 
     // Get the field object
     const fieldObj = node.model.getField(field);
-    const fieldValue = node.getMappedValue(field);
+    const fieldValue = node.getValue(field);
 
     if (typeof fieldObj.valueConstraint !== 'undefined'
-      && ((fieldObj.valueConstraint === 'UriTemplate' && !PropertyHelper.isUrlTemplate(fieldValue))
+      && (typeof fieldValue !== 'string'
+      || (fieldObj.valueConstraint === 'UriTemplate' && !PropertyHelper.isUrlTemplate(fieldValue))
       || (fieldObj.valueConstraint === 'UUID' && !PropertyHelper.isValidUUID(fieldValue)))) {
       errors.push(
         this.createError(
