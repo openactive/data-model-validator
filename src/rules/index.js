@@ -20,6 +20,8 @@ module.exports = {
     require('./core/precision-rule'),
     require('./core/no-prefix-or-namespace-rule'),
     require('./core/context-in-root-node-rule'),
+    require('./core/valueconstraint-rule'),
+    require('./core/minvalueinclusive-rule'),
 
     // Formatting rules
     require('./format/duration-format-rule'),
