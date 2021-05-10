@@ -12,21 +12,11 @@ module.exports = class ValueConstraintRule extends Rule {
       name: 'ValueConstraintRule',
       description: 'Validates that all properties meet the associated valueConstraint parameter.',
       tests: {
-        uritemplate: {
-          description: 'Raises a failure if the value is not a valid URI Template',
-          message: 'The value of this property must adhere to the associated constraint: {{valueConstraint}}.',
+        valueConstraint: {
+          description: 'Raises a failure if the value does not match the associated constraint',
+          message: 'The value of this property did not match the expected "{{valueConstraint}}" format.',
           sampleValues: {
             valueConstraint: 'UriTemplate',
-          },
-          category: ValidationErrorCategory.DATA_QUALITY,
-          severity: ValidationErrorSeverity.FAILURE,
-          type: ValidationErrorType.VALUE_OUTWITH_CONSTRAINT,
-        },
-        uuid: {
-          description: 'Raises a failure if the value is not a valid UUID.',
-          message: 'The value of this property must adhere to the associated constraint: {{valueConstraint}}.',
-          sampleValues: {
-            valueConstraint: 'UUID',
           },
           category: ValidationErrorCategory.DATA_QUALITY,
           severity: ValidationErrorSeverity.FAILURE,
@@ -52,26 +42,17 @@ module.exports = class ValueConstraintRule extends Rule {
     const fieldValue = node.getMappedValue(field);
 
     if (typeof fieldObj.valueConstraint !== 'undefined'
-      && (fieldObj.valueConstraint === 'UriTemplate'
-      && !PropertyHelper.isUrlTemplate(fieldValue))) {
+      && ((fieldObj.valueConstraint === 'UriTemplate' && !PropertyHelper.isUrlTemplate(fieldValue))
+      || (fieldObj.valueConstraint === 'UUID' && !PropertyHelper.isValidUUID(fieldValue)))) {
       errors.push(
         this.createError(
-          'uritemplate',
+          'valueConstraint',
           {
             fieldValue,
             path: node.getPath(field),
           },
-        ),
-      );
-    } else if (typeof fieldObj.valueConstraint !== 'undefined'
-      && (fieldObj.valueConstraint === 'UUID'
-      && !PropertyHelper.isValidUUID(fieldValue))) {
-      errors.push(
-        this.createError(
-          'uuid',
           {
-            fieldValue,
-            path: node.getPath(field),
+            valueConstraint: fieldObj.valueConstraint,
           },
         ),
       );
