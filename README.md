@@ -2,7 +2,7 @@
 
 The OpenActive data model validator library.
 
-[![Build Status](https://travis-ci.com/openactive/data-model-validator.svg?branch=master)](https://travis-ci.org/openactive/data-model-validator)
+[![Tests](https://github.com/openactive/data-model-validator/actions/workflows/npm-test.yml/badge.svg?branch=master)](https://github.com/openactive/data-model-validator/actions/workflows/npm-test.yml)
 [![Known Vulnerabilities](https://snyk.io/test/github/openactive/data-model-validator/badge.svg)](https://snyk.io/test/github/openactive/data-model-validator)
 
 ## Introduction

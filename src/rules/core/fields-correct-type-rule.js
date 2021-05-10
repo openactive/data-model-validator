@@ -290,6 +290,8 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           }
         } else if (fieldObj.allowReferencing && fieldObj.detectType(fieldValue) === 'https://schema.org/URL') {
           // Do nothing, as referencing via a URL that matches an @id elsewhere is allowed
+          // Don't do literally nothing as this still runs this.createError with undefined, instead return empty
+          return [];
         } else {
           testKey = 'singleType';
           messageValues = {
