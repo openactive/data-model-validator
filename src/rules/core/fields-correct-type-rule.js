@@ -237,13 +237,11 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       return [];
     }
 
-    const checkPass = fieldObj.detectedTypeIsAllowed(fieldValue);
+    const checkPass = fieldObj.detectedTypeIsAllowed(fieldValue)
+      // Pass check if referencing via a URL that matches an @id elsewhere is allowed, and in use
+      || (fieldObj.allowReferencing && typeof fieldValue === 'string' && PropertyHelper.isUrl(fieldValue));
 
     if (!checkPass) {
-      if (fieldObj.allowReferencing && typeof fieldValue === 'string' && PropertyHelper.isUrl(fieldValue)) {
-        // Do not return errors, as referencing via a URL that matches an @id elsewhere is allowed
-        return [];
-      }
       let testKey;
       let messageValues = {};
       let propName = field;
