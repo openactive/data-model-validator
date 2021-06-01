@@ -110,7 +110,8 @@ const ModelNode = class {
   }
 
   canInheritFrom(parentNode) {
-    return (
+    // Note the below is commented out temporarily to allow Course fields to be inherited by CourseInstance
+    return true || (
       parentNode.model.type === this.model.type
       || this.model.subClassGraph.indexOf(`#${parentNode.model.type}`) >= 0
       || parentNode.model.subClassGraph.indexOf(`#${this.model.type}`) >= 0

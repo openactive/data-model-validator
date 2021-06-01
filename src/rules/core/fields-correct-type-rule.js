@@ -240,6 +240,10 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     const checkPass = fieldObj.detectedTypeIsAllowed(fieldValue);
 
     if (!checkPass) {
+      if (fieldObj.allowReferencing && typeof fieldValue === 'string' && PropertyHelper.isUrl(fieldValue)) {
+        // Do not return errors, as referencing via a URL that matches an @id elsewhere is allowed
+        return [];
+      }
       let testKey;
       let messageValues = {};
       let propName = field;
@@ -288,10 +292,6 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
               examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample()),
             };
           }
-        } else if (fieldObj.allowReferencing && PropertyHelper.isUrl(fieldValue)) {
-          // Do nothing, as referencing via a URL that matches an @id elsewhere is allowed
-          // Don't do literally nothing as this still runs this.createError with undefined, instead return empty
-          return [];
         } else {
           testKey = 'singleType';
           messageValues = {
