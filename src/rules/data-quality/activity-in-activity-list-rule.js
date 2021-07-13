@@ -44,7 +44,7 @@ module.exports = class ActivityInActivityListRule extends Rule {
           type: ValidationErrorType.ACTIVITY_NOT_IN_ACTIVITY_LIST,
         },
         noIdMatch: {
-          message: 'Activity `"{{activity}}"` was found in the activity list `"{{list}}"`, but the `"id"` did not match.\n\nThe correct `"id"` is `"{{correctId}}"`.',
+          message: 'Activity `"{{activity}}"` was found in the activity list `"{{list}}"`, but the `"@id"` did not match.\n\nThe correct `"@id"` is `"{{correctId}}"`.',
           sampleValues: {
             activity: 'Touch Rugby Union',
             correctId: 'https://openactive.io/activity-list#dc8b8b2b-0a83-403f-863a-4ec05ebb2410',
