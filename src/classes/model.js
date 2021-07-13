@@ -24,10 +24,6 @@ const Model = class {
     return this.data.hasId || false;
   }
 
-  get idFormat() {
-    return this.data.idFormat;
-  }
-
   get isJsonLd() {
     return typeof this.data.isJsonLd === 'undefined' ? true : this.data.isJsonLd;
   }
