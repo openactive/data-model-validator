@@ -1,4 +1,4 @@
-name: Tests
+name: Test and Deploy
 
 on:
   push:
@@ -26,6 +26,7 @@ jobs:
   deploy-site:
     needs: test
     if: ${{ github.ref == 'refs/heads/master' }}
+    environment: validator-staging.openactive.io
     runs-on: ubuntu-latest
     steps:
     - name: Checkout validator app
