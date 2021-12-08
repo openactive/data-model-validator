@@ -28,7 +28,12 @@ jobs:
     if: ${{ github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
     steps:
-    - name: Deploy validator to Heroku
+    - name: Checkout validator app
+      uses: actions/checkout@v2
+      with:
+        repository: openactive/data-model-validator-site
+        
+    - name: Deploy validator app to Heroku
       uses: behe/heroku-build@v1
       with:
         app-name: "data-model-validator-staging"
