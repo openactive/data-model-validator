@@ -32,9 +32,11 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: openactive/data-model-validator-site
+        path: data-model-validator-site
         
     - name: Deploy validator app to Heroku
       uses: behe/heroku-build@v1
       with:
-        app-name: "data-model-validator-staging"
+        app-name: data-model-validator-staging
         api-key: "${{secrets.HEROKU_API_KEY}}"
+        path: data-model-validator-site
