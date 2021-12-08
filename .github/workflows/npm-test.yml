@@ -26,6 +26,9 @@ jobs:
   deploy-site:
     needs: test
     if: ${{ github.ref == 'refs/heads/master' }}
+    concurrency: 
+      group: validator-staging.openactive.io
+      cancel-in-progress: true
     environment: validator-staging.openactive.io
     runs-on: ubuntu-latest
     steps:
@@ -45,6 +48,9 @@ jobs:
   promote-site:
     needs: deploy-site
     if: ${{ github.ref == 'refs/heads/master' }}
+    concurrency: 
+      group: validator.openactive.io
+      cancel-in-progress: true
     environment: validator.openactive.io
     runs-on: ubuntu-latest
     steps:
