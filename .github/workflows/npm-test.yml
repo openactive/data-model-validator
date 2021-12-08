@@ -29,7 +29,9 @@ jobs:
     concurrency: 
       group: validator-staging.openactive.io
       cancel-in-progress: true
-    environment: validator-staging.openactive.io
+    environment:
+      name: validator-staging.openactive.io
+      url: https://validator-staging.openactive.io/
     runs-on: ubuntu-latest
     steps:
     - name: Checkout validator app
@@ -51,7 +53,9 @@ jobs:
     concurrency: 
       group: validator.openactive.io
       cancel-in-progress: true
-    environment: validator.openactive.io
+    environment:
+      name: validator.openactive.io
+      url: https://validator.openactive.io/
     runs-on: ubuntu-latest
     steps:
     - name: Promote validator app to production
