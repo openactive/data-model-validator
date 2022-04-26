@@ -69,8 +69,8 @@ The rule name you create should:
 
 **OR**
 
-* Set `this.targetFields` to an object map of the fields you are targeting in each model, or a string `'*''` wildcard. Setting the property to `null` means that the rule will be applied once to the whole model. If you target a model, you **MUST** implement `validateField`.
-
+* Set `this.targetFields` to an object map of the fields you are targeting in each model, or a string `'*''` wildcard. Setting the property to `null` means that the rule will be applied once to the whole model. If you target a field, you **MUST** implement `validateField`.
+field
 Generally speaking, you **SHOULD NOT** implement both `validateModel` and `validateField` in the same rule.
 
 Independently, a rule can also target particular modes of use. It is used to restrict rules which should only apply during a particular usage of the models (e.g. an Order used during one of the booking phases - C1Request, C2Response or PatchOrder). By default, a rule will target all modes.
