@@ -195,7 +195,7 @@ this.meta = {
 };
 ```
 
-### validateModel and validateField
+### `validateModel` and `validateField`
 
 Only one of these methods is expected to be implemented on each rule.
 

@@ -181,4 +181,8 @@ const ModelNode = class {
   }
 };
 
+/**
+ * @typedef {ModelNode} ModelNodeType
+ */
+
 module.exports = ModelNode;
