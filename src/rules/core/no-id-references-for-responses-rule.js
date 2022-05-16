@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const Rule = require('../rule');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -50,7 +51,7 @@ class NoIdReferencesForResponsesRule extends Rule {
     const errors = [];
     const fieldValue = node.getValue(field);
 
-    if (typeof fieldValue !== 'object') {
+    if (!_.isPlainObject(fieldValue)) {
       errors.push(
         this.createError(
           'default',
