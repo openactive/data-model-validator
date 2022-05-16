@@ -20,12 +20,12 @@ class NoIdReferencesForResponsesRule extends Rule {
     this.targetFields = { OrderItem: ['acceptedOffer', 'orderedItem'] };
     this.meta = {
       name: 'NoIdReferencesForResponsesRule',
-      description: 'Validates that acceptedOffer and orderedItem are not ID references and not objects for responses (C1, C2 etc)',
+      description: 'Validates that acceptedOffer and orderedItem are not ID references and are objects for responses (C1, C2 etc)',
       tests: {
         default: {
           description: `Raises a failure if the acceptedOffer or orderedItem within the OrderItem of a response is a URL 
           (ie a reference to the object and not the object itself)`,
-          message: 'For responses, {{field}} must not be an compact ID reference, but the object representing the data itself',
+          message: 'For responses, {{field}} must not be a compact ID reference, but the object representing the data itself',
           sampleValues: {
             field: 'acceptedOffer',
           },

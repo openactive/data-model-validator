@@ -25,7 +25,7 @@ class IdReferencesForRequestsRule extends Rule {
         default: {
           description: `Raises a failure if the acceptedOffer or orderedItem within the OrderItem of a request is not a URL 
           (ie a reference to the object and not the object itself)`,
-          message: 'For requests, {{field}} must be an compact ID reference, not the object representing the data itself',
+          message: 'For requests, {{field}} must be a compact ID reference, not the object representing the data itself',
           sampleValues: {
             field: 'acceptedOffer',
           },
