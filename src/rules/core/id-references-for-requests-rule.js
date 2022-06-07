@@ -17,7 +17,7 @@ class IdReferencesForRequestsRule extends Rule {
       'BOrderProposalRequest',
       'OrderPatch',
     ];
-    this.targetFields = { OrderItem: ['acceptedOffer', 'orderedItem'] };
+    this.targetModels = '*';
     this.meta = {
       name: 'IdReferencesForRequestsRule',
       description: 'Validates that acceptedOffer and orderedItem are ID references and not objects for requests (C1, C2 etc)',
@@ -38,33 +38,33 @@ class IdReferencesForRequestsRule extends Rule {
   }
 
   /**
-   *
    * @param {ModelNode} node
-   * @param {string} field
    */
-  validateField(node, field) {
+  validateModel(node) {
     // Don't do this check for models that we don't actually have a spec for or for models that aren't JSON-LD
     if (!node.model.hasSpecification || !node.model.isJsonLd) {
       return [];
     }
 
     const errors = [];
-    const fieldValue = node.getValue(field);
+    const referencedFields = node.model.getReferencedFields(node.options.validationMode, node.name);
+    for (const field of referencedFields) {
+      const fieldValue = node.getValue(field);
 
-    if (typeof fieldValue !== 'string' || !PropertyHelper.isUrl(fieldValue)) {
-      errors.push(
-        this.createError(
-          'default',
-          {
-            fieldValue,
-            path: node.getPath(field),
-          },
-          { field },
-        ),
-      );
-    } else {
-      return [];
+      if (typeof fieldValue !== 'string' || !PropertyHelper.isUrl(fieldValue)) {
+        errors.push(
+          this.createError(
+            'default',
+            {
+              fieldValue,
+              path: node.getPath(field),
+            },
+            { referencedField: field },
+          ),
+        );
+      }
     }
+
 
     return errors;
   }
