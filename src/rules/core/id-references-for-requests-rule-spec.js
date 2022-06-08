@@ -11,6 +11,10 @@ describe('IdReferencesForRequestsRule', () => {
 
   const model = new Model({
     type: 'OrderItem',
+    referencedFields: [
+      'orderedItem',
+      'acceptedOffer',
+    ],
   }, 'latest');
   model.hasSpecification = true;
 
@@ -23,6 +27,7 @@ describe('IdReferencesForRequestsRule', () => {
         '@type': 'Offer',
         '@id': 'https://example.com/offer/1',
       },
+      orderedItem: 'https://example.com/item/2',
     };
 
     const nodeToTest = new ModelNode(
@@ -47,6 +52,7 @@ describe('IdReferencesForRequestsRule', () => {
         '@type': 'ScheduledSession',
         '@id': 'https://example.com/session/1',
       },
+      acceptedOffer: 'https://example.com/offer/1',
     };
 
     const nodeToTest = new ModelNode(
@@ -92,6 +98,25 @@ describe('IdReferencesForRequestsRule', () => {
         '@type': 'ScheduledSession',
         '@id': 'https://example.com/session/1',
       },
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+      options,
+    );
+    const errors = await rule.validate(nodeToTest);
+    expect(errors.length).toBe(0);
+  });
+  it('should return no errors if a request object has `orderedItem` as a compact ID reference', async () => {
+    const options = new OptionsHelper({ validationMode: 'C1Request' });
+    const data = {
+      '@context': 'https://openactive.io/',
+      '@type': 'OrderItem',
+      orderedItem: 'https://example.com/session/1',
+      acceptedOffer: 'https://example.com/offer/1',
     };
 
     const nodeToTest = new ModelNode(
