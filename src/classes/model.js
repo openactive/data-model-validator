@@ -51,7 +51,7 @@ const Model = class {
     return this.imperativeConfiguration[imperativeConfigName];
   }
 
-  getImperativeConfigurationWithContext(validationMode, containingFieldName) {
+  getImperativeConfigurationWithContext(validationMode, { containingFieldName, rpdeKind }) {
     if (!this.validationMode) return undefined;
     if (!this.imperativeConfigurationWithContext) return undefined;
 
@@ -63,13 +63,13 @@ const Model = class {
 
     if (!contextualImperativeConfigs) return undefined;
 
-    const contextualImperativeConfig = contextualImperativeConfigs[containingFieldName];
+    const fieldContextualImperativeConfig = contextualImperativeConfigs[containingFieldName];
 
-    return contextualImperativeConfig;
+    return (!fieldContextualImperativeConfig) ? contextualImperativeConfigs[rpdeKind] : fieldContextualImperativeConfig;
   }
 
   getRequiredFields(validationMode, containingFieldName) {
-    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, { containingFieldName });
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
 
     if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.requiredFields) return specificContextualImperativeConfiguration.requiredFields;
@@ -84,7 +84,7 @@ const Model = class {
   }
 
   getRequiredOptions(validationMode, containingFieldName) {
-    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, { containingFieldName });
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
 
     if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.requiredOptions) return specificContextualImperativeConfiguration.requiredOptions;
@@ -95,7 +95,7 @@ const Model = class {
   }
 
   getRecommendedFields(validationMode, containingFieldName) {
-    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, { containingFieldName });
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
 
     if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.recommendedFields) return specificContextualImperativeConfiguration.recommendedFields;
@@ -106,7 +106,7 @@ const Model = class {
   }
 
   getShallNotIncludeFields(validationMode, containingFieldName) {
-    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, { containingFieldName });
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
 
     if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.shallNotInclude) return specificContextualImperativeConfiguration.shallNotInclude;
@@ -116,8 +116,8 @@ const Model = class {
     return this.data.shallNotInclude || [];
   }
 
-  getReferencedFields(validationMode, containingFieldName) {
-    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
+  getReferencedFields(validationMode, { containingFieldName, rpdeKind }) {
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, { containingFieldName, rpdeKind });
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
 
     if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.referencedFields) return specificContextualImperativeConfiguration.referencedFields;

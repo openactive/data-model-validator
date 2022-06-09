@@ -487,7 +487,7 @@ describe('validate', () => {
       expect(result[3].path).toBe('$.location');
     });
 
-    it('should cope with flexible model types', async () => {
+    fit('should cope with flexible model types', async () => {
       const place = {
         '@context': metaData.contextUrl,
         '@id': 'http://www.example.org/locations/gym',
