@@ -10,7 +10,7 @@ class Rule {
     this.targetValidationModes = '*';
     // This option is used to target a specific RPDE feed. It is only read if the validation mode for this rule is
     // either 'RPDEFeed' or 'BookableRPDEFeed'.
-    this.targetRpdeKinds = '*';
+    this.targetRpdeKinds = null;
     this.meta = {
       name: 'Rule',
       description: 'This is a base rule description that should be overridden.',
@@ -135,10 +135,11 @@ class Rule {
 
     if (this.targetValidationModes instanceof Array) {
       if (validationMode === 'RPDEFeed' || validationMode === 'BookableRPDEFeed') {
-        if (this.targetRpdeKinds === '*') return true;
-        return this.targetRpdeKinds.includes(rpdeKind);
+        if (this.targetRpdeKinds) {
+          if (this.targetRpdeKinds === '*') return true;
+          return this.targetRpdeKinds.includes(rpdeKind);
+        }
       }
-
       return this.targetValidationModes.includes(validationMode);
     }
 
