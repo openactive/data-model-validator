@@ -21,7 +21,7 @@ module.exports = class DeprecatedFieldsRule extends Rule {
           type: ValidationErrorType.FIELD_DEPRECATED,
         },
         feed: {
-          message: '{{deprecationGuidance}}',
+          message: 'This property is deprecated. {{deprecationGuidance}}',
           sampleValues: {
             deprecationGuidance: 'Field is deprecated.',
           },
