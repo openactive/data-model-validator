@@ -17,7 +17,7 @@ class NoIdReferencesForResponsesRule extends Rule {
       'OrdersFeed',
       'OrderStatus',
     ];
-    this.targetFields = { OrderItem: ['acceptedOffer', 'orderedItem'] };
+    this.targetModels = '*';
     this.meta = {
       name: 'NoIdReferencesForResponsesRule',
       description: 'Validates that acceptedOffer and orderedItem are not ID references and are objects for responses (C1, C2 etc)',
@@ -38,32 +38,31 @@ class NoIdReferencesForResponsesRule extends Rule {
   }
 
   /**
-   *
    * @param {ModelNode} node
-   * @param {string} field
    */
-  validateField(node, field) {
+  validateModel(node) {
     // Don't do this check for models that we don't actually have a spec for or for models that aren't JSON-LD
     if (!node.model.hasSpecification || !node.model.isJsonLd) {
       return [];
     }
 
     const errors = [];
-    const fieldValue = node.getValue(field);
+    const shouldNotBeReferencedFields = node.model.getShallNotBeReferencedFields(node.options.validationMode, node.name);
+    for (const field of shouldNotBeReferencedFields) {
+      const fieldValue = node.getValue(field);
 
-    if (!_.isPlainObject(fieldValue)) {
-      errors.push(
-        this.createError(
-          'default',
-          {
-            fieldValue,
-            path: node.getPath(field),
-          },
-          { field },
-        ),
-      );
-    } else {
-      return [];
+      if (!_.isPlainObject(fieldValue)) {
+        errors.push(
+          this.createError(
+            'default',
+            {
+              fieldValue,
+              path: node.getPath(field),
+            },
+            { field },
+          ),
+        );
+      }
     }
 
     return errors;
