@@ -1,6 +1,6 @@
 const Model = require('../../classes/model');
 const ModelNode = require('../../classes/model-node');
-const { IdReferencesForRequestsRule } = require('./id-references-for-requests-rule');
+const IdReferencesForRequestsRule = require('./id-references-for-requests-rule');
 const OptionsHelper = require('../../helpers/options');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');

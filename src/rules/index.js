@@ -23,6 +23,7 @@ module.exports = {
     require('./core/valueconstraint-rule'),
     require('./core/minvalueinclusive-rule'),
     require('./core/id-rule'),
+    require('./core/id-references-for-certain-feeds-rule'),
 
     // Formatting rules
     require('./format/duration-format-rule'),

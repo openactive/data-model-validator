@@ -69,6 +69,4 @@ class IdReferencesForRequestsRule extends Rule {
   }
 }
 
-module.exports = {
-  IdReferencesForRequestsRule,
-};
+module.exports = IdReferencesForRequestsRule;
