@@ -364,7 +364,6 @@ describe('FieldsNotInModelRule', () => {
   it('should return a failure per field if a field has been superseded', async () => {
     const schedule = new Model({
       type: 'PartialSchedule',
-      subClassOf: '#Schedule',
       inSpec: [
         'type',
       ],
@@ -376,9 +375,57 @@ describe('FieldsNotInModelRule', () => {
         'https://openactive.io',
         'https://openactive.io/ns-beta',
       ],
-      '@type': 'Schedule',
-      'beta:timeZone': 'America/New_York',
+      '@type': 'PartialSchedule',
+      'beta:oldProperty': 'America/New_York',
     };
+
+    const customContext = {
+      '@context': {
+        rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+        rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+        schema: 'https://schema.org/',
+        oa: 'https://openactive.io/',
+        label: 'rdfs:label',
+        comment: 'rdfs:comment',
+        domainIncludes: {
+          '@id': 'schema:domainIncludes',
+          '@type': '@id',
+        },
+        rangeIncludes: {
+          '@id': 'schema:rangeIncludes',
+          '@type': '@id',
+        },
+        Property: 'rdf:Property',
+        Class: 'rdfs:Class',
+        supersededBy: 'schema:supersededBy',
+        beta: 'https://openactive.io/ns-beta#',
+      },
+      '@graph': [
+        {
+          '@id': 'beta:oldProperty',
+          '@type': 'Property',
+          label: 'oldProperty',
+          comment: 'This old property has now been deprecated.',
+          supersededBy: 'schema:scheduleTimezone',
+          domainIncludes: [
+            'oa:PartialSchedule',
+          ],
+          rangeIncludes: [
+            'schema:Text',
+          ],
+        },
+      ],
+    };
+
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+      errorCode: JsonLoaderHelper.ERROR_NONE,
+      statusCode: 200,
+      data: customContext,
+      url,
+      exception: null,
+      contentType: 'application/json',
+      fetchTime: (new Date()).valueOf(),
+    }));
 
     const options = new OptionsHelper({
       loadRemoteJson: true,
