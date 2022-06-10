@@ -136,6 +136,26 @@ module.exports = class FieldsNotInModelRule extends Rule {
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC,
         },
+        superseded: {
+          description: 'Raises an error for properties that have been superseded.',
+          message: 'This term has graduated from the beta namespace and is highly likely to be removed in future, please use `{{field}}` instead.',
+          sampleValues: {
+            field: 'supersedingField',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC,
+        },
+        supersededFeed: {
+          description: 'Raises an error for properties that have been superseded.',
+          message: 'This term has graduated from the beta namespace and is highly likely to be removed in future, please use `{{field}}` instead.',
+          sampleValues: {
+            field: 'supersedingField',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.WARNING,
+          type: ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC,
+        },
       },
     };
   }
@@ -326,6 +346,18 @@ module.exports = class FieldsNotInModelRule extends Rule {
               [oaContext, schemaOrgVocab],
             );
             if (graphResponse.code === GraphHelper.PROPERTY_FOUND) {
+              if (graphResponse.data.supersededBy) {
+                if (node.options.validationMode === 'RPDEFeed') {
+                  testKey = 'supersededFeed';
+                } else {
+                  testKey = 'superseded';
+                }
+
+                messageValues = {
+                  field: graphResponse.data.supersededBy,
+                };
+              }
+
               isDefined = true;
               break;
             }

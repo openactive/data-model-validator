@@ -11,6 +11,7 @@ module.exports = {
     require('./core/required-fields-rule'),
     require('./core/required-optional-fields-rule'),
     require('./core/shall-not-include-fields-rule'),
+    require('./core/deprecated-fields-rule'),
     require('./core/fields-not-in-model-rule'),
     require('./core/fields-correct-type-rule'),
     require('./core/recommended-fields-rule'),
