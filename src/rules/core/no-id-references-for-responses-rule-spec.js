@@ -3,7 +3,7 @@ const ModelNode = require('../../classes/model-node');
 const OptionsHelper = require('../../helpers/options');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
-const { NoIdReferencesForResponsesRule } = require('./no-id-references-for-responses-rule');
+const NoIdReferencesForResponsesRule = require('./no-id-references-for-responses-rule');
 
 
 describe('NoIdReferencesForResponsesRule', () => {
@@ -11,6 +11,58 @@ describe('NoIdReferencesForResponsesRule', () => {
 
   const model = new Model({
     type: 'OrderItem',
+    validationMode: {
+      C1Request: 'request',
+      C1Response: 'Cresponse',
+    },
+    imperativeConfiguration: {
+      request: {
+        requiredFields: [
+          'type',
+          'acceptedOffer',
+          'orderedItem',
+          'position',
+        ],
+        recommendedFields: [],
+        shallNotInclude: [
+          'id',
+          'orderItemStatus',
+          'unitTaxSpecification',
+          'accessCode',
+          'error',
+          'cancellationMessage',
+          'customerNotice',
+          'orderItemIntakeForm',
+        ],
+        requiredOptions: [],
+        referencedFields: [
+          'orderedItem',
+          'acceptedOffer',
+        ],
+      },
+      Cresponse: {
+        requiredFields: [
+          'type',
+          'acceptedOffer',
+          'orderedItem',
+          'position',
+        ],
+        shallNotInclude: [
+          'id',
+          'orderItemStatus',
+          'cancellationMessage',
+          'customerNotice',
+          'accessCode',
+          'accessPass',
+          'error',
+        ],
+        requiredOptions: [],
+        shallNotBeReferencedFields: [
+          'orderedItem',
+          'acceptedOffer',
+        ],
+      },
+    },
   }, 'latest');
   model.hasSpecification = true;
 
@@ -20,6 +72,9 @@ describe('NoIdReferencesForResponsesRule', () => {
       '@context': 'https://openactive.io/',
       '@type': 'OrderItem',
       acceptedOffer: 'https://example.com/offer/1',
+      orderedItem: {
+        '@id': 'https://example.com/item/1',
+      },
     };
 
     const nodeToTest = new ModelNode(
@@ -41,6 +96,9 @@ describe('NoIdReferencesForResponsesRule', () => {
       '@context': 'https://openactive.io/',
       '@type': 'OrderItem',
       orderedItem: 'https://example.com/session/1',
+      acceptedOffer: {
+        '@id': 'https://example.com/offer/1',
+      },
     };
 
     const nodeToTest = new ModelNode(

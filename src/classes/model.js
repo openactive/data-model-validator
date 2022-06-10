@@ -127,6 +127,17 @@ const Model = class {
     return this.data.referencedFields || [];
   }
 
+  getShallNotBeReferencedFields(validationMode, { containingFieldName, rpdeKind }) {
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, { containingFieldName, rpdeKind });
+    const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
+
+    if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.shallNotBeReferencedFields) return specificContextualImperativeConfiguration.shallNotBeReferencedFields;
+
+    if (specificImperativeConfiguration && specificImperativeConfiguration.shallNotBeReferencedFields) return specificImperativeConfiguration.shallNotBeReferencedFields;
+
+    return this.data.shallNotBeReferencedFields || [];
+  }
+
   hasRecommendedField(field) {
     return PropertyHelper.arrayHasField(this.recommendedFields, field, this.version);
   }

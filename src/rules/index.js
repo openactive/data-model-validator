@@ -24,6 +24,8 @@ module.exports = {
     require('./core/minvalueinclusive-rule'),
     require('./core/id-rule'),
     require('./core/id-references-for-certain-feeds-rule'),
+    require('./core/id-references-for-requests-rule'),
+    require('./core/no-id-references-for-responses-rule'),
 
     // Formatting rules
     require('./format/duration-format-rule'),
