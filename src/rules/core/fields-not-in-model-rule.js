@@ -138,7 +138,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
         },
         superseded: {
           description: 'Raises an error for properties that have been superseded.',
-          message: 'This term has graduated from the beta namespace and is highly likely to be removed in future versions of this library, please use `{{field}}` instead.',
+          message: 'This term has graduated from the beta namespace and is highly likely to be removed in future, please use `{{field}}` instead.',
           sampleValues: {
             field: 'supersedingField',
           },
@@ -148,7 +148,7 @@ module.exports = class FieldsNotInModelRule extends Rule {
         },
         supersededFeed: {
           description: 'Raises an error for properties that have been superseded.',
-          message: 'This term has graduated from the beta namespace and is highly likely to be removed in future versions of this library, please use `{{field}}` instead.',
+          message: 'This term has graduated from the beta namespace and is highly likely to be removed in future, please use `{{field}}` instead.',
           sampleValues: {
             field: 'supersedingField',
           },
