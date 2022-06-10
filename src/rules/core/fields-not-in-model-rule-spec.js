@@ -361,6 +361,45 @@ describe('FieldsNotInModelRule', () => {
     }
   });
 
+  it('should return a failure per field if a field has been superseded', async () => {
+    const schedule = new Model({
+      type: 'PartialSchedule',
+      subClassOf: '#Schedule',
+      inSpec: [
+        'type',
+      ],
+    }, 'latest');
+    schedule.hasSpecification = true;
+
+    const data = {
+      '@context': [
+        'https://openactive.io',
+        'https://openactive.io/ns-beta',
+      ],
+      '@type': 'Schedule',
+      'beta:timeZone': 'America/New_York',
+    };
+
+    const options = new OptionsHelper({
+      loadRemoteJson: true,
+      validationMode: 'C1Response',
+    });
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      schedule,
+      options,
+    );
+
+    const errors = await rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC);
+  });
+
   it('should return a failure per field if a field is a typo', async () => {
     const data = {
       '@type': 'Event',
