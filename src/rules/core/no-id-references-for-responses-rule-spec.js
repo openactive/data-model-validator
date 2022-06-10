@@ -3,7 +3,7 @@ const ModelNode = require('../../classes/model-node');
 const OptionsHelper = require('../../helpers/options');
 const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
-const { NoIdReferencesForResponsesRule } = require('./no-id-references-for-responses-rule');
+const NoIdReferencesForResponsesRule = require('./no-id-references-for-responses-rule');
 
 
 describe('NoIdReferencesForResponsesRule', () => {

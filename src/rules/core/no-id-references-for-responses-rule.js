@@ -70,6 +70,4 @@ class NoIdReferencesForResponsesRule extends Rule {
   }
 }
 
-module.exports = {
-  NoIdReferencesForResponsesRule,
-};
+module.exports = NoIdReferencesForResponsesRule;
