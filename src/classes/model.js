@@ -51,7 +51,7 @@ const Model = class {
     return this.imperativeConfiguration[imperativeConfigName];
   }
 
-  getImperativeConfigurationWithContext(validationMode, { containingFieldName, rpdeKind }) {
+  getImperativeConfigurationWithContext(validationMode, { containingFieldName = null, rpdeKind = null }) {
     if (!this.validationMode) return undefined;
     if (!this.imperativeConfigurationWithContext) return undefined;
 
@@ -116,7 +116,7 @@ const Model = class {
     return this.data.shallNotInclude || [];
   }
 
-  getReferencedFields(validationMode, { containingFieldName, rpdeKind }) {
+  getReferencedFields(validationMode, { containingFieldName = null, rpdeKind = null }) {
     const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, { containingFieldName, rpdeKind });
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
 
@@ -127,7 +127,7 @@ const Model = class {
     return this.data.referencedFields || [];
   }
 
-  getShallNotBeReferencedFields(validationMode, { containingFieldName, rpdeKind }) {
+  getShallNotBeReferencedFields(validationMode, { containingFieldName = null, rpdeKind = null }) {
     const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, { containingFieldName, rpdeKind });
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
 
