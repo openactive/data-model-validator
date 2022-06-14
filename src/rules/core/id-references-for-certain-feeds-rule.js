@@ -28,7 +28,7 @@ class IdReferencesForCertainFeedsRule extends Rule {
           (ie a reference to the object and not the object itself)`,
           message: 'For {{rpdeKind}} feeds, {{field}} must be an compact ID reference, not the object representing the data itself',
           sampleValues: {
-            feed: 'FacilityUse/Slot',
+            rpdeKind: 'FacilityUse/Slot',
             field: 'facilityUse',
           },
           category: ValidationErrorCategory.CONFORMANCE,

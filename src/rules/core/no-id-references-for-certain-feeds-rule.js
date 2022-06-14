@@ -26,7 +26,7 @@ class NoIdReferencesForCertainFeedsRule extends Rule {
           (ie a reference to the object and not the object itself)`,
           message: 'For {{rpdeKind}} feeds, {{field}} must be not an compact ID reference, but the object representing the data itself',
           sampleValues: {
-            feed: 'ScheduledSession.SessionSeries',
+            rpdeKind: 'ScheduledSession.SessionSeries',
             field: 'superEvent',
           },
           category: ValidationErrorCategory.CONFORMANCE,
