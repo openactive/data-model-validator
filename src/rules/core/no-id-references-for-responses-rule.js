@@ -47,7 +47,7 @@ class NoIdReferencesForResponsesRule extends Rule {
     }
 
     const errors = [];
-    const shouldNotBeReferencedFields = node.model.getShallNotBeReferencedFields(node.options.validationMode, node.name);
+    const shouldNotBeReferencedFields = node.model.getShallNotBeReferencedFields(node.options.validationMode, { rpdeKind: node.options.rpdeKind });
     for (const field of shouldNotBeReferencedFields) {
       const fieldValue = node.getValue(field);
 

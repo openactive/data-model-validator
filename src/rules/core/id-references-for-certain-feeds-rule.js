@@ -6,28 +6,30 @@ const validationErrorType = require('../../errors/validation-error-type');
 
 /** @typedef {import('../../classes/model-node').ModelNodeType} ModelNode */
 
-class IdReferencesForRequestsRule extends Rule {
+class IdReferencesForCertainFeedsRule extends Rule {
   constructor(options) {
     super(options);
     this.targetValidationModes = [
-      'C1Request',
-      'C2Request',
-      'PRequest',
-      'BRequest',
-      'BOrderProposalRequest',
-      'OrderPatch',
+      'RPDEFeed',
+      'BookableRPDEFeed',
+    ];
+    this.targetRpdeKinds = [
+      'FacilityUse/Slot',
+      'IndividualFacilityUse/Slot',
+      'ScheduledSession',
     ];
     this.targetModels = '*';
     this.meta = {
-      name: 'IdReferencesForRequestsRule',
-      description: 'Validates that acceptedOffer and orderedItem are ID references and not objects for requests (C1, C2 etc)',
+      name: 'IdReferencesForCertainFeedsRule',
+      description: 'Validates that certain properties in the specified feeds are an ID reference and not objects',
       tests: {
         default: {
-          description: `Raises a failure if the acceptedOffer or orderedItem within the OrderItem of a request is not a URL 
+          description: `Raises a failure if properties within the data object in a RPDE Feed is not an ID reference
           (ie a reference to the object and not the object itself)`,
-          message: 'For requests, {{field}} must be a compact ID reference, not the object representing the data itself',
+          message: 'For {{rpdeKind}} feeds, {{field}} must be an compact ID reference, not the object representing the data itself',
           sampleValues: {
-            field: 'acceptedOffer',
+            rpdeKind: 'FacilityUse/Slot',
+            field: 'facilityUse',
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -69,4 +71,4 @@ class IdReferencesForRequestsRule extends Rule {
   }
 }
 
-module.exports = IdReferencesForRequestsRule;
+module.exports = IdReferencesForCertainFeedsRule;

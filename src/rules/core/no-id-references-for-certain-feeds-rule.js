@@ -1,37 +1,37 @@
+const _ = require('lodash');
 const Rule = require('../rule');
-const PropertyHelper = require('../../helpers/property');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 const validationErrorType = require('../../errors/validation-error-type');
 
 /** @typedef {import('../../classes/model-node').ModelNodeType} ModelNode */
 
-class IdReferencesForRequestsRule extends Rule {
+class NoIdReferencesForCertainFeedsRule extends Rule {
   constructor(options) {
     super(options);
     this.targetValidationModes = [
-      'C1Request',
-      'C2Request',
-      'PRequest',
-      'BRequest',
-      'BOrderProposalRequest',
-      'OrderPatch',
+      'RPDEFeed',
+      'BookableRPDEFeed',
+    ];
+    this.targetRpdeKinds = [
+      'ScheduledSession.SessionSeries',
     ];
     this.targetModels = '*';
     this.meta = {
-      name: 'IdReferencesForRequestsRule',
-      description: 'Validates that acceptedOffer and orderedItem are ID references and not objects for requests (C1, C2 etc)',
+      name: 'NoIdReferencesForCertainFeedsRule',
+      description: 'Validates that certain properties in the specified feeds are not an ID reference and are objects',
       tests: {
         default: {
-          description: `Raises a failure if the acceptedOffer or orderedItem within the OrderItem of a request is not a URL 
+          description: `Raises a failure if properties within the data object in a RPDE Feed is an ID reference
           (ie a reference to the object and not the object itself)`,
-          message: 'For requests, {{field}} must be a compact ID reference, not the object representing the data itself',
+          message: 'For {{rpdeKind}} feeds, {{field}} must be not an compact ID reference, but the object representing the data itself',
           sampleValues: {
-            field: 'acceptedOffer',
+            rpdeKind: 'ScheduledSession.SessionSeries',
+            field: 'superEvent',
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
-          type: validationErrorType.FIELD_NOT_ID_REFERENCE,
+          type: validationErrorType.FIELD_SHOUlD_NOT_BE_ID_REFERENCE,
         },
       },
     };
@@ -47,11 +47,11 @@ class IdReferencesForRequestsRule extends Rule {
     }
 
     const errors = [];
-    const referencedFields = node.model.getReferencedFields(node.options.validationMode, { rpdeKind: node.options.rpdeKind });
-    for (const field of referencedFields) {
+    const shouldNotBeReferencedFields = node.model.getShallNotBeReferencedFields(node.options.validationMode, { rpdeKind: node.options.rpdeKind });
+    for (const field of shouldNotBeReferencedFields) {
       const fieldValue = node.getValue(field);
 
-      if (typeof fieldValue !== 'string' || !PropertyHelper.isUrl(fieldValue)) {
+      if (!_.isPlainObject(fieldValue)) {
         errors.push(
           this.createError(
             'default',
@@ -59,7 +59,7 @@ class IdReferencesForRequestsRule extends Rule {
               fieldValue,
               path: node.getPath(field),
             },
-            { referencedField: field },
+            { field },
           ),
         );
       }
@@ -69,4 +69,4 @@ class IdReferencesForRequestsRule extends Rule {
   }
 }
 
-module.exports = IdReferencesForRequestsRule;
+module.exports = NoIdReferencesForCertainFeedsRule;

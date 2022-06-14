@@ -30,6 +30,10 @@ const OptionsHelper = class {
   get validationMode() {
     return this.options.validationMode || 'RPDEFeed';
   }
+
+  get rpdeKind() {
+    return this.options.rpdeKind || null;
+  }
 };
 
 module.exports = OptionsHelper;
