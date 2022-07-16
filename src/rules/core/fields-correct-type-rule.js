@@ -243,20 +243,18 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       return [];
     }
 
-    let checkPass = fieldObj.detectedTypeIsAllowed(fieldValue)
+    const checkPass = fieldObj.detectedTypeIsAllowed(fieldValue)
       // Pass check if referencing via a URL that matches an @id elsewhere is allowed, and in use
       || (fieldObj.allowReferencing && typeof fieldValue === 'string' && PropertyHelper.isUrl(fieldValue));
 
-    // Hide this error if a more relevant error is being displayed
-    if (!checkPass && fieldObj.allowReferencing) {
-      const referencedFields = node.model.getReferencedFields(node.options.validationMode, node.name);
-      const shouldNotBeReferencedFields = node.model.getShallNotBeReferencedFields(node.options.validationMode, node.name);
-      if (referencedFields.includes(field) || (shouldNotBeReferencedFields.includes(field) && typeof fieldValue === 'string')) {
-        checkPass = true;
-      }
-    }
-
     if (!checkPass) {
+      // Hide this error if a more relevant error is being displayed
+      const isReferencedField = fieldObj.allowReferencing && node.model.getReferencedFields(node.options.validationMode, node.name).includes(field);
+      const isShouldNotBeReferencedField = fieldObj.allowReferencing && node.model.getShallNotBeReferencedFields(node.options.validationMode, node.name).includes(field);
+      if (isReferencedField || (isShouldNotBeReferencedField && typeof fieldValue === 'string')) {
+        return [];
+      }
+
       const idReferencingMessage = fieldObj.allowReferencing ? ' or a reference URI to an `@id`' : '';
       let testKey;
       let messageValues = {};
@@ -296,14 +294,14 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
             messageValues = {
               expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
               foundType: this.constructor.getHumanReadableType(notAllowed[0]),
-              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample(), fieldObj.allowReferencing),
+              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample(), fieldObj.allowReferencing && !isShouldNotBeReferencedField),
             };
           } else if (notAllowed.length > 1) {
             testKey = 'singleTypeSubclassMultipleError';
             messageValues = {
               expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
               foundTypes: this.constructor.makeExpectedTypeList(notAllowed),
-              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample(), fieldObj.allowReferencing),
+              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample(), fieldObj.allowReferencing && !isShouldNotBeReferencedField),
             };
           }
         } else {
@@ -311,7 +309,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           messageValues = {
             expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
             foundType: this.constructor.getHumanReadableType(derivedType),
-            examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample(), fieldObj.allowReferencing),
+            examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample(), fieldObj.allowReferencing && !isShouldNotBeReferencedField),
             idReferencingMessage,
           };
         }
@@ -321,7 +319,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         messageValues = {
           expectedTypes,
           foundType: this.constructor.getHumanReadableType(derivedType),
-          examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample(), fieldObj.allowReferencing),
+          examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample(), fieldObj.allowReferencing && !isShouldNotBeReferencedField),
           idReferencingMessage,
         };
       }
