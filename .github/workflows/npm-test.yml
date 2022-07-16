@@ -1,12 +1,8 @@
-name: Test and Deploy
+name: Test
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
-  repository_dispatch:
-    types: [data-models-update]
 
 jobs:
   test:
@@ -22,46 +18,3 @@ jobs:
       run: npm install
     - name: Test
       run: npm test
-      
-  deploy-site:
-    needs: test
-    if: ${{ github.ref == 'refs/heads/master' }}
-    concurrency: 
-      group: validator-staging.openactive.io
-      cancel-in-progress: true
-    environment:
-      name: validator-staging.openactive.io
-      url: https://validator-staging.openactive.io/
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout validator app
-      uses: actions/checkout@v2
-      with:
-        repository: openactive/data-model-validator-site
-        path: data-model-validator-site
-        
-    - name: Deploy validator app to Heroku
-      uses: behe/heroku-build@v1
-      with:
-        app-name: data-model-validator-staging
-        api-key: "${{secrets.HEROKU_API_KEY}}"
-        path: data-model-validator-site
-
-  promote-site:
-    needs: deploy-site
-    if: ${{ github.ref == 'refs/heads/master' }}
-    concurrency: 
-      group: validator.openactive.io
-      cancel-in-progress: true
-    environment:
-      name: validator.openactive.io
-      url: https://validator.openactive.io/
-    runs-on: ubuntu-latest
-    steps:
-    - name: Promote validator app to production
-      uses: tiltshift/heroku-promote-app@v1
-      with:
-        heroku_app_name: data-model-validator-staging
-        heroku_api_key: "${{secrets.HEROKU_API_KEY}}"
-        heroku_email: "services@openactive.io"
-

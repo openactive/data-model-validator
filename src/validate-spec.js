@@ -660,6 +660,19 @@ describe('validate', () => {
       expect(result.length).toBe(0);
     });
 
+    it('should warn on deprecated fields', async () => {
+      const event = Object.assign({}, validSessionSeries);
+      event.offers[0].ageRange = event.offers[0].ageRestriction;
+      delete event.offers[0].ageRestriction;
+
+      const result = await validate(event, options);
+
+      expect(result.length).toBe(2);
+      expect(result[0].type).toBe(ValidationErrorType.FIELD_DEPRECATED);
+      expect(result[0].severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(result[0].path).toBe('$.offers[0].ageRange');
+    });
+
     it('should recognise an RPDE feed', async () => {
       const feed = {
         items: [

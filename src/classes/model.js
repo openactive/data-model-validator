@@ -105,6 +105,10 @@ const Model = class {
     return this.data.recommendedFields || [];
   }
 
+  getDeprecatedFields() {
+    return Object.values(this.fields).filter(field => field.deprecationGuidance);
+  }
+
   getShallNotIncludeFields(validationMode, containingFieldName) {
     const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
