@@ -199,7 +199,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       const hint = types.length > 1 ? 'A full example of the preferred approach looks like this:' : 'A full example looks like this:';
       examples = `${examples}\n\n${hint}\n\n${renderedExample}`;
     }
-    if (allowReferencing) examples = `${examples}\n\nA URI reference which matches the \`@id\` of an object defined elsewhere may also be used in place of the object itself. ${this.getHumanReadableExample(property, 'https://openactive.io/IdReference', version)}`;
+    if (allowReferencing) examples = `${examples}\n\nA URI reference which matches the \`@id\` of an object defined elsewhere may be used in place of the object itself. ${this.getHumanReadableExample(property, 'https://openactive.io/IdReference', version)}`;
     return examples;
   }
 
@@ -255,7 +255,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         return [];
       }
 
-      const idReferencingMessage = fieldObj.allowReferencing ? ' or a reference URI to an `@id`' : '';
+      const idReferencingMessage = fieldObj.allowReferencing && !isShouldNotBeReferencedField ? ' or a reference URI to an `@id`' : '';
       let testKey;
       let messageValues = {};
       let propName = field;
