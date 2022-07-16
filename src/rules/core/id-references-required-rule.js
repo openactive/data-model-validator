@@ -35,7 +35,7 @@ class IdReferencesRequiredRule extends Rule {
       tests: {
         default: {
           description: 'Raises a failure if the value of a property is not a URL (i.e. it is the object itself, not a reference to the object)',
-          message: 'In this validation mode `{{field}}` must be a compact [`@id` reference](https://permalink.openactive.io/data-model-validator/id-references), not the object representing the data itself. An `@id` reference looks like this:\n\n```\n"{{field}}": "https://id.example.com/api/session-series/1402CBP20150217"\n```',
+          message: 'In this validation mode `{{field}}` must be a compact [`@id` reference](https://permalink.openactive.io/data-model-validator/id-references), not the object representing the data itself. Note that the `@id` URL does not need to resolve to an endpoint, it is simply used as a globally unique identifier.\n\nAn `@id` reference looks like this:\n\n```\n"{{field}}": "https://id.example.com/api/session-series/1402CBP20150217"\n```',
           sampleValues: {
             field: 'acceptedOffer',
           },
@@ -61,7 +61,7 @@ class IdReferencesRequiredRule extends Rule {
     for (const field of referencedFields) {
       const fieldValue = node.getValue(field);
 
-      if (typeof fieldValue !== 'string' || !PropertyHelper.isUrl(fieldValue)) {
+      if (typeof fieldValue !== 'undefined' && (typeof fieldValue !== 'string' || !PropertyHelper.isUrl(fieldValue))) {
         errors.push(
           this.createError(
             'default',
@@ -69,7 +69,7 @@ class IdReferencesRequiredRule extends Rule {
               fieldValue,
               path: node.getPath(field),
             },
-            { referencedField: field },
+            { field },
           ),
         );
       }
