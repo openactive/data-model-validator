@@ -23,7 +23,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@openactive/data-models": "^2.0.219",
+    "@openactive/data-models": "^2.0.289",
     "@types/lodash": "^4.14.182",
     "axios": "^0.19.2",
     "currency-codes": "^1.5.1",

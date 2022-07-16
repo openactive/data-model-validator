@@ -1,4 +1,3 @@
-const _ = require('lodash');
 const Rule = require('../rule');
 const ValidationErrorCategory = require('../../errors/validation-error-category');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
@@ -6,32 +5,42 @@ const validationErrorType = require('../../errors/validation-error-type');
 
 /** @typedef {import('../../classes/model-node').ModelNodeType} ModelNode */
 
-class NoIdReferencesForResponsesRule extends Rule {
+class IdReferencesNotPermittedRule extends Rule {
   constructor(options) {
     super(options);
     this.targetValidationModes = [
+      'C1Request',
       'C1Response',
+      'C1ResponseOrderItemError',
+      'C2Request',
       'C2Response',
+      'C2ResponseOrderItemError',
+      'PRequest',
       'PResponse',
+      'PResponseOrderItemError',
+      'BRequest',
+      'BOrderProposalRequest',
       'BResponse',
+      'BResponseOrderItemError',
+      'OrderProposalPatch',
+      'OrderPatch',
       'OrdersFeed',
       'OrderStatus',
     ];
     this.targetModels = '*';
     this.meta = {
-      name: 'NoIdReferencesForResponsesRule',
-      description: 'Validates that acceptedOffer and orderedItem are not ID references and are objects for responses (C1, C2 etc)',
+      name: 'IdReferencesNotPermittedRule',
+      description: 'Validates that ID references are not used where not permitted',
       tests: {
         default: {
-          description: `Raises a failure if the acceptedOffer or orderedItem within the OrderItem of a response is a URL 
-          (ie a reference to the object and not the object itself)`,
-          message: 'For responses, {{field}} must not be a compact ID reference, but the object representing the data itself',
+          description: 'Raises a failure if the value of a property is a URL (i.e. it is a reference to the object and not the object itself)',
+          message: 'In this validation mode `{{field}}` must be an object representing the data itself, not a compact `@id` reference or string',
           sampleValues: {
             field: 'acceptedOffer',
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
-          type: validationErrorType.FIELD_SHOUlD_NOT_BE_ID_REFERENCE,
+          type: validationErrorType.FIELD_MUST_NOT_BE_ID_REFERENCE,
         },
       },
     };
@@ -51,7 +60,7 @@ class NoIdReferencesForResponsesRule extends Rule {
     for (const field of shouldNotBeReferencedFields) {
       const fieldValue = node.getValue(field);
 
-      if (!_.isPlainObject(fieldValue)) {
+      if (typeof fieldValue === 'string') {
         errors.push(
           this.createError(
             'default',
@@ -69,4 +78,4 @@ class NoIdReferencesForResponsesRule extends Rule {
   }
 }
 
-module.exports = NoIdReferencesForResponsesRule;
+module.exports = IdReferencesNotPermittedRule;
