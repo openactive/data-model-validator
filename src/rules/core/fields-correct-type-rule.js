@@ -243,13 +243,21 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       return [];
     }
 
-    const checkPass = fieldObj.detectedTypeIsAllowed(fieldValue)
+    let checkPass = fieldObj.detectedTypeIsAllowed(fieldValue)
       // Pass check if referencing via a URL that matches an @id elsewhere is allowed, and in use
       || (fieldObj.allowReferencing && typeof fieldValue === 'string' && PropertyHelper.isUrl(fieldValue));
 
-    const idReferencingMessage = fieldObj.allowReferencing ? ' or a reference URI to an `@id`' : '';
+    // Hide this error if a more relevant error is being displayed
+    if (!checkPass && fieldObj.allowReferencing) {
+      const referencedFields = node.model.getReferencedFields(node.options.validationMode, node.name);
+      const shouldNotBeReferencedFields = node.model.getShallNotBeReferencedFields(node.options.validationMode, node.name);
+      if (referencedFields.includes(field) || (shouldNotBeReferencedFields.includes(field) && typeof fieldValue === 'string')) {
+        checkPass = true;
+      }
+    }
 
     if (!checkPass) {
+      const idReferencingMessage = fieldObj.allowReferencing ? ' or a reference URI to an `@id`' : '';
       let testKey;
       let messageValues = {};
       let propName = field;
