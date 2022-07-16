@@ -120,6 +120,28 @@ const Model = class {
     return this.data.shallNotInclude || [];
   }
 
+  getReferencedFields(validationMode, containingFieldName) {
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
+    const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
+
+    if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.referencedFields) return specificContextualImperativeConfiguration.referencedFields;
+
+    if (specificImperativeConfiguration && specificImperativeConfiguration.referencedFields) return specificImperativeConfiguration.referencedFields;
+
+    return this.data.referencedFields || [];
+  }
+
+  getShallNotBeReferencedFields(validationMode, containingFieldName) {
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
+    const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
+
+    if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.shallNotBeReferencedFields) return specificContextualImperativeConfiguration.shallNotBeReferencedFields;
+
+    if (specificImperativeConfiguration && specificImperativeConfiguration.shallNotBeReferencedFields) return specificImperativeConfiguration.shallNotBeReferencedFields;
+
+    return this.data.shallNotBeReferencedFields || [];
+  }
+
   hasRecommendedField(field) {
     return PropertyHelper.arrayHasField(this.recommendedFields, field, this.version);
   }

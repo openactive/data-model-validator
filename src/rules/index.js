@@ -24,6 +24,8 @@ module.exports = {
     require('./core/valueconstraint-rule'),
     require('./core/minvalueinclusive-rule'),
     require('./core/id-rule'),
+    require('./core/id-references-required-rule'),
+    require('./core/id-references-not-permitted-rule'),
 
     // Formatting rules
     require('./format/duration-format-rule'),
@@ -56,7 +58,6 @@ module.exports = {
     require('./data-quality/session-series-schedule-type-rule'),
     require('./data-quality/currency-if-non-zero-price-rule'),
     require('./data-quality/if-needs-booking-must-have-valid-offer-rule'),
-    require('./data-quality/event-remaining-attendee-capacity-rule'),
     require('./data-quality/available-channel-for-prepayment-rule'),
 
     // Notes on the data consumer

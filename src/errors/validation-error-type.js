@@ -44,6 +44,8 @@ const ValidationErrorType = {
   BELOW_MIN_VALUE_INCLUSIVE: 'below_min_value_inclusive',
   VALUE_OUTWITH_CONSTRAINT: 'value_outwith_constraint',
   INVALID_ID: 'invalid_id',
+  FIELD_MUST_BE_ID_REFERENCE: 'FIELD_MUST_BE_ID_REFERENCE',
+  FIELD_MUST_NOT_BE_ID_REFERENCE: 'FIELD_MUST_NOT_BE_ID_REFERENCE',
 };
 
 module.exports = Object.freeze(ValidationErrorType);
