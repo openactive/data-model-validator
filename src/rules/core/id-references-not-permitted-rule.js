@@ -34,7 +34,7 @@ class IdReferencesNotPermittedRule extends Rule {
       tests: {
         default: {
           description: 'Raises a failure if the value of a property is a URL (i.e. it is a reference to the object and not the object itself)',
-          message: 'In this validation mode `{{field}}` must be an object representing the data itself, not a compact `@id` reference or string',
+          message: 'In this validation mode `{{field}}` must be an object representing the data itself, not a compact [`@id` reference](https://permalink.openactive.io/data-model-validator/id-references) or `string`',
           sampleValues: {
             field: 'acceptedOffer',
           },
