@@ -66,7 +66,7 @@ describe('RecommendedFieldsRule', () => {
     },
   };
 
-  const loadInheritanceModel = () => Object.assign({}, baseInheritanceModel);
+  const loadInheritanceModel = () => ({ ...baseInheritanceModel });
 
   const rule = new RecommendedFieldsRule();
 

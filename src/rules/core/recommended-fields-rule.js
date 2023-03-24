@@ -34,7 +34,6 @@ module.exports = class RecommendedFieldsRule extends Rule {
     }
     const errors = [];
 
-
     const recommendedFields = node.model.getRecommendedFields(node.options.validationMode, node.name);
     for (const field of recommendedFields) {
       const testValue = node.getValueWithInheritance(field);

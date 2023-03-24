@@ -106,7 +106,7 @@ const Model = class {
   }
 
   getDeprecatedFields() {
-    return Object.values(this.fields).filter(field => field.deprecationGuidance);
+    return Object.values(this.fields).filter((field) => field.deprecationGuidance);
   }
 
   getShallNotIncludeFields(validationMode, containingFieldName) {

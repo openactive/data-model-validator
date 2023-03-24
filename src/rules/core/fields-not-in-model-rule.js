@@ -370,14 +370,6 @@ module.exports = class FieldsNotInModelRule extends Rule {
           }
           if (!isDefined) {
             switch (graphResponse.code) {
-              case GraphHelper.PROPERTY_NOT_FOUND:
-              default:
-                if (field.substring(0, 5) === 'beta:') {
-                  testKey = 'invalidBeta';
-                } else {
-                  testKey = 'invalidExperimental';
-                }
-                break;
               case GraphHelper.PROPERTY_NOT_IN_DOMAIN:
                 if (field.substring(0, 5) === 'beta:') {
                   testKey = 'invalidBetaNotInDomain';
@@ -390,6 +382,14 @@ module.exports = class FieldsNotInModelRule extends Rule {
                 break;
               case GraphHelper.PROPERTY_DOMAIN_NOT_FOUND:
                 testKey = 'invalidExperimentalDomainNotFound';
+                break;
+              case GraphHelper.PROPERTY_NOT_FOUND:
+              default:
+                if (field.substring(0, 5) === 'beta:') {
+                  testKey = 'invalidBeta';
+                } else {
+                  testKey = 'invalidExperimental';
+                }
                 break;
             }
           }

@@ -5,7 +5,6 @@ const ValidationErrorType = require('../../errors/validation-error-type');
 const ValidationErrorSeverity = require('../../errors/validation-error-severity');
 const IdReferencesNotPermittedRule = require('./id-references-not-permitted-rule');
 
-
 describe('IdReferencesNotPermittedRule', () => {
   const rule = new IdReferencesNotPermittedRule();
 

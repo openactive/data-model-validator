@@ -1,5 +1,3 @@
-
-
 const ValidationErrorMessage = require('./validation-error-message');
 
 const ValidationError = class {
