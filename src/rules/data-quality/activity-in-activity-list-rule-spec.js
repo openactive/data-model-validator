@@ -61,7 +61,7 @@ describe('ActivityInActivityListRule', () => {
       '@type': 'Event',
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: activityList,
@@ -102,7 +102,7 @@ describe('ActivityInActivityListRule', () => {
       '@type': 'Event',
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: activityList,
@@ -156,7 +156,7 @@ describe('ActivityInActivityListRule', () => {
       },
     ];
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NO_REMOTE,
       statusCode: 404,
       data: null,
@@ -191,7 +191,7 @@ describe('ActivityInActivityListRule', () => {
       '@type': 'Event',
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: activityList,
@@ -242,7 +242,7 @@ describe('ActivityInActivityListRule', () => {
       },
     ];
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NO_REMOTE,
       statusCode: 200,
       data: null,

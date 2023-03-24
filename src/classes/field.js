@@ -2,6 +2,7 @@ const DataModelHelper = require('../helpers/data-model');
 const PropertyHelper = require('../helpers/property');
 
 const Field = class {
+  // eslint-disable-next-line default-param-last
   constructor(data = {}, version) {
     this.data = data;
     this.version = version;
@@ -209,7 +210,7 @@ const Field = class {
         if (uniqueTypes.length === 1) {
           returnType = `ArrayOf#${uniqueTypes[0].replace(/^#/, '')}`;
         } else if (uniqueTypes.length > 1) {
-          returnType = `ArrayOf#{${uniqueTypes.map(item => item.replace(/^#/, '')).join(',')}}`;
+          returnType = `ArrayOf#{${uniqueTypes.map((item) => item.replace(/^#/, '')).join(',')}}`;
         } else {
           returnType = 'Array';
         }

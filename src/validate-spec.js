@@ -383,26 +383,23 @@ describe('validate', () => {
     });
 
     it('should return no errors for a valid Event', async () => {
-      const event = Object.assign({}, validSessionSeries);
+      const event = { ...validSessionSeries };
 
       const result = await validate(event, options);
 
       expect(result.length).toBe(0);
     });
 
-
     // TODO: Fix this to return a warning if 'type' or 'id' are used (as this was designed to warn for '@type' or '@id')
     // Note that this will likely require wider changes
     it('should only return alias warnings for a valid Event with aliased properties', async () => {
-      const event = Object.assign(
-        {},
-        validSessionSeries,
-        {
-          // '@type': 'EventSeries',
-          'schema:name': validSessionSeries.name,
-          'oa:ageRange': Object.assign({}, validSessionSeries.ageRange),
-        },
-      );
+      const event = {
+
+        ...validSessionSeries,
+        // '@type': 'EventSeries',
+        'schema:name': validSessionSeries.name,
+        'oa:ageRange': { ...validSessionSeries.ageRange },
+      };
 
       // delete event.type;
       delete event.name;
@@ -420,7 +417,7 @@ describe('validate', () => {
 
     it('should provide a jsonpath to the location of a problem', async () => {
       // This event is missing location addressRegion, which is a recommended field
-      const event = Object.assign({}, validSessionSeries);
+      const event = { ...validSessionSeries };
 
       delete event.location.address.addressRegion;
 
@@ -432,17 +429,15 @@ describe('validate', () => {
     });
 
     it('should provide a jsonpath to the location of a problem with a namespace', async () => {
-      const event = Object.assign(
-        {},
-        validSessionSeries,
-        {
-          'https://openactive.io/ageRange': {
-            '@type': 'QuantitativeValue',
-            minValue: 60,
-            maxValue: 18,
-          },
+      const event = {
+
+        ...validSessionSeries,
+        'https://openactive.io/ageRange': {
+          '@type': 'QuantitativeValue',
+          minValue: 60,
+          maxValue: 18,
         },
-      );
+      };
 
       delete event.ageRange;
 
@@ -625,7 +620,7 @@ describe('validate', () => {
     });
 
     it('should return an unsupported warning if nested arrays are passed', async () => {
-      const event = Object.assign({}, validSessionSeries);
+      const event = { ...validSessionSeries };
 
       event.leader = [event.leader];
 
@@ -639,7 +634,7 @@ describe('validate', () => {
     });
 
     it('should not throw if a value object is passed', async () => {
-      const event = Object.assign({}, validSessionSeries);
+      const event = { ...validSessionSeries };
 
       event.name = {
         '@value': event.name,
@@ -661,7 +656,7 @@ describe('validate', () => {
     });
 
     it('should warn on deprecated fields', async () => {
-      const event = Object.assign({}, validSessionSeries);
+      const event = { ...validSessionSeries };
       event.offers[0].ageRange = event.offers[0].ageRestriction;
       delete event.offers[0].ageRestriction;
 

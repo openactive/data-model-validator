@@ -1,5 +1,3 @@
-
-
 const ValidationErrorCategory = Object.freeze({
   CONFORMANCE: 'conformance',
   DATA_QUALITY: 'data-quality',

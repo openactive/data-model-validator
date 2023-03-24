@@ -129,7 +129,6 @@ class Rule {
   isValidationModeTargeted(validationMode) {
     if (this.targetValidationModes === '*') return true;
 
-
     if (this.targetValidationModes instanceof Array) {
       return this.targetValidationModes.includes(validationMode);
     }
