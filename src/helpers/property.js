@@ -3,8 +3,7 @@ const UriTemplate = require('uritemplate');
 const DataModelHelper = require('./data-model');
 
 // Source: adapted from https://gist.github.com/dperini/729294
-const URL_REGEX = new RegExp(
-  '^'
+const URL_REGEX = new RegExp('^'
     // protocol identifier (mandatory)
     // short syntax // not permitted
     + '(?:(?:https?):\\/\\/)'
@@ -38,8 +37,7 @@ const URL_REGEX = new RegExp(
     + '(?::\\d{2,5})?'
     // resource path (optional)
     + '(?:[/?#]\\S*)?'
-  + '$', 'i',
-);
+  + '$', 'i');
 
 const PropertyHelper = class {
   static getObjectField(data, property, version) {

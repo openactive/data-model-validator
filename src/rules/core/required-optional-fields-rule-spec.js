@@ -98,7 +98,7 @@ describe('RequiredOptionalFieldsRule', () => {
     },
   };
 
-  const loadInheritanceModel = () => Object.assign({}, baseInheritanceModel);
+  const loadInheritanceModel = () => ({ ...baseInheritanceModel });
 
   it('should target models of any type', () => {
     const isTargeted = rule.isModelTargeted(model);

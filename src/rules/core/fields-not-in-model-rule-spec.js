@@ -110,7 +110,7 @@ describe('FieldsNotInModelRule', () => {
       },
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: customContext,
@@ -169,7 +169,7 @@ describe('FieldsNotInModelRule', () => {
       },
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: customContext,
@@ -234,7 +234,7 @@ describe('FieldsNotInModelRule', () => {
       '@id': 'http://example.org/ext#1.0',
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: customContext,
@@ -417,7 +417,7 @@ describe('FieldsNotInModelRule', () => {
       ],
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: customContext,

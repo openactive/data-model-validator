@@ -115,7 +115,7 @@ const ModelNode = class {
       parentNode.model.type === this.model.type
       || this.model.subClassGraph.indexOf(`#${parentNode.model.type}`) >= 0
       || parentNode.model.subClassGraph.indexOf(`#${this.model.type}`) >= 0
-      || this.model.subClassGraph.filter(value => parentNode.model.subClassGraph.indexOf(value) !== -1).length > 0
+      || this.model.subClassGraph.filter((value) => parentNode.model.subClassGraph.indexOf(value) !== -1).length > 0
     );
   }
 

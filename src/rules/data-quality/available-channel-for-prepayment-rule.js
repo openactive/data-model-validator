@@ -29,7 +29,7 @@ module.exports = class AvailableChannelPrepaymentRule extends Rule {
 
     if (['https://openactive.io/Required', 'https://openactive.io/Optional'].includes(prepaymentValue)) {
       const validAvailableChannels = ['https://openactive.io/OpenBookingPrepayment', 'https://openactive.io/TelephonePrepayment', 'https://openactive.io/OnlinePrepayment'];
-      const validAndPresentAvailableChannels = validAvailableChannels.filter(x => availableChannels.includes(x));
+      const validAndPresentAvailableChannels = validAvailableChannels.filter((x) => availableChannels.includes(x));
       if (validAndPresentAvailableChannels.length === 0) {
         errors.push(
           this.createError(

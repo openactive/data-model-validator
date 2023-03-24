@@ -69,7 +69,7 @@ describe('RequiredFieldsRule', () => {
     },
   };
 
-  const loadInheritanceModel = () => Object.assign({}, baseInheritanceModel);
+  const loadInheritanceModel = () => ({ ...baseInheritanceModel });
 
   it('should target models of any type', () => {
     const isTargeted = rule.isModelTargeted(model);
@@ -422,7 +422,6 @@ describe('RequiredFieldsRule', () => {
     });
   });
 
-
   describe('with inheritsFrom properties', () => {
     it('should respect required fields when inheritsFrom is *', async () => {
       const modelObj = loadInheritanceModel();
@@ -619,7 +618,6 @@ describe('RequiredFieldsRule', () => {
       expect(superEventErrors.length).toBe(0);
     });
   });
-
 
   describe('with inheritsTo and inheritsFrom properties', () => {
     it('should respect required fields when inheritsFrom is *', async () => {

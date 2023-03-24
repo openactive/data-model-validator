@@ -208,7 +208,7 @@ async function validate(value, options) {
     index += 1;
   }
 
-  return errors.map(x => x.data);
+  return errors.map((x) => x.data);
 }
 
 function isRpdeFeed(data) {

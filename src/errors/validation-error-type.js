@@ -1,5 +1,3 @@
-
-
 const ValidationErrorType = {
   INVALID_JSON: 'invalid_json',
   MISSING_REQUIRED_FIELD: 'missing_required_field',
