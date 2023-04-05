@@ -59,6 +59,8 @@ class Rule {
     const error = Object.assign(
       extra,
       {
+        path: extra.path.string,
+        pathTree: extra.path.tree,
         rule: this.meta.name,
         category: rule.category,
         type: rule.type,

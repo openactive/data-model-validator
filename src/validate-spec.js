@@ -1,5 +1,5 @@
 const nock = require('nock');
-const { validate } = require('./validate');
+const { validate, validateWithMeasures } = require('./validate');
 const ValidationErrorSeverity = require('./errors/validation-error-severity');
 const ValidationErrorType = require('./errors/validation-error-type');
 const DataModelHelper = require('./helpers/data-model');
@@ -688,6 +688,25 @@ describe('validate', () => {
       expect(result.length).toBe(1);
       expect(result[0].type).toBe(ValidationErrorType.FOUND_RPDE_FEED);
       expect(result[0].severity).toBe(ValidationErrorSeverity.NOTICE);
+    });
+  });
+
+  describe('validateWithMeasures()', () => {
+    it('should include', async () => {
+      const event = { ...validSessionSeries };
+
+      delete event.name;
+
+      const { errors, profileMeasures } = await validateWithMeasures(event, options);
+
+      expect(errors.length).toBe(1);
+
+      expect(errors[0].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+      expect(errors[0].path).toBe('$.name');
+
+      expect(profileMeasures.profiles.common['Has a name']).toEqual(0);
+      expect(profileMeasures.profiles.common['Has a description']).toEqual(1);
     });
   });
 });

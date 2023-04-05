@@ -22,20 +22,34 @@ const ModelNode = class {
 
   getPath(...fields) {
     const path = [];
+    const tree = [];
     let node = this;
     do {
       if (typeof node.arrayIndex !== 'undefined') {
         path.unshift(node.arrayIndex);
+        tree.unshift({
+          arrayIndex: node.arrayIndex,
+        });
       }
       path.unshift(node.name);
+      tree.unshift({
+        name: node.name,
+        type: node.model.type,
+      });
       node = node.parentNode;
     } while (node !== null);
     for (const field of fields) {
       if (typeof field !== 'undefined') {
         path.push(field);
+        tree.push({
+          name: field,
+        });
       }
     }
-    return jp.stringify(path).replace(/([\][])\1+/g, '$1');
+    return {
+      string: jp.stringify(path).replace(/([\][])\1+/g, '$1'),
+      tree,
+    };
   }
 
   static checkInheritRule(rule, field) {
