@@ -20,6 +20,7 @@ module.exports = {
     },
     {
       name: 'Has a name',
+      description: 'The name of the opportunity is essential for a participant to understand what the activity',
       exclusions: [ // Logic: if no errors are present for any of the target fields, for any exclusion
         {
           errorType: [
