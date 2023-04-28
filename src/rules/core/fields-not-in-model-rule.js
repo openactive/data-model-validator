@@ -298,6 +298,14 @@ module.exports = class FieldsNotInModelRule extends Rule {
     if (field === '@context') {
       return [];
     }
+    // Don't do this check for cases where the JSON-LD type does not match the expected model
+    // Other rules will raise an error if the type itself is invalid, and if this type is an
+    // extension the validator cannot yet validate properties within the type anyway,
+    // so in either case this rule should not run.
+    // TODO: Remove this and improve the rule to validate beta and extension types
+    if (node.model.isJsonLd && node.model.type !== node.getValue('type')) {
+      return [];
+    }
     let errors = [];
     let testKey = null;
     let messageValues;
