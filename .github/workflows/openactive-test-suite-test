@@ -1,0 +1,82 @@
+name: Test OpenActive Test Suite
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test-openactive-test-suite:
+    runs-on: ubuntu-latest
+    container: node:14.17.0
+    
+    services:
+      # Label used to access the service container
+      reference.bookingsystem:
+        # Docker Hub image
+        image: ghcr.io/openactive/reference.bookingsystem:latest # ${{ github.event.package.package_version.version }}
+        # Config for postgres
+        env:
+          ASPNETCORE_ENVIRONMENT: no-auth
+          ApplicationHostBaseUrl: http://reference.bookingsystem
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd "curl -f http://localhost/OpenActive"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 80:80
+
+    steps:
+    - name: Checkout data-model-validator
+      uses: actions/checkout@v2
+      with:
+        path: data-model-validator
+    - name: Checkout openactive-test-suite
+      uses: actions/checkout@v2
+      with:
+        path: openactive-test-suite
+        repository: openactive/openactive-test-suite
+
+    - name: Use Node.js 14.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14
+
+    - name: Install data-model-validator
+      run: npm install
+      working-directory: data-model-validator
+    - name: Install openactive-test-suite
+      run: npm install
+      working-directory: openactive-test-suite
+    
+    - name: Update openactive-test-suite to reference local data-model-validator
+      run: |
+        cd packages/broker-microservice && npm install file:../data-model-validator
+        cd packages/openactive-integration-tests && npm install file:../data-model-validator
+      working-directory: openactive-test-suite
+
+    - name: Run Checks on the Code (Test the Tests!)
+      run: npm test
+      working-directory: openactive-test-suite
+
+    - name: Run OpenActive Integration Tests in no-auth mode
+      run: npm start
+      env:
+        FORCE_COLOR: 1
+        NODE_CONFIG: |
+          {"broker": {"outputPath": "../../output/"}, "integrationTests": {"outputPath": "../../output/", "useRandomOpportunities": ${{ matrix.mode == 'random' }}, "implementedFeatures": { "minimal-proposal": false, "proposal-amendment": false, "bookingFlowsInScope": { "OpenBookingSimpleFlow": true, "OpenBookingApprovalFlow": true } }}
+        NODE_ENV: .example.no-auth
+        NODE_APP_INSTANCE: ci
+      working-directory: openactive-test-suite
+    
+    # Two purposes to uploading the output from these tests:
+    # 1. So that the `deploy-output` job can use this output in order to publish it, as examples, to gh-pages
+    # 2. Make the artifact downloadable from GitHub to a developer so that they can debug
+    - name: Upload test output for ${{ matrix.mode }} mode as artifact
+      uses: actions/upload-artifact@v2
+      if: ${{ success() || failure() }}
+      with:
+        name: ${{ matrix.mode }}.${{ matrix.profile }}.${{ matrix.flow }}
+        path: ./openactive-test-suite/tests/output/
+
