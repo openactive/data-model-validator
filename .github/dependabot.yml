@@ -2,20 +2,14 @@ version: 2
 updates:
   - package-ecosystem: "npm"
     directory: "/"
+    open-pull-requests-limit: 20
     schedule:
       interval: "daily"
       time: "09:00"
       timezone: "Europe/London"
+    ignore:
+      - dependency-name: "@openactive/*"
     groups:
-      production-dependencies:
-        dependency-type: "production"
-        exclude-patterns:
-        - "@openactive/*"
-      development-dependencies:
-        dependency-type: "development"
-        exclude-patterns:
-        - "eslint*"
-        - "jasmine*"
       eslint:
         dependency-type: "development"
         patterns:
