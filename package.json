@@ -35,7 +35,7 @@
     "striptags": "^3.1.1",
     "uritemplate": "^0.3.4",
     "validator": "^10.11.0",
-    "write-file-atomic": "^3.0.3"
+    "write-file-atomic": "^5.0.1"
   },
   "devDependencies": {
     "eslint": "^8.36.0",
