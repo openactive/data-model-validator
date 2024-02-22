@@ -5,7 +5,7 @@ const RawHelper = class {
     if (!_.isPlainObject(data)) {
       return false;
     }
-    const type = data.type ?? data['@type'];
+    const type = data['@type'] ?? data.type;
     // This is a JSON-LD object with a @type
     if (!_.isNil(type)) {
       return false;
