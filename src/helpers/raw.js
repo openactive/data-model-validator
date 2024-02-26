@@ -1,31 +1,25 @@
+const _ = require('lodash');
+
 const RawHelper = class {
   static isRpdeFeed(data) {
-    if (
-      typeof data !== 'object'
-      || data === null
-      || data instanceof Array
-    ) {
+    if (!_.isPlainObject(data)) {
       return false;
     }
-    if (
-      typeof data.type === 'undefined'
-      && typeof data['@type'] === 'undefined'
-      && typeof data.items !== 'undefined'
-      && data.items instanceof Array
-    ) {
-      for (const item of data.items) {
-        if (
-          typeof item.state === 'string'
-          && (
-            item.state === 'updated'
-            || item.state === 'deleted'
-          )
-        ) {
-          return true;
-        }
+    const type = data['@type'] ?? data.type;
+    // This is a JSON-LD object with a @type
+    if (!_.isNil(type)) {
+      return false;
+    }
+    if (!Array.isArray(data.items)) {
+      return false;
+    }
+    for (const item of data.items) {
+      if (item.state !== 'updated' && item.state !== 'deleted') {
+        return false;
       }
     }
-    return false;
+    // If the page has no items (e.g. a last page), it's still considered an RPDE feed.
+    return true;
   }
 };
 

@@ -7,6 +7,9 @@
   "globals": {
     "expectAsync": true
   },
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
   "rules": {
     "max-len": "off",
     "no-await-in-loop": 0,

@@ -44,6 +44,20 @@ describe('RpdeFeedRule', () => {
     expect(errors[0].severity).toBe(ValidationErrorSeverity.NOTICE);
   });
 
+  it('should return a notice for an empty RPDE feed', async () => {
+    const data = {
+      items: [],
+      next: 'https://example.org/api/feed/?afterId=ABCDEF09001015&afterTimestamp=1533206202992&limit=500',
+      license: 'https://creativecommons.org/licenses/by/4.0/',
+    };
+
+    const { errors } = await rule.validate(data);
+    expect(errors.length).toBe(1);
+
+    expect(errors[0].type).toBe(ValidationErrorType.FOUND_RPDE_FEED);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.NOTICE);
+  });
+
   it('should return a notice for an RPDE feed, and modify the data with a limit to the number of items', async () => {
     const feed = {
       items: [
