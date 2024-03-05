@@ -13,7 +13,7 @@ module.exports = class DiscussionUrlShouldPointToRecognisedDiscussionBoardRule e
   constructor(options) {
     super(options);
     this.targetFields = {
-      Dataset: 'discussionUrl',
+      Dataset: ['discussionUrl'],
     };
     this.meta = {
       name: 'DiscussionUrlShouldPointToRecognisedDiscussionBoardRule',
@@ -39,7 +39,7 @@ module.exports = class DiscussionUrlShouldPointToRecognisedDiscussionBoardRule e
    * @param {import('../../classes/model-node').ModelNodeType} node
    * @param {string} field
    */
-  validateField(node, field) {
+  async validateField(node, field) {
     const discussionUrlRaw = node.getValue(field);
     const discussionUrl = new URL(discussionUrlRaw);
     if (discussionUrl.hostname === 'github.com') {
