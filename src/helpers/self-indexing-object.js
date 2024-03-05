@@ -18,7 +18,7 @@ const SelfIndexingObject = {
     return keys.reduce((acc, key) => {
       acc[key] = key;
       return acc;
-    }, {});
+    }, /** @type {any} */({}));
   },
 };
 

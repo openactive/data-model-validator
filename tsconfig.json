@@ -11,10 +11,12 @@
   "include": [
     "src/classes/**/*.js",
     "src/errors/**/*.js",
+    "src/exceptions.js",
     "src/helpers/**/*.js",
     "src/rules/rule.js",
+    "src/rules/data-quality/discussion-url-should-point-to-recognised-discussion-board-rule.js",
+    "src/rules/data-quality/discussion-url-should-point-to-recognised-discussion-board-rule-spec.js",
     // TODO add other rules
-    "src/exceptions.js"
   ],
   "exclude": [
     "src/helpers/graph.js"
