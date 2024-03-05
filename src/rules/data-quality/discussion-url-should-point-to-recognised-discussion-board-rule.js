@@ -26,7 +26,7 @@ module.exports = class DiscussionUrlShouldPointToRecognisedDiscussionBoardRule e
           type: ValidationErrorType.INVALID_FORMAT,
         },
         [TEST_KEYS.unrecognisedFormat]: {
-          message: 'The `discussionUrl` property must point to a recognised discussion board. Currently recognised discussion board formats: `https://github.com/<ORG>/<REPO>/issues`.',
+          message: 'The `discussionUrl` property does not point to a recognised discussion board. Currently recognised discussion board formats: `https://github.com/<ORG>/<REPO>/issues`.',
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.WARNING,
           type: ValidationErrorType.INVALID_FORMAT,
