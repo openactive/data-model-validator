@@ -247,6 +247,7 @@ this.createError(
 #### Adding to the core library
 
 * You should write a test for your rule.
+* Add the rule's file, as well as its test file to tsconfig.json's `include` array, so that TypeScript can check for errors.
 * Add the rule to the list in `rules/index`, so that it is processed.
 
 #### Adding to your own application

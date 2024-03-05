@@ -80,6 +80,7 @@ const Model = class {
   }
 
   hasRequiredField(field) {
+    // @ts-expect-error
     return PropertyHelper.arrayHasField(this.requiredFields, field, this.version);
   }
 
@@ -143,6 +144,7 @@ const Model = class {
   }
 
   hasRecommendedField(field) {
+    // @ts-expect-error
     return PropertyHelper.arrayHasField(this.recommendedFields, field, this.version);
   }
 

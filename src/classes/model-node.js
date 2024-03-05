@@ -128,6 +128,7 @@ const ModelNode = class {
       // Does our property allow us to inherit?
       && typeof this.parentNode.model.fields[this.cleanName] !== 'undefined'
       && typeof this.parentNode.model.fields[this.cleanName].inheritsTo !== 'undefined'
+      // @ts-expect-error
       && this.constructor.checkInheritRule(
         this.parentNode.model.fields[this.cleanName].inheritsTo,
         field,
@@ -142,6 +143,7 @@ const ModelNode = class {
           const modelField = this.model.fields[fieldKey];
           const fieldValue = this.getValue(fieldKey);
           if (typeof modelField.inheritsFrom !== 'undefined'
+            // @ts-expect-error
             && this.constructor.checkInheritRule(modelField.inheritsFrom, field)
             && typeof fieldValue === 'object'
             && !(fieldValue instanceof Array)
@@ -162,6 +164,7 @@ const ModelNode = class {
               }
             }
             if (parentModel) {
+              // @ts-expect-error
               const parentNode = new this.constructor(
                 modelField.fieldName,
                 fieldValue,
