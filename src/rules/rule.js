@@ -5,9 +5,26 @@ const ValidationError = require('../errors/validation-error');
 class Rule {
   constructor(options) {
     this.options = options || new OptionsHelper();
+    /** @type {'*' | string[]} */
     this.targetModels = [];
+    /** @type {'*' | {[model: string]: '*' | string[]}} */
     this.targetFields = {};
+    /** @type {'*' | string[]} */
     this.targetValidationModes = '*';
+    /**
+     * @type {{
+     *   name: string;
+     *   description: string;
+     *   tests: {[key: string]: {
+     *     description?: string;
+     *     message: string;
+     *     sampleValues?: { [messageTemplateArg: string], string };
+     *     category: string;
+     *     severity: string;
+     *     type: string;
+     *   }}
+     * }}
+     */
     this.meta = {
       name: 'Rule',
       description: 'This is a base rule description that should be overridden.',
@@ -88,6 +105,10 @@ class Rule {
     );
   }
 
+  /**
+   * @param {import('../classes/model')} model
+   * @param {string} field
+   */
   isFieldTargeted(model, field) {
     if (this.targetFields === '*') {
       return true;

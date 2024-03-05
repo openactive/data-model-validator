@@ -129,7 +129,7 @@ this.targetValidationModes = ['C1Request', 'C2Response'];
 
 Set `this.meta` to explain what the rule is testing for.
 
-Defining this detail here makes it easier for libaries scrape all of the rules that the validator will run.
+Defining this detail here makes it easier for libaries to scrape all of the rules that the validator will run.
 
 This meta object should include:
 
