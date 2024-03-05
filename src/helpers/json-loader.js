@@ -99,6 +99,7 @@ async function getFromFsCacheIfExists(baseCachePath, url) {
     // Probably just doesn't exist
     return { exists: false };
   }
+  // @ts-expect-error
   const parsed = JSON.parse(rawCacheContents);
   return {
     exists: true,
@@ -132,6 +133,7 @@ async function saveToFsCache(baseCachePath, url, fileObject) {
 async function getFromRemoteUrl(url) {
   let response;
   try {
+    // @ts-expect-error
     response = await axios.get(url, {
       headers: {
         'Content-Type': 'application/ld+json',
@@ -146,6 +148,7 @@ async function getFromRemoteUrl(url) {
       if (match !== null) {
         const { origin } = new URL(url);
         const linkUrl = match[1];
+        // @ts-expect-error
         response = await axios.get(origin + linkUrl, {
           headers: {
             'Content-Type': 'application/ld+json',
@@ -217,7 +220,7 @@ async function getFileLoadRemote(url) {
  *
  * @param {string} url
  * @param {Object} options
- * @returns {Object}
+ * @returns {Promise<any>}
  */
 async function getFileLoadRemoteAndCacheToFs(url, options) {
   {
