@@ -232,7 +232,7 @@ $ npm test
 The test run will also include a run of [eslint](https://eslint.org/) and [TypeScript](https://www.typescriptlang.org/). To run the tests without these, use:
 
 ```shell
-$ npm run test-no-lint
+$ npm run run-tests
 ```
 
 ### Contributing
