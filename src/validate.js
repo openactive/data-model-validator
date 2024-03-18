@@ -5,6 +5,7 @@ const RawHelper = require('./helpers/raw');
 const OptionsHelper = require('./helpers/options');
 const PropertyHelper = require('./helpers/property');
 const Rules = require('./rules');
+const ProfileProcessor = require('./measures/profile-processor');
 
 class ApplyRules {
   static loadModel(modelName, version) {
@@ -211,11 +212,44 @@ async function validate(value, options) {
   return errors.map((x) => x.data);
 }
 
+async function validateWithMeasures(value, options) {
+  const errors = await validate(value, options);
+  const profileMeasures = {
+    profiles: ProfileProcessor.calculateMeasures(errors),
+    totalItemCount: 1,
+  };
+  return {
+    errors,
+    profileMeasures,
+  };
+}
+
+async function addMeasures(existingMeasure, newMeasure) {
+  for (const [profile, measures] of Object.entries(newMeasure.profiles)) {
+    for (const [measure, count] of Object.entries(measures)) {
+      // eslint-disable-next-line no-param-reassign
+      if (!existingMeasure.profiles) existingMeasure.profiles = {};
+      // eslint-disable-next-line no-param-reassign
+      if (!existingMeasure.profiles[profile]) existingMeasure.profiles[profile] = {};
+      // eslint-disable-next-line no-param-reassign
+      if (!existingMeasure.profiles[profile][measure]) existingMeasure.profiles[profile][measure] = 0;
+      // eslint-disable-next-line no-param-reassign
+      existingMeasure.profiles[profile][measure] += count;
+    }
+  }
+  // eslint-disable-next-line no-param-reassign
+  if (!existingMeasure.totalItemCount) existingMeasure.totalItemCount = 0;
+  // eslint-disable-next-line no-param-reassign
+  existingMeasure.totalItemCount += newMeasure.totalItemCount;
+}
+
 function isRpdeFeed(data) {
   return RawHelper.isRpdeFeed(data);
 }
 
 module.exports = {
   validate,
+  validateWithMeasures,
+  addMeasures,
   isRpdeFeed,
 };
