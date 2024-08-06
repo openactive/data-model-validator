@@ -5,9 +5,26 @@ const ValidationError = require('../errors/validation-error');
 class Rule {
   constructor(options) {
     this.options = options || new OptionsHelper();
+    /** @type {string[] | '*'} */
     this.targetModels = [];
+    /** @type {'*' | {[model: string]: '*' | string[]}} */
     this.targetFields = {};
+    /** @type {string[] | '*'} */
     this.targetValidationModes = '*';
+    /**
+     * @type {{
+     *   name: string;
+     *   description: string;
+     *   tests: {[key: string]: {
+     *     description?: string;
+     *     message: string;
+     *     sampleValues?: { [messageTemplateArg: string]: string };
+     *     category: string;
+     *     severity: string;
+     *     type: string;
+     *   }}
+     * }}
+     */
     this.meta = {
       name: 'Rule',
       description: 'This is a base rule description that should be overridden.',
@@ -38,11 +55,22 @@ class Rule {
     return errors;
   }
 
-  validateModel(/* node */) {
+  /**
+   * @param {import('../classes/model-node').ModelNodeType} node
+   * @returns {Promise<import('../errors/validation-error')[]>}
+   */
+  // eslint-disable-next-line no-unused-vars
+  validateModel(node) {
     throw Error('Model validation rule not implemented');
   }
 
-  async validateField(/* node, field */) {
+  /**
+   * @param {import('../classes/model-node').ModelNodeType} node
+   * @param {string} field
+   * @returns {Promise<import('../errors/validation-error')[]>}
+   */
+  // eslint-disable-next-line no-unused-vars
+  async validateField(node, field) {
     throw Error('Field validation rule not implemented');
   }
 
@@ -88,6 +116,10 @@ class Rule {
     );
   }
 
+  /**
+   * @param {import('../classes/model')} model
+   * @param {string} field
+   */
   isFieldTargeted(model, field) {
     if (this.targetFields === '*') {
       return true;

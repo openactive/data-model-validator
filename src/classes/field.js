@@ -301,7 +301,9 @@ const Field = class {
       actualTypeKey = actualTypeKey.substr(1);
     }
     if (
+      // @ts-expect-error
       typeof (this.constructor.canBeTypeOfMapping[testTypeKey]) !== 'undefined'
+      // @ts-expect-error
       && this.constructor.canBeTypeOfMapping[testTypeKey] === actualTypeKey
     ) {
       return true;
