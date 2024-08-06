@@ -12,7 +12,7 @@ describe('ValidInputRule', () => {
 
   it('should return no error for valid input', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
     };
 
     const { errors } = await rule.validate(data);
@@ -22,7 +22,7 @@ describe('ValidInputRule', () => {
   it('should return a warning for an array input', async () => {
     const data = [
       {
-        type: 'Event',
+        '@type': 'Event',
       },
     ];
 

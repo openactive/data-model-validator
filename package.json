@@ -1,6 +1,6 @@
 {
   "name": "@openactive/data-model-validator",
-  "version": "2.0.39",
+  "version": "2.0.83",
   "description": "A library to allow a developer to validate a JSON document against the OpenActive Modelling Opportunity Specification",
   "homepage": "https://openactive.io",
   "author": "OpenActive Community <hello@openactive.io>",
@@ -12,7 +12,7 @@
   ],
   "main": "src/index.js",
   "engines": {
-    "node": "12.16.3"
+    "node": "14.16.0"
   },
   "repository": {
     "type": "git",
@@ -23,11 +23,13 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@openactive/data-models": "^2.0.127",
+    "@openactive/data-models": "^2.0.294",
+    "@types/lodash": "^4.14.182",
     "axios": "^0.19.2",
     "currency-codes": "^1.5.1",
     "html-entities": "^1.3.1",
     "jsonpath": "^1.0.2",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "rrule": "^2.6.2",
     "striptags": "^3.1.1",
@@ -36,18 +38,23 @@
     "write-file-atomic": "^3.0.3"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb": "^17.1.1",
-    "eslint-plugin-import": "^2.20.0",
-    "jasmine": "^3.5.0",
-    "nock": "^10.0.6"
+    "@types/jasmine": "^5.1.4",
+    "@types/jasmine-expect": "^3.8.1",
+    "@types/node": "^20.11.24",
+    "eslint": "^8.36.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.27.5",
+    "jasmine": "^4.6.0",
+    "nock": "^13.3.0",
+    "sync-request": "^6.1.0",
+    "typescript": "^5.3.3"
   },
   "scripts": {
     "lint": "eslint \"src/**/*.js\"",
     "lint-fix": "eslint \"src/**/*.js\" --fix",
-    "pretest": "npm run lint",
-    "test": "npm run test-no-lint",
-    "test-no-lint": "jasmine",
+    "pretest": "npm run lint && tsc",
+    "test": "npm run run-tests",
+    "run-tests": "jasmine",
     "test-debug": "node --inspect-brk -i ./node_modules/jasmine/bin/jasmine.js",
     "postpublish": "git push",
     "publish-patch": "npm test && git pull && git push && npm version patch && npm publish"

@@ -69,8 +69,8 @@ The rule name you create should:
 
 **OR**
 
-* Set `this.targetFields` to an object map of the fields you are targeting in each model, or a string `'*''` wildcard. Setting the property to `null` means that the rule will be applied once to the whole model. If you target a model, you **MUST** implement `validateField`.
-
+* Set `this.targetFields` to an object map of the fields you are targeting in each model, or a string `'*''` wildcard. Setting the property to `null` means that the rule will be applied once to the whole model. If you target a field, you **MUST** implement `validateField`.
+field
 Generally speaking, you **SHOULD NOT** implement both `validateModel` and `validateField` in the same rule.
 
 Independently, a rule can also target particular modes of use. It is used to restrict rules which should only apply during a particular usage of the models (e.g. an Order used during one of the booking phases - C1Request, C2Response or PatchOrder). By default, a rule will target all modes.
@@ -129,7 +129,7 @@ this.targetValidationModes = ['C1Request', 'C2Response'];
 
 Set `this.meta` to explain what the rule is testing for.
 
-Defining this detail here makes it easier for libaries scrape all of the rules that the validator will run.
+Defining this detail here makes it easier for libaries to scrape all of the rules that the validator will run.
 
 This meta object should include:
 
@@ -195,7 +195,7 @@ this.meta = {
 };
 ```
 
-### validateModel and validateField
+### `validateModel` and `validateField`
 
 Only one of these methods is expected to be implemented on each rule.
 
@@ -247,6 +247,7 @@ this.createError(
 #### Adding to the core library
 
 * You should write a test for your rule.
+* Add the rule's file, as well as its test file to tsconfig.json's `include` array, so that TypeScript can check for errors.
 * Add the rule to the list in `rules/index`, so that it is processed.
 
 #### Adding to your own application

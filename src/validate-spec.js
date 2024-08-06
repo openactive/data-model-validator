@@ -6,6 +6,7 @@ const DataModelHelper = require('./helpers/data-model');
 const OptionsHelper = require('./helpers/options');
 
 describe('validate', () => {
+  let validSessionSeries;
   let validEvent;
   let options;
   let activityList;
@@ -13,69 +14,68 @@ describe('validate', () => {
 
   beforeEach(() => {
     metaData = DataModelHelper.getMetaData('latest');
-    validEvent = {
+    validSessionSeries = {
       '@context': metaData.contextUrl,
-      id: 'http://www.example.org/events/1',
-      type: 'SessionSeries',
+      '@id': 'http://www.example.org/events/1',
+      '@type': 'SessionSeries',
       name: 'Tai chi Class',
       description: 'A Tai chi class',
       duration: 'PT1H',
       isCoached: true,
       url: 'http://www.example.org/events/1',
-      startDate: '2017-03-22T20:00:00Z',
       ageRange: {
-        type: 'QuantitativeValue',
+        '@type': 'QuantitativeValue',
         minValue: 18,
         maxValue: 60,
       },
       genderRestriction: 'https://openactive.io/NoRestriction',
       activity: [
         {
-          id: 'https://openactive.io/activity-list#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
+          '@id': 'https://openactive.io/activity-list#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
           prefLabel: 'Tai Chi',
-          type: 'Concept',
+          '@type': 'Concept',
           inScheme: 'https://openactive.io/activity-list',
         },
       ],
       category: [
         {
-          id: 'https://openactive.io/activity-list#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
+          '@id': 'https://openactive.io/activity-list#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
           prefLabel: 'Holistic Classes',
-          type: 'Concept',
+          '@type': 'Concept',
           inScheme: 'https://openactive.io/activity-list',
         },
       ],
       programme: {
-        type: 'Brand',
+        '@type': 'Brand',
         name: 'Play Ball!',
         url: 'http://example.org/brand/play-ball',
         description: 'Something about a ball',
         logo: {
-          type: 'ImageObject',
+          '@type': 'ImageObject',
           url: 'http://example.com/static/image/speedball_large.jpg',
         },
       },
       eventStatus: 'https://schema.org/EventScheduled',
       image: [{
-        type: 'ImageObject',
+        '@type': 'ImageObject',
         url: 'http://www.example.org/logo.png',
       }],
       subEvent: [
         {
-          type: 'ScheduledSession',
-          id: 'http://www.example.org/events/12',
+          '@type': 'ScheduledSession',
+          '@id': 'http://www.example.org/events/12',
           url: 'http://www.example.org/events/12',
           startDate: '2017-03-22T20:00:00Z',
           endDate: '2017-03-22T21:00:00Z',
           offers: [{
-            id: 'http://example.org/offer/1',
-            ageRange: {
-              type: 'QuantitativeValue',
+            '@id': 'http://example.org/offer/1',
+            ageRestriction: {
+              '@type': 'QuantitativeValue',
               minValue: 18,
               maxValue: 65,
             },
             url: 'http://example.org/offer/1',
-            type: 'Offer',
+            '@type': 'Offer',
             name: 'Single session',
             price: 5,
             priceCurrency: 'GBP',
@@ -83,20 +83,20 @@ describe('validate', () => {
           remainingAttendeeCapacity: 10,
         },
         {
-          type: 'ScheduledSession',
-          id: 'http://www.example.org/events/13',
+          '@type': 'ScheduledSession',
+          '@id': 'http://www.example.org/events/13',
           url: 'http://www.example.org/events/13',
           startDate: '2017-03-29T20:00:00Z',
           endDate: '2017-03-29T21:00:00Z',
           offers: [{
-            id: 'http://example.org/offer/1',
-            ageRange: {
-              type: 'QuantitativeValue',
+            '@id': 'http://example.org/offer/1',
+            ageRestriction: {
+              '@type': 'QuantitativeValue',
               minValue: 18,
               maxValue: 65,
             },
             url: 'http://example.org/offer/1',
-            type: 'Offer',
+            '@type': 'Offer',
             name: 'Single session',
             price: 5,
             priceCurrency: 'GBP',
@@ -105,8 +105,8 @@ describe('validate', () => {
         },
       ],
       organizer: {
-        id: 'http://www.example.org',
-        type: 'Organization',
+        '@id': 'http://www.example.org',
+        '@type': 'Organization',
         name: 'Example Co',
         url: 'http://www.example.org',
         description: 'Example organizer',
@@ -115,30 +115,30 @@ describe('validate', () => {
           'http://www.example.org/facebook',
         ],
         logo: {
-          type: 'ImageObject',
+          '@type': 'ImageObject',
           url: 'http://www.example.org/logo.png',
         },
       },
       leader: [{
-        id: 'http://www.example.org/person/1',
-        type: 'Person',
+        '@id': 'http://www.example.org/person/1',
+        '@type': 'Person',
         name: 'Joe Bloggs',
       }],
       level: [
         'Beginner',
       ],
       location: {
-        id: 'http://www.example.org/locations/gym',
-        type: 'Place',
+        '@id': 'http://www.example.org/locations/gym',
+        '@type': 'Place',
         name: 'ExampleCo Gym',
         description: 'ExampleCo\'s main gym',
         image: [{
-          type: 'ImageObject',
+          '@type': 'ImageObject',
           url: 'http://www.example.org/gym.png',
         }],
         url: 'http://www.example.org/locations/gym',
         address: {
-          type: 'PostalAddress',
+          '@type': 'PostalAddress',
           streetAddress: '1 High Street',
           addressLocality: 'Bristol',
           addressRegion: 'Bristol',
@@ -149,48 +149,173 @@ describe('validate', () => {
         geo: {
           latitude: 51.4034423828125,
           longitude: -0.2369088977575302,
-          type: 'GeoCoordinates',
+          '@type': 'GeoCoordinates',
         },
         openingHoursSpecification: [{
-          type: 'OpeningHoursSpecification',
+          '@type': 'OpeningHoursSpecification',
           opens: '07:00',
           closes: '21:00',
-          dayOfWeek: 'https://schema.org/Monday',
+          dayOfWeek: ['https://schema.org/Monday'],
         }],
         amenityFeature: [
           {
             name: 'Changing Facilities',
             value: true,
-            type: 'ChangingFacilities',
+            '@type': 'ChangingFacilities',
           },
         ],
       },
       offers: [{
-        id: 'http://example.org/offer/1',
-        ageRange: {
-          type: 'QuantitativeValue',
+        '@id': 'http://example.org/offer/1',
+        ageRestriction: {
+          '@type': 'QuantitativeValue',
           minValue: 18,
           maxValue: 65,
         },
         url: 'http://example.org/offer/1',
-        type: 'Offer',
+        '@type': 'Offer',
         name: 'Single session',
         price: 5,
         priceCurrency: 'GBP',
       }],
       maximumAttendeeCapacity: 20,
     };
+    validEvent = {
+      '@context': metaData.contextUrl,
+      '@id': 'http://www.example.org/events/1',
+      '@type': 'Event',
+      name: 'Tai chi Class',
+      description: 'A Tai chi class',
+      duration: 'PT1H',
+      isCoached: true,
+      url: 'http://www.example.org/events/1',
+      ageRange: {
+        '@type': 'QuantitativeValue',
+        minValue: 18,
+        maxValue: 60,
+      },
+      genderRestriction: 'https://openactive.io/NoRestriction',
+      activity: [
+        {
+          '@id': 'https://openactive.io/activity-list#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
+          prefLabel: 'Tai Chi',
+          '@type': 'Concept',
+          inScheme: 'https://openactive.io/activity-list',
+        },
+      ],
+      category: [
+        {
+          '@id': 'https://openactive.io/activity-list#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
+          prefLabel: 'Holistic Classes',
+          '@type': 'Concept',
+          inScheme: 'https://openactive.io/activity-list',
+        },
+      ],
+      programme: {
+        '@type': 'Brand',
+        name: 'Play Ball!',
+        url: 'http://example.org/brand/play-ball',
+        description: 'Something about a ball',
+        logo: {
+          '@type': 'ImageObject',
+          url: 'http://example.com/static/image/speedball_large.jpg',
+        },
+      },
+      eventStatus: 'https://schema.org/EventScheduled',
+      image: [{
+        '@type': 'ImageObject',
+        url: 'http://www.example.org/logo.png',
+      }],
+      startDate: '2017-03-22T20:00:00Z',
+      endDate: '2017-03-22T21:00:00Z',
+      offers: [{
+        '@id': 'http://example.org/offer/1',
+        ageRestriction: {
+          '@type': 'QuantitativeValue',
+          minValue: 18,
+          maxValue: 65,
+        },
+        url: 'http://example.org/offer/1',
+        '@type': 'Offer',
+        name: 'Single session',
+        price: 5,
+        priceCurrency: 'GBP',
+      }],
+      remainingAttendeeCapacity: 10,
+      maximumAttendeeCapacity: 20,
+      organizer: {
+        '@id': 'http://www.example.org',
+        '@type': 'Organization',
+        name: 'Example Co',
+        url: 'http://www.example.org',
+        description: 'Example organizer',
+        telephone: '01234567890',
+        sameAs: [
+          'http://www.example.org/facebook',
+        ],
+        logo: {
+          '@type': 'ImageObject',
+          url: 'http://www.example.org/logo.png',
+        },
+      },
+      leader: [{
+        '@id': 'http://www.example.org/person/1',
+        '@type': 'Person',
+        name: 'Joe Bloggs',
+      }],
+      level: [
+        'Beginner',
+      ],
+      location: {
+        '@id': 'http://www.example.org/locations/gym',
+        '@type': 'Place',
+        name: 'ExampleCo Gym',
+        description: 'ExampleCo\'s main gym',
+        image: [{
+          '@type': 'ImageObject',
+          url: 'http://www.example.org/gym.png',
+        }],
+        url: 'http://www.example.org/locations/gym',
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: '1 High Street',
+          addressLocality: 'Bristol',
+          addressRegion: 'Bristol',
+          addressCountry: 'GB',
+          postalCode: 'BS1 4SD',
+        },
+        telephone: '0845000000',
+        geo: {
+          latitude: 51.4034423828125,
+          longitude: -0.2369088977575302,
+          '@type': 'GeoCoordinates',
+        },
+        openingHoursSpecification: [{
+          '@type': 'OpeningHoursSpecification',
+          opens: '07:00',
+          closes: '21:00',
+          dayOfWeek: ['https://schema.org/Monday'],
+        }],
+        amenityFeature: [
+          {
+            name: 'Changing Facilities',
+            value: true,
+            '@type': 'ChangingFacilities',
+          },
+        ],
+      },
+    };
     activityList = {
       '@context': 'https://openactive.io/',
-      '@id': 'https://openactive.io/activity-list',
+      id: 'https://openactive.io/activity-list',
       title: 'OpenActive Activity List',
       description: 'This document describes the OpenActive standard activity list.',
-      type: 'ConceptScheme',
+      '@type': 'ConceptScheme',
       license: 'https://creativecommons.org/licenses/by/4.0/',
       concept: [
         {
           id: 'https://openactive.io/activity-list#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
-          type: 'Concept',
+          '@type': 'Concept',
           prefLabel: 'Tai Chi',
           definition: 'Tai chi combines deep breathing and relaxation with slow and gentle movements.',
           broader: 'https://openactive.io/activity-list#594e5805-3a5c-4c60-80fc-c0a28eb64a06',
@@ -219,7 +344,7 @@ describe('validate', () => {
     it('should return a failure if passed an invalid model', async () => {
       const data = {};
 
-      const result = await validate(data, new OptionsHelper({ type: 'InvalidModel' }));
+      const result = await validate(data, new OptionsHelper({ '@type': 'InvalidModel' }));
 
       expect(result.length).toBe(2);
       expect(result[0].type).toBe(ValidationErrorType.MISSING_REQUIRED_FIELD);
@@ -258,26 +383,23 @@ describe('validate', () => {
     });
 
     it('should return no errors for a valid Event', async () => {
-      const event = Object.assign({}, validEvent);
+      const event = { ...validSessionSeries };
 
       const result = await validate(event, options);
 
       expect(result.length).toBe(0);
     });
 
-
     // TODO: Fix this to return a warning if 'type' or 'id' are used (as this was designed to warn for '@type' or '@id')
     // Note that this will likely require wider changes
     it('should only return alias warnings for a valid Event with aliased properties', async () => {
-      const event = Object.assign(
-        {},
-        validEvent,
-        {
-          // '@type': 'EventSeries',
-          'schema:name': validEvent.name,
-          'oa:ageRange': Object.assign({}, validEvent.ageRange),
-        },
-      );
+      const event = {
+
+        ...validSessionSeries,
+        // '@type': 'EventSeries',
+        'schema:name': validSessionSeries.name,
+        'oa:ageRange': { ...validSessionSeries.ageRange },
+      };
 
       // delete event.type;
       delete event.name;
@@ -295,7 +417,7 @@ describe('validate', () => {
 
     it('should provide a jsonpath to the location of a problem', async () => {
       // This event is missing location addressRegion, which is a recommended field
-      const event = Object.assign({}, validEvent);
+      const event = { ...validSessionSeries };
 
       delete event.location.address.addressRegion;
 
@@ -307,17 +429,15 @@ describe('validate', () => {
     });
 
     it('should provide a jsonpath to the location of a problem with a namespace', async () => {
-      const event = Object.assign(
-        {},
-        validEvent,
-        {
-          'https://openactive.io/ageRange': {
-            type: 'QuantitativeValue',
-            minValue: 60,
-            maxValue: 18,
-          },
+      const event = {
+
+        ...validSessionSeries,
+        'https://openactive.io/ageRange': {
+          '@type': 'QuantitativeValue',
+          minValue: 60,
+          maxValue: 18,
         },
-      );
+      };
 
       delete event.ageRange;
 
@@ -331,13 +451,13 @@ describe('validate', () => {
 
     it('should check submodels of a model even if we don\'t know what type it is', async () => {
       const data = {
-        type: 'UnknownType',
+        '@type': 'UnknownType',
         geo: {
           latitude: 51.4034423828125,
-          type: 'GeoCoordinates',
+          '@type': 'GeoCoordinates',
         },
         location: {
-          type: 'SafariPark',
+          '@type': 'SafariPark',
         },
       };
 
@@ -365,17 +485,17 @@ describe('validate', () => {
     it('should cope with flexible model types', async () => {
       const place = {
         '@context': metaData.contextUrl,
-        id: 'http://www.example.org/locations/gym',
-        type: 'Place',
+        '@id': 'http://www.example.org/locations/gym',
+        '@type': 'Place',
         name: 'ExampleCo Gym',
         description: 'ExampleCo\'s main gym',
         image: [{
-          type: 'ImageObject',
+          '@type': 'ImageObject',
           url: 'http://www.example.org/gym.png',
         }],
         url: 'http://www.example.org/locations/gym',
         address: {
-          type: 'PostalAddress',
+          '@type': 'PostalAddress',
           streetAddress: '1 High Street',
           addressLocality: 'Bristol',
           addressRegion: 'Bristol',
@@ -386,24 +506,24 @@ describe('validate', () => {
         geo: {
           latitude: 51.4034423828125,
           longitude: -0.2369088977575302,
-          type: 'GeoCoordinates',
+          '@type': 'GeoCoordinates',
         },
         openingHoursSpecification: [{
-          type: 'OpeningHoursSpecification',
+          '@type': 'OpeningHoursSpecification',
           opens: '07:00',
           closes: '21:00',
-          dayOfWeek: 'https://schema.org/Monday',
+          dayOfWeek: ['https://schema.org/Monday'],
         }],
         amenityFeature: [
           {
             name: 'Changing Facilities',
             value: true,
-            type: 'ChangingFacilities',
+            '@type': 'ChangingFacilities',
           },
           {
             name: 'My Place',
             value: true,
-            type: 'ext:MyPlace',
+            '@type': 'ext:MyPlace',
           },
         ],
       };
@@ -420,17 +540,17 @@ describe('validate', () => {
     it('should cope with arrays of flexible model types mixed with invalid elements', async () => {
       const place = {
         '@context': metaData.contextUrl,
-        id: 'http://www.example.org/locations/gym',
-        type: 'Place',
+        '@id': 'http://www.example.org/locations/gym',
+        '@type': 'Place',
         name: 'ExampleCo Gym',
         description: 'ExampleCo\'s main gym',
         image: [{
-          type: 'ImageObject',
+          '@type': 'ImageObject',
           url: 'http://www.example.org/gym.png',
         }],
         url: 'http://www.example.org/locations/gym',
         address: {
-          type: 'PostalAddress',
+          '@type': 'PostalAddress',
           streetAddress: '1 High Street',
           addressLocality: 'Bristol',
           addressRegion: 'Bristol',
@@ -441,25 +561,25 @@ describe('validate', () => {
         geo: {
           latitude: 51.4034423828125,
           longitude: -0.2369088977575302,
-          type: 'GeoCoordinates',
+          '@type': 'GeoCoordinates',
         },
         openingHoursSpecification: [{
-          type: 'OpeningHoursSpecification',
+          '@type': 'OpeningHoursSpecification',
           opens: '07:00',
           closes: '21:00',
-          dayOfWeek: 'https://schema.org/Monday',
+          dayOfWeek: ['https://schema.org/Monday'],
         }],
         amenityFeature: [
           {
             name: 'Changing Facilities',
             value: true,
-            type: 'ChangingRooms',
+            '@type': 'ChangingRooms',
           },
           'An invalid array element',
           {
             name: 'My Place',
             value: true,
-            type: 'ext:MyPlace',
+            '@type': 'ext:MyPlace',
           },
         ],
       };
@@ -480,7 +600,7 @@ describe('validate', () => {
     it('should not throw if a property of value null is passed', async () => {
       const data = {
         '@context': metaData.contextUrl,
-        type: 'Event',
+        '@type': 'Event',
         'beta:distance': null,
       };
 
@@ -491,7 +611,7 @@ describe('validate', () => {
     it('should not throw if a property of value null is passed', async () => {
       const data = {
         '@context': metaData.contextUrl,
-        type: 'Event',
+        '@type': 'Event',
         category: [null, null],
       };
 
@@ -500,7 +620,7 @@ describe('validate', () => {
     });
 
     it('should return an unsupported warning if nested arrays are passed', async () => {
-      const event = Object.assign({}, validEvent);
+      const event = { ...validSessionSeries };
 
       event.leader = [event.leader];
 
@@ -514,7 +634,7 @@ describe('validate', () => {
     });
 
     it('should not throw if a value object is passed', async () => {
-      const event = Object.assign({}, validEvent);
+      const event = { ...validSessionSeries };
 
       event.name = {
         '@value': event.name,
@@ -529,6 +649,25 @@ describe('validate', () => {
       expect(result[0].path).toBe('$.name');
     });
 
+    it('should not throw errors for Event', async () => {
+      const result = await validate(validEvent, options);
+
+      expect(result.length).toBe(0);
+    });
+
+    it('should warn on deprecated fields', async () => {
+      const event = { ...validSessionSeries };
+      event.offers[0].ageRange = event.offers[0].ageRestriction;
+      delete event.offers[0].ageRestriction;
+
+      const result = await validate(event, options);
+
+      expect(result.length).toBe(2);
+      expect(result[0].type).toBe(ValidationErrorType.FIELD_DEPRECATED);
+      expect(result[0].severity).toBe(ValidationErrorSeverity.WARNING);
+      expect(result[0].path).toBe('$.offers[0].ageRange');
+    });
+
     it('should recognise an RPDE feed', async () => {
       const feed = {
         items: [
@@ -536,7 +675,7 @@ describe('validate', () => {
             id: 'ABCDEF09001015',
             kind: 'SessionSeries',
             state: 'updated',
-            data: validEvent,
+            data: validSessionSeries,
             modified: 1533177378657,
           },
         ],

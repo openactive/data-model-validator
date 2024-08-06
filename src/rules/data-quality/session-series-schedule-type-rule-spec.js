@@ -28,10 +28,10 @@ describe('SessionSeriesScheduleTypeRule', () => {
 
   it('should return no errors if the scheduledEventType of the eventSchedule of the SessionSeries is ScheduledSession', async () => {
     const data = {
-      type: 'SessionSeries',
+      '@type': 'SessionSeries',
       eventSchedule: [
         {
-          type: 'Schedule',
+          '@type': 'Schedule',
           scheduledEventType: 'ScheduledSession',
         },
       ],
@@ -49,10 +49,10 @@ describe('SessionSeriesScheduleTypeRule', () => {
   });
   it('should return no errors if the type of the eventSchedule of the SessionSeries is PartialSchedule', async () => {
     const data = {
-      type: 'SessionSeries',
+      '@type': 'SessionSeries',
       eventSchedule: [
         {
-          type: 'PartialSchedule',
+          '@type': 'PartialSchedule',
         },
       ],
     };
@@ -70,7 +70,7 @@ describe('SessionSeriesScheduleTypeRule', () => {
 
   it('should return no errors if the eventSchedule of the SessionSeries is not set', async () => {
     const data = {
-      type: 'SessionSeries',
+      '@type': 'SessionSeries',
     };
 
     const nodeToTest = new ModelNode(
@@ -86,10 +86,10 @@ describe('SessionSeriesScheduleTypeRule', () => {
 
   it('should return a failure if the scheduledEventType of the eventSchedule of the SessionSeries is not ScheduledSession', async () => {
     const data = {
-      type: 'SessionSeries',
+      '@type': 'SessionSeries',
       eventSchedule: [
         {
-          type: 'Schedule',
+          '@type': 'Schedule',
           scheduledEventType: 'Event',
         },
       ],

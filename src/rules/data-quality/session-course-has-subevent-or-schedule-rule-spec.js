@@ -39,30 +39,30 @@ describe('SessionCourseHasSubeventOrScheduleRule', () => {
   it('should return no errors if the eventSchedule or the subEvent of the event is set', async () => {
     const dataItems = [
       {
-        type: 'SessionSeries',
+        '@type': 'SessionSeries',
         eventSchedule: {
-          type: 'Schedule',
+          '@type': 'Schedule',
         },
       },
       {
-        type: 'SessionSeries',
+        '@type': 'SessionSeries',
         subEvent: [
           {
-            type: 'Event',
+            '@type': 'Event',
           },
         ],
       },
       {
-        type: 'CourseInstance',
+        '@type': 'CourseInstance',
         eventSchedule: {
-          type: 'Schedule',
+          '@type': 'Schedule',
         },
       },
       {
-        type: 'CourseInstance',
+        '@type': 'CourseInstance',
         subEvent: [
           {
-            type: 'Event',
+            '@type': 'Event',
           },
         ],
       },
@@ -73,7 +73,7 @@ describe('SessionCourseHasSubeventOrScheduleRule', () => {
         '$',
         data,
         null,
-        models[data.type],
+        models[data['@type']],
       );
       const errors = await rule.validate(nodeToTest);
 
@@ -84,10 +84,10 @@ describe('SessionCourseHasSubeventOrScheduleRule', () => {
   it('should return a failure if the eventSchedule and the subEvent of the event is not set', async () => {
     const dataItems = [
       {
-        type: 'CourseInstance',
+        '@type': 'CourseInstance',
       },
       {
-        type: 'SessionSeries',
+        '@type': 'SessionSeries',
       },
     ];
 
@@ -96,7 +96,7 @@ describe('SessionCourseHasSubeventOrScheduleRule', () => {
         '$',
         data,
         null,
-        models[data.type],
+        models[data['@type']],
       );
       const errors = await rule.validate(nodeToTest);
 
@@ -111,11 +111,11 @@ describe('SessionCourseHasSubeventOrScheduleRule', () => {
   it('should return a failure if the event\'s eventSchedule is not set and it\'s subEvent is an empty array', async () => {
     const dataItems = [
       {
-        type: 'CourseInstance',
+        '@type': 'CourseInstance',
         subEvent: [],
       },
       {
-        type: 'SessionSeries',
+        '@type': 'SessionSeries',
         subEvent: [],
       },
     ];
@@ -125,7 +125,7 @@ describe('SessionCourseHasSubeventOrScheduleRule', () => {
         '$',
         data,
         null,
-        models[data.type],
+        models[data['@type']],
       );
       const errors = await rule.validate(nodeToTest);
 

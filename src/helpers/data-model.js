@@ -7,6 +7,7 @@ const {
   loadEnum,
   loadModel,
   getSchemaOrgVocab,
+  getProperties,
 } = require('@openactive/data-models');
 
 const { InvalidModelNameError } = require('../exceptions');
@@ -14,6 +15,13 @@ const { InvalidModelNameError } = require('../exceptions');
 const DataModelHelper = class {
   static getSchemaOrgVocab() {
     return getSchemaOrgVocab();
+  }
+
+  static getProperties(version) {
+    if (typeof version === 'undefined') {
+      throw Error('Parameter "version" must be defined');
+    }
+    return getProperties(version);
   }
 
   static getContext(version) {

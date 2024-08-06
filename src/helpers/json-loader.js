@@ -99,6 +99,7 @@ async function getFromFsCacheIfExists(baseCachePath, url) {
     // Probably just doesn't exist
     return { exists: false };
   }
+  // @ts-expect-error
   const parsed = JSON.parse(rawCacheContents);
   return {
     exists: true,
@@ -108,7 +109,19 @@ async function getFromFsCacheIfExists(baseCachePath, url) {
 
 async function saveToFsCache(baseCachePath, url, fileObject) {
   const cachePath = getFsCachePath(baseCachePath, url);
-  await writeFileAtomic(cachePath, JSON.stringify(fileObject), { chown: false });
+  try {
+    await writeFileAtomic(cachePath, JSON.stringify(fileObject), { chown: false });
+  } catch (error) {
+    if (error.message.indexOf('EPERM: operation not permitted, rename') !== -1) {
+      // Ignore EPERM error on Windows when multiple processes try to write the same file
+      // https://github.com/npm/write-file-atomic/issues/28
+      // If there's contention when saving this file, it is likely that one of the other instances of the
+      // validator is currently writing to the same file with the same contents, and therefore the cache
+      // file will be written successfully by the other instance, and this error can simply be ignored
+    } else {
+      throw error;
+    }
+  }
 }
 
 /**
@@ -120,6 +133,7 @@ async function saveToFsCache(baseCachePath, url, fileObject) {
 async function getFromRemoteUrl(url) {
   let response;
   try {
+    // @ts-expect-error
     response = await axios.get(url, {
       headers: {
         'Content-Type': 'application/ld+json',
@@ -134,6 +148,7 @@ async function getFromRemoteUrl(url) {
       if (match !== null) {
         const { origin } = new URL(url);
         const linkUrl = match[1];
+        // @ts-expect-error
         response = await axios.get(origin + linkUrl, {
           headers: {
             'Content-Type': 'application/ld+json',
@@ -205,7 +220,7 @@ async function getFileLoadRemote(url) {
  *
  * @param {string} url
  * @param {Object} options
- * @returns {Object}
+ * @returns {Promise<any>}
  */
 async function getFileLoadRemoteAndCacheToFs(url, options) {
   {

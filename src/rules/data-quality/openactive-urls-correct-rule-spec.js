@@ -30,11 +30,11 @@ describe('OpenactiveUrlsCorrectRule', () => {
     const dataItems = [
       {
         '@context': metaData.contextUrl,
-        type: 'Event',
+        '@type': 'Event',
       },
       {
         '@context': [metaData.contextUrl],
-        type: 'Event',
+        '@type': 'Event',
       },
     ];
 
@@ -55,11 +55,11 @@ describe('OpenactiveUrlsCorrectRule', () => {
     const dataItems = [
       {
         '@context': 'https://example.org/ns',
-        type: 'Event',
+        '@type': 'Event',
       },
       {
         '@context': ['https://example.org/ns'],
-        type: 'Event',
+        '@type': 'Event',
       },
     ];
 
@@ -80,27 +80,27 @@ describe('OpenactiveUrlsCorrectRule', () => {
     const dataItems = [
       {
         '@context': 'https://www.openactive.io/',
-        type: 'Event',
+        '@type': 'Event',
       },
       {
         '@context': ['https://www.openactive.io/'],
-        type: 'Event',
+        '@type': 'Event',
       },
       {
         '@context': 'http://www.openactive.io/',
-        type: 'Event',
+        '@type': 'Event',
       },
       {
         '@context': ['http://www.openactive.io/'],
-        type: 'Event',
+        '@type': 'Event',
       },
       {
         '@context': 'http://openactive.io/',
-        type: 'Event',
+        '@type': 'Event',
       },
       {
         '@context': ['http://openactive.io/'],
-        type: 'Event',
+        '@type': 'Event',
       },
     ];
 

@@ -40,6 +40,15 @@ describe('ValueInOptionsRule', () => {
           'HEAD',
         ],
       },
+      genderRestriction: {
+        fieldName: 'genderRestriction',
+        requiredType: 'https://schema.org/Text',
+        options: [
+          'https://openactive.io/NoRestriction',
+          'https://openactive.io/MaleOnly',
+          'https://openactive.io/FemaleOnly',
+        ],
+      },
     },
   }, 'latest');
   model.hasSpecification = true;
@@ -53,7 +62,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return no errors if the field value is in the options array', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       singleOption: 'GET',
     };
 
@@ -70,7 +79,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return a failure if the field value is not in the options array', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       singleOption: 'DELETE',
     };
 
@@ -90,7 +99,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return no errors if the field value is in the enum options array', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       eventStatus: 'https://schema.org/EventScheduled',
     };
 
@@ -107,7 +116,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return a failure if the field value is not in the enum options array', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       eventStatus: 'https://schema.org/EventInvalid',
     };
 
@@ -127,7 +136,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return no errors if the field value is in the options array when the value is an array', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       multipleOption: ['GET'],
     };
 
@@ -144,7 +153,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return a failure if the field value is not in the options array when the value is an array', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       multipleOption: ['DELETE'],
     };
 
@@ -164,7 +173,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return no errors if the field value is in the enum options array when the value is an array', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       dayOfWeek: ['https://schema.org/Sunday'],
     };
 
@@ -181,7 +190,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return a failure if the field value is not in the enum options array when the value is an array', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       dayOfWeek: ['https://schema.org/Thirdday'],
     };
 
@@ -201,7 +210,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return no errors if the field value in goodrelations is in the enum options array', async () => {
     const data = {
-      type: 'Offer',
+      '@type': 'Offer',
       acceptedPaymentMethod: ['http://purl.org/goodrelations/v1#Cash'],
     };
 
@@ -218,7 +227,7 @@ describe('ValueInOptionsRule', () => {
 
   it('should return a failure if the field value in goodrelations is not in the enum options array', async () => {
     const data = {
-      type: 'Offer',
+      '@type': 'Offer',
       acceptedPaymentMethod: ['http://purl.org/goodrelations/v1#Invalid'],
     };
 
@@ -233,6 +242,30 @@ describe('ValueInOptionsRule', () => {
     expect(errors.length).toBe(1);
 
     expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+  });
+
+  it('should return a different error message if the field value is an array', async () => {
+    const data = {
+      '@type': 'Offer',
+      genderRestriction: [
+        'https://openactive.io/NoRestriction',
+        'https://openactive.io/MaleOnly',
+        'https://openactive.io/FemaleOnly',
+      ],
+    };
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      model,
+    );
+    const errors = await rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
+
+    expect(errors[0].message).toContain('This property cannot be an array. Must be one of:');
     expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
   });
 });

@@ -13,7 +13,7 @@ module.exports = class IsAccessibleForFreeRule extends Rule {
       description: 'Validates that isAccessibleForFree is set to true for events that have a zero-price offer.',
       tests: {
         default: {
-          message: 'Where a `{{model}}` has at least one Offer with `price` set to `0`, it should also have a property named `isAccessibleForFree` set to `true`.\n\nFor example:\n\n```\n{\n  "type": "{{model}}",\n  "offers": [\n    {\n      "type": "Offer",\n      "price": 0\n    }\n  ],\n  "isAccessibleForFree": true\n}\n```',
+          message: 'Where a `{{model}}` has at least one `Offer` with `price` set to `0`, it should also have a property named `isAccessibleForFree` set to `true`.\n\nFor example:\n\n```\n{\n  "@type": "{{model}}",\n  "offers": [\n    {\n      "@type": "Offer",\n      "price": 0\n    }\n  ],\n  "isAccessibleForFree": true\n}\n```',
           sampleValues: {
             model: 'Event',
           },

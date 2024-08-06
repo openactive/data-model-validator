@@ -1,5 +1,3 @@
-
-
 const ValidationErrorSeverity = Object.freeze({
   FAILURE: 'failure',
   WARNING: 'warning',

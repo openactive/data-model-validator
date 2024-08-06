@@ -80,3 +80,6 @@ typings/
 
 # IDE
 .vscode
+
+# Validator cache
+tmp

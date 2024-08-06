@@ -69,7 +69,7 @@ describe('RequiredFieldsRule', () => {
     },
   };
 
-  const loadInheritanceModel = () => Object.assign({}, baseInheritanceModel);
+  const loadInheritanceModel = () => ({ ...baseInheritanceModel });
 
   it('should target models of any type', () => {
     const isTargeted = rule.isModelTargeted(model);
@@ -79,12 +79,12 @@ describe('RequiredFieldsRule', () => {
   it('should return no errors if all required fields are present', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
       'oa:activity': {
-        id: 'https://example.com/reference/activities#Speedball',
+        '@id': 'https://example.com/reference/activities#Speedball',
         inScheme: 'https://example.com/reference/activities',
         prefLabel: 'Speedball',
-        type: 'Concept',
+        '@type': 'Concept',
       },
       location: {
         address: {
@@ -92,19 +92,19 @@ describe('RequiredFieldsRule', () => {
           addressRegion: 'London',
           postalCode: 'NW5 3DU',
           streetAddress: 'Raynes Park High School, 46A West Barnes Lane',
-          type: 'PostalAddress',
+          '@type': 'PostalAddress',
         },
         description: 'Raynes Park High School in London',
         geo: {
           latitude: 51.4034423828125,
           longitude: -0.2369088977575302,
-          type: 'GeoCoordinates',
+          '@type': 'GeoCoordinates',
         },
-        id: 'https://example.com/locations/1234ABCD',
+        '@id': 'https://example.com/locations/1234ABCD',
         identifier: '1234ABCD',
         name: 'Raynes Park High School',
         telephone: '01253 473934',
-        type: 'Place',
+        '@type': 'Place',
       },
     };
 
@@ -122,7 +122,7 @@ describe('RequiredFieldsRule', () => {
   it('should return a failure per field if any required fields are missing', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
     };
 
     const nodeToTest = new ModelNode(
@@ -146,7 +146,7 @@ describe('RequiredFieldsRule', () => {
 
     it('should return no errors if all required fields are present', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         duration: 'PT1H30M',
       };
 
@@ -164,7 +164,7 @@ describe('RequiredFieldsRule', () => {
 
     it('should return a failure per field if any required fields are missing', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
       };
 
       const nodeToTest = new ModelNode(
@@ -190,7 +190,7 @@ describe('RequiredFieldsRule', () => {
 
     it('should return no errors if all required fields are present', async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         barTab: 300,
       };
 
@@ -209,7 +209,7 @@ describe('RequiredFieldsRule', () => {
     it('should return a failure per field if any required fields are missing', async () => {
       const data = {
         '@context': 'https://openactive.io/',
-        type: 'Event',
+        '@type': 'Event',
         dressCode: 'blacktie',
       };
 
@@ -239,10 +239,10 @@ describe('RequiredFieldsRule', () => {
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
-        type: 'Event',
+        '@type': 'Event',
         subEvent: [{
           subEvent: [{
-            type: 'Event',
+            '@type': 'Event',
           }],
         }],
       };
@@ -277,10 +277,10 @@ describe('RequiredFieldsRule', () => {
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
-        type: 'Event',
+        '@type': 'Event',
         subEvent: [{
           subEvent: [{
-            type: 'Event',
+            '@type': 'Event',
           }],
         }],
       };
@@ -315,10 +315,10 @@ describe('RequiredFieldsRule', () => {
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
-        type: 'Event',
+        '@type': 'Event',
         subEvent: [{
           subEvent: [{
-            type: 'Event',
+            '@type': 'Event',
           }],
         }],
       };
@@ -353,10 +353,10 @@ describe('RequiredFieldsRule', () => {
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
-        type: 'Event',
+        '@type': 'Event',
         subEvent: [{
           subEvent: [{
-            type: 'Event',
+            '@type': 'Event',
           }],
         }],
       };
@@ -391,10 +391,10 @@ describe('RequiredFieldsRule', () => {
       inheritanceModel.hasSpecification = true;
       const data = {
         name: 'Test Event',
-        type: 'Event',
+        '@type': 'Event',
         subEvent: [{
           subEvent: [{
-            type: 'Event',
+            '@type': 'Event',
           }],
         }],
       };
@@ -422,7 +422,6 @@ describe('RequiredFieldsRule', () => {
     });
   });
 
-
   describe('with inheritsFrom properties', () => {
     it('should respect required fields when inheritsFrom is *', async () => {
       const modelObj = loadInheritanceModel();
@@ -430,11 +429,11 @@ describe('RequiredFieldsRule', () => {
       const inheritanceModel = new Model(modelObj);
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           superEvent: {
-            type: 'Event',
+            '@type': 'Event',
             name: 'Test Event',
           },
         },
@@ -469,11 +468,11 @@ describe('RequiredFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           superEvent: {
-            type: 'Event',
+            '@type': 'Event',
             name: 'Test Event',
           },
         },
@@ -508,11 +507,11 @@ describe('RequiredFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           superEvent: {
-            type: 'Event',
+            '@type': 'Event',
             name: 'Test Event',
           },
         },
@@ -547,11 +546,11 @@ describe('RequiredFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           superEvent: {
-            type: 'Event',
+            '@type': 'Event',
             name: 'Test Event',
           },
         },
@@ -586,11 +585,11 @@ describe('RequiredFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           superEvent: {
-            type: 'Event',
+            '@type': 'Event',
             name: 'Test Event',
           },
         },
@@ -620,7 +619,6 @@ describe('RequiredFieldsRule', () => {
     });
   });
 
-
   describe('with inheritsTo and inheritsFrom properties', () => {
     it('should respect required fields when inheritsFrom is *', async () => {
       const modelObj = loadInheritanceModel();
@@ -628,17 +626,17 @@ describe('RequiredFieldsRule', () => {
       const inheritanceModel = new Model(modelObj);
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           superEvent: {
-            type: 'Event',
+            '@type': 'Event',
             name: 'Test Event',
           },
         },
         subEvent: [{
           subEvent: [{
-            type: 'Event',
+            '@type': 'Event',
           }],
         }],
       };
@@ -672,17 +670,17 @@ describe('RequiredFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           superEvent: {
-            type: 'Event',
+            '@type': 'Event',
             name: 'Test Event',
           },
         },
         subEvent: [{
           subEvent: [{
-            type: 'Event',
+            '@type': 'Event',
           }],
         }],
       };
@@ -716,17 +714,17 @@ describe('RequiredFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           superEvent: {
-            type: 'Event',
+            '@type': 'Event',
             name: 'Test Event',
           },
         },
         subEvent: [{
           subEvent: [{
-            type: 'Event',
+            '@type': 'Event',
           }],
         }],
       };
@@ -760,17 +758,17 @@ describe('RequiredFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           superEvent: {
-            type: 'Event',
+            '@type': 'Event',
             name: 'Test Event',
           },
         },
         subEvent: [{
           subEvent: [{
-            type: 'Event',
+            '@type': 'Event',
           }],
         }],
       };
@@ -804,17 +802,17 @@ describe('RequiredFieldsRule', () => {
       const inheritanceModel = new Model(modelObj, 'latest');
       inheritanceModel.hasSpecification = true;
       const data = {
-        type: 'Event',
+        '@type': 'Event',
         superEvent: {
-          type: 'Event',
+          '@type': 'Event',
           superEvent: {
-            type: 'Event',
+            '@type': 'Event',
             name: 'Test Event',
           },
         },
         subEvent: [{
           subEvent: [{
-            type: 'Event',
+            '@type': 'Event',
           }],
         }],
       };

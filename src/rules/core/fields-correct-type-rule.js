@@ -21,11 +21,11 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         },
         singleType: {
           description: 'Validates that a property conforms to a single type.',
-          message: 'Invalid type, expected {{expectedType}} but found {{foundType}}.{{examples}}',
+          message: 'Invalid type, expected {{expectedType}}{{idReferencingMessage}} but found {{foundType}}.{{examples}}',
           sampleValues: {
             expectedType: this.constructor.getHumanReadableType('https://schema.org/Text'),
             foundType: this.constructor.getHumanReadableType('https://schema.org/Number'),
-            examples: this.constructor.makeExamples('property', ['https://schema.org/Text'], this.options.version),
+            examples: this.constructor.makeExamples('property', ['https://schema.org/Text'], this.options.version, true),
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -37,7 +37,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           sampleValues: {
             expectedType: this.constructor.getHumanReadableType('LocationFeatureSpecification'),
             foundType: this.constructor.getHumanReadableType('ChangingRooms'),
-            examples: this.constructor.makeExamples('property', ['LocationFeatureSpecification'], this.options.version),
+            examples: this.constructor.makeExamples('property', ['LocationFeatureSpecification'], this.options.version, true),
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -49,7 +49,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           sampleValues: {
             expectedType: this.constructor.getHumanReadableType('LocationFeatureSpecification'),
             foundTypes: this.constructor.makeExpectedTypeList(['ChangingRooms', 'GolfCourse']),
-            examples: this.constructor.makeExamples('property', ['LocationFeatureSpecification'], this.options.version),
+            examples: this.constructor.makeExamples('property', ['LocationFeatureSpecification'], this.options.version, true),
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -57,11 +57,11 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         },
         multipleTypes: {
           description: 'Validates that a property conforms one of a list of types.',
-          message: 'Invalid type, expected one of {{expectedTypes}} but found {{foundType}}.{{examples}}',
+          message: 'Invalid type, expected one of {{expectedTypes}}{{idReferencingMessage}} but found {{foundType}}.{{examples}}',
           sampleValues: {
             expectedTypes: this.constructor.makeExpectedTypeList(['https://schema.org/Text', 'ArrayOf#https://schema.org/Text', '#Concept', 'ArrayOf#Concept']),
             foundType: this.constructor.getHumanReadableType('https://schema.org/Number'),
-            examples: this.constructor.makeExamples('property', ['https://schema.org/Text', 'ArrayOf#https://schema.org/Text', '#Concept', 'ArrayOf#Concept'], this.options.version),
+            examples: this.constructor.makeExamples('property', ['https://schema.org/Text', 'ArrayOf#https://schema.org/Text', '#Concept', 'ArrayOf#Concept'], this.options.version, true),
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -105,8 +105,12 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         return `[\`string${plural}\` containing an ISO 8601 Time](${type})`;
       case 'https://schema.org/Duration':
         return `[\`string${plural}\` containing an ISO 8601 Duration](${type})`;
+      case 'https://schema.org/Property':
+        return `[\`string${plural}\` containing the URL of a property](${type}) from the [OpenActive](https://openactive.io/ns) or [schema.org](https://schema.org/) vocabularies`;
       case 'https://schema.org/URL':
         return `[\`string${plural}\` containing a url](${type})`;
+      case 'https://openactive.io/IdReference':
+        return '[`@id` reference](https://permalink.openactive.io/data-model-validator/id-references)';
       default:
         return `\`${type.replace(/^#/, '')}\``;
     }
@@ -123,7 +127,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     }
     const humanReadableType = this.getHumanReadableRawType(readableType, isArray);
     let aOrAn = 'A';
-    if (isArray || humanReadableType.match(/^\[?`[aeiouAEIOU]/)) {
+    if (isArray || humanReadableType.match(/^\[?`[aeiouAEIOU@]/)) {
       aOrAn = 'An';
     }
     const hint = `${aOrAn} ${isArray ? 'array of ' : ''}${humanReadableType} looks like this:`;
@@ -154,15 +158,21 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       case 'https://schema.org/Duration':
         example = `${prefix}"PT30M"`;
         break;
+      case 'https://schema.org/Property':
+        example = `${prefix}"https://schema.org/givenName"`;
+        break;
       case 'https://schema.org/URL':
         example = `${prefix}"https://www.example.org/"`;
+        break;
+      case 'https://openactive.io/IdReference':
+        example = `${prefix}"https://id.example.com/api/session-series/1402CBP20150217"`;
         break;
       default:
         if (PropertyHelper.isEnum(readableType, version)) {
           const allowedOptions = PropertyHelper.getEnumOptions(readableType, version);
           example = `${prefix}"${allowedOptions[0]}"`;
         } else {
-          example = `${prefix}{\n${prefix}  "type": "${readableType.replace(/^#/, '')}"\n${prefix}}`;
+          example = `${prefix}{\n${prefix}  "@type": "${readableType.replace(/^#/, '')}"\n${prefix}}`;
         }
         break;
     }
@@ -180,7 +190,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     return `${expectedTypes}</ul>`;
   }
 
-  static makeExamples(property, types, version, renderedExample) {
+  static makeExamples(property, types, version, renderedExample, allowReferencing) {
     let examples = '';
     for (const type of types) {
       examples = `${examples}\n\n${this.getHumanReadableExample(property, type, version)}`;
@@ -189,6 +199,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       const hint = types.length > 1 ? 'A full example of the preferred approach looks like this:' : 'A full example looks like this:';
       examples = `${examples}\n\n${hint}\n\n${renderedExample}`;
     }
+    if (allowReferencing) examples = `${examples}\n\nA URI reference which matches the \`@id\` of an object defined elsewhere may be used in place of the object itself. ${this.getHumanReadableExample(property, 'https://openactive.io/IdReference', version)}`;
     return examples;
   }
 
@@ -205,7 +216,7 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
     const errors = [];
 
     // Get the derived type
-    const fieldValue = node.getMappedValue(field);
+    const fieldValue = node.getValue(field);
     const derivedType = fieldObj.detectType(fieldValue);
 
     const typeChecks = fieldObj.getAllPossibleTypes();
@@ -232,9 +243,19 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
       return [];
     }
 
-    const checkPass = fieldObj.detectedTypeIsAllowed(fieldValue);
+    const checkPass = fieldObj.detectedTypeIsAllowed(fieldValue)
+      // Pass check if referencing via a URL that matches an @id elsewhere is allowed, and in use
+      || (fieldObj.allowReferencing && typeof fieldValue === 'string' && PropertyHelper.isUrl(fieldValue));
 
     if (!checkPass) {
+      // Hide this error if a more relevant error is being displayed
+      const isReferencedField = fieldObj.allowReferencing && node.model.getReferencedFields(node.options.validationMode, node.name).includes(field);
+      const isShouldNotBeReferencedField = fieldObj.allowReferencing && node.model.getShallNotBeReferencedFields(node.options.validationMode, node.name).includes(field);
+      if (isReferencedField || (isShouldNotBeReferencedField && typeof fieldValue === 'string')) {
+        return [];
+      }
+
+      const idReferencingMessage = fieldObj.allowReferencing && !isShouldNotBeReferencedField ? ' or a reference URI to an `@id`' : '';
       let testKey;
       let messageValues = {};
       let propName = field;
@@ -273,14 +294,14 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
             messageValues = {
               expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
               foundType: this.constructor.getHumanReadableType(notAllowed[0]),
-              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample()),
+              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample(), fieldObj.allowReferencing && !isShouldNotBeReferencedField),
             };
           } else if (notAllowed.length > 1) {
             testKey = 'singleTypeSubclassMultipleError';
             messageValues = {
               expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
               foundTypes: this.constructor.makeExpectedTypeList(notAllowed),
-              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample()),
+              examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample(), fieldObj.allowReferencing && !isShouldNotBeReferencedField),
             };
           }
         } else {
@@ -288,7 +309,8 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
           messageValues = {
             expectedType: this.constructor.getHumanReadableType(typeChecks[0]),
             foundType: this.constructor.getHumanReadableType(derivedType),
-            examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample()),
+            examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample(), fieldObj.allowReferencing && !isShouldNotBeReferencedField),
+            idReferencingMessage,
           };
         }
       } else {
@@ -297,7 +319,8 @@ module.exports = class FieldsCorrectTypeRule extends Rule {
         messageValues = {
           expectedTypes,
           foundType: this.constructor.getHumanReadableType(derivedType),
-          examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample()),
+          examples: this.constructor.makeExamples(propName, typeChecks, node.options.version, fieldObj.getRenderedExample(), fieldObj.allowReferencing && !isShouldNotBeReferencedField),
+          idReferencingMessage,
         };
       }
       errors.push(

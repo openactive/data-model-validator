@@ -37,7 +37,7 @@ describe('NoHtmlRule', () => {
   ]) {
     it(`should return no error when no HTML is supplied in content of value ${JSON.stringify(description)}`, async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
       };
       data.description = description;
       const nodeToTest = new ModelNode(
@@ -58,7 +58,7 @@ describe('NoHtmlRule', () => {
   ]) {
     it(`should return no error when HTML is supplied in beta:formattedDescription with value ${JSON.stringify(description)}`, async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
       };
       data['beta:formattedDescription'] = description;
       const nodeToTest = new ModelNode(
@@ -82,7 +82,7 @@ describe('NoHtmlRule', () => {
   ]) {
     it(`should return an error when HTML is supplied in content of value ${JSON.stringify(description)}`, async () => {
       const data = {
-        type: 'Event',
+        '@type': 'Event',
       };
       data.description = description;
       const nodeToTest = new ModelNode(

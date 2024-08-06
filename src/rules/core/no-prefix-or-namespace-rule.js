@@ -12,9 +12,19 @@ module.exports = class NoPrefixOrNamespaceRule extends Rule {
       name: 'NoPrefixOrNamespaceRule',
       description: 'Validates that properties that are aliased in the @context are not submitted in their unaliased form.',
       tests: {
-        typeAndId: {
-          description: 'Validates that @type and @id are submitted as type and id.',
-          message: 'OpenActive.io maps the JSON-LD property `@{{field}}` to `{{field}}`, so `{{field}}` should always be used as the name of this property.',
+        typeAndIdFailure: {
+          description: 'Validates that @type and @id are submitted as @type and @id, not using the deprecated aliases of type and id, for bookable data.',
+          message: 'The property name `@{{field}}` must always be used instead of `{{field}}`, as the use of `id` and `type` is now deprecated.',
+          sampleValues: {
+            field: 'type',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.USE_FIELD_ALIASES,
+        },
+        typeAndIdWarning: {
+          description: 'Warns if @type and @id are submitted using the deprecated aliases type and id in non-bookable data.',
+          message: 'The property name `@{{field}}` should always be used instead of `{{field}}`, as the use of `id` and `type` is now deprecated.',
           sampleValues: {
             field: 'type',
           },
@@ -85,13 +95,14 @@ module.exports = class NoPrefixOrNamespaceRule extends Rule {
     const prop = PropertyHelper.getFullyQualifiedProperty(field, node.options.version);
 
     if (
-      prop.alias !== null
+      node.model.isJsonLd
+      && prop.alias !== null
       && prop.namespace === null
       && prop.prefix === null
-      && field !== prop.alias
-      && false // Note this rule is temporarily disabled
+      && (prop.alias === 'type' || prop.alias === 'id')
+      && field !== `@${prop.alias}`
     ) {
-      testKey = 'typeAndId';
+      testKey = node.options.validationMode === 'RPDEFeed' ? 'typeAndIdWarning' : 'typeAndIdFailure';
       messageValues = {
         field: prop.alias,
       };

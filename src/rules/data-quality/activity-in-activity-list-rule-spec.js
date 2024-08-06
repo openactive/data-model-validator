@@ -24,7 +24,7 @@ describe('ActivityInActivityListRule', () => {
 
   const activityList = {
     '@context': 'https://openactive.io/',
-    '@id': 'https://openactive.io/activity-list',
+    id: 'https://openactive.io/activity-list',
     title: 'OpenActive Activity List',
     description: 'This document describes the OpenActive standard activity list.',
     type: 'ConceptScheme',
@@ -58,10 +58,10 @@ describe('ActivityInActivityListRule', () => {
 
   it('should return no error when an activity in the list is supplied', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: activityList,
@@ -74,12 +74,12 @@ describe('ActivityInActivityListRule', () => {
     const activities = [
       {
         prefLabel: 'Football',
-        type: 'Concept',
+        '@type': 'Concept',
         inScheme: 'https://openactive.io/activity-list',
       },
       {
         prefLabel: 'flag football',
-        type: 'Concept',
+        '@type': 'Concept',
         inScheme: 'https://openactive.io/activity-list',
       },
     ];
@@ -99,10 +99,10 @@ describe('ActivityInActivityListRule', () => {
   });
   it('should return an error when an activity not in the list is supplied', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: activityList,
@@ -116,12 +116,12 @@ describe('ActivityInActivityListRule', () => {
       {
         id: 'https://openactive.io/activity-list#a4375402-067d-4549-9d3a-8c1e998350a3',
         prefLabel: 'Secret Football',
-        type: 'Concept',
+        '@type': 'Concept',
       },
       {
         id: 'https://openactive.io/activity-list#a4375402-067d-4549-9d3a-8c1e998350a3',
         prefLabel: 'Not Real Football',
-        type: 'Concept',
+        '@type': 'Concept',
       },
     ];
 
@@ -144,19 +144,19 @@ describe('ActivityInActivityListRule', () => {
   });
   it('should return an error when an activity list URL does not exist', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
     };
 
     const activities = [
       {
         id: 'https://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
         prefLabel: 'Not Real Football',
-        type: 'Concept',
+        '@type': 'Concept',
         inScheme: 'http://example.org/bad-list.jsonld',
       },
     ];
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NO_REMOTE,
       statusCode: 404,
       data: null,
@@ -188,10 +188,10 @@ describe('ActivityInActivityListRule', () => {
   });
   it('should return an error when using an old Activity List URL', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: activityList,
@@ -205,7 +205,7 @@ describe('ActivityInActivityListRule', () => {
       {
         id: 'https://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
         prefLabel: 'Not Real Football',
-        type: 'Concept',
+        '@type': 'Concept',
         inScheme: 'https://openactive.io/activity-list/activity-list.jsonld',
       },
     ];
@@ -230,19 +230,19 @@ describe('ActivityInActivityListRule', () => {
   });
   it('should return an error when an activity list URL contains invalid JSON', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
     };
 
     const activities = [
       {
         id: 'https://openactive.io/activity-list/#a4375402-067d-4549-9d3a-8c1e998350a3',
         prefLabel: 'Not Real Football',
-        type: 'Concept',
+        '@type': 'Concept',
         inScheme: 'http://example.org/bad-list.jsonld',
       },
     ];
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NO_REMOTE,
       statusCode: 200,
       data: null,

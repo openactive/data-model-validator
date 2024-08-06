@@ -16,7 +16,7 @@ module.exports = class ContextInRootNodeRule extends Rule {
       tests: {
         noContext: {
           description: 'Raises a failure if the @context is missing from the root node.',
-          message: `The \`@context\` property is required in the root object. It must contain the OpenActive context ("${metaData.contextUrl}") as a string or the first element in an array.\n\nFor example:\n\n\`\`\`\n{\n  "@context": "${metaData.contextUrl}",\n  "type": "Event"\n}\n\`\`\``,
+          message: `The \`@context\` property is required in the root object. It must contain the OpenActive context ("${metaData.contextUrl}") as a string or the first element in an array.\n\nFor example:\n\n\`\`\`\n{\n  "@context": "${metaData.contextUrl}",\n  "@type": "Event"\n}\n\`\`\``,
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.MISSING_REQUIRED_FIELD,
@@ -30,21 +30,21 @@ module.exports = class ContextInRootNodeRule extends Rule {
         },
         oaNotInRightPlace: {
           description: `Validates that the @context contains the OpenActive context (${metaData.contextUrl}) as a string or the first element in an array.`,
-          message: `The \`@context\` property must contain the OpenActive context (\`"${metaData.contextUrl}"\`) as a string or the first element in an array.\n\nFor example:\n\n\`\`\`\n{\n  "@context": "${metaData.contextUrl}",\n  "type": "Event"\n}\n\`\`\``,
+          message: `The \`@context\` property must contain the OpenActive context (\`"${metaData.contextUrl}"\`) as a string or the first element in an array.\n\nFor example:\n\n\`\`\`\n{\n  "@context": "${metaData.contextUrl}",\n  "@type": "Event"\n}\n\`\`\``,
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
         },
         contextIncorrectForDatasetSite: {
           description: `For a Dataset Site, validates that the @context contains the schema.org context (${metaData.namespaces.schema}) and OpenActive context (${metaData.contextUrl}) as the first and second elements in an array, respectively.`,
-          message: `For a Dataset Site, the \`@context\` property must be present in the root object and contain the schema.org context (\`"${metaData.namespaces.schema}"\`) and OpenActive context (\`"${metaData.contextUrl}"\`) as the first and second elements in an array, respectively.\n\nFor example:\n\n\`\`\`\n{\n  "@context": [\n    "${metaData.namespaces.schema}",\n    "${metaData.contextUrl}"\n  ],\n  "type": "Dataset"\n}\n\`\`\``,
+          message: `For a Dataset Site, the \`@context\` property must be present in the root object and contain the schema.org context (\`"${metaData.namespaces.schema}"\`) and OpenActive context (\`"${metaData.contextUrl}"\`) as the first and second elements in an array, respectively.\n\nFor example:\n\n\`\`\`\n{\n  "@context": [\n    "${metaData.namespaces.schema}",\n    "${metaData.contextUrl}"\n  ],\n  "@type": "Dataset"\n}\n\`\`\``,
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
         },
         contextIncorrectForDataCatalog: {
           description: `For a DataCatalog, validates that the @context contains only the schema.org context (${metaData.namespaces.schema}) as a string.`,
-          message: `For a \`DataCatalog\`, the \`@context\` property must be present in the root object and must contain the schema.org context (\`"${metaData.namespaces.schema}"\`) as a string.\n\nFor example:\n\n\`\`\`\n{\n  "@context": "${metaData.namespaces.schema}",\n  "type": "DataCatalog"\n}\n\`\`\``,
+          message: `For a \`DataCatalog\`, the \`@context\` property must be present in the root object and must contain the schema.org context (\`"${metaData.namespaces.schema}"\`) as a string.\n\nFor example:\n\n\`\`\`\n{\n  "@context": "${metaData.namespaces.schema}",\n  "@type": "DataCatalog"\n}\n\`\`\``,
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,

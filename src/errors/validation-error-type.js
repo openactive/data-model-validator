@@ -1,5 +1,3 @@
-
-
 const ValidationErrorType = {
   INVALID_JSON: 'invalid_json',
   MISSING_REQUIRED_FIELD: 'missing_required_field',
@@ -9,6 +7,7 @@ const ValidationErrorType = {
   FIELD_NOT_IN_SPEC: 'field_not_in_spec',
   FIELD_NOT_ALLOWED_IN_SPEC: 'field_not_allowed_in_spec',
   FIELD_COULD_BE_TYPO: 'field_could_be_typo',
+  FIELD_DEPRECATED: 'field_deprecated',
   EXPERIMENTAL_FIELDS_NOT_CHECKED: 'experimental_fields_not_checked',
   UNSUPPORTED_VALUE: 'unsupported_value',
   INVALID_TYPE: 'invalid_type',
@@ -41,6 +40,11 @@ const ValidationErrorType = {
   WRONG_BASE_TYPE: 'wrong_base_type',
   FIELD_NOT_ALLOWED: 'field_not_allowed',
   REPEATFREQUENCY_MISALIGNED: 'repeatfrequency_misaligned',
+  BELOW_MIN_VALUE_INCLUSIVE: 'below_min_value_inclusive',
+  VALUE_OUTWITH_CONSTRAINT: 'value_outwith_constraint',
+  INVALID_ID: 'invalid_id',
+  FIELD_MUST_BE_ID_REFERENCE: 'FIELD_MUST_BE_ID_REFERENCE',
+  FIELD_MUST_NOT_BE_ID_REFERENCE: 'FIELD_MUST_NOT_BE_ID_REFERENCE',
 };
 
 module.exports = Object.freeze(ValidationErrorType);

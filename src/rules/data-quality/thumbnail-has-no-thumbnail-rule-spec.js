@@ -24,10 +24,10 @@ describe('ThumbnailHasNoThumbnailRule', () => {
 
   it('should return no error when a ImageObject\'s parent is not an ImageObject', async () => {
     const data = {
-      type: 'ImageObject',
+      '@type': 'ImageObject',
       thumbnail: [
         {
-          type: 'ImageObject',
+          '@type': 'ImageObject',
         },
       ],
     };
@@ -43,16 +43,16 @@ describe('ThumbnailHasNoThumbnailRule', () => {
   });
   it('should return no error when a ImageObject\'s parent is an ImageObject, but it doesn\'t have a thumbnail', async () => {
     const parentData = {
-      type: 'ImageObject',
+      '@type': 'ImageObject',
       thumbnail: [
         {
-          type: 'ImageObject',
+          '@type': 'ImageObject',
         },
       ],
     };
 
     const data = {
-      type: 'ImageObject',
+      '@type': 'ImageObject',
     };
 
     const parentNode = new ModelNode(
@@ -73,13 +73,13 @@ describe('ThumbnailHasNoThumbnailRule', () => {
   });
   it('should return an error when a ImageObject\'s parent is an ImageObject, and it has a thumbnail', async () => {
     const parentData = {
-      type: 'ImageObject',
+      '@type': 'ImageObject',
       thumbnail: [
         {
-          type: 'ImageObject',
+          '@type': 'ImageObject',
           thumbnail: [
             {
-              type: 'ImageObject',
+              '@type': 'ImageObject',
             },
           ],
         },
@@ -87,10 +87,10 @@ describe('ThumbnailHasNoThumbnailRule', () => {
     };
 
     const data = {
-      type: 'ImageObject',
+      '@type': 'ImageObject',
       thumbnail: [
         {
-          type: 'ImageObject',
+          '@type': 'ImageObject',
         },
       ],
     };

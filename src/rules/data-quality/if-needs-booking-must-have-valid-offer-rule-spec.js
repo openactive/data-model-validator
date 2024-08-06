@@ -27,7 +27,7 @@ describe('IfNeedsBookingMustHaveValidOfferRule', () => {
 
   it('should return no errors if the Event has an isAccessibleWithoutBooking of true', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       isAccessibleWithoutBooking: true,
     };
 
@@ -45,21 +45,21 @@ describe('IfNeedsBookingMustHaveValidOfferRule', () => {
   it('should return no errors if the Event has an isAccessibleWithoutBooking of false, but has an offer with an id or url', async () => {
     const dataItems = [
       {
-        type: 'Event',
+        '@type': 'Event',
         isAccessibleWithoutBooking: false,
         offers: [
           {
-            type: 'Offer',
-            id: 'https://example.org/offer/1',
+            '@type': 'Offer',
+            '@id': 'https://example.org/offer/1',
           },
         ],
       },
       {
-        type: 'Event',
+        '@type': 'Event',
         isAccessibleWithoutBooking: true,
         offers: [
           {
-            type: 'Offer',
+            '@type': 'Offer',
             url: 'https://example.org/offer/1',
           },
         ],
@@ -82,20 +82,20 @@ describe('IfNeedsBookingMustHaveValidOfferRule', () => {
   it('should return an error if the Event as an isAccessibleWithoutBooking of false, and no offer with an id or url', async () => {
     const dataItems = [
       {
-        type: 'Event',
+        '@type': 'Event',
         isAccessibleWithoutBooking: false,
       },
       {
-        type: 'Event',
+        '@type': 'Event',
         isAccessibleWithoutBooking: false,
         offers: [],
       },
       {
-        type: 'Event',
+        '@type': 'Event',
         isAccessibleWithoutBooking: false,
         offers: [
           {
-            type: 'Offer',
+            '@type': 'Offer',
           },
         ],
       },

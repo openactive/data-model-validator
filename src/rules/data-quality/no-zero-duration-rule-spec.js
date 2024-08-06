@@ -24,7 +24,7 @@ describe('NoZeroDurationRule', () => {
 
   it('should return no error when a non-zero duration is supplied', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       duration: 'PT1H',
     };
 
@@ -40,7 +40,7 @@ describe('NoZeroDurationRule', () => {
 
   it('should return an error when a zero duration is supplied', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       duration: 'PT0S',
     };
 
@@ -58,7 +58,7 @@ describe('NoZeroDurationRule', () => {
 
   it('should return an error when a zero duration is supplied with a namespace', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       'schema:duration': 'PT0S',
     };
 

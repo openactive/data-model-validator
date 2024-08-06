@@ -24,7 +24,7 @@ describe('NoEmptyValuesRule', () => {
   it('should return no errors if all fields are non-empty', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
       field_value: 'Not empty',
       field_value_array: ['Not empty'],
     };
@@ -43,7 +43,7 @@ describe('NoEmptyValuesRule', () => {
   it('should return a failure per field if any fields are null, empty strings or empty arrays', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
       invalid_field: '',
       another_invalid_field: null,
       invalid_field_array: [],

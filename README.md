@@ -2,7 +2,7 @@
 
 The OpenActive data model validator library.
 
-[![Build Status](https://travis-ci.com/openactive/data-model-validator.svg?branch=master)](https://travis-ci.org/openactive/data-model-validator)
+[![Tests](https://github.com/openactive/data-model-validator/actions/workflows/npm-test.yml/badge.svg?branch=master)](https://github.com/openactive/data-model-validator/actions/workflows/npm-test.yml)
 [![Known Vulnerabilities](https://snyk.io/test/github/openactive/data-model-validator/badge.svg)](https://snyk.io/test/github/openactive/data-model-validator)
 
 ## Introduction
@@ -26,16 +26,16 @@ const { validate } = require('@openactive/data-model-validator');
 
 const data = {
   '@context': 'https://openactive.io/',
-  type: 'Event',
+  '@type': 'Event',
   name: 'Tai chi Class',
   url: 'http://www.example.org/events/1',
   startDate: '2017-03-22T20:00:00',
   activity: 'Tai Chi',
   location: {
-    type: 'Place',
+    '@type': 'Place',
     name: 'ExampleCo Gym',
     address: {
-      type: 'PostalAddress',
+      '@type': 'PostalAddress',
       streetAddress: '1 High Street',
       addressLocality: 'Bristol',
       postalCode: 'BS1 4SD'
@@ -146,7 +146,7 @@ const result = await validate(feed, options);
 
 #### type
 
-The validator will detect the type of the model being validated from the `type` property. You can override this by providing a type option.
+The validator will detect the type of the model being validated from the `@type` property. You can override this by providing a `type` option.
 
 e.g.
 
@@ -229,10 +229,10 @@ To run tests locally, run:
 $ npm test
 ```
 
-The test run will also include a run of [eslint](https://eslint.org/). To run the tests without these, use:
+The test run will also include a run of [eslint](https://eslint.org/) and [TypeScript](https://www.typescriptlang.org/). To run the tests without these, use:
 
 ```shell
-$ npm run test-no-lint
+$ npm run run-tests
 ```
 
 ### Contributing

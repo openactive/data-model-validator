@@ -35,7 +35,7 @@ describe('AssumeEventStatusRule', () => {
 
   it('should return no errors if the eventStatus fields are valid', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       eventStatus: 'https://schema.org/EventPostponed',
     };
 
@@ -52,7 +52,7 @@ describe('AssumeEventStatusRule', () => {
 
   it('should return no errors if the eventStatus fields are valid', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       'schema:eventStatus': 'https://schema.org/EventPostponed',
     };
 
@@ -69,7 +69,7 @@ describe('AssumeEventStatusRule', () => {
 
   it('should return a notice if the eventStatus field is not set', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
     };
 
     const nodeToTest = new ModelNode(
@@ -88,7 +88,7 @@ describe('AssumeEventStatusRule', () => {
 
   it('should return a notice if the eventStatus field is not valid', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       eventStatus: 'https://openactive.io/EventStatus',
     };
 

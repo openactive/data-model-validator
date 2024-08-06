@@ -1,8 +1,8 @@
-const UriTemplate = require('uritemplate');
 const DataModelHelper = require('../helpers/data-model');
 const PropertyHelper = require('../helpers/property');
 
 const Field = class {
+  // eslint-disable-next-line default-param-last
   constructor(data = {}, version) {
     this.data = data;
     this.version = version;
@@ -54,6 +54,18 @@ const Field = class {
 
   get maxDecimalPlaces() {
     return this.data.maxDecimalPlaces;
+  }
+
+  get minValueInclusive() {
+    return this.data.minValueInclusive;
+  }
+
+  get allowReferencing() {
+    return this.data.allowReferencing;
+  }
+
+  get valueConstraint() {
+    return this.data.valueConstraint;
   }
 
   get standard() {
@@ -161,18 +173,11 @@ const Field = class {
         }
         if (!isEnum) {
           // Is this a URL template?
-          // This processes most strings... so could be a bit intensive
-          const template = UriTemplate.parse(data);
-          let isUrlTemplate = false;
-          for (const expression of template.expressions) {
-            if (expression.constructor.name === 'VariableExpression') {
-              isUrlTemplate = true;
-              break;
-            }
-          }
-          if (isUrlTemplate) {
+          if (this.valueConstraint === 'UriTemplate' && PropertyHelper.isUrlTemplate(data)) {
             returnType = 'https://schema.org/Text';
-          } else if (this.constructor.URL_REGEX.test(data)) {
+          } else if (DataModelHelper.getProperties(this.version).has(data)) {
+            returnType = 'https://schema.org/Property';
+          } else if (PropertyHelper.isUrl(data)) {
             returnType = 'https://schema.org/URL';
           }
         }
@@ -205,7 +210,7 @@ const Field = class {
         if (uniqueTypes.length === 1) {
           returnType = `ArrayOf#${uniqueTypes[0].replace(/^#/, '')}`;
         } else if (uniqueTypes.length > 1) {
-          returnType = `ArrayOf#{${uniqueTypes.map(item => item.replace(/^#/, '')).join(',')}}`;
+          returnType = `ArrayOf#{${uniqueTypes.map((item) => item.replace(/^#/, '')).join(',')}}`;
         } else {
           returnType = 'Array';
         }
@@ -296,7 +301,9 @@ const Field = class {
       actualTypeKey = actualTypeKey.substr(1);
     }
     if (
+      // @ts-expect-error
       typeof (this.constructor.canBeTypeOfMapping[testTypeKey]) !== 'undefined'
+      // @ts-expect-error
       && this.constructor.canBeTypeOfMapping[testTypeKey] === actualTypeKey
     ) {
       return true;
@@ -338,41 +345,6 @@ const Field = class {
     return false;
   }
 };
-
-// Source: adapted from https://gist.github.com/dperini/729294
-Field.URL_REGEX = new RegExp(
-  '^'
-    // protocol identifier (mandatory)
-    // short syntax // not permitted
-    + '(?:(?:https?):\\/\\/)'
-    + '(?:'
-      // IP address dotted notation octets
-      // excludes loopback network 0.0.0.0
-      // excludes reserved space >= 224.0.0.0
-      // excludes network & broadcast addresses
-      // (first & last IP address of each class)
-      + '(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])'
-      + '(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}'
-      + '(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))'
-    + '|'
-      // host & domain names, may end with dot
-      // may not contain dots (e.g localhost)
-      + '(?:'
-        + '(?:'
-          + '[a-z0-9\\u00a1-\\uffff]'
-          + '[a-z0-9\\u00a1-\\uffff_-]{0,62}'
-        + ')?'
-        + '[a-z0-9\\u00a1-\\uffff]\\.?'
-      + ')+'
-      // TLD identifier name, may end with dot
-      + '(?:[a-z\\u00a1-\\uffff]{2,}\\.?)'
-    + ')'
-    // port number (optional)
-    + '(?::\\d{2,5})?'
-    // resource path (optional)
-    + '(?:[/?#]\\S*)?'
-  + '$', 'i',
-);
 
 Field.canBeTypeOfMapping = {
   'https://schema.org/Date': 'https://schema.org/Text',

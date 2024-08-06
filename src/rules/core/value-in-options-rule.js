@@ -16,7 +16,17 @@ module.exports = class ValueInOptionsRule extends Rule {
           message: 'Value `"{{value}}"` is not in the allowed values for this property. Must be one of:\n\n{{allowedValues}}.',
           sampleValues: {
             value: 'Male',
-            allowedValues: '<ul><li>`"https://openactive.io/Female"`</li><li>`"https://openactive.io/Male"`</li><li>`"https://openactive.io/None"`</li></ul>',
+            allowedValues: '<ul><li>`"https://openactive.io/Female"`</li><li>`"https://openactive.io/Male"`</li><li>`"https://openactive.io/NoRestriction"`</li></ul>',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.FIELD_NOT_IN_DEFINED_VALUES,
+        },
+        fieldArray: {
+          message: 'This property cannot be an array. Must be one of:\n\n{{allowedValues}}.',
+          sampleValues: {
+            value: 'Male',
+            allowedValues: '<ul><li>`"https://openactive.io/Female"`</li><li>`"https://openactive.io/Male"`</li><li>`"https://openactive.io/NoRestriction"`</li></ul>',
           },
           category: ValidationErrorCategory.CONFORMANCE,
           severity: ValidationErrorSeverity.FAILURE,
@@ -40,6 +50,7 @@ module.exports = class ValueInOptionsRule extends Rule {
       && typeof fieldObj !== 'undefined'
     ) {
       let isInOptions = true;
+      let isArrayButCannotBeArray = false;
       let allowedOptions;
       let testType;
       const possibleTypes = fieldObj.getAllPossibleTypes();
@@ -65,16 +76,33 @@ module.exports = class ValueInOptionsRule extends Rule {
           for (const value of fieldValue) {
             if (allowedOptions.indexOf(value) < 0) {
               isInOptions = false;
+              isArrayButCannotBeArray = false;
               singleFieldValue = value;
               break;
             }
           }
+        } else if (fieldValue instanceof Array && !fieldObj.canBeArray()) {
+          isArrayButCannotBeArray = true;
         } else if (allowedOptions.indexOf(fieldValue) < 0) {
           isInOptions = false;
         }
       }
 
-      if (!isInOptions) {
+      if (isArrayButCannotBeArray) {
+        errors.push(
+          this.createError(
+            'fieldArray',
+            {
+              value: singleFieldValue,
+              path: node.getPath(field),
+            },
+            {
+              value: singleFieldValue,
+              allowedValues: `<ul><li>\`"${allowedOptions.join('"`</li><li>`"')}"\`</li></ul>`,
+            },
+          ),
+        );
+      } else if (!isInOptions) {
         errors.push(
           this.createError(
             'default',

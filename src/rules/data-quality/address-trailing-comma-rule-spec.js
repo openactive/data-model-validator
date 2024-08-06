@@ -40,7 +40,7 @@ describe('AddressTrailingCommaRule', () => {
 
   it('should return no error when an address has no trailing commas', async () => {
     const data = {
-      type: 'PostalAddress',
+      '@type': 'PostalAddress',
       streetAddress: '1, Test Road',
       addressLocality: 'Test Locality',
       addressRegion: 'Testshire',
@@ -59,7 +59,7 @@ describe('AddressTrailingCommaRule', () => {
   });
   it('should return an error when an address has trailing commas', async () => {
     const data = {
-      type: 'PostalAddress',
+      '@type': 'PostalAddress',
       streetAddress: '1, Test Road,',
       addressLocality: 'Test Locality, ',
       addressRegion: 'Testshire,',
@@ -82,7 +82,7 @@ describe('AddressTrailingCommaRule', () => {
   });
   it('should return an error when an address has trailing commas in namespaced fields', async () => {
     const data = {
-      type: 'PostalAddress',
+      '@type': 'PostalAddress',
       'schema:streetAddress': '1, Test Road,',
       'schema:addressLocality': 'Test Locality, ',
       'schema:addressRegion': 'Testshire,',

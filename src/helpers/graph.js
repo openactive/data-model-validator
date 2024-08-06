@@ -132,6 +132,8 @@ const GraphHelper = class {
   }
 
   static processProperty(spec, item, classes, version) {
+    const supersededBy = this.getProperty(spec, item, 'schema:supersededBy', version);
+
     let includes = this.getProperty(spec, item, 'schema:domainIncludes', version);
     if (typeof includes === 'undefined') {
       includes = this.getProperty(spec, item, 'rdfs:domain', version);
@@ -166,7 +168,7 @@ const GraphHelper = class {
           }
           for (const classItem of classes) {
             if (this.isPropertyEqual(spec, includeId, classItem, version)) {
-              return this.isPropertyInClassReturn(GraphHelper.PROPERTY_FOUND);
+              return this.isPropertyInClassReturn(GraphHelper.PROPERTY_FOUND, { supersededBy });
             }
           }
         }
@@ -175,7 +177,7 @@ const GraphHelper = class {
         return this.isPropertyInClassReturn(GraphHelper.PROPERTY_NOT_IN_DOMAIN, returnIncludes);
       }
     }
-    return this.isPropertyInClassReturn(GraphHelper.PROPERTY_FOUND);
+    return this.isPropertyInClassReturn(GraphHelper.PROPERTY_FOUND, { supersededBy });
   }
 
   static processGraph(graph, context, version) {

@@ -37,12 +37,12 @@ describe('FieldsNotInModelRule', () => {
   it('should return no errors if all fields are in the spec', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
       activity: {
-        id: 'https://example.com/reference/activities#Speedball',
+        '@id': 'https://example.com/reference/activities#Speedball',
         inScheme: 'https://example.com/reference/activities',
         prefLabel: 'Speedball',
-        type: 'Concept',
+        '@type': 'Concept',
       },
       location: {
         address: {
@@ -50,19 +50,19 @@ describe('FieldsNotInModelRule', () => {
           addressRegion: 'London',
           postalCode: 'NW5 3DU',
           streetAddress: 'Raynes Park High School, 46A West Barnes Lane',
-          type: 'PostalAddress',
+          '@type': 'PostalAddress',
         },
         description: 'Raynes Park High School in London',
         geo: {
           latitude: 51.4034423828125,
           longitude: -0.2369088977575302,
-          type: 'GeoCoordinates',
+          '@type': 'GeoCoordinates',
         },
-        id: 'https://example.com/locations/1234ABCD',
+        '@id': 'https://example.com/locations/1234ABCD',
         identifier: '1234ABCD',
         name: 'Raynes Park High School',
         telephone: '01253 473934',
-        type: 'Place',
+        '@type': 'Place',
       },
     };
 
@@ -83,7 +83,7 @@ describe('FieldsNotInModelRule', () => {
         'https://openactive.io/',
         'http://example.org/ext/1.0/schema.jsonld',
       ],
-      type: 'Event',
+      '@type': 'Event',
       'ext:myCustomProperty': 'foo',
     };
 
@@ -110,7 +110,7 @@ describe('FieldsNotInModelRule', () => {
       },
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: customContext,
@@ -142,7 +142,7 @@ describe('FieldsNotInModelRule', () => {
         'https://openactive.io/',
         'http://example.org/ext/1.0/schema.jsonld',
       ],
-      type: 'Event',
+      '@type': 'Event',
       'ext:myInvalidCustomProperty': 'foo',
     };
 
@@ -169,7 +169,7 @@ describe('FieldsNotInModelRule', () => {
       },
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: customContext,
@@ -206,7 +206,7 @@ describe('FieldsNotInModelRule', () => {
         'https://openactive.io/',
         'http://example.org/ext/1.0/schema.jsonld',
       ],
-      type: 'Event',
+      '@type': 'Event',
       'ext:customName': 'Custom Event',
     };
 
@@ -234,7 +234,7 @@ describe('FieldsNotInModelRule', () => {
       '@id': 'http://example.org/ext#1.0',
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: customContext,
@@ -263,7 +263,7 @@ describe('FieldsNotInModelRule', () => {
   it('should return a warning per field if any fields are not in the spec, but are in schema.org', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
       alternateName: 'Alternate Event',
     };
 
@@ -290,7 +290,7 @@ describe('FieldsNotInModelRule', () => {
   it('should return a failure per field if any fields are not allowed in the spec', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
       disallowed_field: 'This field is disallowed by the spec',
     };
 
@@ -313,7 +313,7 @@ describe('FieldsNotInModelRule', () => {
   it('should return a failure per field if any fields are not in the spec', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
       invalid_field: 'This field is not in the spec',
       another_invalid_field: 'This field is also not in the spec',
     };
@@ -337,7 +337,7 @@ describe('FieldsNotInModelRule', () => {
   it('should return a notice per field if any extension fields are present', async () => {
     const data = {
       '@context': 'https://openactive.io/',
-      type: 'Event',
+      '@type': 'Event',
       'beta:experimental_field': 'This field is experimental',
       'beta:another_experimental_field': 'This field is also experimental',
       'Ext:an_extended_field': 'This field extends the OA spec',
@@ -361,12 +361,98 @@ describe('FieldsNotInModelRule', () => {
     }
   });
 
+  it('should return a failure per field if a field has been superseded', async () => {
+    const schedule = new Model({
+      type: 'PartialSchedule',
+      inSpec: [
+        'type',
+      ],
+    }, 'latest');
+    schedule.hasSpecification = true;
+
+    const data = {
+      '@context': [
+        'https://openactive.io',
+        'https://openactive.io/ns-beta',
+      ],
+      '@type': 'PartialSchedule',
+      'beta:oldProperty': 'America/New_York',
+    };
+
+    const customContext = {
+      '@context': {
+        rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+        rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+        schema: 'https://schema.org/',
+        oa: 'https://openactive.io/',
+        label: 'rdfs:label',
+        comment: 'rdfs:comment',
+        domainIncludes: {
+          '@id': 'schema:domainIncludes',
+          '@type': '@id',
+        },
+        rangeIncludes: {
+          '@id': 'schema:rangeIncludes',
+          '@type': '@id',
+        },
+        Property: 'rdf:Property',
+        Class: 'rdfs:Class',
+        supersededBy: 'schema:supersededBy',
+        beta: 'https://openactive.io/ns-beta#',
+      },
+      '@graph': [
+        {
+          '@id': 'beta:oldProperty',
+          '@type': 'Property',
+          label: 'oldProperty',
+          comment: 'This old property has now been deprecated.',
+          supersededBy: 'schema:scheduleTimezone',
+          domainIncludes: [
+            'oa:PartialSchedule',
+          ],
+          rangeIncludes: [
+            'schema:Text',
+          ],
+        },
+      ],
+    };
+
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
+      errorCode: JsonLoaderHelper.ERROR_NONE,
+      statusCode: 200,
+      data: customContext,
+      url,
+      exception: null,
+      contentType: 'application/json',
+      fetchTime: (new Date()).valueOf(),
+    }));
+
+    const options = new OptionsHelper({
+      loadRemoteJson: true,
+      validationMode: 'C1Response',
+    });
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      schedule,
+      options,
+    );
+
+    const errors = await rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC);
+  });
+
   it('should return a failure per field if a field is a typo', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       offer: {
-        type: 'Offer',
-        id: 'http://example.org/offer/1',
+        '@type': 'Offer',
+        '@id': 'http://example.org/offer/1',
         name: 'Free Offer',
         price: 0.00,
         priceCurrency: 'GBP',

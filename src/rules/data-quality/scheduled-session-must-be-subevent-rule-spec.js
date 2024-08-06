@@ -25,7 +25,7 @@ describe('ScheduledSessionMustBeSubeventRule', () => {
 
   it('should return no errors if the ScheduledSession is a subEvent of another Event', async () => {
     const data = {
-      type: 'ScheduledSession',
+      '@type': 'ScheduledSession',
     };
 
     const nodeToTest = new ModelNode(
@@ -41,7 +41,7 @@ describe('ScheduledSessionMustBeSubeventRule', () => {
 
   it('should return an error if the ScheduledSession is not a subEvent of another Event', async () => {
     const data = {
-      type: 'ScheduledSession',
+      '@type': 'ScheduledSession',
     };
 
     const nodeToTest = new ModelNode(

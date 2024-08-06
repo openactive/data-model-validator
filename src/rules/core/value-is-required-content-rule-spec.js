@@ -26,7 +26,7 @@ describe('ValueIsRequiredContentRule', () => {
 
   it('should return no errors if the field value matches required content', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       'schema:eventStatus': 'https://schema.org/EventScheduled',
     };
 
@@ -43,7 +43,7 @@ describe('ValueIsRequiredContentRule', () => {
 
   it('should return a failure if the field value does not match required content', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       eventStatus: 'https://schema.org/EventInvalid',
     };
 

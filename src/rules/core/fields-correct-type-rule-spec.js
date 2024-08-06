@@ -363,6 +363,69 @@ describe('FieldsCorrectTypeRule', () => {
     }
   });
 
+  // Property
+  it('should return no error for recognised property @id used for a Property type', async () => {
+    const model = new Model({
+      type: 'Event',
+      fields: {
+        field: {
+          fieldName: 'field',
+          requiredType: 'https://schema.org/Property',
+        },
+      },
+    }, 'latest');
+    model.hasSpecification = true;
+    const values = [
+      'https://schema.org/name',
+    ];
+
+    for (const value of values) {
+      const data = {
+        field: value,
+      };
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = await rule.validate(nodeToTest);
+      expect(errors.length).toBe(0);
+    }
+  });
+  it('should return an error for unrecognised property @id used for a Property type', async () => {
+    const model = new Model({
+      type: 'Event',
+      fields: {
+        field: {
+          fieldName: 'field',
+          requiredType: 'https://schema.org/Property',
+        },
+      },
+    }, 'latest');
+    model.hasSpecification = true;
+
+    const values = [
+      'https://schema.org/notaproperty',
+    ];
+
+    for (const value of values) {
+      const data = {
+        field: value,
+      };
+      const nodeToTest = new ModelNode(
+        '$',
+        data,
+        null,
+        model,
+      );
+      const errors = await rule.validate(nodeToTest);
+      expect(errors.length).toBe(1);
+      expect(errors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
+      expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    }
+  });
+
   // Date
   it('should return no error for an valid date type', async () => {
     const model = new Model({
@@ -653,7 +716,7 @@ describe('FieldsCorrectTypeRule', () => {
 
     const values = [
       {
-        type: 'Schedule',
+        '@type': 'Schedule',
       },
     ];
 
@@ -688,11 +751,11 @@ describe('FieldsCorrectTypeRule', () => {
       27,
       {},
       {
-        type: 'Person',
+        '@type': 'Person',
       },
       [
         {
-          type: 'Schedule',
+          '@type': 'Schedule',
         },
       ],
     ];
@@ -727,7 +790,7 @@ describe('FieldsCorrectTypeRule', () => {
 
     const values = [
       {
-        type: 'Place',
+        '@type': 'Place',
         amenityFeature: [
           {
             type: 'ext:MyLocation',
@@ -1013,7 +1076,7 @@ describe('FieldsCorrectTypeRule', () => {
       duration_array: 'PT30M',
       text_array: 'Lorem ipsum',
       model_array: {
-        type: 'Schedule',
+        '@type': 'Schedule',
       },
     };
 
@@ -1033,6 +1096,73 @@ describe('FieldsCorrectTypeRule', () => {
   });
 
   // Multiple rules
+  it('should return no error for a valid type with inheritance and two different types', async () => {
+    const models = {
+      Event: new Model({
+        type: 'Event',
+        fields: {
+          startDate: {
+            fieldName: 'startDate',
+            requiredType: 'https://schema.org/DateTime',
+          },
+        },
+      }, 'latest'),
+      CourseInstance: new Model({
+        type: 'CourseInstance',
+        fields: {
+          field: {
+            fieldName: 'startDate',
+            requiredType: 'https://schema.org/Date',
+          },
+          subEvent: {
+            fieldName: 'subEvent',
+            sameAs: 'https://schema.org/subEvent',
+            model: 'ArrayOf#Event',
+            inheritsTo: {
+              exclude: [
+                'subEvent',
+                'startDate',
+              ],
+            },
+          },
+        },
+      }, 'latest'),
+    };
+    models.CourseInstance.hasSpecification = true;
+    models.Event.hasSpecification = true;
+
+    const data = {
+      type: 'CourseInstance',
+      startDate: '2018-08-01',
+      subEvent: [
+        {
+          '@type': 'Event',
+          startDate: '2018-10-02T19:15:00Z',
+        },
+      ],
+    };
+
+    // Test the top-level node first
+    // The subEvent should be inherited, and not error
+    const rootNodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      models.CourseInstance,
+    );
+    const rootErrors = await rule.validate(rootNodeToTest);
+    expect(rootErrors.length).toBe(0);
+
+    // Test the next node down
+    const subEventNodeToTest = new ModelNode(
+      'subEvent',
+      data.subEvent[0],
+      rootNodeToTest,
+      models.Event,
+    );
+    const subEventErrors = await rule.validate(subEventNodeToTest);
+    expect(subEventErrors.length).toBe(0);
+  });
   it('should return no error for an valid type with multiple rules', async () => {
     const model = new Model({
       type: 'Event',
@@ -1054,11 +1184,11 @@ describe('FieldsCorrectTypeRule', () => {
 
     const values = [
       {
-        type: 'Schedule',
+        '@type': 'Schedule',
       },
       [
         {
-          type: 'Person',
+          '@type': 'Person',
         },
       ],
       'http://example.com/',
@@ -1103,11 +1233,11 @@ describe('FieldsCorrectTypeRule', () => {
       27,
       {},
       {
-        type: 'Person',
+        '@type': 'Person',
       },
       [
         {
-          type: 'Schedule',
+          '@type': 'Schedule',
         },
       ],
     ];

@@ -24,9 +24,9 @@ describe('AgeRangeMinOrMaxRule', () => {
 
   it('should return no error when a minValue is specified', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       ageRange: {
-        type: 'QuantitativeValue',
+        '@type': 'QuantitativeValue',
         minValue: 1,
       },
     };
@@ -42,9 +42,9 @@ describe('AgeRangeMinOrMaxRule', () => {
   });
   it('should return no error when a minValue is specified in a namespaced field', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       ageRange: {
-        type: 'QuantitativeValue',
+        '@type': 'QuantitativeValue',
         'schema:minValue': 1,
       },
     };
@@ -60,9 +60,9 @@ describe('AgeRangeMinOrMaxRule', () => {
   });
   it('should return no error when a maxValue is specified', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       ageRange: {
-        type: 'QuantitativeValue',
+        '@type': 'QuantitativeValue',
         maxValue: 1,
       },
     };
@@ -78,9 +78,9 @@ describe('AgeRangeMinOrMaxRule', () => {
   });
   it('should return an error when no minValue or maxValue is set', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       ageRange: {
-        type: 'QuantitativeValue',
+        '@type': 'QuantitativeValue',
       },
     };
 

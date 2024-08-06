@@ -11,6 +11,7 @@ module.exports = {
     require('./core/required-fields-rule'),
     require('./core/required-optional-fields-rule'),
     require('./core/shall-not-include-fields-rule'),
+    require('./core/deprecated-fields-rule'),
     require('./core/fields-not-in-model-rule'),
     require('./core/fields-correct-type-rule'),
     require('./core/recommended-fields-rule'),
@@ -20,6 +21,11 @@ module.exports = {
     require('./core/precision-rule'),
     require('./core/no-prefix-or-namespace-rule'),
     require('./core/context-in-root-node-rule'),
+    require('./core/valueconstraint-rule'),
+    require('./core/minvalueinclusive-rule'),
+    require('./core/id-rule'),
+    require('./core/id-references-required-rule'),
+    require('./core/id-references-not-permitted-rule'),
 
     // Formatting rules
     require('./format/duration-format-rule'),
@@ -52,7 +58,6 @@ module.exports = {
     require('./data-quality/session-series-schedule-type-rule'),
     require('./data-quality/currency-if-non-zero-price-rule'),
     require('./data-quality/if-needs-booking-must-have-valid-offer-rule'),
-    require('./data-quality/event-remaining-attendee-capacity-rule'),
     require('./data-quality/available-channel-for-prepayment-rule'),
 
     // Notes on the data consumer

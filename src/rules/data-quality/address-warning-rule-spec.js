@@ -32,9 +32,9 @@ describe('AddressWarningRule', () => {
   // No error
   it('should return no error when address is a PostalAddress object', async () => {
     const data = {
-      type: 'Place',
+      '@type': 'Place',
       address: {
-        type: 'PostalAddress',
+        '@type': 'PostalAddress',
         streetAddress: '1, Test Road',
       },
     };
@@ -50,7 +50,7 @@ describe('AddressWarningRule', () => {
   });
   it('should return no error when address is not set', async () => {
     const data = {
-      type: 'Place',
+      '@type': 'Place',
     };
 
     const nodeToTest = new ModelNode(
@@ -66,7 +66,7 @@ describe('AddressWarningRule', () => {
   // Error
   it('should return an error when address is a string', async () => {
     const data = {
-      type: 'Event',
+      '@type': 'Event',
       address: '1, Test Road',
     };
 
