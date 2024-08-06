@@ -110,7 +110,7 @@ describe('FieldsNotInModelRule', () => {
       },
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: customContext,
@@ -169,7 +169,7 @@ describe('FieldsNotInModelRule', () => {
       },
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: customContext,
@@ -234,7 +234,7 @@ describe('FieldsNotInModelRule', () => {
       '@id': 'http://example.org/ext#1.0',
     };
 
-    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async url => ({
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
       errorCode: JsonLoaderHelper.ERROR_NONE,
       statusCode: 200,
       data: customContext,
@@ -359,6 +359,92 @@ describe('FieldsNotInModelRule', () => {
       expect(error.type).toBe(ValidationErrorType.EXPERIMENTAL_FIELDS_NOT_CHECKED);
       expect(error.severity).toBe(ValidationErrorSeverity.FAILURE);
     }
+  });
+
+  it('should return a failure per field if a field has been superseded', async () => {
+    const schedule = new Model({
+      type: 'PartialSchedule',
+      inSpec: [
+        'type',
+      ],
+    }, 'latest');
+    schedule.hasSpecification = true;
+
+    const data = {
+      '@context': [
+        'https://openactive.io',
+        'https://openactive.io/ns-beta',
+      ],
+      '@type': 'PartialSchedule',
+      'beta:oldProperty': 'America/New_York',
+    };
+
+    const customContext = {
+      '@context': {
+        rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+        rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+        schema: 'https://schema.org/',
+        oa: 'https://openactive.io/',
+        label: 'rdfs:label',
+        comment: 'rdfs:comment',
+        domainIncludes: {
+          '@id': 'schema:domainIncludes',
+          '@type': '@id',
+        },
+        rangeIncludes: {
+          '@id': 'schema:rangeIncludes',
+          '@type': '@id',
+        },
+        Property: 'rdf:Property',
+        Class: 'rdfs:Class',
+        supersededBy: 'schema:supersededBy',
+        beta: 'https://openactive.io/ns-beta#',
+      },
+      '@graph': [
+        {
+          '@id': 'beta:oldProperty',
+          '@type': 'Property',
+          label: 'oldProperty',
+          comment: 'This old property has now been deprecated.',
+          supersededBy: 'schema:scheduleTimezone',
+          domainIncludes: [
+            'oa:PartialSchedule',
+          ],
+          rangeIncludes: [
+            'schema:Text',
+          ],
+        },
+      ],
+    };
+
+    spyOn(JsonLoaderHelper, 'getFile').and.callFake(async (url) => ({
+      errorCode: JsonLoaderHelper.ERROR_NONE,
+      statusCode: 200,
+      data: customContext,
+      url,
+      exception: null,
+      contentType: 'application/json',
+      fetchTime: (new Date()).valueOf(),
+    }));
+
+    const options = new OptionsHelper({
+      loadRemoteJson: true,
+      validationMode: 'C1Response',
+    });
+
+    const nodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      schedule,
+      options,
+    );
+
+    const errors = await rule.validate(nodeToTest);
+
+    expect(errors.length).toBe(1);
+    expect(errors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+    expect(errors[0].type).toBe(ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC);
   });
 
   it('should return a failure per field if a field is a typo', async () => {

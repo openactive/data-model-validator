@@ -1096,6 +1096,73 @@ describe('FieldsCorrectTypeRule', () => {
   });
 
   // Multiple rules
+  it('should return no error for a valid type with inheritance and two different types', async () => {
+    const models = {
+      Event: new Model({
+        type: 'Event',
+        fields: {
+          startDate: {
+            fieldName: 'startDate',
+            requiredType: 'https://schema.org/DateTime',
+          },
+        },
+      }, 'latest'),
+      CourseInstance: new Model({
+        type: 'CourseInstance',
+        fields: {
+          field: {
+            fieldName: 'startDate',
+            requiredType: 'https://schema.org/Date',
+          },
+          subEvent: {
+            fieldName: 'subEvent',
+            sameAs: 'https://schema.org/subEvent',
+            model: 'ArrayOf#Event',
+            inheritsTo: {
+              exclude: [
+                'subEvent',
+                'startDate',
+              ],
+            },
+          },
+        },
+      }, 'latest'),
+    };
+    models.CourseInstance.hasSpecification = true;
+    models.Event.hasSpecification = true;
+
+    const data = {
+      type: 'CourseInstance',
+      startDate: '2018-08-01',
+      subEvent: [
+        {
+          '@type': 'Event',
+          startDate: '2018-10-02T19:15:00Z',
+        },
+      ],
+    };
+
+    // Test the top-level node first
+    // The subEvent should be inherited, and not error
+    const rootNodeToTest = new ModelNode(
+      '$',
+      data,
+      null,
+      models.CourseInstance,
+    );
+    const rootErrors = await rule.validate(rootNodeToTest);
+    expect(rootErrors.length).toBe(0);
+
+    // Test the next node down
+    const subEventNodeToTest = new ModelNode(
+      'subEvent',
+      data.subEvent[0],
+      rootNodeToTest,
+      models.Event,
+    );
+    const subEventErrors = await rule.validate(subEventNodeToTest);
+    expect(subEventErrors.length).toBe(0);
+  });
   it('should return no error for an valid type with multiple rules', async () => {
     const model = new Model({
       type: 'Event',

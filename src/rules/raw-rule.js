@@ -22,5 +22,4 @@ const RawRule = class extends Rule {
   }
 };
 
-
 module.exports = RawRule;

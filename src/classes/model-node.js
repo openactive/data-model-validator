@@ -110,11 +110,12 @@ const ModelNode = class {
   }
 
   canInheritFrom(parentNode) {
-    return (
+    // Note the below is commented out temporarily to allow Course fields to be inherited by CourseInstance
+    return true || (
       parentNode.model.type === this.model.type
       || this.model.subClassGraph.indexOf(`#${parentNode.model.type}`) >= 0
       || parentNode.model.subClassGraph.indexOf(`#${this.model.type}`) >= 0
-      || this.model.subClassGraph.filter(value => parentNode.model.subClassGraph.indexOf(value) !== -1).length > 0
+      || this.model.subClassGraph.filter((value) => parentNode.model.subClassGraph.indexOf(value) !== -1).length > 0
     );
   }
 
@@ -127,6 +128,7 @@ const ModelNode = class {
       // Does our property allow us to inherit?
       && typeof this.parentNode.model.fields[this.cleanName] !== 'undefined'
       && typeof this.parentNode.model.fields[this.cleanName].inheritsTo !== 'undefined'
+      // @ts-expect-error
       && this.constructor.checkInheritRule(
         this.parentNode.model.fields[this.cleanName].inheritsTo,
         field,
@@ -141,6 +143,7 @@ const ModelNode = class {
           const modelField = this.model.fields[fieldKey];
           const fieldValue = this.getValue(fieldKey);
           if (typeof modelField.inheritsFrom !== 'undefined'
+            // @ts-expect-error
             && this.constructor.checkInheritRule(modelField.inheritsFrom, field)
             && typeof fieldValue === 'object'
             && !(fieldValue instanceof Array)
@@ -161,6 +164,7 @@ const ModelNode = class {
               }
             }
             if (parentModel) {
+              // @ts-expect-error
               const parentNode = new this.constructor(
                 modelField.fieldName,
                 fieldValue,
@@ -179,5 +183,9 @@ const ModelNode = class {
     return null;
   }
 };
+
+/**
+ * @typedef {ModelNode} ModelNodeType
+ */
 
 module.exports = ModelNode;

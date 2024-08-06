@@ -136,6 +136,26 @@ module.exports = class FieldsNotInModelRule extends Rule {
           severity: ValidationErrorSeverity.FAILURE,
           type: ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC,
         },
+        superseded: {
+          description: 'Raises an error for properties that have been superseded.',
+          message: 'This term has graduated from the beta namespace and is highly likely to be removed in future, please use `{{field}}` instead.',
+          sampleValues: {
+            field: 'supersedingField',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.FAILURE,
+          type: ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC,
+        },
+        supersededFeed: {
+          description: 'Raises an error for properties that have been superseded.',
+          message: 'This term has graduated from the beta namespace and is highly likely to be removed in future, please use `{{field}}` instead.',
+          sampleValues: {
+            field: 'supersedingField',
+          },
+          category: ValidationErrorCategory.CONFORMANCE,
+          severity: ValidationErrorSeverity.WARNING,
+          type: ValidationErrorType.FIELD_NOT_ALLOWED_IN_SPEC,
+        },
       },
     };
   }
@@ -278,6 +298,14 @@ module.exports = class FieldsNotInModelRule extends Rule {
     if (field === '@context') {
       return [];
     }
+    // Don't do this check for cases where the JSON-LD type does not match the expected model
+    // Other rules will raise an error if the type itself is invalid, and if this type is an
+    // extension the validator cannot yet validate properties within the type anyway,
+    // so in either case this rule should not run.
+    // TODO: Remove this and improve the rule to validate beta and extension types
+    if (node.model.isJsonLd && node.model.type !== node.getValue('type')) {
+      return [];
+    }
     let errors = [];
     let testKey = null;
     let messageValues;
@@ -326,6 +354,18 @@ module.exports = class FieldsNotInModelRule extends Rule {
               [oaContext, schemaOrgVocab],
             );
             if (graphResponse.code === GraphHelper.PROPERTY_FOUND) {
+              if (graphResponse.data.supersededBy) {
+                if (node.options.validationMode === 'RPDEFeed') {
+                  testKey = 'supersededFeed';
+                } else {
+                  testKey = 'superseded';
+                }
+
+                messageValues = {
+                  field: graphResponse.data.supersededBy,
+                };
+              }
+
               isDefined = true;
               break;
             }
@@ -338,14 +378,6 @@ module.exports = class FieldsNotInModelRule extends Rule {
           }
           if (!isDefined) {
             switch (graphResponse.code) {
-              case GraphHelper.PROPERTY_NOT_FOUND:
-              default:
-                if (field.substring(0, 5) === 'beta:') {
-                  testKey = 'invalidBeta';
-                } else {
-                  testKey = 'invalidExperimental';
-                }
-                break;
               case GraphHelper.PROPERTY_NOT_IN_DOMAIN:
                 if (field.substring(0, 5) === 'beta:') {
                   testKey = 'invalidBetaNotInDomain';
@@ -358,6 +390,14 @@ module.exports = class FieldsNotInModelRule extends Rule {
                 break;
               case GraphHelper.PROPERTY_DOMAIN_NOT_FOUND:
                 testKey = 'invalidExperimentalDomainNotFound';
+                break;
+              case GraphHelper.PROPERTY_NOT_FOUND:
+              default:
+                if (field.substring(0, 5) === 'beta:') {
+                  testKey = 'invalidBeta';
+                } else {
+                  testKey = 'invalidExperimental';
+                }
                 break;
             }
           }

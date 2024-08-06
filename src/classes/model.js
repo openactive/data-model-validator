@@ -24,10 +24,6 @@ const Model = class {
     return this.data.hasId || false;
   }
 
-  get idFormat() {
-    return this.data.idFormat;
-  }
-
   get isJsonLd() {
     return typeof this.data.isJsonLd === 'undefined' ? true : this.data.isJsonLd;
   }
@@ -84,6 +80,7 @@ const Model = class {
   }
 
   hasRequiredField(field) {
+    // @ts-expect-error
     return PropertyHelper.arrayHasField(this.requiredFields, field, this.version);
   }
 
@@ -109,6 +106,10 @@ const Model = class {
     return this.data.recommendedFields || [];
   }
 
+  getDeprecatedFields() {
+    return Object.values(this.fields).filter((field) => field.deprecationGuidance);
+  }
+
   getShallNotIncludeFields(validationMode, containingFieldName) {
     const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
     const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
@@ -120,7 +121,30 @@ const Model = class {
     return this.data.shallNotInclude || [];
   }
 
+  getReferencedFields(validationMode, containingFieldName) {
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
+    const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
+
+    if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.referencedFields) return specificContextualImperativeConfiguration.referencedFields;
+
+    if (specificImperativeConfiguration && specificImperativeConfiguration.referencedFields) return specificImperativeConfiguration.referencedFields;
+
+    return this.data.referencedFields || [];
+  }
+
+  getShallNotBeReferencedFields(validationMode, containingFieldName) {
+    const specificContextualImperativeConfiguration = this.getImperativeConfigurationWithContext(validationMode, containingFieldName);
+    const specificImperativeConfiguration = this.getImperativeConfiguration(validationMode);
+
+    if (specificContextualImperativeConfiguration && specificContextualImperativeConfiguration.shallNotBeReferencedFields) return specificContextualImperativeConfiguration.shallNotBeReferencedFields;
+
+    if (specificImperativeConfiguration && specificImperativeConfiguration.shallNotBeReferencedFields) return specificImperativeConfiguration.shallNotBeReferencedFields;
+
+    return this.data.shallNotBeReferencedFields || [];
+  }
+
   hasRecommendedField(field) {
+    // @ts-expect-error
     return PropertyHelper.arrayHasField(this.recommendedFields, field, this.version);
   }
 

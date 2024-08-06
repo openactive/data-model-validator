@@ -69,7 +69,7 @@ module.exports = class ValidModelTypeRule extends Rule {
         const fieldObj = node.parentNode.model.getField(node.name);
         if (typeof fieldObj === 'object' && fieldObj !== null) {
           const types = fieldObj.getAllPossibleTypes();
-          const uniqueTypes = [...new Set(types.map(x => x.replace(/^ArrayOf/, '')))];
+          const uniqueTypes = [...new Set(types.map((x) => x.replace(/^ArrayOf/, '')))];
           if (uniqueTypes.length === 1 && uniqueTypes[0].match(/^#/)) {
             testKey = 'noTypeWithHint';
             if (typeof node.arrayIndex !== 'undefined') {

@@ -11,9 +11,13 @@ module.exports = class AssumeEventStatusRule extends Rule {
       'RPDEFeed',
       'BookableRPDEFeed',
       'C1Response',
+      'C1ResponseOrderItemError',
       'C2Response',
+      'C2ResponseOrderItemError',
       'PResponse',
+      'PResponseOrderItemError',
       'BResponse',
+      'BResponseOrderItemError',
     ];
     this.meta = {
       name: 'AssumeEventStatusRule',
