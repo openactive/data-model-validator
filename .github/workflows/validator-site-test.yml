@@ -8,6 +8,6 @@ on:
 
 jobs:
   test-validator-site:
-    uses: openactive/data-model-validator-site/.github/workflows/test-and-deploy.yml@feature/reusable-validator-site-test
+    uses: openactive/data-model-validator-site/.github/workflows/test-and-deploy.yml@master
     with:
       data-model-validator_ref: ${{ github.ref }}
