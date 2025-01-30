@@ -1,0 +1,13 @@
+name: Test validator site
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test-validator-site:
+    uses: openactive/data-model-validator-site/.github/workflows/test-and-deploy.yml@master
+    with:
+      data-model-validator_ref: ${{ github.ref }}
