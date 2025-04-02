@@ -44,6 +44,7 @@ const ValidationErrorType = {
   INVALID_ID: 'invalid_id',
   FIELD_MUST_BE_ID_REFERENCE: 'FIELD_MUST_BE_ID_REFERENCE',
   FIELD_MUST_NOT_BE_ID_REFERENCE: 'FIELD_MUST_NOT_BE_ID_REFERENCE',
+  OFFER_NAMES_NOT_UNIQUE: 'offer_names_not_unique',
 };
 
 module.exports = Object.freeze(ValidationErrorType);
