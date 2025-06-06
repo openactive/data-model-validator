@@ -39,6 +39,7 @@ const ValidationErrorType = {
   TYPE_LIMITS_USE: 'type_limits_use',
   WRONG_BASE_TYPE: 'wrong_base_type',
   FIELD_NOT_ALLOWED: 'field_not_allowed',
+  REPEATFREQUENCY_MISALIGNED: 'repeatfrequency_misaligned',
   BELOW_MIN_VALUE_INCLUSIVE: 'below_min_value_inclusive',
   VALUE_OUTWITH_CONSTRAINT: 'value_outwith_constraint',
   INVALID_ID: 'invalid_id',
