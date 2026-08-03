@@ -34,7 +34,13 @@ module.exports = class OpenactiveUrlsCorrectRule extends Rule {
       if (typeof fieldValue === 'string') {
         contexts.push(fieldValue);
       } else if (fieldValue instanceof Array) {
-        contexts = fieldValue.slice();
+        // A JSON-LD @context array may legitimately combine IRIs with inline
+        // context definitions (maps). This rule can only inspect IRIs, so
+        // non-string entries are filtered out here. They are reported
+        // separately by ContextInRootNodeRule, which raises a failure for any
+        // @context that is not a URL or an array of URLs. Filtering keeps that
+        // error reachable rather than throwing before it can be raised.
+        contexts = fieldValue.filter((context) => typeof context === 'string');
       }
 
       for (const context of contexts) {

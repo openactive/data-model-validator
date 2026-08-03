@@ -619,6 +619,28 @@ describe('validate', () => {
       expect(typeof result).toBe('object');
     });
 
+    it('should not throw if @context contains an inline context object', async () => {
+      // Regression test: an @context array combining an IRI with an inline
+      // context definition is valid JSON-LD but not permitted by OpenActive.
+      // It must be reported as a conformance failure, not crash the run.
+      const data = {
+        '@context': [metaData.contextUrl, { schema: 'https://schema.org/' }],
+        '@type': 'Event',
+        name: 'Tai chi Class',
+      };
+
+      const result = await validate(data, options);
+
+      const contextErrors = result.filter(
+        (error) => error.rule === 'ContextInRootNodeRule',
+      );
+
+      expect(contextErrors.length).toBe(1);
+      expect(contextErrors[0].type).toBe(ValidationErrorType.INVALID_TYPE);
+      expect(contextErrors[0].severity).toBe(ValidationErrorSeverity.FAILURE);
+      expect(contextErrors[0].path).toBe('$["@context"]');
+    });
+
     it('should return an unsupported warning if nested arrays are passed', async () => {
       const event = { ...validSessionSeries };
 
