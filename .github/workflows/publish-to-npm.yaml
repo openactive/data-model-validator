@@ -4,6 +4,10 @@ on:
   push:
     branches: [ master ]
 
+permissions:
+  contents: write
+  id-token: write   # Trusted publishing enabled
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -17,7 +21,7 @@ jobs:
         app-id: ${{ secrets.GH_APP_ID }}
         private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         token: ${{ steps.generate-token.outputs.token }}
     - name: Identify
@@ -25,7 +29,7 @@ jobs:
         git config --global user.name "openactive[bot]"
         git config --global user.email 207210293+openactive[bot]@users.noreply.github.com
     - name: Use Node.js 18.17.1
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v4
       with:
         node-version: 18.17.1
         registry-url: https://registry.npmjs.org/
@@ -36,9 +40,7 @@ jobs:
     - name: Increment Version
       run: npm version patch
     - name: Publish to npm
-      run: npm publish
-      env:
-        NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+      run: npm publish --provenance
     - name: Push version update
       run: git push
 
