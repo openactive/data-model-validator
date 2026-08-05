@@ -59,5 +59,9 @@
     "test-debug": "node --inspect-brk -i ./node_modules/jasmine/bin/jasmine.js",
     "postpublish": "git push",
     "publish-patch": "npm test && git pull && git push && npm version patch && npm publish"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }
