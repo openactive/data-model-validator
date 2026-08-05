@@ -6,7 +6,7 @@ on:
 
 permissions:
   contents: write
-  id-token: write   # Trusted publishing enabled
+  # id-token: write   # Trusted publishing enabled
 
 jobs:
   publish:
@@ -40,7 +40,9 @@ jobs:
     - name: Increment Version
       run: npm version patch
     - name: Publish to npm
-      run: npm publish --provenance
+      run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN2 }}
     - name: Push version update
       run: git push
 
