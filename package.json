@@ -1,6 +1,6 @@
 {
   "name": "@openactive/data-model-validator",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "A library to allow a developer to validate a JSON document against the OpenActive Modelling Opportunity Specification",
   "homepage": "https://openactive.io",
   "author": "OpenActive Community <hello@openactive.io>",
@@ -57,7 +57,6 @@
     "test": "npm run run-tests",
     "run-tests": "jasmine",
     "test-debug": "node --inspect-brk -i ./node_modules/jasmine/bin/jasmine.js",
-    "postpublish": "git push",
-    "publish-patch": "npm test && git pull && git push && npm version patch && npm publish"
+    "publish-patch": "npm test && git pull && npm version patch && git push && npm publish"
   }
 }
