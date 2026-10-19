@@ -57,7 +57,6 @@
     "test": "npm run run-tests",
     "run-tests": "jasmine",
     "test-debug": "node --inspect-brk -i ./node_modules/jasmine/bin/jasmine.js",
-    "postpublish": "git push",
-    "publish-patch": "npm test && git pull && git push && npm version patch && npm publish"
+    "publish-patch": "npm test && git pull && npm version patch && git push && npm publish"
   }
 }
