@@ -739,12 +739,44 @@ describe('validate', () => {
       .filter((error) => error.type === type)
       .map((error) => error.path);
 
+    // Minimal beta namespace context defining beta:dateVerified, as published at https://openactive.io/ns-beta
+    const betaContext = {
+      '@context': {
+        rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+        rdfs: 'http://www.w3.org/2000/01/rdf-schema#',
+        schema: 'https://schema.org/',
+        beta: 'https://openactive.io/ns-beta#',
+        label: 'rdfs:label',
+        comment: 'rdfs:comment',
+        domainIncludes: { '@id': 'schema:domainIncludes', '@type': '@id' },
+        rangeIncludes: { '@id': 'schema:rangeIncludes', '@type': '@id' },
+        Property: 'rdf:Property',
+      },
+      '@graph': [
+        {
+          '@id': 'beta:dateVerified',
+          '@type': 'Property',
+          label: 'dateVerified',
+          comment: 'The date on which the details of this organization were last verified as correct by the publisher.',
+          domainIncludes: ['schema:Organization'],
+          rangeIncludes: ['schema:Date'],
+        },
+      ],
+    };
+
     beforeEach(() => {
+      nock('https://openactive.io')
+        .get('/ns-beta')
+        .reply(200, betaContext, {
+          'Content-Type': 'application/ld+json',
+        });
+
       validOrganization = {
-        '@context': metaData.contextUrl,
+        '@context': [metaData.contextUrl, 'https://openactive.io/ns-beta'],
         '@type': 'Organization',
         '@id': 'https://example.org/id/organisation/1',
         name: 'Example Yacht Club',
+        'beta:dateVerified': '2026-10-01',
         description: 'A community amateur sports club focused on getting people sailing.',
         url: 'https://exampleyachtclub.org/',
         sameAs: ['https://www.facebook.com/ExampleYachtClub/'],
@@ -781,6 +813,15 @@ describe('validate', () => {
       const result = await validate(organization, feedOptions);
 
       expect(missingFields(result, ValidationErrorType.MISSING_REQUIRED_FIELD)).toEqual(['$.activity', '$.location']);
+    });
+
+    it('should require beta:dateVerified on a stand-alone Organization', async () => {
+      const organization = { ...validOrganization };
+      delete organization['beta:dateVerified'];
+
+      const result = await validate(organization, feedOptions);
+
+      expect(missingFields(result, ValidationErrorType.MISSING_REQUIRED_FIELD)).toEqual(['$["beta:dateVerified"]']);
     });
 
     it('should recommend description and email on a stand-alone Organization', async () => {
