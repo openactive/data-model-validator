@@ -712,4 +712,112 @@ describe('validate', () => {
       expect(result[0].severity).toBe(ValidationErrorSeverity.NOTICE);
     });
   });
+
+  // Organization level data (Modelling Opportunity Data section 5.8.1): a stand-alone Organization,
+  // as the top-level object or an RPDE item's data, has its own required and recommended fields.
+  // These are set in data-models by containing field name (`$` and `data`), so these tests also
+  // guard against changes to those names.
+  describe('Organization level data', () => {
+    let validOrganization;
+    let feedOptions;
+
+    const organizationFeed = (organization) => ({
+      items: [
+        {
+          id: '1',
+          kind: 'Organization',
+          state: 'updated',
+          data: organization,
+          modified: 1533177378657,
+        },
+      ],
+      next: 'https://example.org/api/feed/?afterId=1&afterTimestamp=1533177378657&limit=500',
+      license: 'https://creativecommons.org/licenses/by/4.0/',
+    });
+
+    const missingFields = (result, type) => result
+      .filter((error) => error.type === type)
+      .map((error) => error.path);
+
+    beforeEach(() => {
+      validOrganization = {
+        '@context': metaData.contextUrl,
+        '@type': 'Organization',
+        '@id': 'https://example.org/id/organisation/1',
+        name: 'Example Yacht Club',
+        description: 'A community amateur sports club focused on getting people sailing.',
+        url: 'https://exampleyachtclub.org/',
+        sameAs: ['https://www.facebook.com/ExampleYachtClub/'],
+        email: 'info@exampleyachtclub.org',
+        telephone: '020 7946 0000',
+        activity: [
+          {
+            '@id': 'https://openactive.io/activity-list#c16df6ed-a4a0-4275-a8c3-1c8cff56856f',
+            prefLabel: 'Tai Chi',
+            '@type': 'Concept',
+            inScheme: 'https://openactive.io/activity-list',
+          },
+        ],
+        location: 'Example Wharf, Greenwich, London SE10 0BW',
+      };
+      feedOptions = new OptionsHelper({
+        loadRemoteJson: true,
+        version: 'latest',
+        validationMode: 'RPDEFeed',
+      });
+    });
+
+    it('should return no errors for a valid stand-alone Organization', async () => {
+      const result = await validate(validOrganization, feedOptions);
+
+      expect(result.length).toBe(0);
+    });
+
+    it('should require activity and location on a stand-alone Organization', async () => {
+      const organization = { ...validOrganization };
+      delete organization.activity;
+      delete organization.location;
+
+      const result = await validate(organization, feedOptions);
+
+      expect(missingFields(result, ValidationErrorType.MISSING_REQUIRED_FIELD)).toEqual(['$.activity', '$.location']);
+    });
+
+    it('should recommend description and email on a stand-alone Organization', async () => {
+      const organization = { ...validOrganization };
+      delete organization.description;
+      delete organization.email;
+
+      const result = await validate(organization, feedOptions);
+
+      expect(missingFields(result, ValidationErrorType.MISSING_RECOMMENDED_FIELD)).toEqual(['$.description', '$.email']);
+    });
+
+    it('should require activity and location on an Organization in an RPDE feed', async () => {
+      const organization = { ...validOrganization };
+      delete organization.activity;
+      delete organization.location;
+
+      const result = await validate(organizationFeed(organization), feedOptions);
+
+      expect(missingFields(result, ValidationErrorType.MISSING_REQUIRED_FIELD)).toEqual(['$.items[0].data.activity', '$.items[0].data.location']);
+    });
+
+    it('should accept an RPDE feed of valid Organizations', async () => {
+      const result = await validate(organizationFeed(validOrganization), feedOptions);
+
+      expect(result.length).toBe(1);
+      expect(result[0].type).toBe(ValidationErrorType.FOUND_RPDE_FEED);
+    });
+
+    it('should not require activity or location on an Organization that is an organizer', async () => {
+      const event = { ...validSessionSeries };
+
+      const result = await validate(event, feedOptions);
+
+      expect(event.organizer.activity).toBeUndefined();
+      expect(event.organizer.location).toBeUndefined();
+      expect(result.length).toBe(0);
+    });
+  });
 });
