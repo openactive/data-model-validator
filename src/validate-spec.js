@@ -721,19 +721,24 @@ describe('validate', () => {
     let validOrganization;
     let feedOptions;
 
-    const organizationFeed = (organization) => ({
-      items: [
-        {
-          id: '1',
-          kind: 'Organization',
-          state: 'updated',
-          data: organization,
-          modified: 1533177378657,
-        },
-      ],
-      next: 'https://example.org/api/feed/?afterId=1&afterTimestamp=1533177378657&limit=500',
-      license: 'https://creativecommons.org/licenses/by/4.0/',
-    });
+    // The feed page gives the license, so the records in it do not
+    const organizationFeed = (organization) => {
+      const data = { ...organization };
+      delete data.license;
+      return {
+        items: [
+          {
+            id: '1',
+            kind: 'Organization',
+            state: 'updated',
+            data,
+            modified: 1533177378657,
+          },
+        ],
+        next: 'https://example.org/api/feed/?afterId=1&afterTimestamp=1533177378657&limit=500',
+        license: 'https://creativecommons.org/licenses/by/4.0/',
+      };
+    };
 
     const missingFields = (result, type) => result
       .filter((error) => error.type === type)
@@ -777,6 +782,7 @@ describe('validate', () => {
         '@id': 'https://example.org/id/organisation/1',
         name: 'Example Yacht Club',
         'beta:dateVerified': '2026-10-01',
+        license: 'https://creativecommons.org/licenses/by/4.0/',
         description: 'A community amateur sports club focused on getting people sailing.',
         url: 'https://exampleyachtclub.org/',
         sameAs: ['https://www.facebook.com/ExampleYachtClub/'],
@@ -824,6 +830,15 @@ describe('validate', () => {
       expect(missingFields(result, ValidationErrorType.MISSING_REQUIRED_FIELD)).toEqual(['$["beta:dateVerified"]']);
     });
 
+    it('should require license on a stand-alone Organization', async () => {
+      const organization = { ...validOrganization };
+      delete organization.license;
+
+      const result = await validate(organization, feedOptions);
+
+      expect(missingFields(result, ValidationErrorType.MISSING_REQUIRED_FIELD)).toEqual(['$.license']);
+    });
+
     it('should recommend description and email on a stand-alone Organization', async () => {
       const organization = { ...validOrganization };
       delete organization.description;
@@ -844,8 +859,12 @@ describe('validate', () => {
       expect(missingFields(result, ValidationErrorType.MISSING_REQUIRED_FIELD)).toEqual(['$.items[0].data.activity', '$.items[0].data.location']);
     });
 
-    it('should accept an RPDE feed of valid Organizations', async () => {
-      const result = await validate(organizationFeed(validOrganization), feedOptions);
+    it('should accept an RPDE feed of valid Organizations, without license on each Organization', async () => {
+      const feed = organizationFeed(validOrganization);
+
+      const result = await validate(feed, feedOptions);
+
+      expect(feed.items[0].data.license).toBeUndefined();
 
       expect(result.length).toBe(1);
       expect(result[0].type).toBe(ValidationErrorType.FOUND_RPDE_FEED);
