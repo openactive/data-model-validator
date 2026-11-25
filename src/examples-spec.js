@@ -28,10 +28,7 @@ for (const {
         validationMode,
       }));
       const failures = results.filter((result) => result.severity === 'failure')
-        .map((error) => `${error.path}: ${error.message.split('\n')[0]}`)
-        // TECH DEBT: beta:virtualTour has been removed from the beta namespace temporarily as it breaks other libraries
-        // Remove the line below once beta:virtualTour has been re-introduced
-        .filter((x) => x.indexOf('beta:virtualTour') === -1);
+        .map((error) => `${error.path}: ${error.message.split('\n')[0]}`);
 
       expect(failures).toEqual([]);
     });
